@@ -1,4 +1,4 @@
-# Welcome to KubeLabs  [![Say Thanks](https://img.shields.io/badge/SayThanks.io-%E2%98%BC-1EAEDB.svg)](https://saythanks.io/to/collabnix) [![Slack ](https://img.shields.io/badge/collabnix/kubelabs-pink.svg)](https://tinyurl.com/y973wcq8) ![Hits](https://hitcounter.pythonanywhere.com/count/tag.svg?url=https%3A%2F%2Fcollabnix.github.io%2Fkubelabs%2F) [![Open Source Helpers](https://www.codetriage.com/collabnix/kubelabs/badges/users.svg)](https://www.codetriage.com/collabnix/kubelabs)
+# Welcome to KubeLabs  [![Say Thanks](https://img.shields.io/badge/SayThanks.io-%E2%98%BC-1EAEDB.svg)](https://saythanks.io/to/collabnix) [![Slack ](https://img.shields.io/badge/collabnix/kubelabs-pink.svg)](https://tinyurl.com/y973wcq8) ![Hits](https://hitcounter.pythonanywhere.com/count/tag.svg?url=https%3A%2F%2Fcollabnix.github.io%2Fkubelabs%2F) 
 
 
 
