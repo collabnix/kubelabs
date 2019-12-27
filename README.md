@@ -35,4 +35,4 @@ KubeLabs brings you tutorials that help you get hands-on experience using Kubern
 
 - [Kubernetes Cheatsheets](./kubernetes/cheatsheets/kubectl.md)
 
-- [Kubetools](./kubernetes/kubetools/)
+- [Kubetools](./kubernetes/kubetools/README.md)
