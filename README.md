@@ -8,7 +8,7 @@ KubeLabs brings you tutorials that help you get hands-on experience using Docker
 
 #  Getting Started in 3 Simple Steps
 
-- Join 1500+ Collabnix Labs Contributors in 2 mins via [DockerLabs Slack Channel](https://join.slack.com/t/collabnix/shared_invite/enQtNTI4Mjc1NTg4MTAzLTg1NzQzZjg0MjhjZDNkYzQwNWQ3NmQ1YTZhOWVjODA4NzdlNDFhY2ZkNWQ2MGVlNTI5YmFlNWU5N2I5NDJmMDU)
+- Join 1800+ Collabnix Labs Contributors in 2 mins via [Collabnix  Slack Channel](https://join.slack.com/t/collabnix/shared_invite/enQtNTI4Mjc1NTg4MTAzLTg1NzQzZjg0MjhjZDNkYzQwNWQ3NmQ1YTZhOWVjODA4NzdlNDFhY2ZkNWQ2MGVlNTI5YmFlNWU5N2I5NDJmMDU)
 
 - Fork, Contribute & Share via [DockerLabs GITHUB Repository](https://github.com/collabnix/dockerlabs)
 
