@@ -36,33 +36,33 @@
 ## Deployment101
  
  - [Introductory Slides]() - Pending
- - [Creating Your First Deployment](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/Deployment101/readme.md#creating-your-first-deployment)
- - [Checking the list of application deployment](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/Deployment101/readme.md#checking-the-list-of-application-deployment)
- - [Scale up/down application deployment](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/Deployment101/readme.md#step-2-scale-updown-application-deployment)
- - [Scaling the service to 2 Replicas](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/Deployment101/readme.md#scaling-the-service-to-2-replicas)
- - [Perform rolling updates to application deployment](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/Deployment101/readme.md#step-3-perform-rolling-updates-to-application-deployment) 
- - [Rollback updates to application deployment](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/Deployment101/readme.md#step-4-rollback-updates-to-application-deployment)
-- [Cleaning Up](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/Deployment101/readme.md#step-5-cleanup)
+ - [Creating Your First Deployment](./Deployment101/readme.md#creating-your-first-deployment)
+ - [Checking the list of application deployment](./Deployment101/readme.md#checking-the-list-of-application-deployment)
+ - [Scale up/down application deployment](.s/workshop/Deployment101/readme.md#step-2-scale-updown-application-deployment)
+ - [Scaling the service to 2 Replicas](./Deployment101/readme.md#scaling-the-service-to-2-replicas)
+ - [Perform rolling updates to application deployment](.p/Deployment101/readme.md#step-3-perform-rolling-updates-to-application-deployment) 
+ - [Rollback updates to application deployment](./Deployment101/readme.md#step-4-rollback-updates-to-application-deployment)
+- [Cleaning Up](./Deployment101/readme.md#step-5-cleanup)
 
 
 ## Scheduler101
 
  - [Introductory Slides]() - Pending
- - [How Kubernetes Selects the Right node?](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/Scheduler101/readme.md)
- - [Node Affinity](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/Scheduler101/node_affinity.md) - Done
- - [Anti-Node Affinity](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/Scheduler101/Anti-Node-Affinity.md) - Tested
- - [Nodes taints and tolerations](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/Scheduler101/Nodes_taints_and%20_tolerations.md) - Done
+ - [How Kubernetes Selects the Right node?](./Scheduler101/readme.md)
+ - [Node Affinity](./Scheduler101/node_affinity.md) - Done
+ - [Anti-Node Affinity](./Scheduler101/Anti-Node-Affinity.md) - Tested
+ - [Nodes taints and tolerations](./Scheduler101/Nodes_taints_and%20_tolerations.md) - Done
  
 ## StatefulSets101
  
  - [Introductory Slides]() - Pending
- - [The difference between a Statefulset and a Deployment](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/StatefulSets101/readme.md#what-is-statefulset-and-how-is-it-different-from-deployment)
- - [Deploying a Stateful Application Using Kubernetes Statefulset?](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/StatefulSets101/readme.md#deploying-a-stateful-application-using-kubernetes-statefulset)
- - [Creating the StatefulSet](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/StatefulSets101/readme.md#creating-the-statefulset)
- - [Creating a Headless Service for our StatefulSet](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/StatefulSets101/readme.md#creating-a-headless-service-for-our-statefulset)
- - [Listing the created components](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/StatefulSets101/readme.md#listing-the-created-components)
- - [Connecting one pod to another through the Headless Service](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/StatefulSets101/readme.md#connecting-one-pod-to-another-through-the-headless-service)
- - [Deleting the StatefulSet](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/StatefulSets101/readme.md#deleting-the-statefulset)
+ - [The difference between a Statefulset and a Deployment](./StatefulSets101/readme.md#what-is-statefulset-and-how-is-it-different-from-deployment)
+ - [Deploying a Stateful Application Using Kubernetes Statefulset?](./StatefulSets101/readme.md#deploying-a-stateful-application-using-kubernetes-statefulset)
+ - [Creating the StatefulSet](./StatefulSets101/readme.md#creating-the-statefulset)
+ - [Creating a Headless Service for our StatefulSet](./StatefulSets101/readme.md#creating-a-headless-service-for-our-statefulset)
+ - [Listing the created components](./StatefulSets101/readme.md#listing-the-created-components)
+ - [Connecting one pod to another through the Headless Service](./StatefulSets101/readme.md#connecting-one-pod-to-another-through-the-headless-service)
+ - [Deleting the StatefulSet](./StatefulSets101/readme.md#deleting-the-statefulset)
 
 # Contributors
 
