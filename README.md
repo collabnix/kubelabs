@@ -7,13 +7,13 @@
 - Preparing 3-Node Kubernetes Cluster
   - [Preparing 3-Node Kubernetes Cluster](./kube101.md) - Done
   - [Setting up GKE Cluster]() - Pending
-  - [Setting up Weavescope for Visualization on GKE](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/weave.md) - Done
-  - [Setting up WeaveScope For Visualization on PWK](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/weave-pwk.md) - Done
+  - [Setting up Weavescope for Visualization on GKE](https://github.com/collabnix/kubelabs/blob/master/weave.md) - Done
+  - [Setting up WeaveScope For Visualization on PWK](https://github.com/collabnix/kubelabs/blob/master/weave-pwk.md) - Done
 - [Kubectl for Docker Beginners](./kubectl-for-docker.md) - Done
 
 ## Pods101
 
- - [Introductory Slides](http://dockerlabs.collabnix.com/kubernetes/workshop/Pods101_slides/Pods101.html) - Done
+ - [Introductory Slides](http://dockerlabs.collabnix.com/kubelabs/blob/master/Pods101_slides/Pods101.html) - Done
  - [Deploying Your First Nginx Pod](./pods101/deploy-your-first-nginx-pod.md) - Done
  - [Viewing Your Pod](./pods101/deploy-your-first-nginx-pod.md#viewing-your-pods) - Done
  - [Where is your Pod running on?](./pods101/deploy-your-first-nginx-pod.md#which-node-is-this-pod-running-on) - Done
@@ -26,12 +26,12 @@
 
 ## ReplicaSet101
 
- - [Introductory Slides](http://dockerlabs.collabnix.com/kubernetes/workshop/SlidesReplicaSet101/ReplicaSet101.html) - Done
- - [Creating Your First ReplicaSet - 4 Pods serving Nginx](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/replicaset101/README.md#creating-your-first-replicaset) - Done
- - [Removing a Pod from ReplicaSet](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/replicaset101/README.md#removing-a-pod-from-a-replicaset) - Done
- - [Scaling & Autoscaling a ReplicaSet](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/replicaset101/README.md#scaling-and-autoscaling-replicasets) - Done
- - [Best Practices](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/replicaset101/README.md#best-practices) - Done
- - [Deleting ReplicaSets](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/replicaset101/README.md#deleting-replicaset) - Done
+ - [Introductory Slides](http://kubelabs.collabnix.com/blob/master/SlidesReplicaSet101/ReplicaSet101.html) - Done
+ - [Creating Your First ReplicaSet - 4 Pods serving Nginx](http://kubelabs.collabnix.com/blob/master/kubernetes/workshop/replicaset101/README.md#creating-your-first-replicaset) - Done
+ - [Removing a Pod from ReplicaSet](http://kubelabs.collabnix.com/blob/master/kubernetes/workshop/replicaset101/README.md#removing-a-pod-from-a-replicaset) - Done
+ - [Scaling & Autoscaling a ReplicaSet](http://kubelabs.collabnix.com/blob/master/kubernetes/workshop/replicaset101/README.md#scaling-and-autoscaling-replicasets) - Done
+ - [Best Practices](http://kubelabs.collabnix.com/blob/master/kubernetes/workshop/replicaset101/README.md#best-practices) - Done
+ - [Deleting ReplicaSets](http://kubelabs.collabnix.com/blob/master/kubernetes/workshop/replicaset101/README.md#deleting-replicaset) - Done
  
 ## Deployment101
  
