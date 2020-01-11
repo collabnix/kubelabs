@@ -27,42 +27,42 @@
 ## ReplicaSet101
 
  - [Introductory Slides](./SlidesReplicaSet101/ReplicaSet101.html) - Done
- - [Creating Your First ReplicaSet - 4 Pods serving Nginx](./replicaset101/README.md#creating-your-first-replicaset) - Done
- - [Removing a Pod from ReplicaSet](./replicaset101/README.md#removing-a-pod-from-a-replicaset) - Done
- - [Scaling & Autoscaling a ReplicaSet](./replicaset101/README.md#scaling-and-autoscaling-replicasets) - Done
- - [Best Practices](./replicaset101/README.md#best-practices) - Done
- - [Deleting ReplicaSets](./replicaset101/README.md#deleting-replicaset) - Done
+ - [Creating Your First ReplicaSet - 4 Pods serving Nginx](./replicaset101/README.html#creating-your-first-replicaset) - Done
+ - [Removing a Pod from ReplicaSet](./replicaset101/README.html#removing-a-pod-from-a-replicaset) - Done
+ - [Scaling & Autoscaling a ReplicaSet](./replicaset101/README.html#scaling-and-autoscaling-replicasets) - Done
+ - [Best Practices](./replicaset101/README.html#best-practices) - Done
+ - [Deleting ReplicaSets](./replicaset101/README.html#deleting-replicaset) - Done
  
 ## Deployment101
  
  - [Introductory Slides]() - Pending
- - [Creating Your First Deployment](./Deployment101/readme.md#creating-your-first-deployment)
- - [Checking the list of application deployment](./Deployment101/readme.md#checking-the-list-of-application-deployment)
- - [Scale up/down application deployment](.s/workshop/Deployment101/readme.md#step-2-scale-updown-application-deployment)
- - [Scaling the service to 2 Replicas](./Deployment101/readme.md#scaling-the-service-to-2-replicas)
- - [Perform rolling updates to application deployment](.p/Deployment101/readme.md#step-3-perform-rolling-updates-to-application-deployment) 
- - [Rollback updates to application deployment](./Deployment101/readme.md#step-4-rollback-updates-to-application-deployment)
-- [Cleaning Up](./Deployment101/readme.md#step-5-cleanup)
+ - [Creating Your First Deployment](./Deployment101/readme.html#creating-your-first-deployment)
+ - [Checking the list of application deployment](./Deployment101/readme.html#checking-the-list-of-application-deployment)
+ - [Scale up/down application deployment](.s/workshop/Deployment101/readme.html#step-2-scale-updown-application-deployment)
+ - [Scaling the service to 2 Replicas](./Deployment101/readme.html#scaling-the-service-to-2-replicas)
+ - [Perform rolling updates to application deployment](.p/Deployment101/readme.html#step-3-perform-rolling-updates-to-application-deployment) 
+ - [Rollback updates to application deployment](./Deployment101/readme.html#step-4-rollback-updates-to-application-deployment)
+- [Cleaning Up](./Deployment101/readme.html#step-5-cleanup)
 
 
 ## Scheduler101
 
  - [Introductory Slides]() - Pending
- - [How Kubernetes Selects the Right node?](./Scheduler101/readme.md)
- - [Node Affinity](./Scheduler101/node_affinity.md) - Done
- - [Anti-Node Affinity](./Scheduler101/Anti-Node-Affinity.md) - Tested
- - [Nodes taints and tolerations](./Scheduler101/Nodes_taints_and%20_tolerations.md) - Done
+ - [How Kubernetes Selects the Right node?](./Scheduler101/readme.html)
+ - [Node Affinity](./Scheduler101/node_affinity.html) - Done
+ - [Anti-Node Affinity](./Scheduler101/Anti-Node-Affinity.html) - Tested
+ - [Nodes taints and tolerations](./Scheduler101/Nodes_taints_and%20_tolerations.html) - Done
  
 ## StatefulSets101
  
  - [Introductory Slides]() - Pending
- - [The difference between a Statefulset and a Deployment](./StatefulSets101/readme.md#what-is-statefulset-and-how-is-it-different-from-deployment)
- - [Deploying a Stateful Application Using Kubernetes Statefulset?](./StatefulSets101/readme.md#deploying-a-stateful-application-using-kubernetes-statefulset)
- - [Creating the StatefulSet](./StatefulSets101/readme.md#creating-the-statefulset)
+ - [The difference between a Statefulset and a Deployment](./StatefulSets101/readme.html#what-is-statefulset-and-how-is-it-different-from-deployment)
+ - [Deploying a Stateful Application Using Kubernetes Statefulset?](./StatefulSets101/readme.html#deploying-a-stateful-application-using-kubernetes-statefulset)
+ - [Creating the StatefulSet](./StatefulSets101/readme.html#creating-the-statefulset)
  - [Creating a Headless Service for our StatefulSet](./StatefulSets101/readme.md#creating-a-headless-service-for-our-statefulset)
- - [Listing the created components](./StatefulSets101/readme.md#listing-the-created-components)
- - [Connecting one pod to another through the Headless Service](./StatefulSets101/readme.md#connecting-one-pod-to-another-through-the-headless-service)
- - [Deleting the StatefulSet](./StatefulSets101/readme.md#deleting-the-statefulset)
+ - [Listing the created components](./StatefulSets101/readme.html#listing-the-created-components)
+ - [Connecting one pod to another through the Headless Service](./StatefulSets101/readme.html#connecting-one-pod-to-another-through-the-headless-service)
+ - [Deleting the StatefulSet](./StatefulSets101/readme.html#deleting-the-statefulset)
 
 # Contributors
 
