@@ -51,7 +51,7 @@
  - [How Kubernetes Selects the Right node?](./Scheduler101/readme.html)
  - [Node Affinity](./Scheduler101/node_affinity.html) - Done
  - [Anti-Node Affinity](./Scheduler101/Anti-Node-Affinity.html) - Tested
- - [Nodes taints and tolerations](./Scheduler101/Nodes_taints_and%20_tolerations.html) - Done
+ - [Nodes taints and tolerations](./Scheduler101/Nodes_taints_and_tolerations.html) - Done
  
 ## StatefulSets101
  
