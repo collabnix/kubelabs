@@ -13,7 +13,7 @@
 
 ## Pods101
 
- - [Introductory Slides](http://dockerlabs.collabnix.com/kubelabs/blob/master/Pods101_slides/Pods101.html) - Done
+ - [Introductory Slides](./Pods101_slides/Pods101.html) - Done
  - [Deploying Your First Nginx Pod](./pods101/deploy-your-first-nginx-pod.md) - Done
  - [Viewing Your Pod](./pods101/deploy-your-first-nginx-pod.md#viewing-your-pods) - Done
  - [Where is your Pod running on?](./pods101/deploy-your-first-nginx-pod.md#which-node-is-this-pod-running-on) - Done
@@ -26,12 +26,12 @@
 
 ## ReplicaSet101
 
- - [Introductory Slides](http://kubelabs.collabnix.com/blob/master/SlidesReplicaSet101/ReplicaSet101.html) - Done
- - [Creating Your First ReplicaSet - 4 Pods serving Nginx](http://kubelabs.collabnix.com/blob/master/kubernetes/workshop/replicaset101/README.md#creating-your-first-replicaset) - Done
- - [Removing a Pod from ReplicaSet](http://kubelabs.collabnix.com/blob/master/kubernetes/workshop/replicaset101/README.md#removing-a-pod-from-a-replicaset) - Done
- - [Scaling & Autoscaling a ReplicaSet](http://kubelabs.collabnix.com/blob/master/kubernetes/workshop/replicaset101/README.md#scaling-and-autoscaling-replicasets) - Done
- - [Best Practices](http://kubelabs.collabnix.com/blob/master/kubernetes/workshop/replicaset101/README.md#best-practices) - Done
- - [Deleting ReplicaSets](http://kubelabs.collabnix.com/blob/master/kubernetes/workshop/replicaset101/README.md#deleting-replicaset) - Done
+ - [Introductory Slides](./SlidesReplicaSet101/ReplicaSet101.html) - Done
+ - [Creating Your First ReplicaSet - 4 Pods serving Nginx](./replicaset101/README.md#creating-your-first-replicaset) - Done
+ - [Removing a Pod from ReplicaSet](./replicaset101/README.md#removing-a-pod-from-a-replicaset) - Done
+ - [Scaling & Autoscaling a ReplicaSet](./replicaset101/README.md#scaling-and-autoscaling-replicasets) - Done
+ - [Best Practices](./replicaset101/README.md#best-practices) - Done
+ - [Deleting ReplicaSets](./replicaset101/README.md#deleting-replicaset) - Done
  
 ## Deployment101
  
