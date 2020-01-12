@@ -103,4 +103,4 @@ Any developer can package up applications and deploy them on Kubernetes with bas
 ## Credits:
 - [Link](https://blog.risingstack.com/what-is-kubernetes-how-to-get-started/)
 
-[Next: Preparing 5-Node Kubernetes Cluster](http://dockerlabs.collabnix.com/kubernetes/workshop/kube101.html)
+[Next: Preparing 5-Node Kubernetes Cluster](http://kubelabs.collabnix.com/kube101.html)
