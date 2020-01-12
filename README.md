@@ -4,8 +4,8 @@
 
 - [Introductory Slides](./Kubernetes_Intro_slides-1/Kubernetes_Intro_slides-1.html) - Done
 - [Deep Dive into Kubernetes Architecture](./Kubernetes_Architecture.md) - Done 
-- Preparing 3-Node Kubernetes Cluster
-  - [Preparing 3-Node Kubernetes Cluster](./kube101.md) - Done
+- Preparing 5-Node Kubernetes Cluster
+  - [Preparing 5-Node Kubernetes Cluster](./kube101.md) - Done
   - [Setting up GKE Cluster]() - Pending
   - [Setting up Weavescope for Visualization on GKE](./weave.md) - Done
   - [Setting up WeaveScope For Visualization on PWK](./weave-pwk.md) - Done
