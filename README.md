@@ -1,4 +1,4 @@
-# A Complete Kubernetes Hands-on Labs & Workshop
+# A Complete Kubernetes Hands-on Labs
 
 ## Pre-requisite:
 
