@@ -1,4 +1,4 @@
-# Kubernetes101 Workshop 
+# A Complete Kubernetes Hands-on Labs & Workshop
 
 ## Pre-requisite:
 
