@@ -4,7 +4,7 @@ To get started with Kubernetes, follow the below steps:
 
 -  Open https://play-with-k8s.com on your browser
 
-![Image](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/img/pwk1.png)
+![Image](https://raw.githubusercontent.com/collabnix/dockerlabs/master/kubernetes/workshop/img/pwk1.png)
 
 
 Click on Add Instances to setup first k8s node cluster
