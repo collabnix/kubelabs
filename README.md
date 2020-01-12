@@ -7,13 +7,13 @@
 
 ## Preparing 5-Node Kubernetes Cluster
 
-## PWK:
+### PWK:
 
   - [Preparing 5-Node Kubernetes Cluster on Play with Kubernetes Platform](./kube101.md) - Done
   - [Setting up WeaveScope For Visualization on PWK](./weave-pwk.md) - Done
   - [Kubectl for Docker Beginners](./kubectl-for-docker.md) - Done
 
-## GKE
+### GKE
 
   - [Setting up GKE Cluster](./gke-setup.md) - Pending
   - [Setting up Weavescope for Visualization on GKE](./weave.md) - Done
