@@ -101,6 +101,6 @@ Any developer can package up applications and deploy them on Kubernetes with bas
 - Traffic is load balanced between the Pods of the deployment
 
 ## Credits:
-- https://blog.risingstack.com/what-is-kubernetes-how-to-get-started/
+- [Link](https://blog.risingstack.com/what-is-kubernetes-how-to-get-started/)
 
 [Next: Preparing 5-Node Kubernetes Cluster](http://dockerlabs.collabnix.com/kubernetes/workshop/kube101.html)
