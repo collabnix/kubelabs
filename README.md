@@ -17,6 +17,10 @@
 
   - [Setting up GKE Cluster](./gke-setup.md) - Pending
   - [Setting up Weavescope for Visualization on GKE](./weave.md) - Done
+  
+### Docker Desktop for Mac
+
+  - [Setting up Kubernetes Cluster on AWS using Kops running on Docker Desktop for Mac] ()
 
 ## Pods101
 
