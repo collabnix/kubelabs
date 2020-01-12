@@ -31,10 +31,10 @@ kubectl get svc -n weave -o yaml > svc.yaml && sed -i "s/ClusterIP/NodePort/g" s
 From the kubectl get svc -n weave take the Nodeport and hit open PWK on that port 
 ```
 
-![My Image](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/weave-service.png)
+![My Image](https://raw.githubusercontent.com/collabnix/dockerlabs/master/kubernetes/workshop/weave-service.png)
 
 
 Now get ready to access via  NodePort(31741 in this case).
 
-![My Image](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/Weave-UI.png)
+![My Image](https://raw.githubusercontent.com/collabnix/dockerlabs/master/kubernetes/workshop/Weave-UI.png)
 
