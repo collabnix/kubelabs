@@ -20,7 +20,7 @@
   
 ### Docker Desktop for Mac
 
-  - [Setting up Kubernetes Cluster on AWS using Kops running on Docker Desktop for Mac] ()
+  - [Setting up Kubernetes Cluster on AWS using Kops running on Docker Desktop for Mac] (https://github.com/collabnix/kubelabs/blob/master/dockerdesktopformac/README.md)
 
 ## Pods101
 
