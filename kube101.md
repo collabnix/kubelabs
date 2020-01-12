@@ -12,9 +12,7 @@ Click on Add Instances to setup first k8s node cluster
 ## Cloning the Repository
 
 ```
-git clone https://github.com/collabnix/dockerlabs/
-cd dockerlabs/kubernetes/install
-
+git clone https://github.com/collabnix/kubelabs
 ```
 
 ## Bootstrapping the First Node Cluster
