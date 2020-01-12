@@ -34,5 +34,5 @@ kubectl port-forward -n weave "$(kubectl get -n weave pod --selector=weave-scope
 
 Now get ready to access via  http://localhost:4040.
 
-![My Image](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/weave.jpg)
+![My Image](https://raw.githubusercontent.com/collabnix/dockerlabs/master/kubernetes/workshop/weave.jpg)
 
