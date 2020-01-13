@@ -38,7 +38,7 @@
 ## ReplicaSet101
 
  - [Introductory Slides](https://collabnix.github.io/kubelabs/SlidesReplicaSet101/ReplicaSet101.html) - Done
- - [Creating Your First ReplicaSet - 4 Pods serving Nginx](./replicaset101/README.html#creating-your-first-replicaset) - Done
+ - [Creating Your First ReplicaSet - 4 Pods serving Nginx](./replicaset101#how-does-replicaset-manage-pods) - Done
  - [Removing a Pod from ReplicaSet](./replicaset101/README.html#removing-a-pod-from-a-replicaset) - Done
  - [Scaling & Autoscaling a ReplicaSet](./replicaset101/README.html#scaling-and-autoscaling-replicasets) - Done
  - [Best Practices](./replicaset101/README.html#best-practices) - Done
