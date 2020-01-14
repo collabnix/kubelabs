@@ -408,6 +408,11 @@ Wed Jan  8 08:59:15 UTC 2020
 Wed Jan  8 08:59:16 UTC 2020
 ```
 
+## Cleaning Up
+
+```
+kubectl delete -f pods03.yaml
+```
 
 # Contributor
 
