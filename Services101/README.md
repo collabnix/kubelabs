@@ -37,7 +37,50 @@ kubectl describe svc my-nginx
 
 You should now be able to curl the nginx Service on <CLUSTER-IP>:<PORT> from any node in your cluster. Note that the Service IP is completely virtual, it never hits the wire. If you’re curious about how this works you can read more about the service proxy.
 
+## Accessing the Service
 
+Kubernetes supports 2 primary modes of finding a Service - environment variables and DNS
+
+### Environment Variables
+
+When a Pod runs on a Node, the kubelet adds a set of environment variables for each active Service. This introduces an ordering problem. To see why, inspect the environment of your running nginx Pods (your Pod name will be different):
+
+```
+kubectl exec my-nginx-3800858182-jr4a2 -- printenv | grep SERVICE
+```
+
+```
+KUBERNETES_SERVICE_HOST=10.0.0.1
+KUBERNETES_SERVICE_PORT=443
+KUBERNETES_SERVICE_PORT_HTTPS=443
+```
+
+Note there’s no mention of your Service. This is because you created the replicas before the Service. Another disadvantage of doing this is that the scheduler might put both Pods on the same machine, which will take your entire Service down if it dies. We can do this the right way by killing the 2 Pods and waiting for the Deployment to recreate them. This time around the Service exists before the replicas. This will give you scheduler-level Service spreading of your Pods (provided all your nodes have equal capacity), as well as the right environment variables:
+
+```
+kubectl scale deployment my-nginx --replicas=0; kubectl scale deployment my-nginx --replicas=2;
+```
+
+```
+kubectl get pods -l run=my-nginx -o wide
+NAME                        READY     STATUS    RESTARTS   AGE     IP            NODE
+my-nginx-3800858182-e9ihh   1/1       Running   0          5s      10.244.2.7    kubernetes-minion-ljyd
+my-nginx-3800858182-j4rm4   1/1       Running   0          5s      10.244.3.8    kubernetes-minion-905m
+```
+
+You may notice that the pods have different names, since they are killed and recreated.
+
+```
+kubectl exec my-nginx-3800858182-e9ihh -- printenv | grep SERVICE
+```
+
+```
+KUBERNETES_SERVICE_PORT=443
+MY_NGINX_SERVICE_HOST=10.0.162.149
+KUBERNETES_SERVICE_HOST=10.0.0.1
+MY_NGINX_SERVICE_PORT=80
+KUBERNETES_SERVICE_PORT_HTTPS=443
+```
 
 ## Service Exposing More Than One Port
 
