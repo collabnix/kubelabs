@@ -98,6 +98,14 @@ kubectl edit pods web-44cjb
 
 Then, once the YAML file is opened, change the pod label to be role=isolated or anything different than role=web. In a few moments, run kubectl get pods. You will notice that we have five pods now. That’s because the ReplicaSet dutifully created a new pod to reach the desired number of four pods. The isolated one is still running, but it is no longer managed by the ReplicaSet.
 
+
+# Scaling the Replicas to 5
+
+```
+[node1 replicaset101]$ kubectl scale --replicas=5 -f nginx_replicaset.yaml
+```
+
+
 # Scaling and Autoscaling ReplicaSets
 
 You can easily change the number of pods a particular ReplicaSet manages in one of two ways:
