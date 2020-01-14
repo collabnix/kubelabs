@@ -5,7 +5,7 @@ Weave Scope is a visualization and monitoring tool for Docker and Kubernetes. It
 ## Pre-requisite
 
 - Docker Desktop for Mac OR
-- Play with Kubernetes Platform
+- 5 Node Play with Kubernetes Cluster
 
 
 ## Installing WeaveScope
