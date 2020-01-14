@@ -47,7 +47,7 @@
 ## Deployment101
  
  - [Introductory Slides](https://collabnix.github.io/kubelabs/Deployment101_slides/Deployment101.html) - Pending
- - [Creating Your First Deployment](./Deployment101/index.html#creating-your-first-deployment)
+ - [Creating Your First Deployment](./Deployment101/index.html)
  - [Checking the list of application deployment](./Deployment101/index.html#checking-the-list-of-application-deployment)
  - [Scale up/down application deployment](./Deployment101/index.html#step-2-scale-updown-application-deployment)
  - [Scaling the service to 2 Replicas](./Deployment101/index.html#scaling-the-service-to-2-replicas)
