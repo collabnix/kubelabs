@@ -70,7 +70,7 @@
   - [Introductory Slides]() - Pending
   - [Deploy a Kubernetes Service?](./Services101/README.md#deploying--a-kubernetes-service)
   - [Service Exposing More Than One Port](./Services101/README.md#service-exposing-more-than-one-port)
-  - [KKubernetes Service Without Pods?](./Services101/README.md#kubernetes-service-without-pods)
+  - [Kubernetes Service Without Pods?](./Services101/README.md#kubernetes-service-without-pods)
   - [Service Discovery](./Services101/README.md#service-discovery)
   - [Connectivity Methods](./Services101/README.md#connectivity-methods)
   - [Headless Service In Kubernetes?](./Services101/README.md#headless-service-in-kubernetes)
