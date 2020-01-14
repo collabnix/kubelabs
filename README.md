@@ -65,7 +65,7 @@
  - [Nodes taints and tolerations](./Scheduler101/Nodes_taints_and_tolerations.html) - Done
  
  
- ## Services101
+## Services101
  
   - [Introductory Slides]() - Pending
   - [Deploy a Kubernetes Service?](./Services101/README.md#deploying--a-kubernetes-service)
