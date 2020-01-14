@@ -68,13 +68,12 @@
  ## Services101
  
   - [Introductory Slides]() - Pending
-  - [Deploying Kubernetes Service?](./services101/index.html)
-  - [How Can Kubernetes Services Expose More Than One Port?]()
-  - [Can We Use A Kubernetes Service Without Pods?]()
-  - [What Is An 'Endpoint' Object In Terms Of Kubernetes?]()
-  - [What Is Service Discovery in Kubernetes?]()
-  - [Kubernetes Services Connectivity Methods]()
-  - [What Is The Use Of A Headless Service In Kubernetes?]()
+  - [Deploy a Kubernetes Service?](./services101/index.html)
+  - [Service Exposing More Than One Port]()
+  - [KKubernetes Service Without Pods?]()
+  - [Service Discovery]()
+  - [Connectivity Methods]()
+  - [Headless Service In Kubernetes?]()
  
 ## StatefulSets101
  
