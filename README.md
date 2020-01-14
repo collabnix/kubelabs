@@ -68,13 +68,13 @@
 
 ## Services101
  
-  - [Introductory Slides]() - Pending
-  - [Deploy a Kubernetes Service?](./Services101/README.md#deploying--a-kubernetes-service)
-  - [Service Exposing More Than One Port](./Services101/README.md#service-exposing-more-than-one-port)
-  - [Kubernetes Service Without Pods?](./Services101/README.md#kubernetes-service-without-pods)
-  - [Service Discovery](./Services101/README.md#service-discovery)
-  - [Connectivity Methods](./Services101/README.md#connectivity-methods)
-  - [Headless Service In Kubernetes?](./Services101/README.md#headless-service-in-kubernetes)
+  - [Introductory Slides](https://collabnix.github.io/kubelabs/Slides_Services101/Services101.html) - Done
+  - [Deploy a Kubernetes Service?](./Services101/index.html#deploying--a-kubernetes-service)
+  - [Service Exposing More Than One Port](./Services101/index.html#service-exposing-more-than-one-port)
+  - [Kubernetes Service Without Pods?](./Services101/index.html#kubernetes-service-without-pods)
+  - [Service Discovery](./Services101/index.html#service-discovery)
+  - [Connectivity Methods](./Services101/index.html#connectivity-methods)
+  - [Headless Service In Kubernetes?](./Services101/index.html#headless-service-in-kubernetes)
  
 ## StatefulSets101
  
