@@ -29,8 +29,8 @@ So if an application needs several containers running on the same host, why not 
 ## Steps
 
 ```
-git clone https://github.com/collabnix/dockerlabs
-cd dockerlabs/kubernetes/workshop/pods101
+git clone https://github.com/collabnix/kubelabs
+cd kubelabs/Pods101
 kubectl apply -f pods01.yaml
 ```
 
