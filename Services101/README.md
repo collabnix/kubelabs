@@ -8,4 +8,25 @@ Enter Services
 
 Service is an abstraction which defines a logical set of Pods and a policy by which to access them (sometimes this pattern is called a micro-service). Service acts as a layer above the pods. It is always aware of the pods that it manages: their count, their internal IP addresses, the ports they expose and so on. Service can be defined using a YAML or JSON file that contains the necessary definitions.
 
+## Deploying  a Kubernetes Service
+
+
+
+## Service Exposing More Than One Port
+
+
+
+## Kubernetes Service Without Pods?
+
+
+
+## Service Discovery
+
+
+## Connectivity Methods
+
+
+
+## Headless Service In Kubernetes?
+
 
