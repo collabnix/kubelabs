@@ -82,6 +82,39 @@ MY_NGINX_SERVICE_PORT=80
 KUBERNETES_SERVICE_PORT_HTTPS=443
 ```
 
+
+### DNS
+
+Kubernetes offers a DNS cluster addon Service that automatically assigns dns names to other Services. You can check if it’s running on your cluster:
+
+```
+kubectl get services kube-dns --namespace=kube-system
+```
+
+```
+NAME       TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)         AGE
+kube-dns   ClusterIP   10.0.0.10    <none>        53/UDP,53/TCP   8m
+```
+
+The rest of this section will assume you have a Service with a long lived IP (my-nginx), and a DNS server that has assigned a name to that IP. Here we use the CoreDNS cluster addon (application name kube-dns), so you can talk to the Service from any pod in your cluster using standard methods (e.g. gethostbyname()). If CoreDNS isn’t running, you can enable it referring to the CoreDNS README or Installing CoreDNS. Let’s run another curl application to test this:
+
+```
+kubectl run curl --image=radial/busyboxplus:curl -i --tty
+```
+
+```
+Waiting for pod default/curl-131556218-9fnch to be running, status is Pending, pod ready: false
+Hit enter for command prompt
+Then, hit enter and run nslookup my-nginx:
+
+[ root@curl-131556218-9fnch:/ ]$ nslookup my-nginx
+Server:    10.0.0.10
+Address 1: 10.0.0.10
+
+Name:      my-nginx
+Address 1: 10.0.162.149
+```
+
 ## Service Exposing More Than One Port
 
 Kubernetes Services allow you to define more than one port per service definition. Let’s see how a web server service definition file may look like:
