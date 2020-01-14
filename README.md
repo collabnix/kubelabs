@@ -3,24 +3,24 @@
 ## Pre-requisite:
 
 - [Introductory Slides](./Kubernetes_Intro_slides-1/Kubernetes_Intro_slides-1.html) - Done
-- [Deep Dive into Kubernetes Architecture](./Kubernetes_Architecture.md) - Done 
+- [Deep Dive into Kubernetes Architecture](./Kubernetes_Architecture.html) - Done 
 
 ## Preparing 5-Node Kubernetes Cluster
 
 ### PWK:
 
-  - [Preparing 5-Node Kubernetes Cluster on Play with Kubernetes Platform](./kube101.md) - Done
-  - [Setting up WeaveScope For Visualization on PWK](./weave-pwk.md) - Done
-  - [Kubectl for Docker Beginners](./kubectl-for-docker.md) - Done
+  - [Preparing 5-Node Kubernetes Cluster on Play with Kubernetes Platform](./kube101.html) - Done
+  - [Setting up WeaveScope For Visualization on PWK](./weave-pwk.html) - Done
+  - [Kubectl for Docker Beginners](./kubectl-for-docker.html) - Done
 
 ### GKE
 
-  - [Setting up GKE Cluster](./gke-setup.md) - Pending
-  - [Setting up Weavescope for Visualization on GKE](./weave.md) - Done
+  - [Setting up GKE Cluster](./gke-setup.html) - Pending
+  - [Setting up Weavescope for Visualization on GKE](./weave.html) - Done
   
 ### Docker Desktop for Mac
 
-  - [Setting up Kubernetes Cluster on AWS using Kops running on Docker Desktop for Mac](./dockerdesktopformac/README.md)
+  - [Setting up Kubernetes Cluster on AWS using Kops running on Docker Desktop for Mac](./dockerdesktopformac/index.html)
 
 ## Pods101
 
@@ -59,7 +59,7 @@
 ## Scheduler101
 
  - [Introductory Slides]() - Pending
- - [How Kubernetes Selects the Right node?](./Scheduler101/readme.html)
+ - [How Kubernetes Selects the Right node?](./Scheduler101/index.html)
  - [Node Affinity](./Scheduler101/node_affinity.html) - Done
  - [Anti-Node Affinity](./Scheduler101/Anti-Node-Affinity.html) - Tested
  - [Nodes taints and tolerations](./Scheduler101/Nodes_taints_and_tolerations.html) - Done
