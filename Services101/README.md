@@ -180,7 +180,7 @@ his service type works when you are using a cloud provider to host your Kubernet
 
 Different cloud providers handle load balancer provisioning differently. For example, some providers allow you to assign an IP address to the component, while others choose to assign short-lived addresses that constantly change. Kubernetes was designed to be highly portable. You can add loadBalancerIP to the service definition file. If the provider supports it, it will be implemented. Otherwise, it will be ignored. Let’s have a sample service definition that uses LoadBalancer as its type:
 
-``
+```
 apiVersion: v1
 kind: Service
 metadata:
