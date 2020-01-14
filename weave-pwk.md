@@ -36,7 +36,7 @@ From the kubectl get svc -n weave take the Nodeport and hit open PWK on that por
 ![My Image](https://raw.githubusercontent.com/collabnix/dockerlabs/master/kubernetes/workshop/weave-service.png)
 
 
-Now get ready to access via  NodePort(31741 in this case).
+Access Weavescope using NodePort(31741 in this case).
 
 ![My Image](https://raw.githubusercontent.com/collabnix/dockerlabs/master/kubernetes/workshop/Weave-UI.png)
 
