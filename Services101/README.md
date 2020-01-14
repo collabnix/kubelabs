@@ -28,6 +28,15 @@ This specification will create a Service which targets TCP port 80 on any Pod wi
 kubectl get svc my-nginx
 ```
 
+As mentioned previously, a Service is backed by a group of Pods. These Pods are exposed through endpoints. The Service’s selector will be evaluated continuously and the results will be POSTed to an Endpoints object also named my-nginx. When a Pod dies, it is automatically removed from the endpoints, and new Pods matching the Service’s selector will automatically get added to the endpoints. Check the endpoints, and note that the IPs are the same as the Pods created in the first step:
+
+
+```
+kubectl describe svc my-nginx
+```
+
+You should now be able to curl the nginx Service on <CLUSTER-IP>:<PORT> from any node in your cluster. Note that the Service IP is completely virtual, it never hits the wire. If you’re curious about how this works you can read more about the service proxy.
+
 
 
 ## Service Exposing More Than One Port
