@@ -30,7 +30,7 @@ So if an application needs several containers running on the same host, why not 
 
 ```
 git clone https://github.com/collabnix/kubelabs
-cd kubelabs/Pods101
+cd kubelabs/pods101
 kubectl apply -f pods01.yaml
 ```
 
