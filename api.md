@@ -30,6 +30,7 @@ users:
     client-certificate
 ```
  
+ 
  ## Directly accessing the REST API
  
 The kubectl handles locating and authenticating to the API server. 
