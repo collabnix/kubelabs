@@ -100,7 +100,25 @@ kubectl get nodes -o json |
       jq ".items[] | {name:.metadata.name} + .status.capacity"
  ```
 
+## Accessing namespaces
+
+By default, kubectl uses the default namespace. We can switch to a different namespace with the -n option
+
+### List the pods in the kube-system namespace:
+
+```
+kubectl -n kube-system get pods
+```
+
+## What are all these pods?
 
 
-
+- etcd is our etcd server
+- kube-apiserver is the API server
+- kube-controller-manager and kube-scheduler are other master components
+- kube-dns is an additional component (not mandatory but super useful, so it’s there)
+- kube-proxy is the (per-node) component managing port mappings and such
+- weave is the (per-node) component managing the network overlay 
+- the READY column indicates the number of containers in each pod
+- the pods with a name ending with -node1 are the master components (they have been specifically “pinned” to the master node)
 
