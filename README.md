@@ -4,8 +4,7 @@
 
 - [Introductory Slides](./Kubernetes_Intro_slides-1/Kubernetes_Intro_slides-1.html) - Done
 - [Deep Dive into Kubernetes Architecture](./Kubernetes_Architecture.html) - Done 
-- [Kubectl for Docker Beginners](./kubectl-for-docker.html) - Done
-- [Accessing Kubernetes API](./api.md) - Done
+
 
 ## Preparing 5-Node Kubernetes Cluster
 
@@ -22,7 +21,13 @@
 ### Docker Desktop for Mac
 
   - [Setting up Kubernetes Cluster on AWS using Kops running on Docker Desktop for Mac](./dockerdesktopformac/index.html)
-  
+
+
+## Using Kubectl 
+
+- [Kubectl for Docker Beginners](./kubectl-for-docker.html) - Done
+- [Accessing Kubernetes API](./api.md) - Done
+
 
 ## Pods101
 
