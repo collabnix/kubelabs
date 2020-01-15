@@ -4,6 +4,7 @@
 
 - [Introductory Slides](./Kubernetes_Intro_slides-1/Kubernetes_Intro_slides-1.html) - Done
 - [Deep Dive into Kubernetes Architecture](./Kubernetes_Architecture.html) - Done 
+- [Kubectl for Docker Beginners](./kubectl-for-docker.html) - Done
 
 ## Preparing 5-Node Kubernetes Cluster
 
@@ -11,8 +12,7 @@
 
   - [Preparing 5-Node Kubernetes Cluster on Play with Kubernetes Platform](./kube101.html) - Done
   - [Setting up WeaveScope For Visualization on PWK](./weave-pwk.html) - Done
-  - [Kubectl for Docker Beginners](./kubectl-for-docker.html) - Done
-
+  
 ### GKE
 
   - [Setting up GKE Cluster](./gke-setup.html) - Pending
@@ -21,6 +21,7 @@
 ### Docker Desktop for Mac
 
   - [Setting up Kubernetes Cluster on AWS using Kops running on Docker Desktop for Mac](./dockerdesktopformac/index.html)
+  
 
 ## Pods101
 
