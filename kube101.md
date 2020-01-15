@@ -93,6 +93,14 @@ kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   1h
 [node1 $
 ```
 
+### Show the capacity of all our nodes as a stream of JSON objects
+
+```
+kubectl get nodes -o json |
+      jq ".items[] | {name:.metadata.name} + .status.capacity"
+ ```
+
+
 
 
 
