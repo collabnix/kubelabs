@@ -29,139 +29,209 @@ Persistent volumes act as an abstraction layer to save the user from going into 
 
 A Persistent Volume Claim is a request to use a Persistent Volume. If we are to use the Pods and Nodes analogy, then consider Persistent Volumes as the “nodes” and Persistent Volume Claims as the “pods” that use the node resources. The resources we are talking about here are storage properties, such as storage size, latency, throughput, etc.
 
+Under this tutorial, we will see example of NFS server.
 
 
-## Creating The StatefulSet
+## Deploying NFS Server
 
-Now that we have the definition file in place, we can use kubectl to apply it as follows:
+NFS is a protocol that allows nodes to read/write data over a network. The protocol works by having a master node running the NFS daemon and stores the data. This master node makes certain directories available over the network.
+
+Clients access the masters shared via drive mounts. From the viewpoint of applications, they are writing to the local disk. Under the covers, the NFS protocol writes it to the master.
+
+In this scenario, and for demonstration and learning purposes, the role of the NFS Server is handled by a customised container. The container makes directories available via NFS and stores the data inside the container. In production, it is recommended to configure a dedicated NFS Server.
+
+Start the NFS using the command:
 
 ```
-kubectl apply -f web-stateful.yaml
+docker run -d --net=host \
+   --privileged --name nfs-server \
+   katacoda/contained-nfs-server:centos7 \
+   /exports/data-0001 /exports/data-0002
 ```
 
-Since the definition file contains a StorageClass and a StatefulSet resource, the following output is displayed:
+The NFS server exposes two directories, data-0001 and data-0002. In the next steps, this is used to store data.
+
+
+## Deploying Persistent Volume
+
+For Kubernetes to understand the available NFS shares, it requires a PersistentVolume configuration. The PersistentVolume supports different protocols for storing data, such as AWS EBS volumes, GCE storage, OpenStack Cinder, Glusterfs and NFS. The configuration provides an abstraction between storage and API allowing for a consistent experience.
+
+In the case of NFS, one PersistentVolume relates to one NFS directory. When a container has finished with the volume, the data can either be Retained for future use or the volume can be Recycled meaning all the data is deleted. The policy is defined by the persistentVolumeReclaimPolicy option.
+
+For structure is:
 
 ```
-storageclass.storage.k8s.io/www-disk created
-statefulset.apps/webapp created
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: <friendly-name>
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Recycle
+  nfs:
+    server: <server-name>
+    path: <shared-path>
 ```
 
-Our resources are available. Let’s see whether or not we have pods:
+The spec defines additional metadata about the persistent volume, including how much space is available and if it has read/write access.
+
+
+## Task
+
+Create two new PersistentVolume definitions to point at the two available NFS shares.
+
+```
+kubectl create -f nfs-0001.yaml
+```
+
+```
+kubectl create -f nfs-0002.yaml
+```
+
+View the contents of the files using cat nfs-0001.yaml nfs-0002.yaml
+
+Once created, view all PersistentVolumes in the cluster using kubectl get pv
+
+## Deploying Persistent Volume Claim
+
+Once a Persistent Volume is available, applications can claim the volume for their use. The claim is designed to stop applications accidentally writing to the same volume and causing conflicts and data corruption.
+
+The claim specifies the requirements for a volume. This includes read/write access and storage space required. An example is as follows:
+
+```
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: claim-mysql
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+  ```
+  
+## Task
+
+Create two claims for two different applications. A MySQL Pod will use one claim, the other used by an HTTP server.
+
+```
+kubectl create -f pvc-mysql.yaml
+```
+
+```
+kubectl create -f pvc-http.yaml
+```
+
+View the contents of the files using cat pvc-mysql.yaml pvc-http.yaml
+
+Once created, view all PersistentVolumesClaims in the cluster using 
+
+```
+kubectl get pvc.
+```
+
+The claim will output which Volume the claim is mapped to claim.
+
+## Using Volume
+
+When a deployment is defined, it can assign itself to a previous claim. The following snippet defines a volume mount for the directory /var/lib/mysql/data which is mapped to the storage mysql-persistent-storage. The storage called mysql-persistent-storage is mapped to the claim called claim-mysql.
+
+```
+ spec:
+      volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql/data
+  volumes:
+    - name: mysql-persistent-storage
+      persistentVolumeClaim:
+        claimName: claim-mysql
+        
+   ```
+   
+   ## Task
+   
+   Launch two new Pods with Persistent Volume Claims. Volumes are mapped to the correct directory when the Pods start allowing applications to read/write as if it was a local directory.
+
+```
+kubectl create -f pod-mysql.yaml
+```
+
+```
+kubectl create -f pod-www.yaml
+```
+
+Use the command below to view the definition of the Pods.
+
+```
+cat pod-mysql.yaml pod-www.yaml
+```
+
+You can see the status of the Pods starting using 
 
 ```
 kubectl get pods
-NAME   	READY   STATUS          	RESTARTS   AGE
-webapp-0   0/1 	ContainerCreating   0      	8s
 ```
 
-You may notice two things here: 
-(1) there is only one pod created while we asked for three, and 
-(2) the pod name contains the StatefulSet name.
+If a Persistent Volume Claim is not assigned to a Persistent Volume, then the Pod will be in Pending mode until it becomes available. In the next step, we'll read/write data to the volume.
 
-This is the expected behavior. The StatefulSet will not create all the pods at once, like a Deployment, for example. It maintains order when starting and stopping the pods. Since StatefulSets maintain the pod identity, the pod name is the StatefulSet name followed by an incremental number.
+## Read/Write Data
 
-Wait a few seconds and issue kubectl get pods again, you should see an output similar to the following:
+tore all database changes to the NFS Server while the HTTP Server will serve static from the NFS drive. When upgrading, restarting or moving containers to a different machine the data will still be accessible.
 
-```
-NAME   	READY   STATUS          	RESTARTS   AGE
-webapp-0   1/1 	Running         	0      	43s
-webapp-1   0/1 	ContainerCreating   0      	11s
-```
-
-Later on, the output becomes:
+To test the HTTP server, write a 'Hello World' index.html homepage. In this scenario, we know the HTTP directory will be based on data-0001 as the volume definition hasn't driven enough space to satisfy the MySQL size requirement.
 
 ```
-NAME   	READY   STATUS	RESTARTS   AGE
-webapp-0   1/1 	Running   0      	112m
-webapp-1   1/1 	Running   0      	111m
-webapp-2   1/1 	Running   0      	111m
+docker exec -it nfs-server bash -c "echo 'Hello World' > /exports/data-0001/index.html"
 ```
 
-All our pods are now started.
-
-## Creating a Headless Service For Our StatefulSet
-
-Right now, the pods are running. But how can a web server access another one? This is done through the Service, so we need to create one. Open a new YAML file called apache_statefulset_service.yaml and add the following to it:
-
-## Create the service by using kubectl:
+Based on the IP of the Pod, when accessing the Pod, it should return the expected response.
 
 ```
-kubectl apply -f Web_statefulset_service.yamlservice/web-access-svc created
-```
-
-## Listing The Created Components
-
-Let’s have a look at the created components:
-
- ```
- $ kubectl get statefulset
-NAME 	READY   AGE
-webapp   3/3 	21h
+ip=$(kubectl get pod www -o yaml |grep podIP | awk '{split($0,a,":"); print a[2]}'); echo $ip
 ```
 
 ```
-$ kubectl get pv
-NAME                                   	CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM              	STORAGECLASS   REASON   AGE
-pvc-077a1891-a25b-11e9-9ecf-42010a800184   1Gi    	RWO        	Delete       	Bound	default/www-webapp-2   www-disk            	21h
-pvc-e79d8843-a25a-11e9-9ecf-42010a800184   1Gi    	RWO        	Delete       	Bound	default/www-webapp-0   www-disk            	21h
-pvc-fa398e2a-a25a-11e9-9ecf-42010a800184   1Gi    	RWO        	Delete       	Bound	default/www-webapp-1   www-disk            	21h
+curl $ip
 ```
 
-We have the Persistent Volumes
+## Update Data
+
+When the data on the NFS share changes, then the Pod will read the newly updated data.
 
 ```
-$ kubectl get pvc
-NAME       	STATUS   VOLUME                                 	CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-www-webapp-0   Bound	pvc-e79d8843-a25a-11e9-9ecf-42010a800184   1Gi    	RWO        	www-disk   	21h
-www-webapp-1   Bound	pvc-fa398e2a-a25a-11e9-9ecf-42010a800184   1Gi    	RWO        	www-disk   	21h
-www-webapp-2   Bound	pvc-077a1891-a25b-11e9-9ecf-42010a800184   1Gi    	RWO        	www-disk   	21h
+docker exec -it nfs-server bash -c "echo 'Hello NFS World' > /exports/data-0001/index.html"
 ```
 
-And the Persistent Volume Claims. Let’s see how we can connect and use our pods.
-
-# Connecting One Pod To Another Through The Headless Service
-
-We need to test our setup. Let’s open a bash shell to one of the pods:
-
 ```
-kubectl exec -it webapp-0 bash
-```
-The httpd image isn’t shipped with curl by default, so we need to install it:
-
-
-```
-apt update && apt install curl
-```
-Once it is installed, we can try connecting to the Service:
-
-```
-root@webapp-0:/usr/local/apache2# curl web-svc<html><body><h1>It works!</h1></body></html>>
+curl $ip
 ```
 
-This is the default page that Apache displays. The Service is routing the request to the backend pods.
 
-The StatefulSet is all about uniquely identifying pods. So, let’s try connecting to a specific pod:
+## Recreate Pod
 
-```
-root@webapp-0:/usr/local/apache2# curl webapp-1.web-svc<html><body><h1>It works!</h1></body></html>
-```
+Because a remote NFS server stores the data, if the Pod or the Host were to go down, then the data will still be available.
 
-By prefixing the service name to the pod name, you can connect to that specific pod.
+### Task
 
-
-# Deleting The StatefulSet
-
-We start by deleting the Headless Service:
+Deleting a Pod will cause it to remove claims to any persistent volumes. New Pods can pick up and re-use the NFS share.
 
 ```
-kubectl delete -f apache_stateful_service.yamlservice "web-svc" deleted
-```
-We could equally achieve the same result by running kubectl delete service web-svc
-
-To delete the StatefulSet with the Persistent Volume and the Persistent Volume Claims, we use the definition file:
-
-```
-kubectl delete -f apache_stateful.yaml storageclass.storage.k8s.io "www-disk" deletedstatefulset.apps "webapp" deleted
+kubectl delete pod www
 ```
 
-The controller honors the ten seconds grace time and gives the pods time to clean up. In our example, Apache should not take more than a few milliseconds to shut down. But, if it were serving thousands of requests, it would take more time to terminate.
+```
+kubectl create -f pod-www2.yaml
+```
+
+```
+ip=$(kubectl get pod www2 -o yaml |grep podIP | awk '{split($0,a,":"); print a[2]}'); curl $ip
+```
+
+The applications now use a remote NFS for their data storage. Depending on requirements, this same approach works with other storage engines such as GlusterFS, AWS EBS, GCE storage or OpenStack Cinder.
+
+
