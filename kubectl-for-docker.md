@@ -1,5 +1,62 @@
 # Kubectl for Docker Beginners
 
+Kubectl is a command line interface for running commands against Kubernetes clusters. kubectl looks for a file named config in the $HOME/.kube directory. You can specify other kubeconfig files by setting the KUBECONFIG environment variable or by setting the --kubeconfig flag.
+
+## A little about Kubectl run
+
+The run command creates a deployment based on the parameters specified, such as the image or replicas. This deployment is issued to the Kubernetes master which launches the Pods and containers required. Kubectl run_ is similar to docker run but at a cluster level.
+
+The format of the command is kubectl run <name of deployment> <properties>
+    
+The following command will launch a deployment called hellowhale which will start a container based on the Docker Image ajeetraina/hellowhale
+
+```
+kubectl run hellowhale --image=ajeetraina/hellowhale --replicas=1
+```
+
+```
+[node1 kubelabs]$ kubectl logs -f pod/hellowhale-5d4775fc4d-k8rfx
+Nginx is running...
+```
+
+## View the status of the deployments
+
+```
+[node1 kubelabs]$ kubectl get deployments
+NAME         READY   UP-TO-DATE   AVAILABLE   AGE
+hellowhale   1/1     1            1           2m35s
+```
+
+
+To find out what Kubernetes created you can describe the deployment process.
+
+
+
+```
+[node1 kubelabs]$ kubectl get deployments hellowhale
+NAME         READY   UP-TO-DATE   AVAILABLE   AGE
+hellowhale   1/1     1            1           2m41s
+[node1 kubelabs]$
+```
+
+# Kubectl Expose
+
+With the deployment created, we can use kubectl to create a service which exposes the Pods on a particular port.
+
+Expose the newly deployed http deployment via kubectl expose. The command allows you to define the different parameters of the service and how to expose the deployment.
+
+Use the following command to expose the container port 80 on the host 8000 binding to the external-ip of the host.
+
+```
+kubectl expose deployment http --external-ip="172.17.0.81" --port=8000 --target-port=80
+```
+
+You will then be able to ping the host and see the result from the HTTP service.
+
+```
+curl http://172.17.0.81:8000
+```
+
 # Example: Running Nginx Service
 
 ## PWD:
