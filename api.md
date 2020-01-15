@@ -4,8 +4,7 @@
 
 - [Setup 5 Node Kubernetes Cluster](https://collabnix.github.io/kubelabs/kube101.html)
 
-When accessing the Kubernetes API for the first time, use the Kubernetes command-line tool, kubectl. To access a cluster, you need to know 
-the location of the cluster and have credentials to access it. 
+When accessing the Kubernetes API for the first time, use the Kubernetes command-line tool, kubectl. To access a cluster, you need to know the location of the cluster and have credentials to access it. 
 
 ## Checking the location & credentials
 
@@ -28,7 +27,7 @@ preferences: {}
 users:
 - name: kubernetes-admin
   user:
-    client-certifica
+    client-certificate
 ```
  
  ## Directly accessing the REST API
