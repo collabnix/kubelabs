@@ -110,6 +110,23 @@ By default, kubectl uses the default namespace. We can switch to a different nam
 kubectl -n kube-system get pods
 ```
 
+```
+[node1 kubelabs]$ kubectl get pods -n kube-system
+NAME                            READY   STATUS    RESTARTS   AGE
+coredns-6dcc67dcbc-4sw6m        1/1     Running   0          2m15s
+coredns-6dcc67dcbc-x4qnk        1/1     Running   0          2m15s
+etcd-node1                      1/1     Running   0          108s
+kube-apiserver-node1            1/1     Running   0          84s
+kube-controller-manager-node1   1/1     Running   0          104s
+kube-proxy-9gljr                1/1     Running   0          2m5s
+kube-proxy-9zktt                1/1     Running   0          2m15s
+kube-proxy-qvqrf                1/1     Running   0          107s
+kube-scheduler-node1            1/1     Running   0          105s
+weave-net-78bxz                 2/2     Running   0          2m15s
+weave-net-g2cf6                 2/2     Running   0          2m5s
+weave-net-hxqd9                 0/2     Evicted   0          19s
+```
+
 ## What are all these pods?
 
 
