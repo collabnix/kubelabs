@@ -81,11 +81,11 @@
  - [Introductory Slides]() - Pending
  - [The difference between a Statefulset and a Deployment](./StatefulSets101/index.html#what-is-statefulset-and-how-is-it-different-from-deployment)
  - [Deploying a Stateful Application Using Kubernetes Statefulset?](./StatefulSets101/index.html#deploying-a-stateful-application-using-kubernetes-statefulset)
- - [Creating the StatefulSet](./StatefulSets101/index.html#creating-the-statefulset)
- - [Creating a Headless Service for our StatefulSet](./StatefulSets101/index.html#creating-a-headless-service-for-our-statefulset)
- - [Listing the created components](./StatefulSets101/index.html#listing-the-created-components)
- - [Connecting one pod to another through the Headless Service](./StatefulSets101/index.html#connecting-one-pod-to-another-through-the-headless-service)
- - [Deleting the StatefulSet](./StatefulSets101/index.html#deleting-the-statefulset)
+ - [Deploying NFS Server](./StatefulSets101#deploying-nfs-server)
+ - [Deploying PV](./StatefulSets101#deploying-persistent-volume)
+ - [Deploying PVC](./StatefulSets101#deploying-persistent-volume-claim)
+ - [Using Volume](./StatefulSets101#using-volume)
+ - [Recreate Pod](./StatefulSets101#recreate-pod)
 
 # Contributors
 
