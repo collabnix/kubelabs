@@ -5,6 +5,7 @@
 - [Introductory Slides](./Kubernetes_Intro_slides-1/Kubernetes_Intro_slides-1.html) - Done
 - [Deep Dive into Kubernetes Architecture](./Kubernetes_Architecture.html) - Done 
 - [Kubectl for Docker Beginners](./kubectl-for-docker.html) - Done
+- [Accessing Kubernetes API]() - Done
 
 ## Preparing 5-Node Kubernetes Cluster
 
