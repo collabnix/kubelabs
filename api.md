@@ -29,7 +29,7 @@ users:
 - name: kubernetes-admin
   user:
     client-certifica
- ```
+```
  
  ## Directly accessing the REST API
  
