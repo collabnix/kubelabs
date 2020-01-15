@@ -19,6 +19,12 @@ kubectl run hellowhale --image=ajeetraina/hellowhale --replicas=1
 Nginx is running...
 ```
 
+We should see the following things:
+
+- deploy
+- rs
+- pod
+
 ## View the status of the deployments
 
 ```
