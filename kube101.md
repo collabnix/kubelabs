@@ -184,3 +184,4 @@ weave-net-hxqd9                 0/2     Evicted   0          19s
 - the READY column indicates the number of containers in each pod
 - the pods with a name ending with -node1 are the master components (they have been specifically “pinned” to the master node)
 
+[Next >>](https://collabnix.github.io/kubelabs/weave-pwk.html)
