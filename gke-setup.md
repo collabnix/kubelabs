@@ -6,13 +6,13 @@ Refer [this](https://collabnix.com/bootstrapping-kubernetes-cluster-using-docker
 
 - Install/Upgrade Docker for Mac 18.03 CE Edition
 
-![My Image](https://github.com/collabnix/kubelabs/blob/master/images/1.png)
+![My Image](https://raw.githubusercontent.com/collabnix/kubelabs/master/images/1.png)
 
 - Install [google-cloud-sdk](https://cloud.google.com/sdk/docs/quickstart-macos)
 - Enable Google Cloud Engine API
 
 
-![My Image](https://github.com/collabnix/kubelabs/blob/master/images/2.png)
+![My Image](https://raw.githubusercontent.com/collabnix/kubelabs/master/images/2.png)
 
 
 
@@ -63,7 +63,7 @@ gcloud container clusters create k8s-lab1 --disk-size 10 --zone asia-east1-a --m
 
 You should be able to view GKE cluster under Preference UI by now.
 
-![My Image](https://github.com/collabnix/kubelabs/blob/master/images/3.png)
+![My Image](https://raw.githubusercontent.com/collabnix/kubelabs/master/images/3.png)
 
 
 ## Listing the Nodes
@@ -120,16 +120,16 @@ It may take several minutes to see the value of EXTERNAL_IP. If you don’t see 
 
 You can then visit http://EXTERNAL_IP/ to see the server being served through network load balancing.
 
-![My Image](https://github.com/collabnix/kubelabs/blob/master/images/8.png)
+![My Image](https://raw.githubusercontent.com/collabnix/kubelabs/master/images/8.png)
 
 GKE provides amazing platform to view workloads & Load-balancer as shown below:
 
-![My Image](https://github.com/collabnix/kubelabs/blob/master/images/9.png)
+![My Image](https://raw.githubusercontent.com/collabnix/kubelabs/master/images/9.png)
 
 
 GKE also provides UI for displaying Loadbalancer:
 
-![My Image](https://github.com/collabnix/kubelabs/blob/master/images/11.png)
+![My Image](https://raw.githubusercontent.com/collabnix/kubelabs/master/images/11.png)
 
 ## Cleaning Up
 
