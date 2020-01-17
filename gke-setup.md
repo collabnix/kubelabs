@@ -5,8 +5,17 @@ Refer [this](https://collabnix.com/bootstrapping-kubernetes-cluster-using-docker
 ## Pre-requisite
 
 - Install/Upgrade Docker for Mac 18.03 CE Edition
+
+![My Image](https://github.com/collabnix/kubelabs/blob/master/images/1.png)
+
 - Install [google-cloud-sdk](https://cloud.google.com/sdk/docs/quickstart-macos)
 - Enable Google Cloud Engine API
+
+
+![My Image](https://github.com/collabnix/kubelabs/blob/master/images/2.png)
+
+
+
 - Authenticate Your Google Cloud using gcloud auth
 
 ## Step-1
@@ -53,6 +62,9 @@ gcloud container clusters create k8s-lab1 --disk-size 10 --zone asia-east1-a --m
 ## Viewing it on Docker for Mac UI
 
 You should be able to view GKE cluster under Preference UI by now.
+
+![My Image](https://github.com/collabnix/kubelabs/blob/master/images/3.png)
+
 
 ## Listing the Nodes
 
