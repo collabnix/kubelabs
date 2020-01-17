@@ -24,3 +24,8 @@ The scheduler is a kind of controller. There are lots of different controllers a
 
 
 ## How Kubernetes Selects The Right node?
+
+
+
+
+[ Next >>](https://collabnix.github.io/kubelabs/Scheduler101/node_affinity.html)
