@@ -95,3 +95,27 @@ $ kubectl expose deployment nginx --port=80 --target-port=80 \
 
 service "nginx" exposed
 ```
+
+###  Find the network load balancer address:
+
+```
+kubectl get service nginx
+NAME      TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
+nginx     LoadBalancer   10.15.247.8   <pending>     80:30253/TCP   12s
+```
+
+It may take several minutes to see the value of EXTERNAL_IP. If you don’t see it the first time with the above command, retry every minute or so until the value of EXTERNAL_IP is displayed.
+
+You can then visit http://EXTERNAL_IP/ to see the server being served through network load balancing.
+
+
+
+GKE provides amazing platform to view workloads & Load-balancer as shown below:
+
+
+
+
+GKE also provides UI for displaying Loadbalancer:
+
+
+
