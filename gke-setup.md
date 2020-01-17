@@ -1,4 +1,4 @@
-# How to setup GKE Cluster
+# How to setup GKE Cluster directly using Docker Desktop for Mac
 
 Refer [this](https://collabnix.com/bootstrapping-kubernetes-cluster-using-docker-for-mac-18-03-0-ce-edition/) link
 
