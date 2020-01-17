@@ -163,3 +163,5 @@ Finally you can clean up the resources you created in your cluster:
 ```
 kubectl delete -f pod-with-node-affinity.yaml
 ```
+
+[ Next>>](https://collabnix.github.io/kubelabs/Scheduler101/Anti-Node-Affinity.html)
