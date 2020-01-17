@@ -42,3 +42,5 @@ Access Weavescope using NodePort(31741 in this case).
 
 ![My Image](https://raw.githubusercontent.com/collabnix/dockerlabs/master/kubernetes/workshop/Weave-UI.png)
 
+[Next >>](https://collabnix.github.io/kubelabs/gke-setup.html)
+
