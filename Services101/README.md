@@ -347,3 +347,5 @@ spec:
 ```
 
 One of the main differences between the LoadBalancer and the NodePort service types is that in the latter you get to choose your own load balancing layer. You are not bound to the cloud provider’s implementation
+
+[ Next >>](https://collabnix.github.io/kubelabs/StatefulSets101/index.html#what-is-statefulset-and-how-is-it-different-from-deployment)
