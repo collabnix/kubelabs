@@ -131,3 +131,8 @@ GKE also provides UI for displaying Loadbalancer:
 
 ![My Image](https://github.com/collabnix/kubelabs/blob/master/images/11.png)
 
+# # Cleaning Up
+
+```
+gcloud container clusters delete k8s-lab1 --zone asia-east1-a
+```
