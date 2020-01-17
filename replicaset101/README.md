@@ -232,3 +232,4 @@ If you run kubectl get rs now you should see that there are no ReplicaSets there
 
 The only way to get those pods managed by a ReplicaSet again is to create this ReplicaSet with the same selector and pod template as the previous one. If you need a different pod template, you should consider using a Deployment instead, which will handle replacing pods in a controlled way.
 
+[Next >>](https://collabnix.github.io/kubelabs/Deployment101/index.html)
