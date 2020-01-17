@@ -120,14 +120,14 @@ It may take several minutes to see the value of EXTERNAL_IP. If you don’t see 
 
 You can then visit http://EXTERNAL_IP/ to see the server being served through network load balancing.
 
-
+![My Image](https://github.com/collabnix/kubelabs/blob/master/images/9.png)
 
 GKE provides amazing platform to view workloads & Load-balancer as shown below:
 
-
+![My Image](https://github.com/collabnix/kubelabs/blob/master/images/10.png)
 
 
 GKE also provides UI for displaying Loadbalancer:
 
-
+![My Image](https://github.com/collabnix/kubelabs/blob/master/images/11.png)
 
