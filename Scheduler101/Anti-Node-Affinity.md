@@ -90,3 +90,4 @@ Finally you can clean up the resources you created in your cluster:
 ```
 kubectl delete -f pod-anti-node-affinity.yaml
 ```
+[ Next >>](https://collabnix.github.io/kubelabs/Scheduler101/Nodes_taints_and_tolerations.html)
