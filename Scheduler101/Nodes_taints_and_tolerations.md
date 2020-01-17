@@ -174,3 +174,6 @@ kubectl delete -f pod-tolerations-node.yaml
 
 - An important thing to notice, though, is that tolerations may enable a tainted node to accept a pod but it does not guarantee that this pod runs on that specific node.
 - In other words, the tainted node  will be considered as one of the candidates for running our pod. However, if another node has a higher priority score, it will be chosen instead. For situations like this, you need to combine the toleration with nodeSelector or node affinity parameters.
+
+
+[ Next >>](https://collabnix.github.io/kubelabs/Services101/index.html#deploying--a-kubernetes-service)
