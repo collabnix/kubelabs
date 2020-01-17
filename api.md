@@ -93,3 +93,4 @@ TOKEN=$(kubectl get secrets -o jsonpath="{.items[?(@.metadata.annotations['kuber
 curl -X GET $APISERVER/api --header "Authorization: Bearer $TOKEN" --insecure
 ```
 
+[ Next >>](https://collabnix.github.io/kubelabs/pods101/deploy-your-first-nginx-pod.html)
