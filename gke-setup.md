@@ -124,7 +124,7 @@ You can then visit http://EXTERNAL_IP/ to see the server being served through ne
 
 GKE provides amazing platform to view workloads & Load-balancer as shown below:
 
-![My Image](https://github.com/collabnix/kubelabs/blob/master/images/10.png)
+![My Image](https://github.com/collabnix/kubelabs/blob/master/images/9.png)
 
 
 GKE also provides UI for displaying Loadbalancer:
