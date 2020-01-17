@@ -36,3 +36,5 @@ Now get ready to access via  http://localhost:4040.
 
 ![My Image](https://raw.githubusercontent.com/collabnix/dockerlabs/master/kubernetes/workshop/weave.jpg)
 
+[Next >>](https://collabnix.github.io/kubelabs/dockerdesktopformac/index.html)
+
