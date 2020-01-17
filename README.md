@@ -85,7 +85,7 @@
  
 ## StatefulSets101
  
- - [Introductory Slides]
+ - [Introductory Slides](Pending)
  - [The difference between a Statefulset and a Deployment](./StatefulSets101/index.html#what-is-statefulset-and-how-is-it-different-from-deployment)
  - [Deploying a Stateful Application Using Kubernetes Statefulset?](./StatefulSets101/index.html#deploying-a-stateful-application-using-kubernetes-statefulset)
  - [Deploying NFS Server](./StatefulSets101#deploying-nfs-server)
