@@ -96,9 +96,19 @@
  
  
 ## DaemonSet101
-
+ 
+ - [Introductory Slides](Pending)
+ - [Why DaemonSets in Kubernetes?]
+ - [Creating your first DeamonSet Deployment]
+ - [Restrict DaemonSets To Run On Specific Nodes]
+ - [How To Reach a DaemonSet Pod]
 
 ## Jobs101
+- [Introductory Slides](Pending)
+- [Creating Your First Kubernetes Job]
+- [Multiple Parallel Jobs (Work Queue)]
+- [Kubernetes Job Failure and Concurrency Considerations]
+
 
 ## Ingres101
 
