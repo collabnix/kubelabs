@@ -59,7 +59,7 @@
 
 ## Scheduler101
 
-- [Introductory Slides](Pending)
+- [Introductory Slides](#Deployment101)
 - [How Kubernetes Selects the Right node?](./Scheduler101/README.md)
 - [Node Affinity](./Scheduler101/node_affinity.md)
 - [Anti-Node Affinity](./Scheduler101/Anti-Node-Affinity.md)
@@ -77,7 +77,7 @@
 
 ## StatefulSets101
 
-- [Introductory Slides](Pending)
+- [Introductory Slides]
 - [The difference between a Statefulset and a Deployment](./StatefulSets101/README.md#what-is-statefulset-and-how-is-it-different-from-deployment)
 - [Deploying a Stateful Application Using Kubernetes Statefulset?](./StatefulSets101/README.md#deploying-a-stateful-application-using-kubernetes-statefulset)
 - [Deploying NFS Server](./StatefulSets101/README.md#deploying-nfs-server)
@@ -88,18 +88,18 @@
 
 ## DaemonSet101
 
-- [Introductory Slides](Pending)
-- [Why DaemonSets in Kubernetes?](Pending)
-- [Creating your first DeamonSet Deployment](Pending)
-- [Restrict DaemonSets To Run On Specific Nodes](Pending)
-- [How To Reach a DaemonSet Pod](Pending)
+- [Introductory Slides]
+- [Why DaemonSets in Kubernetes?]
+- [Creating your first DeamonSet Deployment]
+- [Restrict DaemonSets To Run On Specific Nodes]
+- [How To Reach a DaemonSet Pod]
 
 ## Jobs101
 
-- [Introductory Slides](Pending)
-- [Creating Your First Kubernetes Job](Pending)
-- [Multiple Parallel Jobs (Work Queue)](Pending)
-- [Kubernetes Job Failure and Concurrency Considerations](Pending)
+- [Introductory Slides]
+- [Creating Your First Kubernetes Job]
+- [Multiple Parallel Jobs (Work Queue)]
+- [Kubernetes Job Failure and Concurrency Considerations]
 
 ## Ingres101
 
