@@ -2,7 +2,7 @@
 
 ## Pre-requisites
 
-- [Introductory Slides](./Kubernetes_Intro_slides-1/Kubernetes_Intro_slides-1.html)
+- [Introductory Slides](https://collabnix.github.io/kubelabs/Kubernetes_Intro_slides-1/Kubernetes_Intro_slides-1.html)
 - [Deep Dive into Kubernetes Architecture](./Kubernetes_Architecture.md)
 
 ## Preparing 5-Node Kubernetes Cluster
