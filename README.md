@@ -59,7 +59,7 @@
 
 ## Scheduler101
 
-- [Introductory Slides](#Deployment101)
+- [Introductory Slides]
 - [How Kubernetes Selects the Right node?](./Scheduler101/README.md)
 - [Node Affinity](./Scheduler101/node_affinity.md)
 - [Anti-Node Affinity](./Scheduler101/Anti-Node-Affinity.md)
