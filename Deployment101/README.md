@@ -12,7 +12,7 @@ Let’s dig deeper into Deployment Controllers and patterns.
 
 The following Deployment definition deploys four pods with nginx as their hosted application:
 
-```shell
+```console
 git clone https://github.com/collabnix/dockerlabs
 cd dockerlabs/kubernetes/workshop/Deployment101
 kubectl create -f nginx-dep.yaml
@@ -90,7 +90,7 @@ nginx-deployment-6dd86d77d-xnrqp   1/1     Running   0          3m44s
 Now let’s scale the Deployment to 4 replicas. We are going to use the kubectl scale command,
 followed by the deployment type, name and desired number of instances:
 
-```
+```console
 Biradars-MacBook-Air-4:~ sangam$ kubectl scale deployments/nginx-deployment --replicas=4
 deployment.extensions/nginx-deployment scaled
 ```
@@ -100,7 +100,7 @@ let’s check if the number of Pods changed:
 
 Now There should be 4 pods running in the cluster
 
-```
+```console
 $ kubectl get deployments
 NAME               READY   UP-TO-DATE   AVAILABLE   AGE
 nginx-deployment   4/4     4            4           4m
