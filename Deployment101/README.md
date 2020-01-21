@@ -1,21 +1,18 @@
 # Deployment 101
 
-
-We looked at ReplicaSets earlier. However, ReplicaSet have one major drawback: 
-once you select the pods that are managed by a ReplicaSet, you cannot change their pod templates. 
+We looked at ReplicaSets earlier. However, ReplicaSet have one major drawback:
+once you select the pods that are managed by a ReplicaSet, you cannot change their pod templates.
 
 For example, if you are using a ReplicaSet to deploy four pods with NodeJS running and you want to change the NodeJS image to a newer version, you need to delete the ReplicaSet and recreate it. Restarting the pods causes downtime till the images are available and the pods are running again.
 
-A Deployment resource uses a ReplicaSet to manage the pods. However, it handles updating them in a controlled way. 
+A Deployment resource uses a ReplicaSet to manage the pods. However, it handles updating them in a controlled way.
 Let’s dig deeper into Deployment Controllers and patterns.
-
-
 
 ## Creating Your First Deployment
 
 The following Deployment definition deploys four pods with nginx as their hosted application:
 
-```
+```shell
 git clone https://github.com/collabnix/dockerlabs
 cd dockerlabs/kubernetes/workshop/Deployment101
 kubectl create -f nginx-dep.yaml
@@ -24,17 +21,16 @@ deployment.apps/nginx-deployment created
 
 ## Checking the list of application deployment
 
-
-
 To list your deployments use the get deployments command:
-```
+
+```console
 $ kubectl get deployments
 NAME               READY   UP-TO-DATE   AVAILABLE   AGE
 nginx-deployment   2/2     2            2           63s
 
 ```
 
-```
+```console
 [node1 Deployment101]$ kubectl describe deploy
 Name:                   nginx-deployment
 Namespace:              default
@@ -67,7 +63,7 @@ Events:
   Type    Reason             Age   From                   Message
   ----    ------             ----  ----                   -------
   Normal  ScalingReplicaSet  90s   deployment-controller  Scaled up replica set nginx-deployment-6dd86d77d to 2
-  ```
+```
 
 We should have 1 Pod. If not, run the command again. This shows:
 
@@ -75,14 +71,14 @@ We should have 1 Pod. If not, run the command again. This shows:
     The CURRENT state show how many replicas are running now
     The UP-TO-DATE is the number of replicas that were updated to match the desired (configured) state
     The AVAILABLE state shows how many replicas are actually AVAILABLE to the users
-    
-```
+
+```console
 [node1 Deployment101]$ kubectl get deployments
 NAME               READY   UP-TO-DATE   AVAILABLE   AGE
 nginx-deployment   2/2     2            2           2m57s
 ```
 
-```
+```console
 [node1 Deployment101]$ kubectl get po
 NAME                               READY   STATUS    RESTARTS   AGE
 nginx-deployment-6dd86d77d-84fwp   1/1     Running   0          3m44s
@@ -93,16 +89,17 @@ nginx-deployment-6dd86d77d-xnrqp   1/1     Running   0          3m44s
 
 Now let’s scale the Deployment to 4 replicas. We are going to use the kubectl scale command,
 followed by the deployment type, name and desired number of instances:
+
 ```
 Biradars-MacBook-Air-4:~ sangam$ kubectl scale deployments/nginx-deployment --replicas=4
 deployment.extensions/nginx-deployment scaled
 ```
 
-The change was applied, and we have 4 instances of the application available. Next, 
+The change was applied, and we have 4 instances of the application available. Next,
 let’s check if the number of Pods changed:
 
-
 Now There should be 4 pods running in the cluster
+
 ```
 $ kubectl get deployments
 NAME               READY   UP-TO-DATE   AVAILABLE   AGE
@@ -112,7 +109,7 @@ nginx-deployment   4/4     4            4           4m
 
 There are 4 Pods now, with different IP addresses. The change was registered in the Deployment events log. To check that, use the describe command:
 
-```
+```console
 $ kubectl describe deployments/nginx-deployment
 Name:                   nginx-deployment
 Namespace:              default
@@ -146,39 +143,33 @@ Events:
   ----    ------             ----   ----                   -------
   Normal  ScalingReplicaSet  6m12s  deployment-controller  Scaled up replica set nginx-deployment-6dd86d77d to 2
   Normal  ScalingReplicaSet  3m6s   deployment-controller  Scaled up replica set nginx-deployment-6dd86d77d to 4
-Biradars-MacBook-Air-4:~ sangam$ 
+Biradars-MacBook-Air-4:~ sangam$
 ```
 
-
-
-```
+```console
 $ kubectl get pods -o wide
 NAME                               READY   STATUS    RESTARTS   AGE     IP           NODE             NOMINATED NODE   READINESS GATES
 nginx-deployment-6dd86d77d-b4v7k   1/1     Running   0          4m32s   10.1.0.237   docker-desktop   <none>           <none>
 nginx-deployment-6dd86d77d-bnc5m   1/1     Running   0          4m32s   10.1.0.236   docker-desktop   <none>           <none>
 nginx-deployment-6dd86d77d-bs6jr   1/1     Running   0          86s     10.1.0.239   docker-desktop   <none>           <none>
 nginx-deployment-6dd86d77d-wbdzv   1/1     Running   0          86s     10.1.0.238   docker-desktop   <none>           <none>
-Biradars-MacBook-Air-4:~ sangam$ 
+Biradars-MacBook-Air-4:~ sangam$
 ```
-
 
 You can also view in the output of this command that there are 4 replicas now.
 
-
-# Scaling the service to 2 Replicas 
+## Scaling the service to 2 Replicas
 
 To scale down the Service to 2 replicas, run again the scale command:
 
-```
+```console
 $ kubectl scale deployments/nginx-deployment --replicas=2
 deployment.extensions/nginx-deployment scaled
 $ kubectl get deployments
 NAME               READY   UP-TO-DATE   AVAILABLE   AGE
 nginx-deployment   2/2     2            2           7m23s
-Biradars-MacBook-Air-4:~ sangam$ 
+Biradars-MacBook-Air-4:~ sangam$
 ```
-
-
 
 ## Step #3. Perform rolling updates to application deployment
 
@@ -189,7 +180,7 @@ Let’s say that you have finished testing the nginx 1.7.9 , and you are ready t
 To update the image of the application to new version, use the set image command,
 followed by the deployment name and the new image version:
 
-```
+```console
 $ kubectl get deployments
 NAME               READY   UP-TO-DATE   AVAILABLE   AGE
 nginx-deployment   2/2     2            2           7m23s
@@ -222,10 +213,10 @@ Containers:
       /var/run/secrets/kubernetes.io/serviceaccount from default-token-ds5tg (ro)
 Conditions:
   Type              Status
-  Initialized       True 
-  Ready             True 
-  ContainersReady   True 
-  PodScheduled      True 
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
 Volumes:
   default-token-ds5tg:
     Type:        Secret (a volume populated by a Secret)
@@ -273,10 +264,10 @@ Containers:
       /var/run/secrets/kubernetes.io/serviceaccount from default-token-ds5tg (ro)
 Conditions:
   Type              Status
-  Initialized       True 
-  Ready             True 
-  ContainersReady   True 
-  PodScheduled      True 
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
 Volumes:
   default-token-ds5tg:
     Type:        Secret (a volume populated by a Secret)
@@ -294,18 +285,18 @@ Events:
   Normal  Pulled     9m22s  kubelet, docker-desktop  Successfully pulled image "nginx:1.7.9"
   Normal  Created    9m22s  kubelet, docker-desktop  Created container nginx
   Normal  Started    9m22s  kubelet, docker-desktop  Started container nginx
-  ```
+```
 
 The command notified the Deployment to use a different image for your app and initiated a rolling update. Check the status of the new Pods, and view the old one terminating with the get pods command:
 
-```
+```console
 Biradars-MacBook-Air-4:~ sangam$ kubectl set image  deployments/nginx-deployment nginx=nginx:1.9.1
 deployment.extensions/nginx-deployment image updated
 ```
 
-# Checking description of pod again 
+## Checking description of pod again
 
-```
+```console
 $ kubectl describe pods
 Name:               nginx-deployment-6dd86d77d-b4v7k
 Namespace:          default
@@ -335,10 +326,10 @@ Containers:
       /var/run/secrets/kubernetes.io/serviceaccount from default-token-ds5tg (ro)
 Conditions:
   Type              Status
-  Initialized       True 
-  Ready             True 
-  ContainersReady   True 
-  PodScheduled      True 
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
 Volumes:
   default-token-ds5tg:
     Type:        Secret (a volume populated by a Secret)
@@ -386,10 +377,10 @@ Containers:
       /var/run/secrets/kubernetes.io/serviceaccount from default-token-ds5tg (ro)
 Conditions:
   Type              Status
-  Initialized       True 
-  Ready             True 
-  ContainersReady   True 
-  PodScheduled      True 
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
 Volumes:
   default-token-ds5tg:
     Type:        Secret (a volume populated by a Secret)
@@ -419,13 +410,13 @@ Labels:             app=nginx
                     pod-template-hash=784b7cc96d
 Annotations:        <none>
 Status:             Pending
-IP:                 
+IP:
 Controlled By:      ReplicaSet/nginx-deployment-784b7cc96d
 Containers:
   nginx:
-    Container ID:   
+    Container ID:
     Image:          nginx:1.9.1
-    Image ID:       
+    Image ID:
     Port:           80/TCP
     Host Port:      0/TCP
     State:          Waiting
@@ -437,10 +428,10 @@ Containers:
       /var/run/secrets/kubernetes.io/serviceaccount from default-token-ds5tg (ro)
 Conditions:
   Type              Status
-  Initialized       True 
-  Ready             False 
-  ContainersReady   False 
-  PodScheduled      True 
+  Initialized       True
+  Ready             False
+  ContainersReady   False
+  PodScheduled      True
 Volumes:
   default-token-ds5tg:
     Type:        Secret (a volume populated by a Secret)
@@ -455,19 +446,18 @@ Events:
   ----    ------     ----  ----                     -------
   Normal  Scheduled  36s   default-scheduler        Successfully assigned default/nginx-deployment-784b7cc96d-kxc68 to docker-desktop
   Normal  Pulling    35s   kubelet, docker-desktop  Pulling image "nginx:1.9.1"
-Biradars-MacBook-Air-4:~ sangam$ 
+Biradars-MacBook-Air-4:~ sangam$
 ```
 
 ## Step #4. Rollback updates to application deployment
 
-
 The rollout command reverted the deployment to the previous known state. Updates are versioned and you can revert to any previously know state of a Deployment. List again the Pods:
 
-```
+```console
 $ kubectl rollout undo deployments/nginx-deployment
 deployment.extensions/nginx-deployment rolled back
 
-$ kubectl rollout status deployments/nginx-deployment 
+$ kubectl rollout status deployments/nginx-deployment
 deployment "nginx-deployment" successfully rolled out
 
 ```
@@ -479,30 +469,29 @@ The output shows the update progress until all the pods use the new container im
 The algorithm that Kubernetes Deployments use when deciding how to roll updates is to keep at least 25% of the pods running. Accordingly, it doesn’t kill old pods unless a sufficient number of new ones are up. In the same sense, it does not create new pods until enough pods are no longer running. Through this algorithm, the application is always available during updates.
 
 You can use the following command to determine the update strategy that the Deployment is using:
-```
+
+```console
 Biradars-MacBook-Air-4:~ sangam$ kubectl describe deployments | grep Strategy
 StrategyType:           RollingUpdate
 RollingUpdateStrategy:  25% max unavailable, 25% max surge
-Biradars-MacBook-Air-4:~ sangam$ 
+Biradars-MacBook-Air-4:~ sangam$
 ```
-
 
 ## Step #5. Cleanup
 
 Finally you can clean up the resources you created in your cluster:
-```
+
+```console
 kubectl delete service nginx-deployment
 kubectl delete deployment nginx-deployment
 ```
 
-# Contributors
+## Contributors
 
 [Sangam Biradar](https://twitter.com/BiradarSangam)
 
-# Reviewers
+## Reviewers
 
 [Ajeet Singh Raina](https://twitter.com/ajeetsraina)
 
-
 [Next >>](https://collabnix.github.io/kubelabs/Scheduler101/index.html)
-
