@@ -176,8 +176,22 @@
 - Allow All Egress Traffic Exclusively
 
 ## Autoscaling101
+- [Introductory Slides](Pending)
+- Kubernetes Autoscaling Building Blocks
+   - Horizontal Pod Autoscaler (HPA)
+   - Vertical Pods Autoscaler
+   - Cluster Autoscaler
+- How Kubernetes Autoscalers Interact Together
 
 ## Monitoring101
+- [Introductory Slides](Pending)
+- Core Monitoring Pipeline
+- Services Monitoring Pipeline
+- What should you consider in Kubernetes Services Pipeline?
+- What about Metrics Visualization?
+- Changes To Watch For
+  - Heapster is Going Away
+  - Metrics Server Will Get More Cool Features
 
 # Contributors
 
