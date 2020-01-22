@@ -98,16 +98,16 @@
 ## DaemonSet101
  
  - [Introductory Slides](Pending)
- - [Why DaemonSets in Kubernetes?]
- - [Creating your first DeamonSet Deployment]
- - [Restrict DaemonSets To Run On Specific Nodes]
- - [How To Reach a DaemonSet Pod]
+ - Why DaemonSets in Kubernetes?
+ - Creating your first DeamonSet Deployment
+ - Restrict DaemonSets To Run On Specific Nodes
+ - How To Reach a DaemonSet Pod
 
 ## Jobs101
 - [Introductory Slides](Pending)
-- [Creating Your First Kubernetes Job]
-- [Multiple Parallel Jobs (Work Queue)]
-- [Kubernetes Job Failure and Concurrency Considerations]
+- Creating Your First Kubernetes Job
+- Multiple Parallel Jobs (Work Queue)
+- Kubernetes Job Failure and Concurrency Considerations
 
 
 ## Ingres101
@@ -119,8 +119,24 @@
 ## Service Catalog101
 
 ## Cluster Networking101
+- [Introductory Slides](Pending)
+- What Is Cluster Networking In Kubernetes Sense?
+- Kubernetes Networking Rules
+- What Is An Overlay Network?
+- What is a Container Network Interface (CNI)?
+   - Cilium
+   - Weave Net from WeaveWorks
+   - Flannel
 
 ## Network Policies101
+- [Introductory Slides](Pending)
+- What is a Kubernetes Network Policy?
+- Creating Your First NetworkPolicy Definition
+- How can we fine-tune Network Policy using selectors?
+- Deny Ingress Traffic That Has No Rules
+- Deny Egress Traffic That Has No Rules
+- Allow All Ingress Traffic Exclusively
+- Allow All Egress Traffic Exclusively
 
 ## Autoscaling101
 
