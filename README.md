@@ -111,6 +111,12 @@
 
 
 ## Ingres101
+- [Introductory Slides](Pending)
+- What is Kubernetes ingress?
+   - NodePort
+   - Load Balancer
+   - Ingress Controllers and Ingress Resources
+  
 
 ## Secrets101
 
