@@ -129,8 +129,31 @@
  
 
 ## RBAC101
+- [Introductory Slides](Pending)
+- Role-Based Access Control (RBAC) Overview
+- Creating a Kubernetes User Account Using X509 Client Certificate
+- Note For Local And Self-Hosted Clusters Users
+- Authorization Using Kubernetes Roles
+- Cluster-Wide Authorization Using ClusterRoles
 
 ## Service Catalog101
+- [Introductory Slides](Pending)
+- What is Kubernetes Service Catalog?
+- The Kubernetes Service 
+     - Catalog Resources
+     - Catalog components
+- Creating a sample Service Catalog
+- Installing Service Catalog Helm Repo
+  - Installing Service Catalog Helm Chart
+  - Installing Service Catalog Helm Chart
+  - Installing minibroker
+- Viewing the classes and plans for the Service Broker
+- Using the Service Broker services
+  - Using the Service Broker services
+  - Creating the ServiceBinding
+  - Using the Service Catalog Service
+- Cleaning up  
+  
 
 ## Cluster Networking101
 - [Introductory Slides](Pending)
