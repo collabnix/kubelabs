@@ -119,6 +119,14 @@
   
 
 ## Secrets101
+ - [Introductory Slides](Pending)
+ - What is a Service in Kubernetes?
+ - Specifying Pods in a Service
+ - Using Services for External Workloads
+ - Service Types
+ - Service Discovery
+ - Multi-Cluster Services with Cluster Federation
+ 
 
 ## RBAC101
 
