@@ -98,7 +98,7 @@
 ## DaemonSet101
  
  - [Introductory Slides](Pending)
- - Why DaemonSets in Kubernetes?
+ - [Why DaemonSets in Kubernetes?](./DaemonSet101/README.md)
  - Creating your first DeamonSet Deployment
  - Restrict DaemonSets To Run On Specific Nodes
  - How To Reach a DaemonSet Pod
