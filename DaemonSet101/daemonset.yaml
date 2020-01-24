@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: ds-nginx
+  labels:
+    name: ds-nginx
+spec:
+  template:
+    metadata:
+      labels:
+        name: ds-nginx
+    spec:
+      containers:
+      - name: ds-nginx
+        image: nginx:1.9.3
+        resources:
+          requests:
+            cpu: "0.1"
+            memory: "100Mi"
+          limits:
+            cpu: "0.1"
+            memory: "100Mi"
