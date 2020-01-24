@@ -22,3 +22,25 @@
 - As your use case gets more complex, you can deploy multiple DaemonSets for one kind of daemon, using a variety of flags or memory and CPU requests for various hardware types.
 
 ## Creating your first DeamonSet Deployment
+
+- Create a daemonset using following command
+
+``` $ kubectl create -f daemonset.yml --record ```
+
+The --record flag will track changes made through each revision.
+
+- Get the basic details about daemonsets:
+
+```$ kubectl get daemonsets/prometheus-daemonset```
+
+- More details about the daemonset:
+
+kubectl describe daemonset/prometheus-daemonset
+
+Get pods in daemonset:
+
+``` $ kubectl get pods -lname=prometheus-exporter```
+
+Delete a daemonset:
+
+``` $ kubectl delete -f daemonset.yml```
