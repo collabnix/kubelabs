@@ -4,7 +4,7 @@
 
 - [Setup 5 Node Kubernetes Cluster](https://collabnix.github.io/kubelabs/kube101.html)
 
-When accessing the Kubernetes API for the first time, use the Kubernetes command-line tool, kubectl. To access a cluster, you need to know the location of the cluster and have credentials to access it. 
+When accessing the Kubernetes API for the first time, use the Kubernetes command-line tool, `kubectl`. To access a cluster, you need to know the location of the cluster and have credentials to access it. 
 
 ## Checking the location & credentials
 
@@ -31,26 +31,26 @@ users:
 ```
  
  
- ## Directly accessing the REST API
+## Directly accessing the REST API
  
 The kubectl handles locating and authenticating to the API server. 
-If you want to directly access the REST API with an http client like curl or wget, or a browser, there are multiple ways you can 
+If you want to directly access the REST API with an HTTP client like `curl` or `wget`, or a browser, there are multiple ways you can 
 locate and authenticate against the API server:
 
-- Run kubectl in proxy mode (recommended). This method is recommended, since it uses the stored apiserver location and verifies the identity of the API server using a self-signed cert. No man-in-the-middle (MITM) attack is possible using this method.
-- Provide the location and credentials directly to the http client. This works with client code that is confused by proxies. 
+- Run `kubectl` in proxy mode (recommended). This method is recommended, since it uses the stored apiserver location and verifies the identity of the API server using a self-signed cert. No man-in-the-middle (MITM) attack is possible using this method.
+- Provide the location and credentials directly to the HTTP client. This works with client code that is confused by proxies. 
 To protect against man in the middle attacks, you’ll need to import a root cert into your browser.
-Using the Go or Python client libraries provides accessing kubectl in proxy mode.
+Using the Go or Python client libraries provides accessing `kubectl` in proxy mode.
 
 ## Using kubectl proxy
 
-The following command runs kubectl in a mode where it acts as a reverse proxy. It handles locating the API server and authenticating.
+The following command runs `kubectl` in a mode where it acts as a reverse proxy. It handles locating the API server and authenticating.
 
 ```
 kubectl proxy --port=8080 &
 ```
 
-Then you can explore the API with curl, wget, or a browser, like so:
+Then you can explore the API with `curl`, `wget`, or a browser, like so:
 
 ```
 curl http://localhost:8080/api/
