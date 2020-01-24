@@ -195,10 +195,10 @@
 
 # Contributors
 
-- Ajeet Singh Raina
-- Sangam Biradar
+- [Ajeet Singh Raina](https://twitter.com/ajeetsraina)
+- [Sangam Biradar](https://twitter.com/BiradarSangam)
 - Rachit Mehrotra
-- Saiyam Pathak
+- [Saiyam Pathak](https://twitter.com/SaiyamPathak)
 
 [Next:  Kubernetes201](https://github.com/collabnix/kubelabs/blob/master/201/README.md)
 
