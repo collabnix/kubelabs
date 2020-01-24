@@ -105,8 +105,8 @@
 
 ## Jobs101
 - [Introductory Slides](Pending)
-- Creating Your First Kubernetes Job
-- Multiple Parallel Jobs (Work Queue)
+- [Creating Your First Kubernetes Job](./Jobs101/README.md#creating-your-first-kubernetes-job)
+- [Multiple Parallel Jobs (Work Queue)]
 - Kubernetes Job Failure and Concurrency Considerations
 
 
