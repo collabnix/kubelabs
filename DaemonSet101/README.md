@@ -23,6 +23,12 @@
 
 ## Creating your first DeamonSet Deployment
 
+```
+git clone https://github.com/collabnix/kubelabs
+cd kubelabs/DaemonSet101
+kubectl apply -f daemonset.yml
+```
+
 - Create a daemonset using following command
 
 ``` $ kubectl create -f daemonset.yml --record ```
