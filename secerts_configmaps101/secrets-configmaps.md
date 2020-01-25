@@ -3,9 +3,10 @@ Kubernetes has two types of objects that can be used to inject configuration dat
 We will explore both Secrets and ConfigMaps with a real-world situation:
 
 Secrets:
+
 Secrets are a Kubernetes object intended for storing a small amount of sensitive data. It is worth noting that Secrets are stored base64-encoded within Kubernetes, so they are not wildly secure. Make sure to have appropriate Role-base access controls (or RBAC) to protect access to secrets. These are a way store things that you do not want floating around in your code.
 
-Creating a Secret manually
+Creating a Secret manually:
 
 first execute this script and craete the certs and ketys 
 
@@ -18,7 +19,6 @@ openssl req \
 
 echo "...Done."
 
-```shell
 
 kubectl create secret tls nginx-certs --cert=tls.crt --key=tls.key
 secret/nginx-certs created
@@ -49,7 +49,7 @@ tls.key:  1704 bytes
 
 Note the Data field contains the key we created earlier, note the vaule what we assigned, it is not shown in the output and only you can see the size of the value.
 
-ConfigMaps
+ConfigMaps:
 
 ConfigMaps are similar to Secrets. They can be created in the same ways, and can be shared in the containers the same ways. The only big difference between them is the base64 encoding obfuscation. ConfigMaps are intended to non-sensitive data - configuration data - like config files and environment variables, and are a great way to create customized running services from generic container images.
 
