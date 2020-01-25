@@ -1,6 +1,6 @@
 # Kubectl for Docker Beginners
 
-Kubectl is a command line interface for running commands against Kubernetes clusters. kubectl looks for a file named config in the $HOME/.kube directory. You can specify other kubeconfig files by setting the KUBECONFIG environment variable or by setting the --kubeconfig flag.
+Kubectl is a command line interface for running commands against Kubernetes clusters.  `kubectl` looks for a file named config in the `$HOME/.kube` directory. You can specify other kubeconfig files by setting the `$KUBECONFIG` environment variable or by setting the `--kubeconfig` flag.
 
 
 
