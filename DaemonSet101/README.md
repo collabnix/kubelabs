@@ -14,6 +14,9 @@ When you add a new node to the cluster, a pod gets added to match the nodes. Sim
 
 A Daemonset is another controller that manages pods like Deployments, ReplicaSets, and StatefulSets. It was created for one particular purpose: ensuring that the pods it manages to run on all the cluster nodes. As soon as a node joins the cluster, the DaemonSet ensures that it has the necessary pods running on it. When the node leaves the cluster, those pods are garbage collected.
 
+DaemonSets are used in Kubernetes when you need to run one or more pods on all (or a subset of) the nodes in a cluster.
+The typical use case for a DaemonSet is logging and monitoring for the hosts. For example, a node needs a service (daemon) that collects health or log data and pushes them to a central system or database (like ELK stack). DaemonSets can be deployed to specific nodes either by the nodes’ user-defined labels or using values provided by Kubernetes like the node hostname.
+
 ##  Why use DaemonSets?
 
 - Now that we understand DaemonSets, here are some examples of why and how to use it:
@@ -112,6 +115,16 @@ $ kubectl delete -f daemonset.yml
 
 
 ##  Restrict DaemonSets To Run On Specific Nodes
+
+By default, a DaemonSet schedules its pods on all the cluster nodes. But sometimes you may need to run specific processes on specific nodes. For example, nodes that host database pods need different monitoring or logging rules. DaemonSets allow you to select which nodes you want to run the pods on. You can do this by using nodeSelector. With nodeSelector, you can select nodes by their labels the same way you do with pods. However, Kubernetes also allows you to select nodes based on some already-defined node properties. For example, kubernetes.io/hostname matches the node name. So, our example cluster has two nodes. We can modify the DaemonSet definition to run only on the first node. Lets’ first get the node names:
+
+```
+$kubectl get nodes
+NAME    STATUS   ROLES    AGE   VERSION
+node1   Ready    master   17m   v1.14.9
+node2   Ready    <none>   17m   v1.14.9
+```
+
 
 
 
