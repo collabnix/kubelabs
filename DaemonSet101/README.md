@@ -1,9 +1,10 @@
 ## What is a DaemonSet?
 
-Say, you want to run a process on all the nodes of the cluster. Think of log-collecting services like Prometheus Log Exporter or storage daemons like glusterd. Such services need to be started on each node as soon as the node joins the cluster. You may think: we can use a cron job that runs on machine boot/reboot. Perhaps use the /etc/init.local file to ensure that a specific process or command gets executed as soon as the server gets started. While certainly a valid solution, using the node itself to control the daemons that run on it (especially within a Kubernetes cluster) suffers some drawbacks:
+Say, you want to run a process on all the nodes of the cluster. One of the easy solution could be running cron job that runs on machine boot or reboot. Also, alternatively one can use the /etc/init.local file to ensure that a specific process or command gets executed as soon as the server gets started. Though it looks to be viable solution, using the node itself to control the daemons that run on it (especially within a Kubernetes cluster) suffers some drawbacks:
 
 - We need the process to remain running on the node as long as it is part of the cluster. It should be terminated when the node is evicted.
 - The process may need a particular runtime environment that may or may not be available on the node (for example, a specific JDK version, a required kernel library, a specific Linux distro...etc.). So, the process should run inside a container. Kubernetes uses Pods to run containers. This daemon should be aware that it is running within Kubernetes. Hence, it has access to other pods in the cluster and is part of the network.
+
 
 ## Enter DaemonSets
 
