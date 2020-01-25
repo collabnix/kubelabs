@@ -10,7 +10,7 @@ Creating a Secret manually:
 
 first execute this script and craete the certs and ketys 
 
-```shell
+
 #!/bin/bash
 
 openssl req \
@@ -18,7 +18,6 @@ openssl req \
   -keyout tls.key -out tls.crt -subj '/CN=*.example.com'
 
 echo "...Done."
-`shell
 
 kubectl create secret tls nginx-certs --cert=tls.crt --key=tls.key
 secret/nginx-certs created
@@ -31,7 +30,7 @@ nginx-certs           kubernetes.io/tls                     2      24s
 
 Now that the secret is created, use kubectl describe to see it.
 
-
+```shell
 swapnasagars-MacBook-Pro:~ swapnasagar$ kubectl describe secret nginx-certs
 Name:         nginx-certs
 Namespace:    default
@@ -44,7 +43,7 @@ Data
 ====
 tls.crt:  1107 bytes
 tls.key:  1704 bytes
-
+```shell
 
 
 Note the Data field contains the key we created earlier, note the vaule what we assigned, it is not shown in the output and only you can see the size of the value.
