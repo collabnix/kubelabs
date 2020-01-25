@@ -8,17 +8,9 @@ Secrets are a Kubernetes object intended for storing a small amount of sensitive
 
 Creating a Secret manually:
 
-first execute this script and craete the certs and ketys 
+first execute the script which is present on the directory script and craete the certs and keys 
 
-
-#!/bin/bash
-
-openssl req \
-  -x509 -newkey rsa:2048 -nodes -days 365 \
-  -keyout tls.key -out tls.crt -subj '/CN=*.example.com'
-
-echo "...Done."
-
+```shell
 kubectl create secret tls nginx-certs --cert=tls.crt --key=tls.key
 secret/nginx-certs created
 
@@ -27,10 +19,8 @@ NAME                  TYPE                                  DATA   AGE
 default-token-xf2f4   kubernetes.io/service-account-token   3      3d23h
 nginx-certs           kubernetes.io/tls                     2      24s
 
-
 Now that the secret is created, use kubectl describe to see it.
 
-```shell
 swapnasagars-MacBook-Pro:~ swapnasagar$ kubectl describe secret nginx-certs
 Name:         nginx-certs
 Namespace:    default
@@ -43,8 +33,8 @@ Data
 ====
 tls.crt:  1107 bytes
 tls.key:  1704 bytes
-```shell
 
+```shell
 
 Note the Data field contains the key we created earlier, note the vaule what we assigned, it is not shown in the output and only you can see the size of the value.
 
