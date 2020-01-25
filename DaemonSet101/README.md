@@ -1,5 +1,12 @@
 ## What is a DaemonSet?
 
+Say, you want to run a process on all the nodes of the cluster. Think of log-collecting services like Prometheus Log Exporter or storage daemons like glusterd. Such services need to be started on each node as soon as the node joins the cluster. You may think: we can use a cron job that runs on machine boot/reboot. Perhaps use the /etc/init.local file to ensure that a specific process or command gets executed as soon as the server gets started. While certainly a valid solution, using the node itself to control the daemons that run on it (especially within a Kubernetes cluster) suffers some drawbacks:
+
+- We need the process to remain running on the node as long as it is part of the cluster. It should be terminated when the node is evicted.
+- The process may need a particular runtime environment that may or may not be available on the node (for example, a specific JDK version, a required kernel library, a specific Linux distro...etc.). So, the process should run inside a container. Kubernetes uses Pods to run containers. This daemon should be aware that it is running within Kubernetes. Hence, it has access to other pods in the cluster and is part of the network.
+
+## Enter DaemonSets
+
 - DaemonSets are used to ensure that some or all of your K8S nodes run a copy of a pod, which allows you to run a daemon on every node.
 
 - When you add a new node to the cluster, a pod gets added to match the nodes. Similarly, when you remove a node from your cluster, the pod is put into the trash. Deleting a DaemonSet cleans up the pods that it previously created.
@@ -49,10 +56,49 @@ $ kubectl get daemonsets/prometheus-daemonset
 kubectl describe daemonset/prometheus-daemonset
 ```
 
+```
+[node1 DaemonSet101]$ kubectl describe daemonset/prometheus-daemonset
+Name:           prometheus-daemonset
+Selector:       name=prometheus-exporter,tier=monitoring
+Node-Selector:  <none>
+Labels:         name=prometheus-exporter
+                tier=monitoring
+Annotations:    deprecated.daemonset.template.generation: 1
+                kubectl.kubernetes.io/last-applied-configuration:
+                  {"apiVersion":"extensions/v1beta1","kind":"DaemonSet","metadata":{"annotations":{},"name":"prometheus-daemonset","namespace":"default"},"s...
+Desired Number of Nodes Scheduled: 1Current Number of Nodes Scheduled: 1
+Number of Nodes Scheduled with Up-to-date Pods: 1
+Number of Nodes Scheduled with Available Pods: 1
+Number of Nodes Misscheduled: 0
+Pods Status:  1 Running / 0 Waiting / 0 Succeeded / 0 Failed
+Pod Template:
+  Labels:  name=prometheus-exporter
+           tier=monitoring
+  Containers:
+   prometheus:
+    Image:        prom/node-exporter
+    Port:         80/TCP
+    Host Port:    0/TCP
+    Environment:  <none>
+    Mounts:       <none>
+  Volumes:        <none>
+Events:
+  Type    Reason            Age    From                  Message
+  ----    ------            ----   ----                  -------
+  Normal  SuccessfulCreate  3m21s  daemonset-controller  Created pod: prometheus-daemonset-nsjwx
+ ```
+
 ## Getting pods in daemonset:
 
 ``` 
 $ kubectl get pods -lname=prometheus-exporter
+```
+
+```
+[node1 DaemonSet101]$ kubectl get pods -lname=prometheus-exporterNAME                         
+READY   STATUS    RESTARTS   AGE
+prometheus-daemonset-nsjwx   1/1     Running   0          4m12s
+[node1 DaemonSet101]$
 ```
 
 ## Delete a daemonset:
