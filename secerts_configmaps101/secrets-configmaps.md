@@ -27,11 +27,11 @@ swapnasagars-MacBook-Pro:~ swapnasagar$ kubectl get secrets
 NAME                  TYPE                                  DATA   AGE
 default-token-xf2f4   kubernetes.io/service-account-token   3      3d23h
 nginx-certs           kubernetes.io/tls                     2      24s
-```shell
+
 
 Now that the secret is created, use kubectl describe to see it.
 
-```shell
+
 swapnasagars-MacBook-Pro:~ swapnasagar$ kubectl describe secret nginx-certs
 Name:         nginx-certs
 Namespace:    default
@@ -45,7 +45,7 @@ Data
 tls.crt:  1107 bytes
 tls.key:  1704 bytes
 
-```shell
+
 
 Note the Data field contains the key we created earlier, note the vaule what we assigned, it is not shown in the output and only you can see the size of the value.
 
@@ -59,7 +59,6 @@ ConfigMaps can be created the same ways Secrets are. A YAML representation of th
 
 Create a custom nginx file and we are going to craete the configmap with this and name it as nginx-custom.conf
 
-```shell
 
 server {
     listen       80;
@@ -85,14 +84,14 @@ server {
     ssl_certificate_key /certs/tls.key;
 }
 
-```shell
+
 Create the configmaps
 
-```shell
+
 
 kubectl create configmap nginx-config --from-file nginx-custom.conf
 
-```shell
+
 
 View the new ConfigMap and read the data
 
