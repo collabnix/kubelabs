@@ -44,40 +44,11 @@ Create a ConfigMap:
 
 ConfigMaps can be created the same ways Secrets are. A YAML representation of the ConfigMap can be written manually and loaded it into Kubernetes, or the kubectl create configmap command can be used to create it from the command line.
 
-Create a custom nginx file and we are going to craete the configmap with this and name it as nginx-custom.conf
-
-
-server {
-    listen       80;
-    server_name  localhost;
-
-    location / {
-        root   /usr/share/nginx/html;
-        index  index.html index.htm;
-    }
-}
-
-server {
-    listen       443;
-    server_name  localhost;
-
-    location / {
-        root   /usr/share/nginx/html;
-        index  index.html index.htm;
-    }
-
-    ssl on;
-    ssl_certificate /certs/tls.crt;
-    ssl_certificate_key /certs/tls.key;
-}
-
+Create a custom nginx file and we are going to create the configmap, which is present on the directory which is named as nginx-custom.conf
 
 Create the configmaps
 
-
-
 kubectl create configmap nginx-config --from-file nginx-custom.conf
-
 
 
 View the new ConfigMap and read the data
