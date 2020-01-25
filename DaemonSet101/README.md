@@ -29,27 +29,37 @@ cd kubelabs/DaemonSet101
 kubectl apply -f daemonset.yml
 ```
 
-- Create a daemonset using following command
+The other way to do this:
 
-``` $ kubectl create -f daemonset.yml --record ```
+``` 
+$ kubectl create -f daemonset.yml --record 
+```
 
 The --record flag will track changes made through each revision.
 
-- Get the basic details about daemonsets:
+## Getting the basic details about daemonsets:
 
-```$ kubectl get daemonsets/prometheus-daemonset```
+```
+$ kubectl get daemonsets/prometheus-daemonset
+```
 
-- More details about the daemonset:
+## Further Details
 
+```
 kubectl describe daemonset/prometheus-daemonset
+```
 
-Get pods in daemonset:
+## Getting pods in daemonset:
 
-``` $ kubectl get pods -lname=prometheus-exporter```
+``` 
+$ kubectl get pods -lname=prometheus-exporter
+```
 
-Delete a daemonset:
+## Delete a daemonset:
 
-``` $ kubectl delete -f daemonset.yml```
+```
+$ kubectl delete -f daemonset.yml
+```
 
 
 ##  Restrict DaemonSets To Run On Specific Nodes
