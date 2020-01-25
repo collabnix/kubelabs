@@ -132,7 +132,6 @@ nodeSelector:
     	  kubernetes.io/hostname: node1
  ```
 
-<TBD>
 
 ## How To Reach a DaemonSet Pod
 
