@@ -10,7 +10,7 @@ Creating a Secret manually:
 
 first execute this script and craete the certs and ketys 
 
-```shell
+
 #!/bin/bash
 
 openssl req \
@@ -105,7 +105,7 @@ Using Secrets and ConfigMaps:
 
 Secrets and ConfigMaps can be mounted as volume within a pod. For the nginx pod, we will need to mount the secrets as nginx-certs, and the ConfigMap as a nginx-config. First, thoug, we need to write a Deployment for nginx, so we have something to work with. Create a file named "nginx-ssl-deployment.yaml" with the following:
 
-```shell
+
 
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -142,12 +142,12 @@ spec:
         - mountPath: /etc/nginx/conf.d
           name: config-volume
 
-```shell
+
 Both Secrets and ConfigMaps be the source of Kubernetes "volumes" and mounted into the containers.The volumeMount is pretty self-explanitory here - create a volume mount the "certs-volume and config-volume" (specified in the volumes list, below it) to the path /etc/nginx/conf.d and /certs respectivly.
 
 Deploy nginx with ssl mode
 
-```shell
+
 kubectl create -f nginx-ssl-deployment.yaml
 
 kubectl get pods -w 
@@ -155,7 +155,7 @@ kubectl get pods -w
 kubectl describe pod <pod name>
 
 kubectl exec -it <pod name> /bin/sh
-```shell
+
 
 Takeaway :
 
