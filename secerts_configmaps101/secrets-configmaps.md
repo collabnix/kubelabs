@@ -10,7 +10,6 @@ Creating a Secret manually:
 
 first execute the script which is present on the directory script and craete the certs and keys 
 
-```shell
 kubectl create secret tls nginx-certs --cert=tls.crt --key=tls.key
 secret/nginx-certs created
 
@@ -34,7 +33,6 @@ Data
 tls.crt:  1107 bytes
 tls.key:  1704 bytes
 
-```shell
 
 Note the Data field contains the key we created earlier, note the vaule what we assigned, it is not shown in the output and only you can see the size of the value.
 
