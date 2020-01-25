@@ -10,7 +10,7 @@ Creating a Secret manually:
 
 first execute this script and craete the certs and ketys 
 
-
+```shell
 #!/bin/bash
 
 openssl req \
@@ -18,7 +18,7 @@ openssl req \
   -keyout tls.key -out tls.crt -subj '/CN=*.example.com'
 
 echo "...Done."
-
+`shell
 
 kubectl create secret tls nginx-certs --cert=tls.crt --key=tls.key
 secret/nginx-certs created
