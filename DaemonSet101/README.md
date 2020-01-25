@@ -125,7 +125,7 @@ node1   Ready    master   17m   v1.14.9
 node2   Ready    <none>   17m   v1.14.9
 ```
 
-
+<TBD>
 
 
 ## How To Reach a DaemonSet Pod
