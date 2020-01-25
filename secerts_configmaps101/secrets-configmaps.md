@@ -1,3 +1,6 @@
+
+# Secrets & ConfigMaps
+
 Kubernetes has two types of objects that can be used to inject configuration data into a container when it starts up: 
 - Secrets and 
 - ConfigMaps
