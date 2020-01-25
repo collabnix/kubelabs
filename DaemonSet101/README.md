@@ -125,8 +125,14 @@ node1   Ready    master   17m   v1.14.9
 node2   Ready    <none>   17m   v1.14.9
 ```
 
-<TBD>
+You need to add the below entry in the above YAML file:
 
+```
+nodeSelector:
+    	  kubernetes.io/hostname: node1
+ ```
+
+<TBD>
 
 ## How To Reach a DaemonSet Pod
 
