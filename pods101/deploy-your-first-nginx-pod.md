@@ -101,7 +101,7 @@ Events:
   Normal  Started    2m48s  kubelet, gke-standard-cluster-1-default-pool-78257330-5hs8  Started container
  ```
   
- ## Output in JSON
+## Output in JSON
  
 ```
 $ kubectl get pods -o json
