@@ -218,6 +218,7 @@ Events:
   Normal   Created           34s                kubelet, aks-agentpool-36099114-0  Created container counter-div
   Normal   Started           33s                kubelet, aks-agentpool-36099114-0  Started container counter-div
 ```
+! [img] (https://github.com/collabnix/kubelabs/blob/master/201/Deployment-Picture.png)
 
 ## Checking Logs from the running Pod
 
@@ -235,6 +236,10 @@ deployment.extensions/counter-div scaled
 divyajeet@Azure:~/collabnix/deployment$ kubectl scale deployment counter-div --replicas=4
 deployment.extensions/counter-div scaled
 ```
+
+! [img] (https://github.com/collabnix/kubelabs/blob/master/201/Deployment-Picture.png)
+
+We can see that even after the scale operation the numner of pv's did not increased, this shows that all four Pods are utilizing the same pv for Read and Write Operations.
 
 ## Remember to clean up
 
