@@ -70,7 +70,7 @@ divyajeet@Azure:~/collabnix/deployment$ kubectl get deployment
 No resources found in default namespace.
 ```
 ```
-divyajeet@Azure:~/collabnix/deployment$ vim storageclass.yaml 
+divyajeet@Azure:~/collabnix/deployment$ vim deployment.yaml 
 
 apiVersion: apps/v1beta1
 kind: Deployment
