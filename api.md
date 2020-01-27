@@ -71,12 +71,12 @@ The output is similar to this:
       "serverAddress": "192.168.0.18:6443"
     }
   ]
-  ```
+```
   
-  ## Without kubectl proxy
+## Without kubectl proxy
   
   
-  ```
+```
   # Check all possible clusters, as you .KUBECONFIG may have multiple contexts:
 kubectl config view -o jsonpath='{"Cluster name\tServer\n"}{range .clusters[*]}{.name}{"\t"}{.cluster.server}{"\n"}{end}'
 
