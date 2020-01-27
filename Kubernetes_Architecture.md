@@ -97,7 +97,7 @@ Any developer can package up applications and deploy them on Kubernetes with bas
 
 ### Load Balancer:
 - The deployment gets a Public IP address assigned.
-- The service is available at http(s)://:<80||42>/
+- The service is available at http(s)://<IP>:80
 - Traffic is load balanced between the Pods of the deployment.
 
 ## Credits:
