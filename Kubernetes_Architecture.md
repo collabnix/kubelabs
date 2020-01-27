@@ -92,7 +92,7 @@ Any developer can package up applications and deploy them on Kubernetes with bas
 - The deployment is visible inside the cluster.
 - The deployment is bound to a port of the Master Node.
 - Each Node will proxy that port to your Service.
-- The service is available at http(s)://:/
+- The service is available at http(s)://<ip>
 - Traffic is load balanced between the Pods of the deployment.
 
 ### Load Balancer:
