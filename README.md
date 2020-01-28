@@ -85,7 +85,7 @@
  
 ## StatefulSets101
  
- - [Introductory Slides](Pending)
+ - Introductory Slides (Pending)
  - [The difference between a Statefulset and a Deployment](./StatefulSets101/README.md#what-is-statefulset-and-how-is-it-different-from-deployment)
  - [Deploying a Stateful Application Using Kubernetes Statefulset?](./StatefulSets101/README.md#deploying-a-stateful-application-using-kubernetes-statefulset)
  - [Deploying NFS Server](./StatefulSets101#deploying-nfs-server)
@@ -97,21 +97,21 @@
  
 ## DaemonSet101
  
- - [Introductory Slides](Pending)
+ - Introductory Slides (Pending)
  - [Why DaemonSets in Kubernetes?](./DaemonSet101/README.md)
  - [Creating your first DeamonSet Deployment](./DaemonSet101/README.md#creating-your-first-deamonset-deployment)
  - [Restrict DaemonSets To Run On Specific Nodes](./DaemonSet101/README.md#restrict-daemonsets-to-run-on-specific-nodes)
  - [How To Reach a DaemonSet Pod](./DaemonSet101/README.md#how-to-reach-a-daemonset-pod)
 
 ## Jobs101
-- [Introductory Slides](Pending)
+-  Introductory Slides (Pending)
 - [Creating Your First Kubernetes Job](./Jobs101/README.md#creating-your-first-kubernetes-job)
 - [Multiple Parallel Jobs (Work Queue)](./Jobs101/README.md#multiple-parallel-jobs-work-queue)
 - Kubernetes Job Failure and Concurrency Considerations
 
 
 ## Ingres101
-- [Introductory Slides](Pending)
+- Introductory Slides (Pending)
 - What is Kubernetes ingress?
    - NodePort
    - Load Balancer
@@ -119,7 +119,7 @@
   
 
 ## Secrets101
- - [Introductory Slides](Pending)
+ - Introductory Slides (Pending)
  - What is a Service in Kubernetes?
  - Specifying Pods in a Service
  - Using Services for External Workloads
@@ -129,7 +129,7 @@
  
 
 ## RBAC101
-- [Introductory Slides](Pending)
+- Introductory Slides (Pending)
 - Role-Based Access Control (RBAC) Overview
 - Creating a Kubernetes User Account Using X509 Client Certificate
 - Note For Local And Self-Hosted Clusters Users
@@ -137,7 +137,7 @@
 - Cluster-Wide Authorization Using ClusterRoles
 
 ## Service Catalog101
-- [Introductory Slides](Pending)
+- Introductory Slides (Pending)
 - What is Kubernetes Service Catalog?
 - The Kubernetes Service 
      - Catalog Resources
@@ -156,7 +156,7 @@
   
 
 ## Cluster Networking101
-- [Introductory Slides](Pending)
+-  Introductory Slides (Pending)
 - What Is Cluster Networking In Kubernetes Sense?
 - Kubernetes Networking Rules
 - What Is An Overlay Network?
@@ -166,7 +166,7 @@
    - Flannel
 
 ## Network Policies101
-- [Introductory Slides](Pending)
+- Introductory Slides (Pending)
 - What is a Kubernetes Network Policy?
 - Creating Your First NetworkPolicy Definition
 - How can we fine-tune Network Policy using selectors?
@@ -176,7 +176,7 @@
 - Allow All Egress Traffic Exclusively
 
 ## Autoscaling101
-- [Introductory Slides](Pending)
+- Introductory Slides (Pending)
 - Kubernetes Autoscaling Building Blocks
    - Horizontal Pod Autoscaler (HPA)
    - Vertical Pods Autoscaler
@@ -184,7 +184,7 @@
 - How Kubernetes Autoscalers Interact Together
 
 ## Monitoring101
-- [Introductory Slides](Pending)
+- Introductory Slides (Pending)
 - Core Monitoring Pipeline
 - Services Monitoring Pipeline
 - What should you consider in Kubernetes Services Pipeline?
