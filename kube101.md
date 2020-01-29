@@ -2,7 +2,7 @@
 
 To get started with Kubernetes, follow the below steps:
 
--  Open https://play-with-k8s.com on your browser
+-  Open <a href="https://play-with-k8s.com" target="_blank">https://play-with-k8s.com</a> on your browser
 
 ![Image](https://raw.githubusercontent.com/collabnix/dockerlabs/master/kubernetes/workshop/img/pwk1.png)
 
@@ -23,7 +23,7 @@ sh bootstrap.sh
 
 # What does this script do?
 
-The first line "kubeadm init" initializes a Kubernetes control-plane node amd execute the below phases:
+The first line `kubeadm init` initializes a Kubernetes control-plane node and execute the below phases:
 
 ```
 The “init” command executes the following phases:
@@ -68,7 +68,7 @@ addon                        Install required addons for passing Conformance tes
 
 ## Adding New K8s Cluster Node
 
-Click on Add Instances to setup first k8s node cluster
+Click on `Add Instances` to setup first k8s node cluster
 
 Wait for 1 minute time till it gets completed.
 
@@ -77,7 +77,7 @@ Copy the command starting with ```kubeadm join ....```. We will need it to be ru
 
 ## Setting up Worker Node
 
-Click on "Add New Instance" and paste the last kubeadm command on this fresh new worker node.
+Click on `Add New Instance` and paste the last `kubeadm` command on this fresh new worker node.
 
 ```
 [node2 ~]$ kubeadm join --token 4f924f.14eb7618a20d2ece 192.168.0.8:6443 --discovery-token-ca-cert-hash  sha256:a5c25aa4573e06a0c11b11df23c8f85c95bae36cbb07d5e7879d9341a3ec67b3```
@@ -147,7 +147,7 @@ kubectl get nodes -o json |
 
 ## Accessing namespaces
 
-By default, kubectl uses the default namespace. We can switch to a different namespace with the -n option
+By default, `kubectl` uses the default namespace. We can switch to a different namespace with the `-n` option
 
 ### List the pods in the kube-system namespace:
 
@@ -175,13 +175,14 @@ weave-net-hxqd9                 0/2     Evicted   0          19s
 ## What are all these pods?
 
 
-- etcd is our etcd server
-- kube-apiserver is the API server
-- kube-controller-manager and kube-scheduler are other master components
-- kube-dns is an additional component (not mandatory but super useful, so it’s there)
-- kube-proxy is the (per-node) component managing port mappings and such
-- weave is the (per-node) component managing the network overlay 
-- the READY column indicates the number of containers in each pod
-- the pods with a name ending with -node1 are the master components (they have been specifically “pinned” to the master node)
+- **etcd** is our etcd server
+- **kube-apiserver** is the API server
+- **kube-controller-manager** and **kube-scheduler** are other master components
+- **kube-dns** is an additional component (not mandatory but super useful, so it’s there)
+- **kube-proxy** is the (per-node) component managing port mappings and such
+- **weave** is the (per-node) component managing the network overlay 
+
+The READY column indicates the number of containers in each pod.
+Pods with a name ending with `-node1` are the master components (they have been specifically “pinned” to the master node).
 
 [Next >>](https://collabnix.github.io/kubelabs/weave-pwk.html)
