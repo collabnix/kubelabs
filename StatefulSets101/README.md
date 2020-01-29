@@ -14,7 +14,7 @@ A Kubernetes Service acts as an abstraction layer. In a stateless application li
 
 # Deploying a Stateful Application Using Kubernetes Statefulset
 
-If you look at web_stateful.yaml file, you will find a snippet around how we are deploying a stateful application. For simplicity, are we using Nginx  as the pod image. The deployment is made up of 2 Nginx web servers; both of them are connected to a persistent volume. For example, look at web_stateful.yaml file under the current location.
+If you look at [web_stateful.yaml](https://github.com/collabnix/kubelabs/blob/master/StatefulSets101/web_stateful.yaml) file, you will find a snippet around how we are deploying a stateful application. For simplicity, are we using Nginx  as the pod image. The deployment is made up of 2 Nginx web servers; both of them are connected to a persistent volume. For example, look at web_stateful.yaml file under the current location.
 
 Before we start discussing the details of this definition, notice that the file actually contains two definitions: the storage class that the StatefulSet is using and the StatefulSet itself.
 
@@ -58,7 +58,7 @@ For Kubernetes to understand the available NFS shares, it requires a PersistentV
 
 In the case of NFS, one PersistentVolume relates to one NFS directory. When a container has finished with the volume, the data can either be Retained for future use or the volume can be Recycled meaning all the data is deleted. The policy is defined by the persistentVolumeReclaimPolicy option.
 
-For structure is:
+Spec File:
 
 ```
 apiVersion: v1
@@ -151,11 +151,11 @@ When a deployment is defined, it can assign itself to a previous claim. The foll
       persistentVolumeClaim:
         claimName: claim-mysql
         
-   ```
+ ```
    
-   ## Task
+ ## Task
    
-   Launch two new Pods with Persistent Volume Claims. Volumes are mapped to the correct directory when the Pods start allowing applications to read/write as if it was a local directory.
+ Launch two new Pods with Persistent Volume Claims. Volumes are mapped to the correct directory when the Pods start allowing applications to read/write as if it was a local directory.
 
 ```
 kubectl create -f pod-mysql.yaml
