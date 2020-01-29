@@ -182,7 +182,7 @@ weave-net-hxqd9                 0/2     Evicted   0          19s
 - **kube-proxy** is the (per-node) component managing port mappings and such
 - **weave** is the (per-node) component managing the network overlay 
 
-The READY column indicates the number of containers in each pod.
+The `READY` column indicates the number of containers in each pod.
 Pods with a name ending with `-node1` are the master components (they have been specifically “pinned” to the master node).
 
 [Next >>](https://collabnix.github.io/kubelabs/weave-pwk.html)
