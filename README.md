@@ -167,13 +167,13 @@
 
 ## Network Policies101
 - Introductory Slides (Pending)
-- What is a Kubernetes Network Policy?
-- Creating Your First NetworkPolicy Definition
-- How can we fine-tune Network Policy using selectors?
-- Deny Ingress Traffic That Has No Rules
-- Deny Egress Traffic That Has No Rules
-- Allow All Ingress Traffic Exclusively
-- Allow All Egress Traffic Exclusively
+- [What is a Kubernetes Network Policy?](./Network_Policies101/README.md)
+- [Creating Your First NetworkPolicy Definition](./Network_Policies101/First_Network_Policy.md)
+- [How can we fine-tune Network Policy using selectors?](./Network_Policies101/how_can_we_fine-tune_network_policy_using_selectors.md)
+- [Deny Ingress Traffic That Has No Rules](./Network_Policies101/Deny_ingress_traffic_that_has_no_rules.md)
+- [Deny Egress Traffic That Has No Rules](./Network_Policies101/Deny_egress_traffic_that_has_no_rules.md)
+- [Allow All Ingress Traffic Exclusively](./Network_Policies101/allow_all_ingress_traffic_exclusively.md)
+- [Allow All Egress Traffic Exclusively](./Network_Policies101/allow_all_egress_traffic_exclusively.md)
 
 ## Autoscaling101
 - Introductory Slides (Pending)
