@@ -46,7 +46,7 @@ Because all pods in the namespace are now selected, any ingress traffic which is
 We can see that this is the case by switching over to our “access” pod in the namespace and attempting to access the nginx service.
 
 ```
-kubectl run --namespace=advanced-policy-demo access --rm -ti --image busybox /bin/sh
+ kubectl run --generator=run-pod/v1  --namespace=network-policy-demo access --rm -ti --image busybox /bin/sh
 
 / # wget -q --timeout=5 nginx -O -
 wget: download timed out
@@ -60,10 +60,4 @@ wget -q --timeout=5 google.com -O -
 ```
 We can see that the ingress access to the nginx service is denied while egress access to outbound internet is still allowed.
 
-- Cleanup step
-
-You can clean up after this tutorial by deleting the network-policy-demo namespace.
-
-```
-kubectl delete ns network-policy-demo
-```
+- Please move to next tutorial 

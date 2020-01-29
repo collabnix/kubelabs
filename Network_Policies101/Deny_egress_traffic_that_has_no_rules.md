@@ -26,5 +26,3 @@ We can see that this is the case by switching over to our “access” pod in th
  / #
 
  ```
-
-Dont do cleanup now move it to next step.
