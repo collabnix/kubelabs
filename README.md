@@ -120,12 +120,20 @@
 
 ## Secrets101
  - Introductory Slides (Pending)
- - What is a Service in Kubernetes?
- - Specifying Pods in a Service
- - Using Services for External Workloads
- - Service Types
- - Service Discovery
- - Multi-Cluster Services with Cluster Federation
+ - What is a Kubernetes Secret?
+ - Creating Kubernetes Secrets Objects
+     - Using The Command Line and Text Files
+     - Using The Command Line and Literal Input
+ - Using Definition Files    
+    - Using Base64 and The Data Parameter
+    - Using Clear Text and The StringData Parameter
+ - Getting The Secret Data Back
+ - How You Can Use Your Defined Secrets in Kubernetes
+ - Accessing Secrets Through Files Inside a Volume
+ - Accessing Secrets Through Environment Variables
+ - Using ImagePullSecrets To Authenticate To Private Image Registries
+ - Using ImagePullSecrets When You Don’t Have The Authentication File
+ - Using ImagePullSecrets When You Already Have The Authentication File
  
 
 ## RBAC101
