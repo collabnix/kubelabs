@@ -1,6 +1,6 @@
 # Setting up WeaveScope for visualizing Kubernetes Pods, Services, Containers & Hosts
 
-Weave Scope is a visualization and monitoring tool for Docker and Kubernetes. It provides a top down view into your app as well as your entire infrastructure, and allows you to diagnose any problems with your distributed containerized app, in real time, as it is being deployed to a cloud provider.
+[Weave Scope](https://www.weave.works/oss/scope/) is a visualization and monitoring tool for Docker and Kubernetes. It provides a top down view into your app as well as your entire infrastructure, and allows you to diagnose any problems with your distributed containerized app, in real time, as it is being deployed to a cloud provider.
 
 ## Pre-requisite
 
@@ -32,7 +32,7 @@ kubectl get svc -n weave -o yaml > svc.yaml && sed -i "s/ClusterIP/NodePort/g" s
 ## Open Scope in Your Browser
 
 
-From the kubectl get svc -n weave take the Nodeport and hit open PWK on that port 
+From the `kubectl get svc -n weave` take the Nodeport and hit open PWK on that port 
 
 
 ![My Image](https://raw.githubusercontent.com/collabnix/dockerlabs/master/kubernetes/workshop/weave-service.png)
