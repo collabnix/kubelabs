@@ -39,3 +39,7 @@ Parallel job
 ### Delete a job:
 
 ``` $ kubectl delete -f parallel-job.yml ```
+
+# Contributors
+
+[Sangam Biradar](https://twitter.com/BiradarSangam)
