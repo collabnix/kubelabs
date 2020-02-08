@@ -110,7 +110,7 @@
 - Kubernetes Job Failure and Concurrency Considerations
 
 
-## Ingres101
+## Ingress101
 - Introductory Slides (Pending)
 - What is Kubernetes ingress?
    - NodePort
