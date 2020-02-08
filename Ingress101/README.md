@@ -16,6 +16,8 @@ They let you send a request from outside the Kubernetes cluster to a service ins
 
 ### NodePort 
 
+![](https://raw.githubusercontent.com/collabnix/kubelabs/master/Ingress101/nodeport.png)
+
 - NodePort is a configuration setting you declare in a service’s YAML. Set the service spec’s type to NodePort. Then, Kubernetes will allocate a specific port on each Node to that service, and any request to your cluster on that port gets forwarded to the service.
 
 - This is cool and easy, it’s just not super robust. You don’t know what port your service is going to be allocated, and the port might get re-allocated at some point.
