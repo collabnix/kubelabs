@@ -24,6 +24,8 @@ They let you send a request from outside the Kubernetes cluster to a service ins
 
 ### LoadBalancer
 
+![](https://raw.githubusercontent.com/collabnix/kubelabs/master/Ingress101/loadbalancer.png)
+
 - You can set a service to be of type LoadBalancer the same way you’d set NodePort— specify the type property in the service’s YAML. There needs to be some external load balancer functionality in the cluster, typically implemented by a cloud provider.
 
 - This is typically heavily dependent on the cloud provider—GKE creates a Network Load Balancer with an IP address that you can use to access your service.
