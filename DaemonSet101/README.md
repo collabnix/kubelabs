@@ -141,4 +141,8 @@ nodeSelector:
  - NodeIP and known port pattern: in this design, pods use the hostPort to acquire the node’s IP address. Clients can use the node IP and the known port (for example, port 80 if the DaemonSet has a web server) to connect to the pod.
  - DNS pattern: create a Headless Service that selects the DaemonSet pods. Use Endpoints to discover DaemonSet pods.
  - Service pattern: create a traditional service that selects the DaemonSet pods. Use NodePort to expose the pods using a random port. The drawback of this approach is that there is no way to choose a specific pod.
+ 
+# Contributors
+
+[Sangam Biradar](https://twitter.com/BiradarSangam)
 
