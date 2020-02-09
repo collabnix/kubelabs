@@ -45,37 +45,45 @@ They let you send a request from outside the Kubernetes cluster to a service ins
 ## How to Use Nginx Ingress Controller
 
   - Start by creating the “mandatory” resources for Nginx Ingress in your cluster.
-  ```
-  kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
-  
-  ```
-  - Then, enable the ingress add-on for Minikube
-  ```
-  minikube addons enable ingress
-  
- ```
- - Or, if you’re using Docker for Mac to run Kubernetes instead of Minikube.
- ```
- kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/provider/cloud-generic.yaml
  
  ```
+ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
+ ```
+ 
+ - Then, enable the ingress add-on for Minikube
+ 
+ ```
+ minikube addons enable ingress
+  ```
+ 
+ - Or, if you’re using Docker for Mac to run Kubernetes instead of Minikube.
+ 
+ ```
+ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/provider/cloud-generic.yaml
+  ```
+ 
  - Check that it’s all set up correctly.
+ 
  ```
  kubectl get pods --all-namespaces -l app=ingress-nginx
  ```
 ### Creating a Kubernetes Ingress
 
 - First, let’s create two services to demonstrate how the Ingress routes our request. We’ll run two web applications that output a slightly different response.
+
 ```
 git clone https://github.com/collabnix/kubelabs
 cd ingress101
 $ kubectl apply -f apple.yaml
 $ kubectl apply -f banana.yaml
 ```
+
 - Create the Ingress in the cluster
+
 ```
 kubectl create -f ingress.yaml
 ```
+
 Perfect! Let’s check that it’s working. If you’re using Minikube, you might need to replace localhost with minikube IP.
 
 ```
@@ -87,8 +95,8 @@ banana
 
 $ curl -kL http://localhost/notfound
 default backend - 404
-
 ```
+
 ## Ingress Controllers and Ingress Resources
 
 - Kubernetes supports a high level abstraction called Ingress, which allows simple host or URL based HTTP routing. An ingress is a core concept (in beta) of Kubernetes, but is always implemented by a third party proxy. These implementations are known as ingress controllers. An ingress controller is responsible for reading the Ingress Resource information and processing that data accordingly. Different ingress controllers have extended the specification in different ways to support additional use cases.
