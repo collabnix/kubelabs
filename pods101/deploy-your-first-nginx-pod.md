@@ -5,12 +5,12 @@
 - Kubernetes pods are the foundational unit for all higher Kubernetes objects.
 - A pod hosts one or more containers.
 - It can be created using either a command or a YAML/JSON file.
-- Use kubectl to create pods, view the running ones, modify their configuration, or terminate them. Kuberbetes will attempt to restart a failing pod by default.
-- If the pod fails to start indefinitely, we can use the kubectl describe command to know what went wrong.
+- Use `kubectl` to create pods, view the running ones, modify their configuration, or terminate them. Kuberbetes will attempt to restart a failing pod by default.
+- If the pod fails to start indefinitely, we can use the `kubectl describe` command to know what went wrong.
 
 ## Why does Kubernetes use a Pod as the smallest deployable unit, and not a single container?
 
-While it would seem simpler to just deploy a single container directly, there are good reasons to add a layer of abstraction represented by the Pod. A container is an existing entity, which refers to a specific thing. That specific thing might be a Docker container, but it might also be a rkt container, or a VM managed by Virtlet. Each of these has different requirements.
+While it would seem simpler to just deploy a single container directly, there are good reasons to add a layer of abstraction represented by the Pod. A container is an existing entity, which refers to a specific thing. That specific thing might be a Docker container, but it might also be a [rkt](https://coreos.com/rkt/) container, or a VM managed by Virtlet. Each of these has different requirements.
 
 What’s more, to manage a container, Kubernetes needs additional information, such as a restart policy, which defines what to do with a container when it terminates, or a liveness probe, which defines an action to detect if a process in a container is still alive from the application’s perspective, such as a web server responding to HTTP requests.
 
@@ -18,9 +18,9 @@ Instead of overloading the existing “thing” with additional properties, Kube
 
 ## Why does Kubernetes allow more than one container in a Pod?
 
-Containers in a Pod run on a “logical host”; they use the same network namespace (in other words, the same IP address and port space), and the same IPC namespace. They can also use shared volumes. These properties make it possible for these containers to efficiently communicate, ensuring data locality. Also, Pods enable you to manage several tightly coupled application containers as a single unit.
+Containers in a Pod run on a “logical host”; they use the same network namespace (in other words, the same IP address and port space), and the same [IPC](https://en.wikipedia.org/wiki/Inter-process_communication) namespace. They can also use shared volumes. These properties make it possible for these containers to efficiently communicate, ensuring data locality. Also, Pods enable you to manage several tightly coupled application containers as a single unit.
 
-So if an application needs several containers running on the same host, why not just make a single container with everything you need? Well first, you’re likely to violate the “one process per container” principle. This is important because With multiple processes in the same container, it is harder to troubleshoot the container because logs from different processes will be mixed together, and it is harder manage the processes lifecycle, for example to take care of “zombie” processes when their parent process dies. Second, using several containers for an application is simpler, more transparent, and enables decoupling software dependencies. Also, more granular containers can be reused between teams.
+So if an application needs several containers running on the same host, why not just make a single container with everything you need? Well first, you’re likely to violate the “one process per container” principle. This is important because with multiple processes in the same container it is harder to troubleshoot the container. That is because logs from different processes will be mixed together and it is harder manage the processes lifecycle. For example to take care of “zombie” processes when their parent process dies. Second, using several containers for an application is simpler, more transparent, and enables decoupling software dependencies. Also, more granular containers can be reused between teams.
 
 
 ## Pre-requisite:
@@ -169,6 +169,11 @@ SUPPORT_URL="https://www.debian.org/support"
 BUG_REPORT_URL="https://bugs.debian.org/"
 ```
 
+Please exit from the shell (`/bin/bash`) session.
+
+```
+root@webserver:/# exit
+```
 
 
 ## Deleting the Pod
@@ -184,16 +189,29 @@ No resources found.
 
 # Ading a 2nd container to a Pod
 
-In the microservices architecture, each module should live in its own space and communicate with other modules following a set of rules. But, sometimes we need to deviate a little from this principle. Suppose you have an Nginx web server running  We need to analyze Nginx logs in real-time. The logs we need to parse are obtained from GET requests to the web server. The developers created a log watcher application that will do this job, and they built a container for it. In typical conditions, you’d have a pod for Nginx and another for the log watcher. However, we need to eliminate any network latency so that the watcher can analyze logs the moment they are available. A solution for this is to place both containers on the same pod.
+In the microservices architecture, each module should live in its own space and communicate with other modules following a set of rules. But, sometimes we need to deviate a little from this principle. Suppose you have an Nginx web server running and we need to analyze its web logs in real-time. The logs we need to parse are obtained from GET requests to the web server. The developers created a log watcher application that will do this job and they built a container for it. In typical conditions, you’d have a pod for Nginx and another for the log watcher. However, we need to eliminate any network latency so that the watcher can analyze logs the moment they are available. A solution for this is to place both containers on the same pod.
 
-Having both containers on the same pod allows them to communicate through the loopback interface as if they were two processes running on the same host. They also share the same storage volume.
-
-
-Let us see  how a pod can host more than one container. Let’s create another YAML file. Call it pods02.yaml and add the following:
+Having both containers on the same pod allows them to communicate through the loopback interface (`ifconfig lo`) as if they were two processes running on the same host. They also share the same storage volume.
 
 
-[ENSURE THAT YOU DELETE OLD PODS IF ITS RUNNING BY ANY CHANCE]
+Let us see  how a pod can host more than one container. Let’s take a look to the [`pods02.yaml`](pods02.yaml) file. It contains the following lines:
 
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webserver
+spec:
+  containers:
+  - name: webserver
+    image: nginx:latest
+    ports:
+    - containerPort: 80
+  - name: webwatcher
+    image: afakharany/watcher:latest
+```
+
+Run the following command:
 
 ```
 $ kubectl apply -f pods02.yaml
@@ -217,7 +235,7 @@ service/kubernetes   ClusterIP   10.12.0.1    <none>        443/TCP   107m
 
 
 ```
-kubectl get po -o wide
+$ kubectl get po -o wide
 NAME        READY   STATUS    RESTARTS   AGE     IP         NODE                                                NOMINATED NODE   READINESS GATES
 webserver   2/2     Running   0          3m37s   10.8.0.5   gke-standard-cluster-1-default-pool-78257330-5hs8   <none>           <none>
 ```
@@ -226,7 +244,7 @@ webserver   2/2     Running   0          3m37s   10.8.0.5   gke-standard-cluster
 
 
 ```
-$kubectl describe po
+$ kubectl describe po
 ```
 
 ```
@@ -257,7 +275,7 @@ Containers:
     Requests:
  ```
 
-Since we have two containers in a pod, we will need to use the -c option with kubectl when we need to address a specific container. For example:
+Since we have two containers in a pod, we will need to use the `-c` option with `kubectl` when we need to address a specific container. For example:
 
 ```
 $ kubectl exec -it webserver -c webwatcher -- /bin/bash
@@ -271,6 +289,12 @@ fe00::0 ip6-mcastprefix
 fe00::1 ip6-allnodes
 fe00::2 ip6-allrouters
 10.8.0.5        webserver
+```
+
+Please exit from the shell (`/bin/bash`) session.
+
+```
+root@webserver:/# exit
 ```
 
 ## Cleaning up
@@ -287,8 +311,10 @@ Let's talk about communication between containers in a Pod. Having multiple cont
 
 The primary purpose of a multi-container Pod is to support co-located, co-managed helper processes for a primary application. There are some general patterns for using helper processes in Pods:
 
-Sidecar containers “help” the main container. Some examples include log or data change watchers, monitoring adapters, and so on. A log watcher, for example, can be built once by a different team and reused across different applications. Another example of a sidecar container is a file or data loader that generates data for the main container.
-Proxies, bridges, and adapters connect the main container with the external world. For example, Apache HTTP server or nginx can serve static files. It can also act as a reverse proxy to a web application in the main container to log and limit HTTP requests. Another example is a helper container that re-routes requests from the main container to the external world. This makes it possible for the main container to connect to localhost to access, for example, an external database, but without any service discovery.
+*Sidecar containers* help the main container. Some examples include log or data change watchers, monitoring adapters, and so on. A log watcher, for example, can be built once by a different team and reused across different applications. Another example of a sidecar container is a file or data loader that generates data for the main container.
+
+*Proxies, bridges, and adapters* connect the main container with the external world. For example, Apache HTTP server or nginx can serve static files. It can also act as a reverse proxy to a web application in the main container to log and limit HTTP requests. 
+Another example is a helper container that re-routes requests from the main container to the external world. This makes it possible for the main container to connect to the localhost to access, for example, an external database, but without any service discovery.
 
 ## Shared volumes in a Kubernetes Pod
 
@@ -296,12 +322,40 @@ In Kubernetes, you can use a shared Kubernetes Volume as a simple and efficient 
 
 Kubernetes Volumes enables data to survive container restarts, but these volumes have the same lifetime as the Pod. That means that the volume (and the data it holds) exists exactly as long as that Pod exists. If that Pod is deleted for any reason, even if an identical replacement is created, the shared Volume is also destroyed and created anew.
 
-A standard use case for a multi-container Pod with a shared Volume is when one container writes logs or other files to the shared directory, and the other container reads from the shared directory. For example, we can create a Pod like so:
+A standard use case for a multi-container Pod with a shared Volume is when one container writes logs or other files to the shared directory, and the other container reads from the shared directory. For example, we can create a Pod like so ([pods03.yaml](pods03.yaml)):
 
-If you look at pods03.yaml file, we define a volume named html. Its type is emptyDir, which means that the volume is first created when a Pod is assigned to a node, and exists as long as that Pod is running on that node. As the name says, it is initially empty. The 1st container runs nginx server and has the shared volume mounted to the directory /usr/share/nginx/html. The 2nd container uses the Debian image and has the shared volume mounted to the directory /html. Every second, the 2nd container adds the current date and time into the index.html file, which is located in the shared volume. When the user makes an HTTP request to the Pod, the Nginx server reads this file and transfers it back to the user in response to the request.
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mc1
+spec:
+  volumes:
+  - name: html
+    emptyDir: {}
+  containers:
+  - name: 1st
+    image: nginx
+    volumeMounts:
+    - name: html
+      mountPath: /usr/share/nginx/html
+  - name: 2nd
+    image: debian
+    volumeMounts:
+    - name: html
+      mountPath: /html
+    command: ["/bin/sh", "-c"]
+    args:
+      - while true; do
+          date >> /html/index.html;
+          sleep 1;
+        done
+```
+
+In this file (`pods03.yaml`) a volume named `html` has been defined. Its type is `emptyDir`, which means that the volume is first created when a Pod is assigned to a node, and exists as long as that Pod is running on that node. As the name says, it is initially empty. The `1st` container runs nginx server and has the shared volume mounted to the directory `/usr/share/nginx/html`. The `2nd` container uses the Debian image and has the shared volume mounted to the directory `/html`. Every second, the `2nd` container adds the current date and time into the `index.html` file, which is located in the shared volume. When the user makes an HTTP request to the Pod, the Nginx server reads this file and transfers it back to the user in response to the request.
 
 
-![Image](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/workshop/pods101/multicontainerpod.png)
+![Image](https://raw.githubusercontent.com/collabnix/kubelabs/master/pods101/multicontainerpod.png)
 
 ```
 kubectl apply -f pods03.yaml
@@ -395,15 +449,15 @@ Events:
 
 
 ```
-kubectl exec mc1 -c 1st -- /bin/cat /usr/share/nginx/html/index.html
+$ kubectl exec mc1 -c 1st -- /bin/cat /usr/share/nginx/html/index.html
 ...
- Wed Jan  8 08:59:14 UTC 2020
+Wed Jan  8 08:59:14 UTC 2020
 Wed Jan  8 08:59:15 UTC 2020
 Wed Jan  8 08:59:16 UTC 2020
  
- $ kubectl exec mc1 -c 2nd -- /bin/cat /html/index.html
- ...
- Wed Jan  8 08:59:14 UTC 2020
+$ kubectl exec mc1 -c 2nd -- /bin/cat /html/index.html
+...
+Wed Jan  8 08:59:14 UTC 2020
 Wed Jan  8 08:59:15 UTC 2020
 Wed Jan  8 08:59:16 UTC 2020
 ```
