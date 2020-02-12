@@ -1,1 +1,0 @@
-## Kubelabs Interview Questions & Answer 
