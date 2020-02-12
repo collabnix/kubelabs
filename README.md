@@ -213,7 +213,7 @@
 # Further References:
 
 - [Kubetools](https://kubetools.collabnix.com)
-- [Kubelabs Interview Questions & Answer](./kubelabs_Interview/)
+
 
 
 [Next:  Kubernetes201](https://github.com/collabnix/kubelabs/blob/master/201/README.md)
