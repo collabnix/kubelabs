@@ -136,7 +136,7 @@ Error from server (Forbidden): pods "tomcat-5bf5db7bbd-xvwlr" is forbidden: User
 ```
 
 As you can see, the user is not able to delete the pods, yet it was able to list them. To understand why this behaviour happened, let’s have a look at the get-pods Role rules:
-	• The apiGroups is an array that contains the different API namespaces that this rule applies to. For example, a Pod definition uses apiVersion: v1. In our case, we chose [*], which means any API namespace.
+	• The apiGroups is an array that contains the different API namespaces that this rule applies to. For example, a Pod definition uses apiVersion: v1. In our case, we chose "[\*]" which means any API namespace.
 	• The resources is an array that defines which resources this rule applies to. For example, we could give this user access to pods, jobs, and deployments.
 	• The verbs in an array that contains the allowed verbs. The verb in Kubernetes defines the type of action you need to apply to the resource. For example, the list verb is used against collections while "get" is used against a single resource. So, given the current access level granted to div, a command like kubectl --user=div get pods hostpath-pd will fail while kubectl --user=div get pods will get accepted. The reason is that the first command used the get verb because it requested information about a single pod. For more information about the different verbs used by Kubernetes check the official documentation.
 Let’s assume that we need div to have read-only access to the pods, both as a collection and as a single resource (get and list verbs). But we don’t want it to delete Pods directly. Instead, we grant it access to the Deployment resource and, through Deployments, it can delete and recreate pods (like though rolling updates). A policy to achieve this may look as follows:
@@ -144,17 +144,17 @@ Let’s assume that we need div to have read-only access to the pods, both as a 
 ```
 [node1 ~]$ rm -f role.yaml
 [node1 ~]$ cat > role.yaml
-	kind: Role
-	apiVersion: rbac.authorization.k8s.io/v1
-	metadata:
-	 name: get-pods
-	rules:
-	 - apiGroups: ["*"]
-	   resources: ["pods"]
-	   verbs: ["list","get","watch"]
-	 - apiGroups: ["extensions","apps"]
-	   resources: ["deployments"]
-	   verbs: ["get","list","watch","create","update","patch","delete"]
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+ name: get-pods
+rules:
+ - apiGroups: ["*"]
+   resources: ["pods"]
+   verbs: ["list","get","watch"]
+ - apiGroups: ["extensions","apps"]
+   resources: ["deployments"]
+   verbs: ["get","list","watch","create","update","patch","delete"]
 ^C
 [node1 ~]$ kubectl apply -f role.yaml
 role.rbac.authorization.k8s.io/get-pods configured
@@ -248,6 +248,8 @@ But, sometimes you need to specify Roles that are not bound to a specific namesp
 
 ClusterRoles work the same as Roles, but they are applied to the cluster as a whole. They are typically used with service accounts (accounts used and managed internally by the cluster). For example, the Kubernetes External DNS Incubator (https://github.com/kubernetes-incubator/external-dns) project uses a ClusterRole to gain the necessary permissions it needs to work. The External DNS Incubator can be used to utilize external DNS servers for Kubernetes service discovery. The application needs read-only access to Services and Ingresses on all namespaces, but it shouldn't be granted any further privileges (like modifying or deleting resources). The ClusterRole for such an account should look as follows:
 
+```
+[node1 ~]$ cat > cluster-role-binding.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -277,7 +279,12 @@ roleRef:
   kind: ClusterRole
   name: external-dns
   apiGroup: rbac.authorization.k8s.io
-
+^C
+[node1 ~]$ kubectl apply -f cluster-role-binding.yaml
+serviceaccount/external-dns created
+clusterrole.rbac.authorization.k8s.io/external-dns created
+clusterrolebinding.rbac.authorization.k8s.io/external-dns-viewer created
+```
 
 The above definition contains three definitions:
 	• A service account to use with the container running the application.
@@ -287,8 +294,8 @@ Another everyday use case with ClusterRoles is granting cluster administrators d
 
 ## Note
 
-	• Kubernetes uses RBAC to control different access levels to its resources depending on the rules set in Roles or ClusterRoles.
-	• Roles and ClusterRoles use API namespaces, verbs and resources to secure access.
-	• Roles and ClusterRoles are ineffective unless they are linked to a subject (User, serviceAccount...etc) through RoleBinding or ClusterRoleBinding.
-	• Roles work within the constraints of a namespace. It would default to the “default” namespace if none was specified.
-	• ClusterRoles are not bound to a specific namespace as they apply to the cluster as a whole.
+• Kubernetes uses RBAC to control different access levels to its resources depending on the rules set in Roles or ClusterRoles.
+• Roles and ClusterRoles use API namespaces, verbs and resources to secure access.
+• Roles and ClusterRoles are ineffective unless they are linked to a subject (User, serviceAccount...etc) through RoleBinding or ClusterRoleBinding.
+• Roles work within the constraints of a namespace. It would default to the “default” namespace if none was specified.
+• ClusterRoles are not bound to a specific namespace as they apply to the cluster as a whole.
