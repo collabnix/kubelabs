@@ -136,9 +136,11 @@ Error from server (Forbidden): pods "tomcat-5bf5db7bbd-xvwlr" is forbidden: User
 ```
 
 As you can see, the user is not able to delete the pods, yet it was able to list them. To understand why this behaviour happened, let’s have a look at the get-pods Role rules:
+
 	• The apiGroups is an array that contains the different API namespaces that this rule applies to. For example, a Pod definition uses apiVersion: v1. In our case, we chose "[\*]" which means any API namespace.
 	• The resources is an array that defines which resources this rule applies to. For example, we could give this user access to pods, jobs, and deployments.
 	• The verbs in an array that contains the allowed verbs. The verb in Kubernetes defines the type of action you need to apply to the resource. For example, the list verb is used against collections while "get" is used against a single resource. So, given the current access level granted to div, a command like kubectl --user=div get pods hostpath-pd will fail while kubectl --user=div get pods will get accepted. The reason is that the first command used the get verb because it requested information about a single pod. For more information about the different verbs used by Kubernetes check the official documentation.
+	
 Let’s assume that we need div to have read-only access to the pods, both as a collection and as a single resource (get and list verbs). But we don’t want it to delete Pods directly. Instead, we grant it access to the Deployment resource and, through Deployments, it can delete and recreate pods (like though rolling updates). A policy to achieve this may look as follows:
 
 ```
@@ -162,6 +164,7 @@ role.rbac.authorization.k8s.io/get-pods configured
 
 
 We made two changes here:
+
 	• Added the get and watch to the allowed verbs against Pods.
 	• Created a new rule that targets Deployments and specified the necessary verbs to give the user full permissions.
 Now, let’s test the different actions that our user is allowed or not allowed to do:
@@ -287,9 +290,11 @@ clusterrolebinding.rbac.authorization.k8s.io/external-dns-viewer created
 ```
 
 The above definition contains three definitions:
+
 	• A service account to use with the container running the application.
 	• A ClusterRole that grants the read-only verbs to the Service and Ingress resources.
 	• A ClusterRoleBinding which works that same as a RoleBinding but with ClusterRoles. The subject here is ServiceAccount rather than User, and its name is external-dns.
+
 Another everyday use case with ClusterRoles is granting cluster administrators different privileges depending on their roles. For example, a junior cluster operator should have read-only access to resources to get acquainted; then more access can be granted later on.
 
 ## Note
