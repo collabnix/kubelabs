@@ -294,8 +294,8 @@ Another everyday use case with ClusterRoles is granting cluster administrators d
 
 ## Note
 
-• Kubernetes uses RBAC to control different access levels to its resources depending on the rules set in Roles or ClusterRoles.
-• Roles and ClusterRoles use API namespaces, verbs and resources to secure access.
-• Roles and ClusterRoles are ineffective unless they are linked to a subject (User, serviceAccount...etc) through RoleBinding or ClusterRoleBinding.
-• Roles work within the constraints of a namespace. It would default to the “default” namespace if none was specified.
-• ClusterRoles are not bound to a specific namespace as they apply to the cluster as a whole.
+	• Kubernetes uses RBAC to control different access levels to its resources depending on the rules set in Roles or ClusterRoles.
+	• Roles and ClusterRoles use API namespaces, verbs and resources to secure access.
+	• Roles and ClusterRoles are ineffective unless they are linked to a subject (User, serviceAccount...etc) through RoleBinding or ClusterRoleBinding.
+	• Roles work within the constraints of a namespace. It would default to the “default” namespace if none was specified.
+	• ClusterRoles are not bound to a specific namespace as they apply to the cluster as a whole.
