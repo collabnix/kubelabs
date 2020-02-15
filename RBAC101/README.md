@@ -1,7 +1,6 @@
 # Role-Based Access Control (RBAC)
 
 
-## Role-Based Access Control (RBAC) Overview
 RBAC is a security design that restricts access to valuable resources based on the role the user holds, hence the name role-based. To understand the importance and the need of having RBAC policies in place, let’s consider a system that doesn’t use it. Let’s say that you have an HR management solution, but the only security access measure used is that users must authenticate themselves through a username and a password. Having provided their credentials, users gain full access to every module in the system (recruitment, training, staff performance, salaries, etc.). A slightly more secure system will differentiate between regular user access and “admin” access, with the latter providing potentially destructive privileges. For example, ordinary users cannot delete a module from the system, whereas an administrator can. But still, users without admin access can read and modify the module’s data regardless of whether their current job entails doing this.
 
 If you worked as a Linux administrator for any length of time, you appreciate the importance of having a security system that implements a security matrix of access and authority. In the old days of Linux and UNIX, you could either be a “normal” user with minimal access to the system resources, or you can have “root” access. Root access virtually gives you full control over the machine that you can accidentally bring the whole system down. Needless to say that if an intruder could gain access to this root account, your entire system is at high risk. Accordingly, RBAC systems were introduced.
@@ -10,7 +9,13 @@ In a system that uses RBAC, there is minimal mention of the “superuser” or t
 
 ## Creating a Kubernetes User Account Using X509 Client Certificate
 
-We would be using PWK as our playground. To help you setup a 3 node cluster refer:- https://collabnix.github.io/kubelabs/kube101.html
+### Pre-requisite
+
+- Open https://labs.play-with-k8s.com/
+- Follow https://collabnix.github.io/kubelabs/kube101.html to create 3 Node K8s Cluster
+
+
+## Creating Client Certificates
 
 To create a client certificate in PWK you need to have openssl tool installed. To do that run the follwoing command
 ```
