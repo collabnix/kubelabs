@@ -140,8 +140,8 @@
 
 ## RBAC101
 - Introductory Slides (Pending)
-- Role-Based Access Control (RBAC) Overview
-- Creating a Kubernetes User Account Using X509 Client Certificate
+- [Role-Based Access Control (RBAC) Overview](./RBAC101/#role-based-access-control-rbac)
+- [Creating a Kubernetes User Account Using X509 Client Certificate](./RBAC101/#creating-a-kubernetes-user-account-using-x509-client-certificate)
 - Note For Local And Self-Hosted Clusters Users
 - Authorization Using Kubernetes Roles
 - Cluster-Wide Authorization Using ClusterRoles
