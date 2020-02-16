@@ -1,8 +1,3 @@
----
-layout: default
-title: Kubernetes - Beginners Track - Setting Up Alert Manager for Prometheus On Kubernetes
-description: collabnix | DockerLab | Kubernetes - Beginners Track
----
 
 # Setting Up Alert Manager for Prometheus On Kubernetes
 
