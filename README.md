@@ -255,8 +255,8 @@
 
 ## Prometheus 
 
-- [How To Setup Prometheus Monitoring On Kubernetes Cluster](./101/Kubernetes_monitoring_alerting/Prometheus_Monitoring_On_Kubernetes_Cluster.md)
-- [Setting up Alert Manager on Kubernetes](./101/Kubernetes_monitoring_alerting/alert_manager_on_K8.md)
+- [How To Setup Prometheus Monitoring On Kubernetes Cluster](https://github.com/collabnix/kubelabs/blob/master/101/Kubernetes_monitoring_alerting/Prometheus_Monitoring_On_Kubernetes_Cluster.md)
+- [Setting up Alert Manager on Kubernetes](https://github.com/collabnix/kubelabs/blob/master/101/Kubernetes_monitoring_alerting/alert_manager_on_K8.md)
 - [Prometheus Self Discovery on Kubernetes](https://developer.sh/posts/prometheus-self-discovery)
 
 
