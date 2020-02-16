@@ -178,4 +178,4 @@ kubectl create -f prometheus-service.yaml --namespace=monitoring
 
 ## Contributor - 
 
-Sangam biradar - smbiradar14@gmail.com - engineITops.icu 
+[Sangam biradar](https://www.linkedin.com/in/sangambiradar14/)
