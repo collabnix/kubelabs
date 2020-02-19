@@ -209,6 +209,7 @@
 - [Sangam Biradar](https://twitter.com/BiradarSangam)
 - Rachit Mehrotra
 - [Saiyam Pathak](https://twitter.com/SaiyamPathak)
+- [Divyajeet Singh](https://www.linkedin.com/in/divyajeet-singh)
 
 # Kubernetes for Beginners
 
