@@ -148,7 +148,7 @@
 
 ## Service Catalog101
 - Introductory Slides (Pending)
-- What is Kubernetes Service Catalog?
+- [What is Kubernetes Service Catalog?](./ServiceCatalog101/what-is-service-catalog.md)
 - The Kubernetes Service 
      - Catalog Resources
      - Catalog components
