@@ -17,7 +17,7 @@ Kubernetes is  highly modular and open-source project. Several components were l
 	• All system daemons (background processes, for example, kubelet) running on a particular node can communicate with the pods running on the same node.
 	• Pods that use the host network must be able to contact all other pods on all other nodes without using NAT. Notice that the host network is only supported on Linux hosts.
 
-![Cluster Networking](Cluster Networking.png)
+![Cluster Networking](https://github.com/collabnix/kubelabs/blob/master/ClusterNetworking101/Cluster%20Networking.png)
 
 So, as you can see Kubernetes eliminates the need for NAT or link containers. 
 In Kubernetes every Pod gets its own IP address. This means you do not need to explicitly create links between Pods and you almost never need to deal with mapping container ports to host ports. This creates a clean, backwards-compatible model where Pods can be treated much like VMs or physical hosts from the perspectives of port allocation, naming, service discovery, load balancing, application configuration, and migration.
