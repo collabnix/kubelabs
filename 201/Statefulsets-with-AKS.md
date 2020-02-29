@@ -249,11 +249,11 @@ statefulset.apps/counter-div scaled
 divyajeet@Azure:~/collabnix$ kubectl scale statefulsets counter-div --replicas=4
 statefulset.apps/counter-div scaled
 ```
-! [img] (https://github.com/collabnix/kubelabs/blob/master/201/Picture1.png)
+![image1](https://github.com/collabnix/kubelabs/blob/master/201/Picture1.png)
 
-! [img] (https://github.com/collabnix/kubelabs/blob/master/201/Picture2.png)
+![image2](https://github.com/collabnix/kubelabs/blob/master/201/Picture2.png)
 
-! [img] (https://github.com/collabnix/kubelabs/blob/master/201/Picture1.png)
+![image3](https://github.com/collabnix/kubelabs/blob/master/201/Picture3.png)
 
 ## Remember to clean-up
 ```
