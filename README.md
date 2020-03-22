@@ -201,13 +201,14 @@
 
 ## Monitoring101
 - Introductory Slides (Pending)
-- Core Monitoring Pipeline
-- Services Monitoring Pipeline
-- What should you consider in Kubernetes Services Pipeline?
-- What about Metrics Visualization?
-- Changes To Watch For
-  - Heapster is Going Away
-  - Metrics Server Will Get More Cool Features
+- [Monitoring in Kubernetes](./Monitoring101/README.md/#Monitoring-in-Kubernetes)
+- [Core Monitoring Pipeline](./Monitoring101/README.md/#Core-Monitoring-Pipeline)
+- [Services Monitoring Pipeline](./Monitoring101/README.md/#Service-Monitoring-Pipeline)
+- [What should you consider in Kubernetes Services Pipeline?](./Monitoring101/README.md/#What-should-you-consider-in-Kubernetes-Services-Pipeline)
+- [What about Metrics Visualization?](./Monitoring101/README.md/#Metrics-Visulization)
+- [Changes To Watch For](./Monitoring101/README.md/#Changes-To-Watch-For)
+  - [Heapster is Going Away](./Monitoring101/README.md/#Heapster-is-going-away)
+  - [Metrics Server Will Get More Cool Features](./Monitoring101/README.md/#Metrics-Server-Will-Get-More-Cool-Features)
 
 # Contributors
 
