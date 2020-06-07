@@ -141,9 +141,41 @@ Changes may require instances to restart: kops rolling-update cluster
 [Captains-Bay]🚩 >
 ```
 
+
 Now you can see K8s cluster under Context UI.
 
 ![My image](https://raw.githubusercontent.com/collabnix/kubelabs/master/dockerdesktopformac/context-aws.png)
+
+```
+Suggestions:
+ * validate cluster: kops validate cluster
+ * list nodes: kubectl get nodes --show-labels
+ * ssh to the master: ssh -i ~/.ssh/id_rsa admin@api.ajeet.k8s.local
+ * the admin user is specific to Debian. If not using Debian please use the appropriate user based on your OS.
+ * read about installing addons at: https://github.com/kubernetes/kops/blob/master/docs/operations/addons.md.
+```
+
+```
+[Captains-Bay]🚩 >  kubectl get nodes
+NAME                            STATUS   ROLES    AGE    VERSION
+ip-172-20-40-58.ec2.internal    Ready    node     107s   v1.17.6
+ip-172-20-41-233.ec2.internal   Ready    node     103s   v1.17.6
+ip-172-20-43-50.ec2.internal    Ready    master   3m7s   v1.17.6
+ip-172-20-52-114.ec2.internal   Ready    node     104s   v1.17.6
+[Captains-Bay]🚩 >
+```
+
+```
+kops get instancegroups
+NAME			ROLE	MACHINETYPE	MIN	MAX	ZONES
+master-us-east-1a	Master	t3.medium	1	1	us-east-1a
+nodes			Node	t2.medium	3	3	us-east-1a
+```
+
+```
+kops delete cluster --state=s3://kubernetes-aws-io --yes
+```
+
 
 
 [Next >>](https://collabnix.github.io/kubelabs/kubectl-for-docker.html)
