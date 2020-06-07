@@ -46,7 +46,6 @@ aws s3api put-bucket-versioning --bucket ${bucket_name} --versioning-configurati
 
 ```
  aws route53 create-hosted-zone --name collabnix.com --caller-reference 2
- 
 ```
 
 ```
@@ -95,8 +94,8 @@ Suggestions:
 
 Finally configure your cluster with: kops update cluster ajeet.k8s.local --yes
 
-[Captains-Bay]🚩 >
-```
+
+
 
 
 ```
