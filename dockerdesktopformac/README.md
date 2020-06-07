@@ -29,7 +29,7 @@ bucket_name=collabstore
 
 ## Create a AWS Bucket
 ```
-[Captains-Bay]🚩 >  baws s3api create-bucket --bucket ${bucket_name} --region us-east-1
+[Captains-Bay]🚩 >  aws s3api create-bucket --bucket ${bucket_name} --region us-east-1
 {
     "Location": "/collabstore"
 }
@@ -66,6 +66,13 @@ export KOPS_CLUSTER_NAME=ajeet.k8s.local
 [Captains-Bay]🚩 >  export KOPS_STATE_STORE=s3://${bucket_name}
 ```
 
+```
+ssh-keygen -t rsa
+```
+
+```
+kops create secret --name ajeet.k8s.local sshpublickey admin -i ~/.ssh/id_rsa.pub
+```
 
 
 ```
@@ -74,7 +81,7 @@ export KOPS_CLUSTER_NAME=ajeet.k8s.local
 > --node-size=t2.medium \
 > --zones=us-east-1a \
 > --name=${KOPS_CLUSTER_NAME}
-...
+```
 
 Must specify --yes to apply changes
 
