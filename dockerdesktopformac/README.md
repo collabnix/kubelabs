@@ -172,9 +172,13 @@ master-us-east-1a	Master	t3.medium	1	1	us-east-1a
 nodes			Node	t2.medium	3	3	us-east-1a
 ```
 
+![My Image](https://github.com/collabnix/kubelabs/blob/master/dockerdesktopformac/Screen%20Shot%202020-06-07%20at%2010.39.20%20AM.png)
+
+
 ```
 kops delete cluster --state=s3://kubernetes-aws-io --yes
 ```
+
 
 
 
