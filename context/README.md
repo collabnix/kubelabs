@@ -3,7 +3,7 @@
 Say, you have multiple Kubernetes cluster as listed below:
 
 ```
-[Captains-Bay]🚩 >  kubectl config dview|more
+[Captains-Bay]🚩 >  kubectl config view|more
 apiVersion: v1
 clusters:
 - cluster:
