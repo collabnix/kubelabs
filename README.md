@@ -22,6 +22,11 @@
 ### Docker Desktop for Mac
 
   - [Setting up Kubernetes Cluster on AWS using Kops running on Docker Desktop for Mac](./dockerdesktopformac/README.md)
+  
+  
+### Ubuntu
+
+  - [Setting up Kubernetes on Ubuntu](https://github.com/collabnix/kubelabs/blob/master/install/ubuntu/README.md)
 
 
 ## Using Kubectl 
