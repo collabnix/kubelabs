@@ -71,6 +71,12 @@ $ helm repo add bitnami https://charts.bitnami.com/bitnami
 $ helm upgrade my-release bitnami/<chart>
 ```
 
+## Deploy Helm
+
+```
+helm install mycollabnixblog -f values.yaml stable/wordpress
+```
+
 ## Accessing  WordPress site from outside the cluster
 
 First check the status
