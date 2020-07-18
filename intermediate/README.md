@@ -1,6 +1,9 @@
 # Intermediate Track
 
 
+  - Helm
+    - [Installing WordPress on GKE using Docker Desktop](https://github.com/collabnix/kubelabs/blob/master/helm/wordpress/README.md)
+
    - Scaling your containers
      - Getting ready
      - Scale up and down manually with the kubectl scale command
