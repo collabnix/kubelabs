@@ -106,11 +106,3 @@ WordPress Admin URL: http://35.194.179.135/admin
 
 
 
-2. Open a browser and access WordPress using the obtained URL.
-
-3. Login with the following credentials below to see your blog:
-
-  echo Username: sammy
-  echo Password: $(kubectl get secret --namespace default myblog-wordpress -o jsonpath="{.data.wordpress-password}" | base64 --decode)
-
-
