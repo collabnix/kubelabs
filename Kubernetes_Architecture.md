@@ -30,7 +30,7 @@ Any developer can package up applications and deploy them on Kubernetes with bas
 
 - It is a worker machine in Kubernetes (used to be known as minion).
 - This machine performs the requested tasks. Each Node is controlled by the Master Node.
-- Runs containers inside pods.
+- Runs pods (that have containers inside them).
 - This is where the Docker engine runs and takes care of downloading images and starting containers.
 
 ## Kubelet
@@ -56,9 +56,9 @@ Any developer can package up applications and deploy them on Kubernetes with bas
 
 ## Deployment:
 
-- A deployment is a blueprint for the Pods to be create (see [Pod](https://collabnix.github.io/kubelabs/pods101/deploy-your-first-nginx-pod.html)).
+- A deployment is a blueprint for the Pods to be created (see [Pod](https://collabnix.github.io/kubelabs/pods101/deploy-your-first-nginx-pod.html)).
 - Handles update of its respective Pods.
-- A deployment will create a Pod by it’s spec from the template.
+- A deployment will create a Pod by its spec from the template.
 - Their target is to keep the Pods running and update them (with rolling-update) in a more controlled way.
 - Pod(s) resource usage can be specified in the deployment.
 - Deployment can scale up replicas of Pods.
