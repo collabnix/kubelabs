@@ -2,7 +2,7 @@
 
 
 
-## K3s on Bare Metal
+## K3s 
 
 - [Installing K3s on Ubuntu 18.04](https://github.com/collabnix/dockerlabs/blob/master/kubernetes/install/k3s/install-on-ubuntu01804.md)
 
@@ -21,6 +21,12 @@
 - [How To Setup Prometheus Monitoring On Kubernetes Cluster](https://github.com/collabnix/kubelabs/blob/master/101/Kubernetes_monitoring_alerting/Prometheus_Monitoring_On_Kubernetes_Cluster.md)
 - [Setting up Alert Manager on Kubernetes](https://github.com/collabnix/kubelabs/blob/master/101/Kubernetes_monitoring_alerting/alert_manager_on_K8.md)
 - [Prometheus Self Discovery on Kubernetes](https://developer.sh/posts/prometheus-self-discovery)
+
+
+## Best Practices
+
+
+## Kubernetes on Production
 
 
 # Contributors
