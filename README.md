@@ -110,7 +110,7 @@
 
 - [Creating Your First Kubernetes Job](./Jobs101/README.md#creating-your-first-kubernetes-job)
 - [Multiple Parallel Jobs (Work Queue)](./Jobs101/README.md#multiple-parallel-jobs-work-queue)
-- Kubernetes Job Failure and Concurrency Considerations
+
 
 
 ## Ingress101
