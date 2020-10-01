@@ -20,6 +20,15 @@ $ curl -sfL https://get.k3s.io | sh -
 Created symlink /etc/systemd/system/multi-user.target.wants/k3s.service → /etc/systemd/system/k3s.service.
 [INFO]  systemd: Starting k3s
 ```
+# Running K3s with Docker Runtime
+
+- K3s by default comes with containerd runtime, to use docker as container runtime for K3s then use be
+low docker argument with K3s command
+
+```
+$ curl -sfL https://get.k3s.io | sh -s - --docker
+
+```
 
 ```
 $ k3s --version
