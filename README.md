@@ -139,9 +139,7 @@
      - Catalog Resources
      - Catalog components
   - Creating a sample Service Catalog
-  - Installing Service Catalog Helm Repo
-   - Installing Service Catalog Helm Chart
-   - Installing Service Catalog Helm Chart
+  - [Installing Service Catalog Helm Chart](./ServiceCatalog101/Create Install-Service-Catalog-Helm.md)
    - Installing minibroker
  - Viewing the classes and plans for the Service Broker
  - Using the Service Broker services
@@ -200,6 +198,7 @@
 - Rachit Mehrotra
 - [Saiyam Pathak](https://twitter.com/SaiyamPathak)
 - [Divyajeet Singh](https://www.linkedin.com/in/divyajeet-singh)
+- [Apurva Bhandari](https://www.linkedin.com/in/apurvabhandari-linux)
 
 # Kubernetes for Beginners
 
