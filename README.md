@@ -139,7 +139,7 @@
      - Catalog Resources
      - Catalog components
   - Creating a sample Service Catalog
-  - [Installing Service Catalog Helm Chart](./ServiceCatalog101/Create Install-Service-Catalog-Helm.md)
+  - [Installing Service Catalog Helm Chart](./ServiceCatalog101/Install-Service-Catalog-Helm.md)
    - Installing minibroker
  - Viewing the classes and plans for the Service Broker
  - Using the Service Broker services
