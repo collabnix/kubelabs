@@ -48,6 +48,9 @@
 
  - [Introductory Slides](./Pods101_slides/Pods101.html) 
  - [Deploying Your First Nginx Pod](./pods101/deploy-your-first-nginx-pod.md) 
+ 
+ [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/Kl7ek_vltTE/0.jpg)](https://www.youtube.com/watch?v=Kl7ek_vltTE)
+ 
  - [Viewing Your Pod](./pods101/deploy-your-first-nginx-pod.md#viewing-your-pods) 
  - [Where is your Pod running on?](./pods101/deploy-your-first-nginx-pod.md#which-node-is-this-pod-running-on) 
  - [Pod Output in JSON](./pods101/deploy-your-first-nginx-pod.md#output-in-json) 
