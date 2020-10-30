@@ -25,6 +25,8 @@
 
   - [Setting up Kubernetes Cluster on AWS using Kops running on Docker Desktop for Mac](./dockerdesktopformac/README.md)
   
+  [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/Yvwoa1QkNOk/0.jpg)](https://www.youtube.com/watch?v=Yvwoa1QkNOk)
+  
   
 ### Ubuntu
 
