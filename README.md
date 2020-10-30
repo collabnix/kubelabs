@@ -11,10 +11,14 @@
 ### PWK:
 
   - [Preparing 5-Node Kubernetes Cluster on Play with Kubernetes Platform](./kube101.md) 
+  
+ 
   [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/0mJBRYyc-Ek/0.jpg)](https://www.youtube.com/watch?v=0mJBRYyc-Ek)
   
   - [Setting up WeaveScope For Visualization on PWK](./weave-pwk.md) 
   - [Running Portainer on 5 Node Kubernetes Cluster](https://github.com/collabnix/kubelabs/tree/master/portainer#running-portainer-on-5-node-kubernetes-cluster)
+  [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/vBEcnb4jvnk/0.jpg)](https://www.youtube.com/watch?v=vBEcnb4jvnk)
+  
   
 ### GKE
 
