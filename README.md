@@ -90,6 +90,10 @@
 
  - [How Kubernetes Selects the Right node?](./Scheduler101/README.md)
  - [Node Affinity](./Scheduler101/node_affinity.md) 
+ 
+ [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/ZbieLVKuswE/0.jpg)](https://www.youtube.com/watch?v=ZbieLVKuswE)
+ 
+ 
  - [Anti-Node Affinity](./Scheduler101/Anti-Node-Affinity.md) 
  - [Nodes taints and tolerations](./Scheduler101/Nodes_taints_and_tolerations.md) 
  
