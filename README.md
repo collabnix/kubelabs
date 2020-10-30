@@ -24,6 +24,9 @@
 ### GKE
 
   - [Setting up GKE Cluster](./gke-setup.md) 
+  
+  [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/m1DwEpsO-Zw/0.jpg)](https://www.youtube.com/watch?v=m1DwEpsO-Zw)
+  
   - [Setting up Weavescope for Visualization on GKE](./weave.md) 
   
 ### Docker Desktop for Mac
