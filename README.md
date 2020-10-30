@@ -64,6 +64,11 @@
 
  - [Introductory Slides](https://collabnix.github.io/kubelabs/SlidesReplicaSet101/ReplicaSet101.html) 
  - [Creating Your First ReplicaSet - 4 Pods serving Nginx](./replicaset101/README.md#how-does-replicaset-manage-pods) 
+ 
+ [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/9l3FxWZOPdc/0.jpg)](https://www.youtube.com/watch?v=9l3FxWZOPdc)
+ 
+ 
+ 
  - [Removing a Pod from ReplicaSet](./replicaset101/README.md#removing-a-pod-from-a-replicaset) 
  - [Scaling & Autoscaling a ReplicaSet](./replicaset101/README.md#scaling-and-autoscaling-replicasets) 
  - [Best Practices](./replicaset101/README.md#best-practices) 
@@ -140,6 +145,9 @@
 ## RBAC101
   
   - [Role-Based Access Control (RBAC) Overview](./RBAC101/#role-based-access-control-rbac)
+  
+ [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/frshjK-imCY/0.jpg)](https://www.youtube.com/watch?v=frshjK-imCY)
+  
   - [Creating a Kubernetes User Account Using X509 Client Certificate](./RBAC101/#creating-a-kubernetes-user-account-using-x509-client-certificate)
   
 
