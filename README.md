@@ -124,6 +124,9 @@
  
  - [Why DaemonSets in Kubernetes?](./DaemonSet101/README.md)
  - [Creating your first DeamonSet Deployment](./DaemonSet101/README.md#creating-your-first-deamonset-deployment)
+
+ [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/8KAqOFsBiWg/0.jpg)](https://www.youtube.com/watch?v=8KAqOFsBiWg)
+ 
  - [Restrict DaemonSets To Run On Specific Nodes](./DaemonSet101/README.md#restrict-daemonsets-to-run-on-specific-nodes)
  - [How To Reach a DaemonSet Pod](./DaemonSet101/README.md#how-to-reach-a-daemonset-pod)
 
