@@ -120,8 +120,8 @@ Address 1: 10.0.162.149
 
 For some parts of your applications you may want to expose a Service onto an external IP address. Kubernetes supports two ways of doing this: NodePorts and LoadBalancers. The Service created in the last section already used NodePort, so your nginx HTTPS replica is ready to serve traffic on the internet if your node has a public IP.
 
-``
-kubectl get svc my-nginx -o yaml | grep nodePort -C 5
+```
+$ kubectl get svc my-nginx -o yaml | grep nodePort -C 5
 ```
 
 ```
@@ -144,7 +144,7 @@ spec:
 ```
 
 ```
-kubectl get nodes -o yaml | grep ExternalIP -C 1
+$ kubectl get nodes -o yaml | grep ExternalIP -C 1
     - address: 104.197.41.11
       type: ExternalIP
     allocatable:
