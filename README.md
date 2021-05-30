@@ -11,9 +11,6 @@
 ### PWK:
 
   - [Preparing 5-Node Kubernetes Cluster on Play with Kubernetes Platform](./kube101.md) 
-  
-
-  
   - [Setting up WeaveScope For Visualization on PWK](./weave-pwk.md) 
   - [Running Portainer on 5 Node Kubernetes Cluster](https://github.com/collabnix/kubelabs/tree/master/portainer#running-portainer-on-5-node-kubernetes-cluster)
   
@@ -22,16 +19,11 @@
 ### GKE
 
   - [Setting up GKE Cluster](./gke-setup.md) 
-  
-
-  
   - [Setting up Weavescope for Visualization on GKE](./weave.md) 
   
 ### Docker Desktop for Mac
 
   - [Setting up Kubernetes Cluster on AWS using Kops running on Docker Desktop for Mac](./dockerdesktopformac/README.md)
-  
- 
   
   
 ### Ubuntu
@@ -49,8 +41,6 @@
 
  - [Introductory Slides](https://collabnix.github.io/kubelabs/Pods101_slides/Pods101.html) 
  - [Deploying Your First Nginx Pod](./pods101/deploy-your-first-nginx-pod.md) 
- 
- 
  - [Viewing Your Pod](./pods101/deploy-your-first-nginx-pod.md#viewing-your-pods) 
  - [Where is your Pod running on?](./pods101/deploy-your-first-nginx-pod.md#which-node-is-this-pod-running-on) 
  - [Pod Output in JSON](./pods101/deploy-your-first-nginx-pod.md#output-in-json) 
@@ -64,10 +54,6 @@
 
  - [Introductory Slides](https://collabnix.github.io/kubelabs/SlidesReplicaSet101/ReplicaSet101.html) 
  - [Creating Your First ReplicaSet - 4 Pods serving Nginx](./replicaset101/README.md#how-does-replicaset-manage-pods) 
-
- 
- 
- 
  - [Removing a Pod from ReplicaSet](./replicaset101/README.md#removing-a-pod-from-a-replicaset) 
  - [Scaling & Autoscaling a ReplicaSet](./replicaset101/README.md#scaling-and-autoscaling-replicasets) 
  - [Best Practices](./replicaset101/README.md#best-practices) 
@@ -89,9 +75,6 @@
 
  - [How Kubernetes Selects the Right node?](./Scheduler101/README.md)
  - [Node Affinity](./Scheduler101/node_affinity.md) 
-
- 
- 
  - [Anti-Node Affinity](./Scheduler101/Anti-Node-Affinity.md) 
  - [Nodes taints and tolerations](./Scheduler101/Nodes_taints_and_tolerations.md) 
  
@@ -149,8 +132,6 @@
 ## RBAC101
   
   - [Role-Based Access Control (RBAC) Overview](./RBAC101/#role-based-access-control-rbac)
-  
-  
   - [Creating a Kubernetes User Account Using X509 Client Certificate](./RBAC101/#creating-a-kubernetes-user-account-using-x509-client-certificate)
   
 
