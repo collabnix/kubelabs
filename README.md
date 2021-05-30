@@ -12,20 +12,18 @@
 
   - [Preparing 5-Node Kubernetes Cluster on Play with Kubernetes Platform](./kube101.md) 
   
- 
-  [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/0mJBRYyc-Ek/0.jpg)](https://www.youtube.com/watch?v=0mJBRYyc-Ek)
+
   
   - [Setting up WeaveScope For Visualization on PWK](./weave-pwk.md) 
   - [Running Portainer on 5 Node Kubernetes Cluster](https://github.com/collabnix/kubelabs/tree/master/portainer#running-portainer-on-5-node-kubernetes-cluster)
   
- [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/vBEcnb4jvnk/0.jpg)](https://www.youtube.com/watch?v=vBEcnb4jvnk)
   
   
 ### GKE
 
   - [Setting up GKE Cluster](./gke-setup.md) 
   
-  [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/m1DwEpsO-Zw/0.jpg)](https://www.youtube.com/watch?v=m1DwEpsO-Zw)
+
   
   - [Setting up Weavescope for Visualization on GKE](./weave.md) 
   
@@ -33,7 +31,7 @@
 
   - [Setting up Kubernetes Cluster on AWS using Kops running on Docker Desktop for Mac](./dockerdesktopformac/README.md)
   
-  [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/Yvwoa1QkNOk/0.jpg)](https://www.youtube.com/watch?v=Yvwoa1QkNOk)
+ 
   
   
 ### Ubuntu
@@ -52,7 +50,6 @@
  - [Introductory Slides](https://collabnix.github.io/kubelabs/Pods101_slides/Pods101.html) 
  - [Deploying Your First Nginx Pod](./pods101/deploy-your-first-nginx-pod.md) 
  
- [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/Kl7ek_vltTE/0.jpg)](https://www.youtube.com/watch?v=Kl7ek_vltTE)
  
  - [Viewing Your Pod](./pods101/deploy-your-first-nginx-pod.md#viewing-your-pods) 
  - [Where is your Pod running on?](./pods101/deploy-your-first-nginx-pod.md#which-node-is-this-pod-running-on) 
@@ -67,8 +64,7 @@
 
  - [Introductory Slides](https://collabnix.github.io/kubelabs/SlidesReplicaSet101/ReplicaSet101.html) 
  - [Creating Your First ReplicaSet - 4 Pods serving Nginx](./replicaset101/README.md#how-does-replicaset-manage-pods) 
- 
- [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/9l3FxWZOPdc/0.jpg)](https://www.youtube.com/watch?v=9l3FxWZOPdc)
+
  
  
  
@@ -93,8 +89,7 @@
 
  - [How Kubernetes Selects the Right node?](./Scheduler101/README.md)
  - [Node Affinity](./Scheduler101/node_affinity.md) 
- 
- [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/ZbieLVKuswE/0.jpg)](https://www.youtube.com/watch?v=ZbieLVKuswE)
+
  
  
  - [Anti-Node Affinity](./Scheduler101/Anti-Node-Affinity.md) 
@@ -128,7 +123,6 @@
  - [Why DaemonSets in Kubernetes?](./DaemonSet101/README.md)
  - [Creating your first DeamonSet Deployment](./DaemonSet101/README.md#creating-your-first-deamonset-deployment)
 
- [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/8KAqOFsBiWg/0.jpg)](https://www.youtube.com/watch?v=8KAqOFsBiWg)
  
  - [Restrict DaemonSets To Run On Specific Nodes](./DaemonSet101/README.md#restrict-daemonsets-to-run-on-specific-nodes)
  - [How To Reach a DaemonSet Pod](./DaemonSet101/README.md#how-to-reach-a-daemonset-pod)
@@ -156,7 +150,6 @@
   
   - [Role-Based Access Control (RBAC) Overview](./RBAC101/#role-based-access-control-rbac)
   
- [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/frshjK-imCY/0.jpg)](https://www.youtube.com/watch?v=frshjK-imCY)
   
   - [Creating a Kubernetes User Account Using X509 Client Certificate](./RBAC101/#creating-a-kubernetes-user-account-using-x509-client-certificate)
   
@@ -236,7 +229,7 @@
 
 ## Bare Metal:
 
-- [How to setup 3 Node Kubernetes Cluster on Bare Metal System using MetalLB?](.https://collabnix.com/3-node-kubernetes-cluster-on-bare-metal-system-in-5-minutes/)<br>
+- [How to setup 3 Node Kubernetes Cluster on Bare Metal System using MetalLB?](https://collabnix.com/3-node-kubernetes-cluster-on-bare-metal-system-in-5-minutes/)<br>
 
 ## Demo Environment
 
