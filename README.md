@@ -236,11 +236,11 @@
 
 ## Bare Metal:
 
-- [How to setup 3 Node Kubernetes Cluster on Bare Metal System using MetalLB?](./beginners/install/ubuntu/18.04/install-k8s.md#how-to-setup-3-node-kubernetes-cluster-on-bare-metal-system-using-metallb)<br>
+- [How to setup 3 Node Kubernetes Cluster on Bare Metal System using MetalLB?](.https://collabnix.com/3-node-kubernetes-cluster-on-bare-metal-system-in-5-minutes/)<br>
 
 ## Demo Environment
 
-- [Getting Started with 5 Node Kubernetes Cluster on Play with Kubernetes Platform](./beginners/getting-started-on-pwk.md)
+- [Getting Started with 5 Node Kubernetes Cluster on Play with Kubernetes Platform](https://dockerlabs.collabnix.com/kubernetes/beginners/getting-started-on-pwk.html)
 
 
 ## Cloud Environment
