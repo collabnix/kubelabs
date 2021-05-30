@@ -29,9 +29,6 @@
 ## Kubernetes on Production
 
 
-# Contributors
-
-- Ajeet Singh Raina
 
 
 [Next:  Kubernetes301]()
