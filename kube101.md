@@ -16,7 +16,10 @@ git clone https://github.com/collabnix/kubelabs
 ```
 
 ## Bootstrapping the First Node Cluster
-
+### Change mode executable for bootstrap.sh
+```
+chmod a+x bootstrap.sh
+```
 ```
 sh bootstrap.sh
 ```
