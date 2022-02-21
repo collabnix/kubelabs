@@ -10,7 +10,7 @@
 ## Run the below command:
 
 ```
-kubectl apply -f https://github.com/collabnix/kubelabs/blob/master/portainer.yaml
+kubectl apply -f https://raw.githubusercontent.com/portainer/portainer-k8s/master/portainer-nodeport.yaml
 ```
 
 ## Verify
