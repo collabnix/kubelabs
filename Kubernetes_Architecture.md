@@ -75,7 +75,7 @@ Any developer can package up applications and deploy them on Kubernetes with bas
 - To use a secret, we need to refer to the secret in our Pod.
 - Or we can put it inside a volume and mount that to the container.
 - Secrets are not encrypted by default. For encryption we need to create an EncryptionConfig.
-- You can read more about encryption here
+- You can read more about encryption [here](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/)
 
 ## Service:
 
