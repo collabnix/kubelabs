@@ -13,7 +13,7 @@ In the case of Non-parallel jobs, only one pod is started. The pod is then run t
 
 ``` $ kubectl create -f non-parallel-job.yml ```
 
-This job starts up a pod, issues the command to sleep for 20 seconds, and then terminates the pod, which results in the job being completed.
+This job starts up a pod, issues the command to sleep for 20 seconds, and then terminates the pod, which results in the job being completed. The below commands should allow you to see this in action.
 
 ### Look at the job:
 
@@ -27,6 +27,7 @@ This job starts up a pod, issues the command to sleep for 20 seconds, and then t
 
 ``` $ kubectl delete -f non-parallel-job.yml ```
 
+Note that the jobs and their respective pods get **terminated**, not deleted. This is useful in situations where you might want to get access to the pod logs after the job finishes executing. Running the above command deletes the job, which results in the pod being removed as well.
 
 # Multiple Parallel Jobs (Work Queue)
 
