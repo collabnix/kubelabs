@@ -29,6 +29,27 @@ This job starts up a pod, issues the command to sleep for 20 seconds, and then t
 
 Note that the jobs and their respective pods get **terminated**, not deleted. This is useful in situations where you might want to get access to the pod logs after the job finishes executing. Running the above command deletes the job, which results in the pod being removed as well.
 
+### Multiple Non-parallel Jobs
+Multiple non-parallel jobs, or rather, multiple sequential jobs, are the second type. These are very similar to normal non-parallel jobs except for one key difference, which is that multiple jobs run one after the other. That is to say, the job spins up a pod as usual, but once the pod is terminated, another pod is spun up. This continues until the specified number of iterations is complete. The number of iterations is specified by setting ```completions: 5```. Apart from this line, there are no other differences.
+
+### Create a Multiple Non-parallel jobs using the following command:
+
+``` $ kubectl create -f multiple-non-parallel-job.yml ```
+
+### Look at the job:
+
+``` $ kubectl get jobs ```
+
+###  Watch the pod status:
+
+``` $ kubectl get -w pods ```
+
+Notice how the pods spin up and terminate sequentially for 5 times.
+
+### Delete the job:
+
+``` $ kubectl delete -f multiple-non-parallel-job.yml ```
+
 # Multiple Parallel Jobs (Work Queue)
 
 Parallel job
