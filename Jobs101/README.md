@@ -6,7 +6,7 @@ But consider this situation: you want to run a pod that initializes a database, 
 This is where jobs come into play. They ensure that pods run their specified commands **after which they terminate**. 
 
 ## Types of jobs
-### Non-parallel Jobs
+## Non-parallel Jobs
 In the case of Non-parallel jobs, only one pod is started. The pod is then run to completion upon which it terminates. The termination of the pod also results in the completion of the job.
 
 ### Create a Non-parallel job using the following command:
@@ -29,7 +29,7 @@ This job starts up a pod, issues the command to sleep for 20 seconds, and then t
 
 Note that the jobs and their respective pods get **terminated**, not deleted. This is useful in situations where you might want to get access to the pod logs after the job finishes executing. Running the above command deletes the job, which results in the pod being removed as well.
 
-### Multiple Non-parallel Jobs
+## Multiple Non-parallel Jobs
 Multiple non-parallel jobs, or rather, multiple sequential jobs, are the second type. These are very similar to normal non-parallel jobs except for one key difference, which is that multiple jobs run one after the other. That is to say, the job spins up a pod as usual, but once the pod is terminated, another pod is spun up. This continues until the specified number of iterations is complete. The number of iterations is specified by setting ```completions: 5```. Apart from this line, there are no other differences.
 
 ### Create a Multiple Non-parallel jobs using the following command:
@@ -50,9 +50,9 @@ Notice how the pods spin up and terminate sequentially for 5 times.
 
 ``` $ kubectl delete -f multiple-non-parallel-job.yml ```
 
-# Multiple Parallel Jobs (Work Queue)
+## Multiple Parallel Jobs (Work Queue)
 
-Parallel job
+Multiple single jobs are fine, but what if you want to run several jobs in parallel? Work queue jobs should help you with this. Similar to multiple parallel jobs, ```completions: ``` can be used to specify the number of jobs. However, this is not mandatory. Leaving out this line will result in the completions being set to the number of parallelisms specified. The line ```parallelism: 2```, which specifies how many jobs should run in parallel must be specified to indicate that this is a multiple parallel job.
 
 ### Create a job using following command:
 
@@ -66,6 +66,8 @@ Parallel job
 
 ``` $ kubectl get -w pods ```
 
+Notice how all the pods spawn at the same time.
+
 ### Delete a job:
 
 ``` $ kubectl delete -f parallel-job.yml ```
@@ -73,3 +75,5 @@ Parallel job
 # Contributors
 
 [Sangam Biradar](https://twitter.com/BiradarSangam)
+
+[Mewantha Bandara](https://github.com/Phantom-Intruder)
