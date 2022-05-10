@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: wait
+spec:
+completions: 5
+  template:
+    metadata:
+      name: wait
+    spec:
+      containers:
+      - name: wait
+        image: ubuntu
+        command: ["sleep",  "20"]
+      restartPolicy: Never
