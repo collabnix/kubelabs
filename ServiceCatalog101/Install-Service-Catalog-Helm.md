@@ -1,9 +1,3 @@
-# Install Service Catalog using Helm
-Service Catalog is an extension API that enables applications running in Kubernetes clusters to easily use external managed software offerings, such as a datastore service offered by a cloud provider.
-
-It provides a way to list, provision, and bind with external Managed Services from Service Brokers without needing detailed knowledge about how those services are created or managed.
-
-Use Helm to install Service Catalog on your Kubernetes cluster. Up to date information on this process can be found at the kubernetes-sigs/service-catalog repo.
 
 ## Steps
 - Install Helm v3 or newer
