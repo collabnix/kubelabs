@@ -23,3 +23,5 @@ helm upgrade minibroker minibroker/minibroker \
 ```
 
 You can find more information about Minibroker in its official [repo](https://github.com/kubernetes-retired/minibroker).
+
+With this, you are all set up to start working with a service catalog.
