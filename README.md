@@ -121,7 +121,7 @@
 - The Kubernetes Service
   - Catalog Resources
   - Catalog components
-- Creating a sample Service Catalog
+- [Creating a sample Service Catalog](./ServiceCatalog101/Create-Service-Catalog.md)
 - [Installing Service Catalog Helm Chart](./ServiceCatalog101/Install-Service-Catalog-Helm.md)
 - [Installing minibroker](./ServiceCatalog101/Install-Minibroker.md)
 - Viewing the classes and plans for the Service Broker

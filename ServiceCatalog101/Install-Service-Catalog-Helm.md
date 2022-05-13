@@ -1,6 +1,6 @@
 # Install service catalog with helm
 
-Below are the steps to get service catalog up and running in Helm.
+Below are the steps to get the service catalog up and running in Helm.
 ## Steps
 
 First, add the service-catalog Helm repository
@@ -9,7 +9,7 @@ First, add the service-catalog Helm repository
 helm repo add svc-cat https://kubernetes-sigs.github.io/service-catalog
 ```
 
-Check to make sure that it installed successfully
+Check to make sure that it is installed successfully
 
 ```
 helm search repo service-catalog

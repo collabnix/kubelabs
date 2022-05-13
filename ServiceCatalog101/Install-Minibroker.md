@@ -2,7 +2,7 @@
 
 ## What is a minibroker?
 
-Remember that a component of setting up service catalogs were a **service broker**. While you obviously need a broker from a cloud provider in a production environment, this doesn't really make sense when you are in testing or development phases. Minibroker works seamlessly with Minikube to setup an implementation of the Open Service Broker API and provide this functionality.
+Remember that a component of setting up service catalogs was a **service broker**. While you obviously need a broker from a cloud provider in a production environment, this doesn't really make sense when you are in the testing or development phases. Minibroker works seamlessly with Minikube to set up an implementation of the Open Service Broker API and provide this functionality.
 
 ## Steps
 
@@ -21,3 +21,5 @@ helm upgrade minibroker minibroker/minibroker \
   --install \
   --set deploymentStrategy="Recreate"
 ```
+
+You can find more information about Minibroker in its official [repo](https://github.com/kubernetes-retired/minibroker).
