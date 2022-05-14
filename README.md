@@ -193,6 +193,11 @@
    - [Heapster is Going Away](./Monitoring101/README.md/#Heapster-is-going-away)
    - [Metrics Server Will Get More Cool Features](./Monitoring101/README.md/#Metrics-Server-Will-Get-More-Cool-Features)
 
+## Helm101
+
+- [What is Helm?](./Helm101/what-is-helm.md)
+- [Helm Charts](./Helm101/heml-charts.md)
+
 # Contributors
 
 - [Ajeet Singh Raina](https://twitter.com/ajeetsraina)
