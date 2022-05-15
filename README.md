@@ -196,7 +196,7 @@
 ## Helm101
 
 - [What is Helm?](./Helm101/what-is-helm.md)
-- [Helm Charts](./Helm101/heml-charts.md)
+- [Helm Charts](./Helm101/helm-charts.md)
 
 # Contributors
 
