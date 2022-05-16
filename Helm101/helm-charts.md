@@ -19,3 +19,15 @@ Next, let us consider the templates folder. Inside this folder, you may define a
 The [values.yaml](./Wordpress/values.yaml) is, simply put, the place where the values passed into the Helm template are stored. The values stored within this file can then be accessed by templates using ```.Values.<value>```.
 
 Finally, we have the the ```charts``` folder which holds the chart dependencies. If this chart defined within Chart.yaml depends on any other charts, that information would be stored here.
+
+## Hands on lab
+
+Firstly, you must have an active Kubernetes cluster. The easiest way to get this up and running is using Minikube. Please refer to the Minikube section of kubelabs for information regarding this.
+
+If you have a Kubernetes cluster up and running, then it's time to install Helm. The installation is fairly straightforward, and the full installation steps can be found [here](https://helm.sh/docs/intro/install/). Run the Helm create command to get started:
+
+```
+helm create hands-on-helm
+```
+
+You will notice that the above directory structure has now been created. You will notices that these are not empty files, but have detailed descriptions and templates within them. If you need to dive deeper into any of these generated files, feel free to open them up and have a look!
