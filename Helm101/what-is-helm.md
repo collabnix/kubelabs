@@ -38,6 +38,6 @@ spec:
 ...
 ```
 
-Then set the name and image dynamically. 
+Then set the name and image dynamically.
 
 Now that we have a broad understanding of how Helm works, let's first install a helm chart and see what this is all about, before taking a deep-dive into the specifics, starting with a deeper introduction to Helm charts.
