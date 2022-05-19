@@ -30,4 +30,22 @@ If you have a Kubernetes cluster up and running, then it's time to install Helm.
 helm create hands-on-helm
 ```
 
-You will notice that the above directory structure has now been created. You will notices that these are not empty files, but have detailed descriptions and templates within them. Open up the values.yaml present, and you will notice that this is a basic resource to start a simple nginx server. 
+You will notice that the above directory structure has now been created, and that these are not empty files, but have detailed descriptions and templates within them. Open up the values.yaml present, and you will notice that this is a basic resource to start a simple nginx server.
+The Chart.yaml contains some basic metadata information about the chart. Meanwhile you can see that the charts folder is empty. This is because this chart has no dependencies as of yet.
+
+The templates folder holds sample templates. Currently, there are templates for:
+- Deployments
+- Services
+- Ingresses
+
+These templates can act as a reference for you to start with so that you don't have to begin from scratch.
+
+## Customizing charts
+
+If you were going to create a brand new chart, you would obviously have to customize it to suit your needs after running ```helm create```. However, even if you are using a preexisting chart, you would still want to edit the chart to your specific use-case. Most of the time, pre-made charts are easily configuable. Going back to our Wordpress example, you can see what values are configurable by running:
+
+```
+helm show values bitnami/wordpress
+```
+
+The output will show that you can configure things such as the image registry, image pull secret, etc... You can then override these values using a Yaml file.
