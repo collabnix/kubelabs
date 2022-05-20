@@ -20,6 +20,16 @@ The [values.yaml](./Wordpress/values.yaml) is, simply put, the place where the v
 
 Finally, we have the the ```charts``` folder which holds the chart dependencies. If this chart defined within Chart.yaml depends on any other charts, that information would be stored here.
 
+## Customizing charts
+
+If you were going to create a brand new chart, you would obviously have to customize it to suit your needs after running ```helm create```. However, even if you are using a preexisting chart, you would still want to edit the chart to your specific use-case. Most of the time, pre-made charts are easily configuable. Going back to our Wordpress example, you can see what values are configurable by running:
+
+```
+helm show values bitnami/wordpress
+```
+
+The output will show that you can configure things such as the image registry, image pull secret, etc... You can then override these values using a Yaml file. A comprehensive list of methods and limitations of overriding is provided in the [official Helm docs](https://helm.sh/docs/intro/using_helm/#the-format-and-limitations-of---set).
+
 ## Hands on lab
 
 Firstly, you must have an active Kubernetes cluster. The easiest way to get this up and running is using [Minikube](https://minikube.sigs.k8s.io/docs/start/).
@@ -34,18 +44,23 @@ You will notice that the above directory structure has now been created, and tha
 The Chart.yaml contains some basic metadata information about the chart. Meanwhile you can see that the charts folder is empty. This is because this chart has no dependencies as of yet.
 
 The templates folder holds sample templates. Currently, there are templates for:
+
 - Deployments
 - Services
 - Ingresses
 
 These templates can act as a reference for you to start with so that you don't have to begin from scratch.
 
-## Customizing charts
+### Template functions
 
-If you were going to create a brand new chart, you would obviously have to customize it to suit your needs after running ```helm create```. However, even if you are using a preexisting chart, you would still want to edit the chart to your specific use-case. Most of the time, pre-made charts are easily configuable. Going back to our Wordpress example, you can see what values are configurable by running:
+Speaking about templates, now is a good time to mention that Helm uses an extended version of [Go templates](https://godoc.org/text/template). One of the biggest additions to the Go templates is the ```include``` command. This simply allows you to include a template within a template whose output can be piped to an operator. Like so:
 
+```yaml
+{{ include "included_template" $value | indent 2 }}
 ```
-helm show values bitnami/wordpress
-```
 
-The output will show that you can configure things such as the image registry, image pull secret, etc... You can then override these values using a Yaml file.
+The next notable addition is the ```required``` keyword. Declaring a entry as required would means that an empty entry would result in an error, resulting in the template refusing to render.
+
+```yaml
+{{ required "A valid foo is required!" .Values.foo }}
+```
