@@ -30,7 +30,7 @@ helm show values bitnami/wordpress
 
 The output will show that you can configure things such as the image registry, image pull secret, etc... You can then override these values using a Yaml file. A comprehensive list of methods and limitations of overriding is provided in the [official Helm docs](https://helm.sh/docs/intro/using_helm/#the-format-and-limitations-of---set).
 
-## Hands on lab
+## Hands-on lab
 
 Firstly, you must have an active Kubernetes cluster. The easiest way to get this up and running is using [Minikube](https://minikube.sigs.k8s.io/docs/start/).
 
@@ -40,8 +40,8 @@ If you have a Kubernetes cluster up and running, then it's time to install Helm.
 helm create hands-on-helm
 ```
 
-You will notice that the above directory structure has now been created, and that these are not empty files, but have detailed descriptions and templates within them. Open up the values.yaml present, and you will notice that this is a basic resource to start a simple nginx server.
-The Chart.yaml contains some basic metadata information about the chart. Meanwhile you can see that the charts folder is empty. This is because this chart has no dependencies as of yet.
+You will notice that the above directory structure has now been created and that these are not empty files, but have detailed descriptions and templates within them. Open up the values.yaml present and you will notice that this is a basic resource to start a simple Nginx server.
+The Chart.yaml contains some basic metadata information about the chart. Meanwhile, you can see that the charts folder is empty. This is because this chart has no dependencies as of yet.
 
 The templates folder holds sample templates. Currently, there are templates for:
 
@@ -59,7 +59,7 @@ Speaking about templates, now is a good time to mention that Helm uses an extend
 {{ include "included_template" $value | indent 2 }}
 ```
 
-The next notable addition is the ```required``` keyword. Declaring a entry as required would means that an empty entry would result in an error, resulting in the template refusing to render.
+The next notable addition is the ```required``` keyword. Declaring an entry as required would mean that an empty entry would result in an error, resulting in the template refusing to render.
 
 ```yaml
 {{ required "A valid foo is required!" .Values.foo }}
