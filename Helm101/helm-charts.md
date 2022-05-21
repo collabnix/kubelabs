@@ -64,3 +64,39 @@ The next notable addition is the ```required``` keyword. Declaring an entry as r
 ```yaml
 {{ required "A valid foo is required!" .Values.foo }}
 ```
+
+The **tpl** function comes next. This function allows strings to be evaluated as a template within a template. The syntax for this is:
+
+```yaml
+{{ tpl .Values.template . }}
+```
+
+### Image pull secrets
+
+Image pull secrets are not only used by Helm but also by Kubernetes in general. However, Helm allows the secret to be written into template files, similar to how the ```values.yaml``` works. For example, imagine the credentials are stored in a yaml like this:
+
+```yaml
+imageCredentials:
+  registry: quay.io
+  username: someone
+  password: sillyness
+  email: someone@host.com
+```
+
+A helper template can then be defined to use this YAML:
+
+```yaml
+{{- define "imagePullSecret" }}
+{{- with .Values.imageCredentials }}
+{{- printf "{\"auths\":{\"%s\":{\"username\":\"%s\",\"password\":\"%s\",\"email\":\"%s\",\"auth\":\"%s\"}}}" .registry .username .password .email (printf "%s:%s" .username .password | b64enc) | b64enc }}
+{{- end }}
+{{- end }}
+```
+
+This template can then be used within all helm charts:
+
+```yaml
+.dockerconfigjson: {{ template "imagePullSecret" . }}
+```
+
+This covers the basics of Helm charts, should you need to create one. However, only narrowly covers the full breadth of what Helm has to offer. For more tips and tricks, visit Helm [official docs](https://helm.sh/docs/howto/charts_tips_and_tricks/).
