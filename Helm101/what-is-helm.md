@@ -12,7 +12,13 @@ A Helm chart is, simply put, a collection of Yaml files. Imagine someone takes a
 helm install <chart>
 ```
 
-[Artifact Hub](https://artifacthub.io) is a centralised repository for Helm packages and is extensively used by Kubernetes developers in their daily work. 
+## What is a Helm repository?
+
+This is a place where Helm charts are storedm and where you can download them.  [Artifact Hub](https://artifacthub.io) is a centralised repository for Helm packages and is extensively used by Kubernetes developers in their daily work. 
+
+## What is a Helm release?
+
+This is once single instance of a chart. Even within a single Kubernetes cluster, the same chart can be installed multiple times. In order to facilitiate this, each installation is considered to be a release. So if you want 2 instances of MongoDb running in your cluster, it is just a matter of installing the chart twice.
 
 ## Helm as a templating engine 
 
@@ -38,6 +44,6 @@ spec:
 ...
 ```
 
-Then set the name and image dynamically. 
+Then set the name and image dynamically.
 
-Now that we have a broad understanding of how Helm works, let's deep-dive into the specifics, starting with a deeper introduction to Helm charts.
+Now that we have a broad understanding of how Helm works, let's first install a helm chart and see what this is all about, before taking a deep-dive into the specifics, starting with a deeper introduction to Helm charts.

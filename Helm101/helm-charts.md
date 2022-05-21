@@ -12,17 +12,27 @@ First, a folder must be created to house all the files pertaining to the Helm ch
  ┗ 📜values.yaml
 ```
 
-First, let's consider the [Chart.yaml](./Wordpress/Chart.yaml). This is where **resources** are defined. Anything from a simple pod to a complex, full-blow web application can be defined here. The ```Chart.yaml``` provided here is taken from the Helm docs and describes the file in great detail. 
+First, let's consider the [Chart.yaml](./Wordpress/Chart.yaml). This is where chart information is defined. The ```Chart.yaml``` provided here is taken from the Helm docs and describes the file in great detail. 
 
 Next, let us consider the templates folder. Inside this folder, you may define as many Helm templates as you wish. In this case, I have added a template called [configmap.yaml](./Wordpress/templates/configmap.yaml). As you can see, the template uses a placeholder notation ```{{}}``` in order specify that these values can be dynamically changed later on, and this is where the ```values.yaml``` comes in.
 
-The [values.yaml](./Wordpress/values.yaml) is, simply put, the place where the values passed into the Helm template are stored. The values stored within this file can then be accessed by templates using ```.Values.<value>```.
+The [values.yaml](./Wordpress/values.yaml) is, simply put, the place where the values passed into the Helm template are stored. The values stored within this file can then be accessed by templates using ```.Values.<value>```. You might recognize the Yaml format since it closely resembles a Yaml used to define an ordinary Kubernetes resource.
 
 Finally, we have the the ```charts``` folder which holds the chart dependencies. If this chart defined within Chart.yaml depends on any other charts, that information would be stored here.
 
-## Hands on lab
+## Customizing charts
 
-Firstly, you must have an active Kubernetes cluster. The easiest way to get this up and running is using Minikube. Please refer to the Minikube section of kubelabs for information regarding this.
+If you were going to create a brand new chart, you would obviously have to customize it to suit your needs after running ```helm create```. However, even if you are using a preexisting chart, you would still want to edit the chart to your specific use-case. Most of the time, pre-made charts are easily configuable. Going back to our Wordpress example, you can see what values are configurable by running:
+
+```
+helm show values bitnami/wordpress
+```
+
+The output will show that you can configure things such as the image registry, image pull secret, etc... You can then override these values using a Yaml file. A comprehensive list of methods and limitations of overriding is provided in the [official Helm docs](https://helm.sh/docs/intro/using_helm/#the-format-and-limitations-of---set).
+
+## Hands-on lab
+
+Firstly, you must have an active Kubernetes cluster. The easiest way to get this up and running is using [Minikube](https://minikube.sigs.k8s.io/docs/start/).
 
 If you have a Kubernetes cluster up and running, then it's time to install Helm. The installation is fairly straightforward, and the full installation steps can be found [here](https://helm.sh/docs/intro/install/). Run the Helm create command to get started:
 
