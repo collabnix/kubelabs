@@ -30,4 +30,63 @@ If you have a Kubernetes cluster up and running, then it's time to install Helm.
 helm create hands-on-helm
 ```
 
-You will notice that the above directory structure has now been created. You will notices that these are not empty files, but have detailed descriptions and templates within them. If you need to dive deeper into any of these generated files, feel free to open them up and have a look!
+You will notice that the above directory structure has now been created and that these are not empty files, but have detailed descriptions and templates within them. Open up the values.yaml present and you will notice that this is a basic resource to start a simple Nginx server.
+The Chart.yaml contains some basic metadata information about the chart. Meanwhile, you can see that the charts folder is empty. This is because this chart has no dependencies as of yet.
+
+The templates folder holds sample templates. Currently, there are templates for:
+
+- Deployments
+- Services
+- Ingresses
+
+These templates can act as a reference for you to start with so that you don't have to begin from scratch.
+
+### Template functions
+
+Speaking about templates, now is a good time to mention that Helm uses an extended version of [Go templates](https://godoc.org/text/template). One of the biggest additions to the Go templates is the ```include``` command. This simply allows you to include a template within a template whose output can be piped to an operator. Like so:
+
+```yaml
+{{ include "included_template" $value | indent 2 }}
+```
+
+The next notable addition is the ```required``` keyword. Declaring an entry as required would mean that an empty entry would result in an error, resulting in the template refusing to render.
+
+```yaml
+{{ required "A valid foo is required!" .Values.foo }}
+```
+
+The **tpl** function comes next. This function allows strings to be evaluated as a template within a template. The syntax for this is:
+
+```yaml
+{{ tpl .Values.template . }}
+```
+
+### Image pull secrets
+
+Image pull secrets are not only used by Helm but also by Kubernetes in general. However, Helm allows the secret to be written into template files, similar to how the ```values.yaml``` works. For example, imagine the credentials are stored in a yaml like this:
+
+```yaml
+imageCredentials:
+  registry: quay.io
+  username: someone
+  password: sillyness
+  email: someone@host.com
+```
+
+A helper template can then be defined to use this YAML:
+
+```yaml
+{{- define "imagePullSecret" }}
+{{- with .Values.imageCredentials }}
+{{- printf "{\"auths\":{\"%s\":{\"username\":\"%s\",\"password\":\"%s\",\"email\":\"%s\",\"auth\":\"%s\"}}}" .registry .username .password .email (printf "%s:%s" .username .password | b64enc) | b64enc }}
+{{- end }}
+{{- end }}
+```
+
+This template can then be used within all helm charts:
+
+```yaml
+.dockerconfigjson: {{ template "imagePullSecret" . }}
+```
+
+This covers the basics of Helm charts, should you need to create one. However, only narrowly covers the full breadth of what Helm has to offer. For more tips and tricks, visit Helm [official docs](https://helm.sh/docs/howto/charts_tips_and_tricks/).
