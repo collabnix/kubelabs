@@ -53,5 +53,3 @@ helm status mysql-1652869723
 Uninstalling the chart is as easy as calling ```helm uninstall``` with the chart name. You could also use the flag ```--keep-history``` if you want to get rid of the chart but keep the release history.
 
 Now that we have the basics out of the way, let's do a deep dive into Helm charts.
-
-[Next: Helm Charts Deep Dive](helm-charts.md)

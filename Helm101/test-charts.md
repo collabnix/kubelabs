@@ -13,9 +13,3 @@ annotations:
 ```
 
 You might notice that this test is similar to a hook. This is because the test **is** a hook. It hooks in at a given point and runs the test. If you followed the hands-on lab from the previous lectures, you should be able to see a sample test that was created by the ```helm create``` command. It is located in **hands-on-helm\templates\tests** and should give you a basic idea of what the test looks like. Of course, this test doesn't do much; merely runs a busybox instance and does some basic validation. However, you can set up some pretty complex tests using this.
-
-Once you have finished writing your test, it's time to test it. Simply install your chart and once the release is created and pods have spun up, the tests should begin.
-
-Now, let's move on to Library Charts.
-
-[Next: Library charts](library-charts.md)
