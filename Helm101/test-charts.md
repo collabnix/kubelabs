@@ -16,6 +16,6 @@ You might notice that this test is similar to a hook. This is because the test *
 
 Once you have finished writing your test, it's time to test it. Simply install your chart and once the release is created and pods have spun up, the tests should begin.
 
-Now, let's move on to Library Charts.
+Now, let's move on to Chart Repositories.
 
-[Next: Library charts](library-charts.md)
+[Next: Chart Repositories](charts-repos.md)
