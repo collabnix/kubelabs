@@ -40,3 +40,5 @@ annotations:
 ```
 
 Next, let's move to chart testing.
+
+[Next: Chart Testing](test-charts.md)
