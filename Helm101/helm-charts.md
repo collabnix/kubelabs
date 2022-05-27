@@ -99,4 +99,6 @@ This template can then be used within all helm charts:
 .dockerconfigjson: {{ template "imagePullSecret" . }}
 ```
 
-This covers the basics of Helm charts, should you need to create one. However, only narrowly covers the full breadth of what Helm has to offer. For more tips and tricks, visit Helm [official docs](https://helm.sh/docs/howto/charts_tips_and_tricks/).
+This covers the basics of Helm charts, should you need to create one. However, only narrowly covers the full breadth of what Helm has to offer. For more tips and tricks, visit Helm [official docs](https://helm.sh/docs/howto/charts_tips_and_tricks/). Now, let's move on to Chart hooks.
+
+[Next: Chart Hooks](chart-hooks.md)
