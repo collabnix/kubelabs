@@ -210,6 +210,9 @@
 - [What is Helm?](./Helm101/what-is-helm.md)
 - [Installing a Helm Chart](./Helm101/installing-a-chart.md)
 - [Helm Charts](./Helm101/helm-charts.md)
+- [Helm Chart Hooks](./Helm101/chart-hooks.md)
+- [Helm Chart Testing](./Helm101/test-charts.md)
+- [Helm Chart Repository](./Helm101/chart-repos.md)
 
 # Contributors
 
