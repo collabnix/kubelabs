@@ -18,4 +18,4 @@ Once you have finished writing your test, it's time to test it. Simply install y
 
 Now, let's move on to Chart Repositories.
 
-[Next: Chart Repositories](chart-repos.md))
+[Next: Chart Repositories](chart-repos.md)
