@@ -1,5 +1,13 @@
 # An Ultimate Kubernetes Hands-on Labs
 
+![stars](https://img.shields.io/github/stars/collabnix/kubelabs)
+![forks](https://img.shields.io/github/forks/collabnix/kubelabs)
+![issues](https://img.shields.io/github/issues/collabnix/kubelabs)
+![GitHub contributors](https://img.shields.io/github/contributors/collabnix/kubelabs)
+![Visitor count](https://shields-io-visitor-counter.herokuapp.com/badge?page=collabnix.kubelabs)
+![Twitter](https://img.shields.io/twitter/follow/collabnix?style=social)
+
+
 ## Pre-requisite:
 
 - [Introductory Slides](./Kubernetes_Intro_slides-1/Kubernetes_Intro_slides-1.html) 
