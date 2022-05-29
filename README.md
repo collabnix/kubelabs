@@ -1,4 +1,4 @@
-# An Ultimate Kubernetes Hands-on Labs
+# An Ultimate Kubernetes Hands-on Labs and Tutorials
 
 ![stars](https://img.shields.io/github/stars/collabnix/kubelabs)
 ![forks](https://img.shields.io/github/forks/collabnix/kubelabs)
