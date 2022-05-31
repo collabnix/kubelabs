@@ -11,4 +11,7 @@ This model works off the [Kubenet](https://kubernetes.io/docs/concepts/extend-ku
 
 ## Azure Container Networking Interface (CNI) networking
 
-This is a slightly more advanced form of networking, and will require some planning 
+This is a slightly more advanced form of networking, and will require some planning ahead. This method allows pod to be accessed directly using the IP addresses they get from the subnet. The number of IP addresses needed are set aside for the node. Since this is a hard limit, this is where planning is needed to prevent exshausting IP addresses.
+
+## Deploying networks
+
