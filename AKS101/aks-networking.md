@@ -42,3 +42,7 @@ There are a couple of advantages to using CNI, which contrasts with Kubenet:
 
 - Proper planning needed to prevent IP address exhaustion
 - Setup is more complex
+
+Next, let's talk about how to manage roles in AKS.
+
+[Next: AKS IAM](./aks-iam.md)
