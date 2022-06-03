@@ -13,3 +13,7 @@ This isn't all the RBAC offers. Imagine you were working in a large organization
 User permissions get defined as a role. Any roles created are valid within that namespace. However, if you want a role that applies across the entire cluster, then you should go for **cluster roles**. Just creating the roles won't do anything, as you would have to assign RBAC permission to this role. That is to say, you would bind a specific set of permissions to each role with a **RoleBinding**. Once again, RoleBinding, like roles, applies only to the specified namespace. If you want the RoleBinding to apply to the entire cluster, then you have to use a **ClustRoleBinding**.
 
 If you are in an enterprise environment that uses Azure AD, you can manage access to your cluster using [Azure AD integration](https://docs.microsoft.com/en-us/azure/aks/concepts-identity#azure-ad-integration).
+
+Next, let's move on to the storage options available for AKS.
+
+[Next: AKS Storage](./aks-storage.md)
