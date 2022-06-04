@@ -15,3 +15,16 @@ So far, we have been handling AKS without a storage component, and everything ha
 **Azure NetApp Files**: We are now heading on to more obscure types of storage that can be used with AKS. Azure NetApp files are not meant to be used by individual users or small teams, but rather, by huge organizations with demanding AKS clusters. As such, NetApp files are high-performance and cost a fair bit. If you want to learn more, the [official docs](https://docs.microsoft.com/en-us/azure/azure-netapp-files/azure-netapp-files-introduction) provide an introduction with a step by step guide.
 
 **Azure Blob Storage**: Finally, we have Azure Blob Storage. This is somewhat popular, and you may have heard of it in a big data context. This is because Azure Blob Storage is specially designed to handle large amounts of unstructured data. Think in terms of data lakes that host billions of records. Accessing this blob storage can be done via the variety of clients provided by Azure. If you have an AKS cluster that is focused on data science, then Azure Blob Storage is the perfect solution for you. Read more about it in the [official docs](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-overview)
+
+
+## Other types of storage 
+
+**Persistent Volumes (PV):** You may already know of persistent volumes and volume claims. These ensure that data isn't lost when pods disappear, and naturally, they are fully compatible with AKS. What's best is that PV's work well with already existing Azure services, and can dynamically resource Azure disks or File storage to provide persistent storage to a pod if the already allocated resources are insufficient. 
+
+**Storage classes:**  Since Azure provides multiple tiers when it comes to storage space, it is important to select one that suits the application and the budget.  AKS clusters deal with tiers via Container Storage Interface (CSI) drivers. By using CSI's, AKS can perform all sorts of operations of existing data without having to modify the core Kubernetes code. this means a layer of abstraction is introduced which helps reduce dependencies on other code bases. More about CSI's are covered in the [official documentation](https://docs.microsoft.com/en-us/azure/aks/csi-storage-drivers).
+
+**Persistent Volume Claims (PVC's):** PVC's are covered in detail in the [StatefulSets101](./../StatefulSets101/README.md) section of this course. As with PV's PVCs can be applied across AKS in the same way you would an ordinary Kubernetes cluster.
+
+Next, let's talk about service meshes in AKS
+
+[Next: Service Meshes](./aks-service-mesh.md)
