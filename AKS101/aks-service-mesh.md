@@ -18,3 +18,32 @@ AKS supports all major service meshes such as [istio](https://istio.io/latest/ab
 
 ## Open Service mesh
 
+Open Service Mesh gives you to do all the above actions out of the box, and connect right into your AKS clust (as well as other Azure services). In order to fully understand how the open service mesh works, we need to take a look at sidecar containers.
+
+### Sidecar containers
+
+Imagine you have an algorithm that converts certain files to a different file type. This algorithm would be complex, and written in a scripting language such as Python. Now, you want to use this algorithm to complement a container that was built with Java. This means that you would have to spend time and resources re-writing that algorithm in Java, instead of moving forward with the development process, thereby decreasing efficieny. This is where sidecar containers come in. They run alongside your existing container (hence the name sidecar), and share the same resources, authorizations, networks, etc... while being a completely different container. This means that this sidecar container can have your Python algorithm in it and still work nice alongside your Java container. 
+
+This isn't the only use for sidecard containers. Since the sidecar container share all sorts of resources with the main container, it can continously pull logs and other metrics, as well as enforce security on your existing container with ease. This makes it a powerful tool, and ideal for use by a service mesh. 
+
+However, it is not recommended to use sidecar containers freely, these are advanced paradigm that can easily make your cluster unnecessarily complicated. 
+
+### Sidecar container and Open Service Mesh
+
+So why were we talking about sidecar containers in the middle of the discussion about Open Service Meshes? Because sidecar containers facilitate the core of the open service mesh concept. As mentioned before, sidecar containers can seamlessly integrate themselves into existing clusters and add things such as infrastructure support and security to the containers, which is something service meshes aim to do. It loads the [Envoy proxy](https://github.com/envoyproxy/go-control-plane) as a sidecar (Envoy being a control plane implementation) to each instance of your application.
+
+While sidecars can be complex and hard to manage, adding OSM to your cluster could not be simpler. Azure ensures that you can simply use the ```enable-addons``` command to get OSM up and running:
+
+```
+az aks enable-addons \
+  --resource-group myResourceGroup \
+  --name myAKSCluster \
+  --addons open-service-mesh
+```
+
+A comprehensive guide on setting up advances functionalities of OSM can be found in the [official documentation](https://docs.microsoft.com/en-us/azure/aks/open-service-mesh-deploy-addon-az-cli). You can also find exactly what OSM can and can't offer your cluster in the [OSM Page](https://docs.microsoft.com/en-us/azure/aks/open-service-mesh-about#capabilities-and-features) of the Microsoft docs.
+
+Next, let's look into Kubernetes Driven Autoscalers.
+
+[Next: Kubernetes Event-driven Autoscaling (KEDA)](./aks-keda.md)
+
