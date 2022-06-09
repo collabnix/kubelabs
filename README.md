@@ -1,4 +1,12 @@
-# An Ultimate Kubernetes Hands-on Labs
+# An Ultimate Kubernetes Hands-on Labs and Tutorials
+
+![stars](https://img.shields.io/github/stars/collabnix/kubelabs)
+![forks](https://img.shields.io/github/forks/collabnix/kubelabs)
+![issues](https://img.shields.io/github/issues/collabnix/kubelabs)
+![GitHub contributors](https://img.shields.io/github/contributors/collabnix/kubelabs)
+![Visitor count](https://shields-io-visitor-counter.herokuapp.com/badge?page=collabnix.kubelabs)
+![Twitter](https://img.shields.io/twitter/follow/collabnix?style=social)
+
 
 ## Pre-requisite:
 
@@ -10,8 +18,8 @@
 
 ### PWK:
 
-  - [Preparing 5-Node Kubernetes Cluster on Play with Kubernetes Platform](./kube101.md) 
-  - [Setting up WeaveScope For Visualization on PWK](./weave-pwk.md) 
+  - [Preparing 5-Node Kubernetes Cluster on Kubernetes Platform](./kube101.md) 
+  - [Setting up WeaveScope For Visualization on Kubernetes](./weave-pwk.md) 
   - [Running Portainer on 5 Node Kubernetes Cluster](https://github.com/collabnix/kubelabs/tree/master/portainer#running-portainer-on-5-node-kubernetes-cluster)
   
   
@@ -202,6 +210,9 @@
 - [What is Helm?](./Helm101/what-is-helm.md)
 - [Installing a Helm Chart](./Helm101/installing-a-chart.md)
 - [Helm Charts](./Helm101/helm-charts.md)
+- [Helm Chart Hooks](./Helm101/chart-hooks.md)
+- [Helm Chart Testing](./Helm101/test-charts.md)
+- [Helm Chart Repository](./Helm101/chart-repos.md)
 
 ## AKS101
 - [What is AKS?](./AKS101/what-is-aks.md)
@@ -215,7 +226,7 @@
 
 - [Ajeet Singh Raina](https://twitter.com/ajeetsraina)
 - [Sangam Biradar](https://twitter.com/BiradarSangam)
-- Rachit Mehrotra
+- [Rachit Mehrotra](https://www.linkedin.com/in/rachit-mehrotra-08a92819/?originalSubdomain=in)
 - [Saiyam Pathak](https://twitter.com/SaiyamPathak)
 - [Divyajeet Singh](https://www.linkedin.com/in/divyajeet-singh)
 - [Apurva Bhandari](https://www.linkedin.com/in/apurvabhandari-linux)
