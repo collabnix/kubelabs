@@ -208,6 +208,8 @@
 - [AKS Networking](./AKS101/aks-networking.md)
 - [AKS IAM](./AKS101/aks-iam.md)
 - [AKS Storage](./AKS101/aks-storage.md)
+- [AKS Service Mesh](./AKS101/aks-service-mesh.md)
+- [AKS KEDA](./AKS101/aks-keda.md)
 
 # Contributors
 

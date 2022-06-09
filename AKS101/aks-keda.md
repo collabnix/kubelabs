@@ -31,4 +31,4 @@ Then use the Azure resource manager template to specify KEDA:
 }
 ```
 
-Thant's it! You can now connect to your AKS cluster using Azure CLI and check deployments. The [example deployment](https://docs.microsoft.com/en-us/azure/aks/keda-deploy-add-on-arm#example-deployment) from the official docs is a great place to start. Make sure to go through the rest of the documentation if you need any more information or clarification.
+That's it! You can now connect to your AKS cluster using Azure CLI and check deployments. The [example deployment](https://docs.microsoft.com/en-us/azure/aks/keda-deploy-add-on-arm#example-deployment) from the official docs is a great place to start. Make sure to go through the rest of the documentation if you need any more information or clarification.
