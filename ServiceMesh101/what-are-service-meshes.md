@@ -31,3 +31,5 @@ However, it is not recommended to use sidecar containers freely, these are advan
 # Types of service meshes
 
 There are several service meshes out there, and we will be focussing on the two most prominent ones. [Istio](https://istio.io/latest/), and [LinkerD](https://linkerd.io). So let's go ahead into a deep dive of Istio first.
+
+[Next: Istio](./what-is-istio.md)
