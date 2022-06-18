@@ -14,4 +14,4 @@ When you talk about a software log, you immediately think of a log file. This is
 
 This is where some visualization would be useful, and let's start off by talking about that strategy. More specifically, let's dive into the world of Elasticsearch.
 
-[Next: Elasticsearch]()
+[Next: Elasticsearch](./what-is-elasticsearch.md)
