@@ -32,3 +32,18 @@ At this point, the data still isn't very human-friendly. Kibana (similar to Graf
 The dashboards can also be bound to specific roles. For example, people in management roles would want to see different dashboards from those working in system security. This helps improve policy compliance as well as usability. You can also export and share data easily from within Kibana, and create alerts to notify you of certain trigger events. Kibana is a huge application and deserves its own course. But the important takeaway here is that it integrates beautifully into the ELK stack and provides a lot of customizable visualisations.
 
 The best part about the ELK stack is that it is built to run continuously. LogStash will transform and stash data into Elasticsearch, which will then serve this data to Kibana. All in real-time. This means that data about your cluster will always be visible in an up-to-date, understandable manner. Certainly, better than a bunch of log files, isn't it?
+## Drawbacks of Elasticsearch
+
+As great as this system may look, there are some drawback. If your system contains multiple applications from various teams, then all of them would have to have Elasticsearch integration for all this to work. Now, what if one of those applications doesn't have this integration? Then a peice of the system would go missing. If the applications in the system are interconnected, then it would be a requirement for logging to see what processes goes inside each application. This would not be possible if the necessary Elasticsearch integration is not present.
+
+If there all the applications comes from teams within the same company, then a company-wide decision can be made to say that all applications need Elasticsearch integration. But then, what about the third-party applications that you use in your cluster? Should you modify them so that they have Elasticsearch integration? What about any proprietory applications that can't be modified?
+
+Finally, calls between your cluster go through a controller, such as a Nginx controller. What if you would like to see the logs provided by this? Thinking outside the cluster, your system would run on some specific hardware and infrastructure. What happens if you want to get logs about what goes on here? After all, it's entirely possible that the reason your system crashed was due to a failure in the underlying infrastructure. All of these data sources create logs in different ways that you can't control. To make things worse, the data is logged in different ways so there is no single format with which you can read the logs.
+
+So what solution exists for this? Having a unified logging layer that collects data from all these sources, then transforms them so that they all conform to a single format would do the trick.
+
+Enter fluentd.
+
+Fluentd aims to fix all the limiatations mentioned above. So let's go ahead and jump in here.
+
+[Next: fluentd](./fluentd.md)
