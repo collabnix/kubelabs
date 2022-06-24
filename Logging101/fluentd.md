@@ -29,3 +29,79 @@ Finally comes the output plugins. The output plugins share the same [list of plu
 Additionally, there are [formatter plugins](https://www.fluentd.org/plugins/all#formatter), which number significantly lower compared to all other plugin types, and will likely be left unused in most use cases. Formatter plugins create custom output formats in case the format given by an output plugin doesn't match your requirements. You can extend the output provided and turn it into whatever you like.
 
 So, that's the full process, but we still haven't seen what an actual configuration file looks like. Let's remedy that.
+
+## Fluentd Configuration File
+
+The fluentd configuration file is already present when you deploy fluentd. An environment variable also gets conveniently set (```FLUENT_CONF```) to access the config file. Depending on how you installed fluentd, the location and name of the file may change so the env variable is the best option when locating the config file.
+
+Now, let's talk about the syntax of this conf file. The syntax looks similar to XML, although there are several notable differences. The "tags", officially called directives, that are available for use are:
+
+### source
+
+As the name implies this refers to the input source of fluentd and corresponds to the input plugins we discussed. ```@type``` should be used to specify the plugin being used.
+```
+<source>
+  @type forward
+  port 24224
+</source>
+```
+### match
+
+This would be the output destination fluentd should use and corresponds to the output plugins we discussed. But why is it called "match"? Well, the primary purpose of this directive is to **match** tags so that they can be processed.
+```
+# Match events tagged with "myapp.access" and
+# store them to /var/log/fluent/access.%Y-%m-%d
+<match myapp.access>
+  @type file
+  path /var/log/fluent/access
+</match>
+```
+### filter
+
+This handles the processing within fluentd and corresponds to the filter plugins we discussed.
+```
+<filter myapp.access>
+  @type record_transformer
+  <record>
+    host_param "#{Socket.gethostname}"
+  </record>
+</filter>
+```
+
+This sits in the middle of the other two plugins and allows filter plugins to be chained to each other. So you will have an input, which leads to a filter (or filters), which eventually leads to an output.
+
+### system
+
+This is used if you want to set a directive that affects the entire system.
+
+```
+<system>
+  # equal to -qq option
+  log_level error
+  # equal to --without-source option
+  without_source
+  # ...
+</system>
+```
+
+Various parameters can be used under the system directive, and you can get a list of them [here](https://docs.fluentd.org/deployment/system-config).
+
+### label
+
+Handling tags can be a complex process, and the label syntax is present to simplify this to some extent. To add a label, you simply use ```@label @SYSTEM```.
+
+```
+<source>
+  @type tail
+  @label @SYSTEM
+</source>
+```
+
+### @include
+
+If you already have a comprehensive configuration file that has to get duplicated for a different configuration file, there is no reason to create the same config file twice. Instead, you can use the ```include``` syntax to simply include one config file in another.
+
+```
+@include a.conf
+@include config.d/*.conf
+```
