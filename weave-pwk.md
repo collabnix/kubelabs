@@ -22,8 +22,9 @@ Allowable parameters for the launcher URL:
 ```
 v - Weave Scope version or tag, e.g. latest current release is the default
 k8s-service-type - Kubernetes service type (for running Scope in Standalone mode), can be either LoadBalancer or NodePort, by default this is unspecified (only internal access)
-Since we are trying to access it via play with kubernetes or Katakoda platform we need to change the service from ClusterIp to NodePort for that run the following command.
 ```
+
+Since we are trying to access it via play with kubernetes or Katakoda platform, we need to change the service from ClusterIp to NodePort. For that, run the following command.
 
 ```
 kubectl get svc -n weave -o yaml > svc.yaml && sed -i "s/ClusterIP/NodePort/g" svc.yaml && kubectl replace -f svc.yaml
