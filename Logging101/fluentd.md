@@ -4,6 +4,8 @@ Fluentd is a unified logging layer that collects all sorts of logs and processes
 
 Consistency is key when it comes to fluentd. It needs to run continuously and gather as much data as possible without fail. This means that it can't, for any reason, stop working. This is the architecture on which fluentd was built.
 
+Now, you might think that this sounds a little bit like Logstash. That's because it is. If you are using fluentd, then you don't have to also use LogStash. However, the rest of the ELK stack is fully usable alongside fluentd.
+
 ## How does it work?
 
 To start, you need to deploy fluentd to your cluster. Once that's done, Fluentd will start collecting logs from each and every application. This includes applications that you have created yourself, as well as any third-party applications that you may be using. All of these applications may choose to output logs in different ways, and this is where Fluentd steps in again.
@@ -105,3 +107,7 @@ If you already have a comprehensive configuration file that has to get duplicate
 @include a.conf
 @include config.d/*.conf
 ```
+
+So, to summarize, fluentd is a centralized logging layer that takes in data from an input source and produces a different, more standard form of data to an output source. Now let's look at alternatives that aren't necessarily alternatives: Apache Kafka. Kafka is an important part of any serious logging architecture, and we will take a look at that, as well as how you can get Kafka and fluentd to live together, in the next section.
+
+[Next: Apache Kafka](./kafka.md)
