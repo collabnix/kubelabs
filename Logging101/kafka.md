@@ -13,3 +13,13 @@ Topics aren't static and can be considered to be a stream of data. This means th
 ## Kafka Connect
 
 While Kafka was initially released in 2011, it really started gaining popularity in recent years. This means that many large businesses which already had large quantities of data and processes on how the data was handled would have a hard time switching to Kafka. Additionally, some parts of the system may never be converted to Kafka at all. Kafka connect exists to support these kinds of situations.
+
+Consider fluentd. Fluentd doesn't require the input or output sources to be anything fluentd specific. Instead, it is happy to process just about anything into a consistent fluentd format using fluend plugins. This is the same thing that happens with Kafka. There are a lot of things with varying degrees of complexity when it comes to connecting two completely different services together. For example, if you were to try and connect your service to elasticsearch, then you would need to use the Elasticsearch API and handle the topics with log streams, etc... All very complicated, and with Kafka streams, very unnecessary. This is because, like with fluentd, you can expect this connector to already exist. All you have to do is to use it. Some other similarities to fluentd include the solution being highly scalable and fault-tolerant. 
+
+### How does Kafka connect work?
+
+Kafka Connect is basically an API that is open and easily understandable. Connectors are created against this API and allow you to maintain all sorts of connections. This means that you don't even have to use the actual API since the connectors you use will be handling calls to the API for you. So where exactly can you get these connectors?
+
+The [Confluent hub](https://www.confluent.io/hub/) is the best place to go for your connectors. It is curated and comes with a command-line tool to install whatever plugin you need directly from this hub. However, there are no limitations are saying that this is the only place for you to get connectors. There are plenty of [connectors on GitHub](https://github.com/topics/kafka-connector) that you can use. In fact, there is no restriction at all on where you get your connectors. If they are connectors they will work with Kafka Connect. This means that you have an almost unlimited number of sources from which to get plugins. 
+
+Now, what happens if your use case is so specific that there are no existing connectors? Since the connector ecosystem is so large, the possibility of this situation is very low. However, if this situation arises, then you can create your own connector. The Kafka Connect API is easy to understand and well documented, so you will have no trouble getting up and running with it.
