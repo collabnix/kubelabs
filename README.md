@@ -205,6 +205,12 @@
    - [Heapster is Going Away](./Monitoring101/README.md/#Heapster-is-going-away)
    - [Metrics Server Will Get More Cool Features](./Monitoring101/README.md/#Metrics-Server-Will-Get-More-Cool-Features)
 
+## Logging101
+ - [Logging introduction](./Logging101/logging-intro.md)
+ - [Elasticsearch](./Logging101/what-is-elasticsearch.md)
+ - [Fluentd](./Logging101/fluentd.md)
+ - [Kafka](./Logging101/kafka.md)
+
 ## Helm101
 
 - [What is Helm?](./Helm101/what-is-helm.md)

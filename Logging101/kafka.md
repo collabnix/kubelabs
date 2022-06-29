@@ -30,4 +30,4 @@ At this point, you might be thinking that Kafka can now replace fluentd. Indeed,
 
 Kafka has a publisher-subscriber model, where Kafka sits on each host and provides a distributed logging system. This ensures that logs will be produced and maintained regardless of issues such as inter-resource connectivity. Fluentd on the other hand is a centralized logging system that can collect all data produced by individual Kafka topics, as well as any other data sources to create a unified logging layer. The basic idea here is that the two services work in two different places, and can be perfectly integrated with each other to provide a very comprehensive logging system.
 
-That just about wraps up this lesson on Kafka. 
+That just about wraps up this lesson on Kafka.
