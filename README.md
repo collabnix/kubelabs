@@ -149,23 +149,12 @@
 
  
   - [What is Kubernetes Service Catalog?](./ServiceCatalog101/what-is-service-catalog.md)
-  - The Kubernetes Service 
-     - Catalog Resources
-     - Catalog components
   - [Creating a sample Service Catalog](./ServiceCatalog101/Create-Service-Catalog.md)
   - [Installing Service Catalog Helm Chart](./ServiceCatalog101/Install-Service-Catalog-Helm.md)
-   - Installing minibroker
- - Viewing the classes and plans for the Service Broker
- - Using the Service Broker services
-  - Using the Service Broker services
-  - Creating the ServiceBinding
-  - Using the Service Catalog Service
-- Cleaning up  
-  
+
 
 ## Cluster Networking101
 
- -  Introductory Slides (Pending)
  - [What Is Cluster Networking In Kubernetes Sense?](./ClusterNetworking101/README.md/#Cluster-Networking)
  - [Kubernetes Networking Rules](./ClusterNetworking101/README.md/#Kubernetes-Networking-Rules)
  - [Types of Networks](./ClusterNetworking101/README.md/#Types-of-Networks)
