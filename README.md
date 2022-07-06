@@ -182,7 +182,7 @@
 
 ## Network Policies101
 
- - Introductory Slides (Pending)
+
  - [What is a Kubernetes Network Policy?](./Network_Policies101/README.md)
  - [Creating Your First NetworkPolicy Definition](./Network_Policies101/First_Network_Policy.md)
  - [How can we fine-tune Network Policy using selectors?](./Network_Policies101/how_can_we_fine-tune_network_policy_using_selectors.md)
@@ -195,7 +195,7 @@
 
 ## Monitoring101
 
- - Introductory Slides (Pending)
+
  - [Monitoring in Kubernetes](./Monitoring101/README.md/#Monitoring-in-Kubernetes)
  - [Core Monitoring Pipeline](./Monitoring101/README.md/#Core-Monitoring-Pipeline)
  - [Services Monitoring Pipeline](./Monitoring101/README.md/#Service-Monitoring-Pipeline)
@@ -206,7 +206,8 @@
    - [Metrics Server Will Get More Cool Features](./Monitoring101/README.md/#Metrics-Server-Will-Get-More-Cool-Features)
 
 ## Logging101
- - [Logging introduction](./Logging101/logging-intro.md)
+
+- [Logging introduction](./Logging101/logging-intro.md)
  - [Elasticsearch](./Logging101/what-is-elasticsearch.md)
  - [Fluentd](./Logging101/fluentd.md)
  - [Kafka](./Logging101/kafka.md)
