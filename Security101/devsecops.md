@@ -1,0 +1,13 @@
+# What is DevsecOps? 
+
+There is an exhaustive list of security measures that a security adminstrator needs to take before and after a release is performed. This number expands when it comes to large organization that have mulitple applications and a higher tendancy to get attacked. Now, consider that fact that all these considerations need to be accounted for before each release. How much time and effort would have to go into ensuring the security of a system? This is a major problem when you consider that having a lengthy security audit process will make a well defined and automated DevOps process useless. The aim of automated test and release pipelines is to release fast and consistently. This means that by the time the lengthy security audit process is completed, the development team would have already released another version of the application. One this version is audited and readied for release, two more versions will be out. You can imagine the extent of the problem here.
+
+## How does DevSecOps fix this problem?
+
+In the monolithic world, it was perfectly fine to wait until the development team had finished the product so that security auditing could start. Since releases weren't so frequent, the security team had enough breathing room between releases to do their job. Additionally, a microservice architecture increases the amount of ways an attacker could attack. The whole cluster communicated via API endpoint, and there are generally a load of Kubernetes resources in an average cluster, which can all be exploited. Additionally, developers tend to use resources (such as images) created by other people, whose security they have no control over. While a monolthic system wouldn not have this many issues, a microservice architecture makes your system more suseptible to attack, and thereby makes the security teams job that much harder. 
+
+The solution proposed by DevSecOps was to simply move the security auditing phase with the rest of the DevOps process by integrating it in with the DevOps lifecycle. This means that the developers themselves need to ensure that what they develop is up to the correct security standard, as they develop it. While the seciruty team will still exist to ensure that security policies are enforced, a major part of securing the application will be out of their hands.
+
+## How does this look for a developer?
+
+Now, you might be thinking that this is a extra load of work for the developers, and you might be right in some sense. After all, it will be up to you to release working code. However, the automation tools that are available will actually take care of a lot of things for you. 
