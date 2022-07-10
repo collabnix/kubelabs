@@ -61,8 +61,4 @@ To make your life easier, K10 additionally allows you to restore your system to 
 
 ## Other measures
 
-The above list is in no way the most extensive list of security options that are available to protect your Kubernetes clusters. There is always a new exploit being found, and it's best to assume that someday, your cluster will be attacked. The fundamental problem here is that an attacker only needs to find a single weak spot in your security system to break in, whereas a cluster-admin needs to ensure that there are zero weak spots in any of the resources to achieve complete safety. So if you are planning on being a cluster admin or have to maintain security in a cluster, then there is a lot more in this field that you need to consider. However, if you are a normal developer, then the above steps should help you code securely, despite the size of your organization.
-
-At this point, it's important to look at DevSecOps, which takes into account the security concerns around DevOps in general.
-
-[Next: DevSecOps](./devsecops.md)
+The above list is in no way the most extensive list of security options that are available to protect your Kubernetes clusters. There is always a new exploit being found, and it's best to assume that someday, your cluster will be attacked. The fundamental problem here is that an attacker only needs to find a single weak spot in your security system to break in, whereas a cluster-admin needs to ensure that there are zero weak spots in any of the resources to achieve complete safety. So if you are planning on being a cluster admin or have to maintain security in a cluster, then there is a lot more in this field that you need to consider. However, if you are a normal developer, then the above steps should help you code securely, regardless of the size of your organization.
