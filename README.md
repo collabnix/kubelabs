@@ -229,6 +229,10 @@
 - [AKS Service Mesh](./AKS101/aks-service-mesh.md)
 - [AKS KEDA](./AKS101/aks-keda.md)
 
+## Security101
+- [What is DevSecOps?](./Security101/devsecops.md)
+- [Securing your cluster](./Security101/kubernetes-security.md)
+
 # Contributors
 
 - [Ajeet Singh Raina](https://twitter.com/ajeetsraina)
