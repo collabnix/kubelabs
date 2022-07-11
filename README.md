@@ -45,9 +45,6 @@
 - [Accessing Kubernetes API](./api.md) 
 
 
-## Minikube101
-
-- [What is minikube?](./Minikube101/what-is-minikube.md)
 
 ## Pods101
 
