@@ -1,0 +1,9 @@
+# ArgoCD
+
+ArgoCD is a tool that helps integrate GitOps into your pipeline. The first thing to note is that ArgoCD does not replace your entire release pipeline and only part of it. For you to efficiently use ArgoCD, you will need to have a pipeline set up that allows your pull request to be merged, after which an image/configuration will be created from your code. It is at this point that ArgoCD steps in to apply your configuration to the cluster. Before we get into that, let's dive a little deeper into the deployment models, and discuss the reasons for using ArgoCD.
+
+## Push deployment vs Pull deployment
+
+We discussed these two deployment strategies briefly in the previous section. A push deployment strategy will require you to have a pipeline that builds your images and prepares your configurations, but would also go that additional step of deploying your IaaC files into your Kubernetes cluster. The main advantage of this strategy is that everything is placed in one pipeline, and is therefore easy to understand. However, the fact that your pipeline is a different entity from your cluster will bring forward several problems.
+
+Let's imagine you have implemented your pipeline in Jenkins. First of all, your Jenkins machine needs to have some way of deploying your yaml files into a cluster, and therefore needs to have the necessary tools (such as kubectl) installed. Secondly, the Jenkins machine needs to be given access to the cluster, which means giving it access to the kubeconfig file. This poses a security risk, which is made worse if you are hosting your cluster on a cloud provider such as AKS or EKS since you also have to give your Jenkins machine access to these clusters. The final problem lies in the fact that there is no transparency on what happens after you apply your changes into the cluster. The best you can do is to continuously poll the cluster to see if the resource is up and running, which is not a perfect solution.
