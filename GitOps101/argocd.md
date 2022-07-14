@@ -18,4 +18,8 @@ This helps split the work between development and operations teams, where the pi
 
 An important point to note is that ArgoCD looks for desynchronizations between the Git repo and the cluster, meaning that if a change is done to the cluster directly, this will count as a desynchronization, which will then prompt ArgoCD to update itself from Git and undo any changes done directly to the cluster. This helps maintain the GitOps principle that we discussed earlier that there should be a single source of truth. In this case, it is the Git repo. You should be able to consider the files inside the repo and be assured that what you see there is what's running in your cluster. You could, however, configure ArgoCD to prevent this sync from happening although it would break the principle.
 
-Keeping such a tight grip on version control comes with all the benefits of git, such as the git history, git diffs, the ability to revert and reset changes, tag release commits, and basically anything that git allows you to do. 
+Keeping such a tight grip on version control comes with all the benefits of git, such as the git history, git diffs, the ability to revert and reset changes, tag release commits, and basically anything that git allows you to do. Since your cluster can only be changed via Git, this improves cluster security without you having to use RBAC, create cluster roles, assign those roles, etc... This includes cluster roles you may have had to create for service accounts such as Jenkins.
+
+## ArgoCD and your cluster
+
+ArgoCD integrates right into your cluster and uses existing k8 resources to look for changes. This means it has full visibility into your cluster and won't miss anything.
