@@ -18,8 +18,64 @@ This helps split the work between development and operations teams, where the pi
 
 An important point to note is that ArgoCD looks for desynchronizations between the Git repo and the cluster, meaning that if a change is done to the cluster directly, this will count as a desynchronization, which will then prompt ArgoCD to update itself from Git and undo any changes done directly to the cluster. This helps maintain the GitOps principle that we discussed earlier that there should be a single source of truth. In this case, it is the Git repo. You should be able to consider the files inside the repo and be assured that what you see there is what's running in your cluster. You could, however, configure ArgoCD to prevent this sync from happening although it would break the principle.
 
-Keeping such a tight grip on version control comes with all the benefits of git, such as the git history, git diffs, the ability to revert and reset changes, tag release commits, and basically anything that git allows you to do. Since your cluster can only be changed via Git, this improves cluster security without you having to use RBAC, create cluster roles, assign those roles, etc... This includes cluster roles you may have had to create for service accounts such as Jenkins.
+Keeping such a tight grip on version control comes with all the benefits of git, such as the git history, git diffs, the ability to revert and reset changes, tag release commits, and basically anything that git allows you to do. Since your cluster can only be changed via Git, this improves cluster security without you having to use RBAC, create cluster roles, assign those roles, etc... This includes cluster roles you may have had to create for service accounts such as Jenkins. ArgoCD integrates right into your cluster and uses existing k8 resources to look for changes. This means it has full visibility into your cluster and won't miss anything.
 
-## ArgoCD and your cluster
+## Deploying ArgoCD
 
-ArgoCD integrates right into your cluster and uses existing k8 resources to look for changes. This means it has full visibility into your cluster and won't miss anything.
+ArgoCD uses custom resource definitions to extend the Kubernets API, and therefore requires the resources to  be defined as a k8 yaml file of ```kind: Application```. This is what a simple ArgoCD application definition looks like (taken from the ArgoCD [documentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/)):
+
+```
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: guestbook
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    targetRevision: HEAD
+    path: guestbook
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: guestbook
+```
+
+The yaml is rather self explanatory, and it contains two main parts. The part under ```source``` and the part under ```destination```. The source represents the Git source that resembles the desired state your cluster should be in, and the destination represents the cluster you are aiming at.
+
+While this simple exmaple is good for a small cluster, you probably want something a little more complex for commercial clusters since large clusters that have various microservices that are managed by different teams would have trouble using a single Git repo for everything. As such, you can define different yaml files for individual microservices and have them bound to different Git repos. Still, this is not a perfect solution since a different Git repo for each microservice would be infeasible, which is where Application Sets come in. 
+
+A single resource is called an application, so it's easy to summarize that an application set is a bunch of application. That is to say, a group of resources in the cluster that are grouped together. Manually creating applications for similar resources makes little sense, so you could use a resource of ```kind: ApplicationSet``` to generate these application for you. Consider the below sample ApplicationSet, which is an extension of the single application from above:
+
+```
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: guestbook
+spec:
+  generators:
+  - list:
+      elements:
+      - cluster: engineering-dev
+        url: https://1.2.3.4
+      - cluster: engineering-prod
+        url: https://2.4.6.8
+      - cluster: finance-preprod
+        url: https://9.8.7.6
+  template:
+    metadata:
+      name: '{{cluster}}-guestbook'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/argoproj/argo-cd.git
+        targetRevision: HEAD
+        path: applicationset/examples/list-generator/guestbook/{{cluster}}
+      destination:
+        server: '{{url}}'
+        namespace: guestbook
+```
+
+Once again, the source and the destination sections are the most important, and you will notice that a single source repo is now pointing to multiple clusters (which can be set by changing the ```{{url}}``` part of the yaml).
+
+## ArgoCD with multiple cluster
