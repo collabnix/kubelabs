@@ -78,4 +78,21 @@ spec:
 
 Once again, the source and the destination sections are the most important, and you will notice that a single source repo is now pointing to multiple clusters (which can be set by changing the ```{{url}}``` part of the yaml).
 
-## ArgoCD with multiple cluster
+## ArgoCD with multiple clusters
+
+If you were to have the same cluster hosted multiple times (for instance, across multiple regions), then you probably want to update all those clusters at once. ArgoCD allows you to configure multiple destination clusters so that with a single push of your Git repository, the configuration changes get applied to all the clusters at once.
+
+Another place where this might be useful is when you have multiple clusters in your release process which you use for testing before your release. For example, you might have a dev environment where you first apply the cluster, after which testing is performed. If the testing passes, then the cluster should be applied to a prod env, and so on. You are applying the same configuration to different clusters, but not all at once, and this is also something that ArgoCD supports without you having to use separate branches for each cluster. For this, you should use Kustomize overlays.
+
+Kustomize is a CLI tool that is integrated with kubectl which helps you create overlays from source control for different situations. As you can imagine, this is great for handling different clusters that are similar in nature but serve different purposes. You could have on Kustomization for dev, another for prod, and have them applied so that the configuration changes are applied only when you need them to be.
+
+## Seting up ArgoCD end to end
+
+If you are setting up ArgoCD, then you need some essentials. You need a Kubernetes cluster, a Git repo, and a pipeline. To add ArgoCD to your existing cluster, you only have to create a namespace and apply the ArgoCD deployment YAML.
+
+```
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
+
+Once you install ArgoCD, it should sping up a service that you can connect to. It's recommended to use Kubernetes port forwarding to forward requests (such as from localhost:8080) to this service. Once you do that, you should be able to go to the localhost page and see the ArgoCD dashboard. 
