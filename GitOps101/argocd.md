@@ -22,6 +22,15 @@ Keeping such a tight grip on version control comes with all the benefits of git,
 
 ## Deploying ArgoCD
 
+If you are setting up ArgoCD, then you need some essentials. You need a Kubernetes cluster, a Git repo, and a pipeline. To add ArgoCD to your existing cluster, you only have to create a namespace and apply the ArgoCD deployment YAML.
+
+```
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
+
+Once you install ArgoCD, it should sping up a service that you can connect to. It's recommended to use Kubernetes port forwarding to forward requests (such as from localhost:8080) to this service. Once you do that, you should be able to go to the localhost page and see the ArgoCD dashboard. The [ArgoCD documentation](https://argo-cd.readthedocs.io/en/stable/getting_started/) is a great guide to getting started.
+
 ArgoCD uses custom resource definitions to extend the Kubernets API, and therefore requires the resources to  be defined as a k8 yaml file of ```kind: Application```. This is what a simple ArgoCD application definition looks like (taken from the ArgoCD [documentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/)):
 
 ```
@@ -39,9 +48,17 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: guestbook
+  
+  syncPolicy: 
+    syncOptions: 
+    - CreateNamespace=true
 ```
 
-The yaml is rather self explanatory, and it contains two main parts. The part under ```source``` and the part under ```destination```. The source represents the Git source that resembles the desired state your cluster should be in, and the destination represents the cluster you are aiming at.
+The YAML is rather self-explanatory, and it contains two main parts. The part under ```source``` and the part under ```destination```. The source represents the Git source that resembles the desired state your cluster should be in, and the destination represents the cluster you are aiming at. Under ```source```, you set the ```repoUrl```, which points to the repository you want to sync with your cluster, followed by the ```targetRevision```, which points to the commit you want to target. Setting ```HEAD``` points at the latest commit, which is what you usually want, by you can set it to a different commit hash depending on your needs. The last option ```path``` points to the folder within the repository that you want to track. This is useful if you want to use a single repo to control multiple clusters where you can point the source at various paths in the repo.
+
+Considering the ```destination```, the first variable is the ```server``` variable, where you need to set the location of your Kubernetes cluster. In the above example, we are assuming that you are running ArgoCD in that same server that your cluster is available in, which means that you can use ```https://kubernetes.default.svc``` to point at it. However, if you are using a cluster elsewhere, this needs to point there. The second variable is ```namespace```, which specifies the namespace where you want the deployments to happen.
+
+Another important option is the ```syncOptions```, which allows you to have better control over how ArgoCD syncs with your cluster. In the above case, an option has been added to create the namespace if it doesn't exist. A comprehensive list of available options can be found in the [official documenatation](https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/). Another sync policy that is important to look at is the [automated syncpolicy](https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/), which gives you options such as allowing the application to self-heal, sync, and many other options that you would need to fine-tune when running ArgoCD with a commercial grade cluster.
 
 While this simple exmaple is good for a small cluster, you probably want something a little more complex for commercial clusters since large clusters that have various microservices that are managed by different teams would have trouble using a single Git repo for everything. As such, you can define different yaml files for individual microservices and have them bound to different Git repos. Still, this is not a perfect solution since a different Git repo for each microservice would be infeasible, which is where Application Sets come in. 
 
@@ -85,14 +102,3 @@ If you were to have the same cluster hosted multiple times (for instance, across
 Another place where this might be useful is when you have multiple clusters in your release process which you use for testing before your release. For example, you might have a dev environment where you first apply the cluster, after which testing is performed. If the testing passes, then the cluster should be applied to a prod env, and so on. You are applying the same configuration to different clusters, but not all at once, and this is also something that ArgoCD supports without you having to use separate branches for each cluster. For this, you should use Kustomize overlays.
 
 Kustomize is a CLI tool that is integrated with kubectl which helps you create overlays from source control for different situations. As you can imagine, this is great for handling different clusters that are similar in nature but serve different purposes. You could have on Kustomization for dev, another for prod, and have them applied so that the configuration changes are applied only when you need them to be.
-
-## Seting up ArgoCD end to end
-
-If you are setting up ArgoCD, then you need some essentials. You need a Kubernetes cluster, a Git repo, and a pipeline. To add ArgoCD to your existing cluster, you only have to create a namespace and apply the ArgoCD deployment YAML.
-
-```
-kubectl create namespace argocd
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-```
-
-Once you install ArgoCD, it should sping up a service that you can connect to. It's recommended to use Kubernetes port forwarding to forward requests (such as from localhost:8080) to this service. Once you do that, you should be able to go to the localhost page and see the ArgoCD dashboard. 
