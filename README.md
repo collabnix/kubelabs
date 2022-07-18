@@ -229,6 +229,11 @@
 - [AKS Service Mesh](./AKS101/aks-service-mesh.md)
 - [AKS KEDA](./AKS101/aks-keda.md)
 
+## Security101
+- [What is DevSecOps?](./Security101/devsecops.md)
+- [Securing your cluster](./Security101/kubernetes-security.md)
+
+
 ## GitOps101
 - [What is GitOps](./GitOps101/what-is-gitops.md)
 - [ArgoCD](./GitOps101/argocd.md)
