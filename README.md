@@ -45,9 +45,6 @@
 - [Accessing Kubernetes API](./api.md) 
 
 
-## Minikube101
-
-- [What is minikube?](./Minikube101/what-is-minikube.md)
 
 ## Pods101
 
@@ -149,23 +146,12 @@
 
  
   - [What is Kubernetes Service Catalog?](./ServiceCatalog101/what-is-service-catalog.md)
-  - The Kubernetes Service 
-     - Catalog Resources
-     - Catalog components
   - [Creating a sample Service Catalog](./ServiceCatalog101/Create-Service-Catalog.md)
   - [Installing Service Catalog Helm Chart](./ServiceCatalog101/Install-Service-Catalog-Helm.md)
-   - Installing minibroker
- - Viewing the classes and plans for the Service Broker
- - Using the Service Broker services
-  - Using the Service Broker services
-  - Creating the ServiceBinding
-  - Using the Service Catalog Service
-- Cleaning up  
-  
+
 
 ## Cluster Networking101
 
- -  Introductory Slides (Pending)
  - [What Is Cluster Networking In Kubernetes Sense?](./ClusterNetworking101/README.md/#Cluster-Networking)
  - [Kubernetes Networking Rules](./ClusterNetworking101/README.md/#Kubernetes-Networking-Rules)
  - [Types of Networks](./ClusterNetworking101/README.md/#Types-of-Networks)
@@ -182,7 +168,7 @@
 
 ## Network Policies101
 
- - Introductory Slides (Pending)
+
  - [What is a Kubernetes Network Policy?](./Network_Policies101/README.md)
  - [Creating Your First NetworkPolicy Definition](./Network_Policies101/First_Network_Policy.md)
  - [How can we fine-tune Network Policy using selectors?](./Network_Policies101/how_can_we_fine-tune_network_policy_using_selectors.md)
@@ -195,7 +181,7 @@
 
 ## Monitoring101
 
- - Introductory Slides (Pending)
+
  - [Monitoring in Kubernetes](./Monitoring101/README.md/#Monitoring-in-Kubernetes)
  - [Core Monitoring Pipeline](./Monitoring101/README.md/#Core-Monitoring-Pipeline)
  - [Services Monitoring Pipeline](./Monitoring101/README.md/#Service-Monitoring-Pipeline)
@@ -206,7 +192,8 @@
    - [Metrics Server Will Get More Cool Features](./Monitoring101/README.md/#Metrics-Server-Will-Get-More-Cool-Features)
 
 ## Logging101
- - [Logging introduction](./Logging101/logging-intro.md)
+
+- [Logging introduction](./Logging101/logging-intro.md)
  - [Elasticsearch](./Logging101/what-is-elasticsearch.md)
  - [Fluentd](./Logging101/fluentd.md)
  - [Kafka](./Logging101/kafka.md)
@@ -229,6 +216,10 @@
 - [AKS Service Mesh](./AKS101/aks-service-mesh.md)
 - [AKS KEDA](./AKS101/aks-keda.md)
 
+## Security101
+- [What is DevSecOps?](./Security101/devsecops.md)
+- [Securing your cluster](./Security101/kubernetes-security.md)
+
 ## GitOps101
 - [What is GitOps](./GitOps101/what-is-gitops.md)
 - [ArgoCD](./GitOps101/argocd.md)
@@ -237,13 +228,11 @@
 
 - [Ajeet Singh Raina](https://twitter.com/ajeetsraina)
 - [Sangam Biradar](https://twitter.com/BiradarSangam)
+- [Mewantha Bandara](http://linkedin.com/in/mewantha-bandara)
 - [Rachit Mehrotra](https://www.linkedin.com/in/rachit-mehrotra-08a92819/?originalSubdomain=in)
 - [Saiyam Pathak](https://twitter.com/SaiyamPathak)
 - [Divyajeet Singh](https://www.linkedin.com/in/divyajeet-singh)
 - [Apurva Bhandari](https://www.linkedin.com/in/apurvabhandari-linux)
-
-
-
 
 
 
