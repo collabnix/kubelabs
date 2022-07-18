@@ -33,7 +33,7 @@ Once you install ArgoCD, it should sping up a service that you can connect to. I
 
 ArgoCD uses custom resource definitions to extend the Kubernets API, and therefore requires the resources to  be defined as a k8 yaml file of ```kind: Application```. This is what a simple ArgoCD application definition looks like (taken from the ArgoCD [documentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/)):
 
-```
+```yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -64,7 +64,7 @@ While this simple exmaple is good for a small cluster, you probably want somethi
 
 A single resource is called an application, so it's easy to summarize that an application set is a bunch of application. That is to say, a group of resources in the cluster that are grouped together. Manually creating applications for similar resources makes little sense, so you could use a resource of ```kind: ApplicationSet``` to generate these application for you. Consider the below sample ApplicationSet, which is an extension of the single application from above:
 
-```
+```yaml
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
