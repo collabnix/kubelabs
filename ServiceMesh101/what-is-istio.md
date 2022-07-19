@@ -44,6 +44,55 @@ Here's a quick wrap-up of the whole process:
 
 Note that the control plane is not included in this flow. This is because the requests don't actually go through the control plane, and instead, the proxies communicate with each other directly, which reduces latency. However, the control plane is actively involved in metrics collection while this flow is happening.
 
+## Setting up Istio
+
+Naturally, you need to have a Kubernetes cluster set up first. You can either use a cluster that you already have, or an application like minikube to get a cluster up and running on your local machine. The minikube [getting started](https://minikube.sigs.k8s.io/docs/start/) guide is all you need to set it up.
+
+To get a working form of Istio up and running, first, download Istio from its official [GitHub page](https://github.com/istio/istio/releases/tag/1.14.1). Once you have finished setting it up, you should be able to use Istio on the CLI in the same way you use Kubernetes using ```istioctl```. Previously, I mentioned that attaching Envoy proxies to each new deployment are unnecessary since you can get Istio to handle that for you, and you can go ahead and set up that configuration right away:
+
+```
+kubectl label namespace default istio-injection=enabled
+```
+
+And that's about all it takes to set up istioctl. Now, let's use Istio in an actual project. We will be using the [Bookinfo Application](https://github.com/istio/istio/tree/master/samples/bookinfo) sample provided by Istio. There are four microservices and three versions of one microservice. The architecture of the system is as below:
+
+![Application Architecture](noistio.svg)
+
+Please refer to the [sample documentation](https://istio.io/latest/docs/examples/bookinfo/) for more information on this system. True to the use case of service meshes, this application has been created with different languages at each point in the architecture. The first step is to deploy the application to your cluster:
+
+```
+kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
+```
+
+Ensure that all the pods and services are up and running using this command:
+
+```
+kubectl exec "$(kubectl get pod -l app=ratings -o jsonpath='{.items[0].metadata.name}')" -c ratings -- curl -sS productpage:9080/productpage | grep -o "<title>.*</title>"
+```
+
+Next, you need to expose the application externally, and you do that by introducing an Istio gateway:
+
+```
+kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
+```
+
+If we were to take a closer look at the [file](https://github.com/istio/istio/blob/master/samples/bookinfo/networking/bookinfo-gateway.yaml), you will see that it is a resource of type ```Gateway```, and connect over HTTP port 80. There is also a resource of type ```VirtualService``` that defines four routes corresponding to four pages of the application.
+
+```yaml
+- uri:
+        exact: /productpage
+    - uri:
+        prefix: /static
+    - uri:
+        exact: /login
+    - uri:
+        exact: /logout
+    - uri:
+        prefix: /api/v1/products
+```
+
+Run ```istioctl analyze``` to verify that there were no problems with the resource deployment.
+
 So that brings us to the end of Istio. Next, we'll talk about an equally competent contender: Linkerd.
 
 [Next: Linkerd](./what-is-linkerd.md)
