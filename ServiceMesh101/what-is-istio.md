@@ -54,7 +54,7 @@ To get a working form of Istio up and running, first, download Istio from its of
 kubectl label namespace default istio-injection=enabled
 ```
 
-And that's about all it takes to set up istioctl. Now, let's use Istio in an actual project. We will be using the [Bookinfo Application](https://github.com/istio/istio/tree/master/samples/bookinfo) sample provided by Istio. There are four microservices and three versions of one microservice. The architecture of the system is as below:
+And that's about all it takes to set up istioctl. Now, let's use Istio in an actual project. We will be using the [Bookinfo Application](https://github.com/istio/istio/tree/master/samples/bookinfo) sample provided by Istio, so make sure you clone the entire repository first. There are four microservices and three versions of one microservice. The architecture of the system is as below:
 
 ![Application Architecture](noistio.svg)
 
@@ -91,7 +91,62 @@ If we were to take a closer look at the [file](https://github.com/istio/istio/bl
         prefix: /api/v1/products
 ```
 
-Run ```istioctl analyze``` to verify that there were no problems with the resource deployment.
+Run ```istioctl analyze``` to verify that there were no problems with the resource deployment. Now that you have exposed your application externally, get the application host and port so that you may access the resources. This step varies depending on where you run your Kubernetes cluster. If you use minikube, then you should first enable its tunneling feature:
+
+```
+minikube tunnel
+```
+
+If you are using something else to host your cluster, you can run:
+
+```
+kubectl get svc istio-ingressgateway -n istio-system
+```
+
+This will determine whether your cluster supports external load balancers. If it does, then you can set the ingress ports and host (this is also applicable if you are using minikube):
+
+```
+export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
+export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].port}')
+```
+
+and you're done. If your cluster doesn't support external load balancers, then you still need to set the ports:
+
+```
+export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
+export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].nodePort}')
+```
+
+After which you need to follow the steps listed in the [official documenatation](https://istio.io/latest/docs/setup/getting-started/#determining-the-ingress-ip-and-ports) according to your specific cluster host.
+
+Finally, set up the gateway URL. This consists of the external host and port that you set up in the previous step and can be used to access your cluster.
+
+```
+export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
+```
+
+Istio integrates with several third-party software to provide additional features. You can find the list of software [here](https://istio.io/latest/docs/ops/integrations/). These help you get a better overview of your mesh and should be installed depending on your needs. In this case, we will be installing a [predefined list of addons](https://github.com/istio/istio/tree/master/samples/addons) which includes:
+
+- Prometheus
+- Prometheus Operator
+- Grafana
+- Kiali
+- Jaeger
+- Zipkin
+
+Install all the above using:
+
+```
+kubectl apply -f samples/addons
+kubectl rollout status deployment/kiali -n istio-system
+```
+
+Out of the above applications, we will be using Kiali first. [Kiali](https://kiali.io) is a dashboard specifically designed to act as a management console for Istio, and can provide you insight on the status of your service mesh such as health, status, security, tracing, etc... To open up this dashboard, use:
+
+```
+istioctl dashboard kiali
+```
 
 So that brings us to the end of Istio. Next, we'll talk about an equally competent contender: Linkerd.
 
