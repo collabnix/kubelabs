@@ -148,6 +148,8 @@ Out of the above applications, we will be using Kiali first. [Kiali](https://kia
 istioctl dashboard kiali
 ```
 
+You should now be able to see a comprehensive overview of your Istio cluster. You are now done with a basic implementation of Istio, and you have the tools required to build your own Istio integrated clusters. If you want to dive deeper into Istio, you could take a look at the [various tutorials](https://istio.io/latest/docs/setup/getting-started/#next-steps) provided by Istio.
+
 So that brings us to the end of Istio. Next, we'll talk about an equally competent contender: Linkerd.
 
 [Next: Linkerd](./what-is-linkerd.md)

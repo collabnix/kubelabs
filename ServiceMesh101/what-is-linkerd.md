@@ -10,6 +10,40 @@ The lightweight nature allows Linkerd to operate very non-intrusively and allows
 
 When it comes to the other features of Linkerd, they are pretty close to what you get from Istio. The same level of metrics, logging, etc... is available, and you might even find the configuration a bit simpler. So let's take a look at that.
 
+## Setting up Linkerd
+
+As with Istio, you have a few requirements before you can set up Linkerd. A Kubernetes cluster is an obvious one, and Minikube is also a valid option if you want to get a cluster up and running. Similar to istio, you need to set up the linkerd CLI. Do that with:
+
+```
+curl --proto '=https' --tlsv1.2 -sSfL https://run.linkerd.io/install | sh
+```
+
+Linkerd also provides a handy way to verify that your cluster is Linkerd-ready. If you come across any problems, Linkerd also provides various solutions you may try. There are a certain number of requirements to running linkerd, and you need to have a cluster that can handle them, so run this:
+
+```
+linkerd check --pre
+```
+
+Finally, install linkerd to your cluster:
+
+```
+linkerd install | kubectl apply -f -
+```
+
+You might notice that the installation gets applied to your cluster in the same way a normal Kubernetes resource gets applied. Setting up the control plane may take a while, so make sure you run ```linkerd check``` to see if everything has been installed properly. However, this is not the only way to install Linkerd to your cluster, and you could [install Linkerd as a Helm chart](https://linkerd.io/2.11/tasks/install-helm/).
+
+As we did with Istio, let's get our hands dirty by going through a demo application that uses Linkerd. We will use a demo that is provided by Linkerd, which you can install with:
+
+```
+curl --proto '=https' --tlsv1.2 -sSfL https://run.linkerd.io/emojivoto.yml | kubectl apply -f -
+```
+
+This installs several services, deployments, and other resources such as service accounts which set up a functioning infrastructure usable by Linkerd. The application here is a simple web app that allows users to vote for various emojis. You should go ahead and fire it up, which you can do with port forwarding the service to localhost:8080:
+
+```
+kubectl -n emojivoto port-forward svc/web-svc 8080:80
+```
+
 ## Linkerd configuration
 
 There are two ways you can inject Linkerd into your cluster. One is by adding an annotation into your yaml:
