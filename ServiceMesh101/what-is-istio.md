@@ -148,7 +148,41 @@ Out of the above applications, we will be using Kiali first. [Kiali](https://kia
 istioctl dashboard kiali
 ```
 
+Since you also have Grafana installed, you could take a look at the Grafana dashboard as well. The versions of Prometheus installed here to provide you will all the usual monitoring features, except they are now added in as part of the service mesh, and not installed to the cluster directly. As we spoke about at the start, this allows Prometheus to have a much better overview of the entire system and collect logs from the proxies, which act as the gateway between all pods. You will also notice that [Jaeger](https://istio.io/latest/docs/ops/integrations/jaeger/) has been installed, which is an end-to-end tracing system suited for distributed systems that perform complex transactions that could go wrong somewhere. Instead of digging through hundreds of log files to see where the problem occurred, you could instead use Jaeger to trace the transaction to troubleshoot the problem.
+
+Finally, we have [Zipkin](https://istio.io/latest/docs/tasks/observability/distributed-tracing/zipkin/), which, similar to Jaeger, helps with transaction tracing. Since you already have the Bookinfo application running, as well as Zipkin deployed, let's see the Zipkin tracing dashboard in action. In the same way, we opened the Kiali dashboard, and open up Zipkin:
+
+```
+istioctl dashboard Zipkin
+```
+
+Since you need to generate trace information to actually see anything on Zipkin, you should visit ```http://$GATEWAY_URL/productpage``` on your browser a couple of times. Alternatively, use curl:
+
+```
+for i in $(seq 1 100); do curl -s -o /dev/null "http://$GATEWAY_URL/productpage"; done
+```
+
+From the dashboard, select serviceName -> productpage.default and click on the search button. You should get ```ISTIO-INGRESSGATEWAY``` as a result, which should show you detailed trace data for the requests you just performed.
+
 You should now be able to see a comprehensive overview of your Istio cluster. You are now done with a basic implementation of Istio, and you have the tools required to build your own Istio integrated clusters. If you want to dive deeper into Istio, you could take a look at the [various tutorials](https://istio.io/latest/docs/setup/getting-started/#next-steps) provided by Istio.
+
+## Cleanup
+
+Once you're done playing around with the sample, you can clean up everything using:
+
+```
+killall istioctl
+samples/bookinfo/platform/kube/cleanup.sh
+```
+
+Then check if everything is really gone:
+
+```
+kubectl get virtualservices   
+kubectl get destinationrules 
+kubectl get gateway           
+kubectl get pods              
+```
 
 So that brings us to the end of Istio. Next, we'll talk about an equally competent contender: Linkerd.
 
