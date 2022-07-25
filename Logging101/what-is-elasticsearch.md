@@ -33,14 +33,43 @@ The dashboards can also be bound to specific roles. For example, people in manag
 
 The best part about the ELK stack is that it is built to run continuously. LogStash will transform and stash data into Elasticsearch, which will then serve this data to Kibana. All in real-time. This means that data about your cluster will always be visible in an up-to-date, understandable manner. Certainly, better than a bunch of log files, isn't it?
 
-## Setting up the ELK stack
+## Setting up the Elasticsearch
 
-Now that you know what each letter of the stack stands for, let's go ahead and set it up. Luckily, Elastic has provided us with a [large sample repo](https://github.com/elastic/examples) that we can use to try out the stack with minimal hassle. In particular, we will be using the CEF sample that covers all three parts of the stack. We could go for another sample such as the [Twitter sample](https://github.com/elastic/examples/tree/master/Common%20Data%20Formats/twitter), however, this requires access to the Twitter API which isn't readily available. Before we get into the sample, we need to install Elasticsearch, Logstash & Kibana.
+Now that you know what each letter of the stack stands for, let's go ahead and set it up. Luckily, Elastic has provided us with a [large sample repo](https://github.com/elastic/examples) that we can use to try out the stack with minimal hassle. In particular, we will be using the MonitoringKubernetes sample that covers all three parts of the stack. Note that this sample substitutes Logstash with [Beats](https://www.elastic.co/beats/), which is an alternative provided by Elastic. We could go for another sample such as the [Twitter sample](https://github.com/elastic/examples/tree/master/Common%20Data%20Formats/twitter), however, this requires access to the Twitter API which isn't readily available. However, feel free to try out any sample in the repo. Before we get into the sample, you will need to have a working stack set up. If you don't, then it would be much faster to get started on [Elastic cloud](http://cloud.elastic.co), which has a free tier that would suffice for this sample.
 
-Since Elasticsearch and Logstash depend on Java, make sure you have Java 8 or later installed. Then download the [Elasticsearch binary](https://www.elastic.co/downloads/elasticsearch), extract, and run. The same steps apply to the [Logstash binary](https://www.elastic.co/downloads/logstash) and the [Kibana binary](https://www.elastic.co/downloads/kibana). Make sure you follow the next steps provided on the installation page to start Elasticsearch, configure Logstash, and start Kibana. Additionally, check your Logstash installation with the below command:
+As always, you also need an available Kubernetes cluster. Once again, I recommend [Minikube](https://minikube.sigs.k8s.io/docs/start/) to set up a cluster on your local machine, but feel free to use any cluster that is available to you. Once you have a cluster available, use RBAC to create a cluster role that binds to your elastic user:
 
 ```
-<path_to_logstash_root_dir>/bin/logstash -e 'input { stdin { } } output { stdout {} }'
+kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=<elastic cloud email>
+```
+
+The above command will create a role in your cluster that says that your email from Elastic cloud is a cluster admin. You can then use wget (or curl) to get the files specific to this sample:
+
+```
+mkdir MonitoringKubernetes
+cd MonitoringKubernetes
+wget https://raw.githubusercontent.com/elastic/examples/master/MonitoringKubernetes/download.txt
+sh download.txt
+```
+
+or if you have cloned the whole repo, then just head over to ```examples/MonitoringKubernetes``` folder. Either way, you should have a bunch of yaml files that define the Kubernetes resources, as well as two files, called ```ELASTIC_PASSWORD``` and ```CLOUD_ID```. Set these values with the values you got from setting up your elastic cloud account. Afterward, create a Kubernetes secret:
+
+```
+kubectl create secret generic dynamic-logging --from-file=./ELASTIC_PASSWORD --from-file=./CLOUD_ID --namespace=kube-system
+```
+
+This secret will reside in the ```kube-system```, which is a namespace managed by Kubernetes. You should also check if the ```kube-state-metrics``` pod is running  in the same namespace:
+
+```
+kubectl get pods --namespace=kube-system | grep kube-state
+```
+
+If you get nothing as a result, then create it:
+
+```
+git clone https://github.com/kubernetes/kube-state-metrics.git kube-state-metrics
+kubectl apply -f kube-state-metrics/examples/standard
+kubectl get pods --namespace=kube-system | grep kube-state 
 ```
 
 ## Drawbacks of Elasticsearch
