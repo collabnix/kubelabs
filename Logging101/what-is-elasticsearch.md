@@ -32,6 +32,17 @@ At this point, the data still isn't very human-friendly. Kibana (similar to Graf
 The dashboards can also be bound to specific roles. For example, people in management roles would want to see different dashboards from those working in system security. This helps improve policy compliance as well as usability. You can also export and share data easily from within Kibana, and create alerts to notify you of certain trigger events. Kibana is a huge application and deserves its own course. But the important takeaway here is that it integrates beautifully into the ELK stack and provides a lot of customizable visualisations.
 
 The best part about the ELK stack is that it is built to run continuously. LogStash will transform and stash data into Elasticsearch, which will then serve this data to Kibana. All in real-time. This means that data about your cluster will always be visible in an up-to-date, understandable manner. Certainly, better than a bunch of log files, isn't it?
+
+## Setting up the ELK stack
+
+Now that you know what each letter of the stack stands for, let's go ahead and set it up. Luckily, Elastic has provided us with a [large sample repo](https://github.com/elastic/examples) that we can use to try out the stack with minimal hassle. In particular, we will be using the CEF sample that covers all three parts of the stack. We could go for another sample such as the [Twitter sample](https://github.com/elastic/examples/tree/master/Common%20Data%20Formats/twitter), however, this requires access to the Twitter API which isn't readily available. Before we get into the sample, we need to install Elasticsearch, Logstash & Kibana.
+
+Since Elasticsearch and Logstash depend on Java, make sure you have Java 8 or later installed. Then download the [Elasticsearch binary](https://www.elastic.co/downloads/elasticsearch), extract, and run. The same steps apply to the [Logstash binary](https://www.elastic.co/downloads/logstash) and the [Kibana binary](https://www.elastic.co/downloads/kibana). Make sure you follow the next steps provided on the installation page to start Elasticsearch, configure Logstash, and start Kibana. Additionally, check your Logstash installation with the below command:
+
+```
+<path_to_logstash_root_dir>/bin/logstash -e 'input { stdin { } } output { stdout {} }'
+```
+
 ## Drawbacks of Elasticsearch
 
 As great as this system may look, there are some drawback. If your system contains multiple applications from various teams, then all of them would have to have Elasticsearch integration for all this to work. Now, what if one of those applications doesn't have this integration? Then a peice of the system would go missing. If the applications in the system are interconnected, then it would be a requirement for logging to see what processes goes inside each application. This would not be possible if the necessary Elasticsearch integration is not present.
