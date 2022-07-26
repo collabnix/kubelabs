@@ -223,7 +223,6 @@
 ## GitOps101
 - [What is GitOps](./GitOps101/what-is-gitops.md)
 - [ArgoCD](./GitOps101/argocd.md)
-
 # Contributors
 
 - [Ajeet Singh Raina](https://twitter.com/ajeetsraina)
