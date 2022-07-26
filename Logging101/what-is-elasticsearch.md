@@ -67,10 +67,43 @@ kubectl get pods --namespace=kube-system | grep kube-state
 If you get nothing as a result, then create it:
 
 ```
-git clone https://github.com/kubernetes/kube-state-metrics.git kube-state-metrics
+git clone https://github.com/kubernetes/kube-state-metrics.git kube-state-metrics    
 kubectl apply -f kube-state-metrics/examples/standard
 kubectl get pods --namespace=kube-system | grep kube-state 
 ```
+
+
+Now, you have all the infrastructure ready to go. The secrets are ready and the metrics pod is up. The next step is to install the sample application, which is going to be the guestbook example provided by the [Kubernets sample repo](https://github.com/kubernetes/examples). The resource file is the guestbook.yaml, which contains declarations for a bunch of services. Start by applying them to your cluster:
+
+```
+kubectl create -f guestbook.yaml 
+```
+
+Now, it's time to deploy the elastic beats resource files. The first will be the lightweight log shipper [Filebeat]https://www.elastic.co/beats/filebeat. This resource file consists of several resources including a ConfigMap, DaemonSet, and RBAC-related resources. However, you can [configure Filebeat](https://www.elastic.co/guide/en/beats/filebeat/current/configuring-howto-filebeat.html) in whichever way you prefer. Deploy it with:
+
+```
+kubectl create -f filebeat-kubernetes.yaml 
+```
+
+Next, we will be deploying the metrics shipper [Metricbeat](https://www.elastic.co/beats/metricbeat), which is [fully configurable](https://www.elastic.co/guide/en/beats/metricbeat/current/configuring-howto-metricbeat.html). Deploy it with:
+
+```
+kubectl create -f metricbeat-kubernetes.yaml 
+```
+
+Finally, we need to install the network analysis data shipper [Packetbeat](https://www.elastic.co/beats/packetbeat) which you can also [configure](https://www.elastic.co/guide/en/beats/packetbeat/current/configuring-howto-packetbeat.html). Deploy with:
+
+```
+kubectl create -f packetbeat-kubernetes.yaml
+```
+
+Now that beats have been set up, it's time to open up Kibana. If you're using elastic cloud, Kibana should already be available. Head over to your Kibana URL and open up the dashboard. To see how changes are reflected in your dashboard, scale your deployments up so that more pods start:
+
+```
+kubectl scale --replicas=2 deployment/frontend
+```
+
+You should now see Kibana reflecting these changes as log streams and visualizations.
 
 ## Drawbacks of Elasticsearch
 
