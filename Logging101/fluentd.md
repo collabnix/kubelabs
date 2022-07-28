@@ -118,7 +118,7 @@ First, you need a Fluentd daemonset, which you can grab from the official [GitHu
 $ git clone https://github.com/fluent/fluentd-kubernetes-daemonset
 ```
 
-Once you have the repo, you will find the ```fluentd-daemonset-elasticsearch.yaml``` placed in the root folder alongside several other daemonset resource files. In this case, we will be sticking to the ```fluentd-daemonset-elasticsearch.yaml```, and use it to deploy our DaemonSet, but feel free to also experiment with the other DaemonSets as the rest of the instructions are equally applicable to those as well. This yaml will fire up an elasticsearch pod with volume mounts 
+Once you have the repo, you will find the ```fluentd-daemonset-elasticsearch.yaml``` placed in the root folder alongside several other daemonset resource files. In this case, we will be sticking to the ```fluentd-daemonset-elasticsearch.yaml```, and use it to deploy our DaemonSet, but feel free to also experiment with the other DaemonSets as the rest of the instructions are equally applicable to those as well.
 
 So, to summarize, fluentd is a centralized logging layer that takes in data from an input source and produces a different, more standard form of data to an output source. Now let's look at alternatives that aren't necessarily alternatives: Apache Kafka. Kafka is an important part of any serious logging architecture, and we will take a look at that, as well as how you can get Kafka and fluentd to live together, in the next section.
 

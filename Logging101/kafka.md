@@ -24,6 +24,38 @@ The [Confluent hub](https://www.confluent.io/hub/) is the best place to go for y
 
 Now, what happens if your use case is so specific that there are no existing connectors? Since the connector ecosystem is so large, the possibility of this situation is very low. However, if this situation arises, then you can create your own connector. The Kafka Connect API is easy to understand and well documented, so you will have no trouble getting up and running with it.
 
+## Setting up Kafka
+
+Since Kafka depends on Java, make sure that you first have Java 8 installed.
+
+Now that you are armed with an overall knowledge of Kafka, let's see about setting it up. Depending on your use case, the way you would get started varies, but of course, the first thing is to [download Kafka](https://www.confluent.io/get-started/?product=software). The Confluent version of Kafka is one of the best options since it is well tested, and has plugins such as a REST proxy, connectors, etc... You can also choose to get the [Apache version](https://www.apache.org/dyn/closer.cgi?path=/kafka/3.2.0/kafka_2.13-3.2.0.tgz) instead and the installation instructions are still the same. Once you have the download, simply unzip it somewhere. Inside the bin folder, you will find Kafka-server-start.sh, which is the entry point of the program. Run it with:
+
+```
+$ bin/kafka-server-start.sh config/server.properties
+```
+
+That's all that takes to get a basic Kafka environment up and running. Let's move on to creating topics. As we've discussed, topics are a stream of events and are the most fundamental part of Kafka. You start it with:
+
+```
+$ bin/kafka-topics.sh --create --topic <topic-name> --bootstrap-server localhost:9092
+```
+
+This will create a topic with the name you provide. The bootstrap-server option here is where your resource gets its initial data from, and further configuration related to this server can be found in the ```bootstrap.servers``` value of the ```consumer.properties``` file.
+
+Now that your topic is up, let's start logging events to the topic. For this, you need to run the producer client that will create a few logs and write them into the topic you specify. The content of these logs can be specified by you:
+
+```
+$ bin/kafka-console-producer.sh --topic <topic-name> --bootstrap-server localhost:9092
+LoggingLab101 first event
+LoggingLab101 second event
+```
+
+You can continue typing in newline separate events and use Ctrl + c to exit out. Now, your topic has events written into it, and it's time to read these events. Do so with the consumer in the same way as you did with the producer:
+
+```
+$ bin/kafka-console-consumer.sh --topic quickstart-events --from-beginning --bootstrap-server localhost:9092
+```
+
 ## Kafka and fluentd
 
 At this point, you might be thinking that Kafka can now replace fluentd. Indeed, you can choose between either fluentd or Kafka depending on what best suits your test case. However, this doesn't necessarily need to be the case. You can run both of them together with no issues. Case in point, if you were to look at fluentd's [list of available input plugins](https://www.fluentd.org/datasources), you would be able to see Kafka listed there. This applies to the [available output plugins](https://www.fluentd.org/dataoutputs) as well. In the same way, there exists [Kafka connect plugins for fluentd](https://github.com/fluent/kafka-connect-fluentd). What this means is that the two services can act as data sources/data sink for each other. But why would you want to do that at all? 
