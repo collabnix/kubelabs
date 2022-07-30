@@ -12,4 +12,26 @@ Note that this step happens before you send the data to storage. You don't query
 
 When it comes to running Fluent Bit, you install it as a DaemonSet on every Kubernetes node. The logs relating to the pods and general infrastructure are read from that point onwards. If this all sounds familiar to you, that is likely because this is how fluentd works as well. Additionally, the pluggable nature of the application, as well as security considerations that Fluent Bit has are all the same as with fluentd. 
 
+## Setting up Fluent Bit
+
+Great! Now we know all there is to about Fluent Bit, so let's go ahead and install it. There are several different ways you can install Fluent Bit; running it on the cloud, in a docker container, installing it directly into Linux, or even Windows server. Since we are in a Kubernetes environment, let's see how we can install Fluent Bit on a Kubernetes cluster. As with Fluentd, many components go into installing Fluent Bit, but thankfully you will not have to install these by hand as an [official Helm chart](https://github.com/fluent/helm-charts) has been provided. A clear guide as to how Helm charts are installed can be found [in the Helm section](../Helm101/installing-a-chart.md) So go ahead and install the Helm chart:
+
+```
+helm repo add fluent https://fluent.github.io/helm-charts
+```
+
+Make sure to check out the [Helm tutorial](../Helm101/what-is-helm.md) later for a better understanding of how these charts work. Run:
+
+```
+helm search repo fluent
+```
+
+If the repo shows up properly, then you have successfully added Fluent as a repo. Note that this repo includes both Fluentd and Fluent Bit. Since we are talking about Fluent Bit here, go ahead and install it:
+
+```
+helm upgrade --install fluent-bit fluent/fluent-bit
+```
+
+As with Fluentd and Kafka, this will start Fluent Bit as a DaemonSet with default values. You can change them by changing the [values.yaml](https://github.com/fluent/helm-charts/blob/master/charts/fluent-bit/values.yaml) in your local repo.
+
 To sum up, Fluent Bit is basically fluentd, but with a much smaller footprint and file size. It runs in a more lightweight manner and consumes resources which makes it an ideal log processor for systems that have few resources. There are also a few unique features that Fluent Bit has that fluentd doesn't, and vice versa.
