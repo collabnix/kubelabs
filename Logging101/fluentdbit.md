@@ -14,7 +14,7 @@ When it comes to running Fluent Bit, you install it as a DaemonSet on every Kube
 
 ## Setting up Fluent Bit
 
-Great! Now we know all there is to about Fluent Bit, so let's go ahead and install it. There are several different ways you can install Fluent Bit; running it on the cloud, in a docker container, installing it directly into Linux, or even Windows server. Since we are in a Kubernetes environment, let's see how we can install Fluent Bit on a Kubernetes cluster. As with Fluentd, many components go into installing Fluent Bit, but thankfully you will not have to install these by hand as an [official Helm chart](https://github.com/fluent/helm-charts) has been provided. A clear guide as to how Helm charts are installed can be found [in the Helm section](../Helm101/installing-a-chart.md) So go ahead and install the Helm chart:
+Great! Now we know all there is to about Fluent Bit, so let's go ahead and install it. There are several different ways you can install Fluent Bit; running it on the cloud, in a docker container, installing it directly into Linux, or since version 1.5.0, even Windows server. Since we are in a Kubernetes environment, let's see how we can install Fluent Bit on a Kubernetes cluster. As with Fluentd, many components go into installing Fluent Bit, but thankfully you will not have to install these by hand as an [official Helm chart](https://github.com/fluent/helm-charts) has been provided. A clear guide as to how Helm charts are installed can be found [in the Helm section](../Helm101/installing-a-chart.md) So go ahead and install the Helm chart:
 
 ```
 helm repo add fluent https://fluent.github.io/helm-charts
@@ -32,6 +32,46 @@ If the repo shows up properly, then you have successfully added Fluent as a repo
 helm upgrade --install fluent-bit fluent/fluent-bit
 ```
 
-As with Fluentd and Kafka, this will start Fluent Bit as a DaemonSet with default values. You can change them by changing the [values.yaml](https://github.com/fluent/helm-charts/blob/master/charts/fluent-bit/values.yaml) in your local repo.
+As with Fluentd and Kafka, this will start Fluent Bit as a DaemonSet with default values. You can change them by changing the [values.yaml](https://github.com/fluent/helm-charts/blob/master/charts/fluent-bit/values.yaml) in your local repo. The default file consists of a resource of the type DaemonSet that runs an instance of busybox and requests RBAC support. It also starts a service of type ClusterIp on node 2020. There is also a number of options commented out in the yaml related to Network policies, service monitors, Prometheus, dashboards, ingresses, scaling, pod affinities, and so much more. As such, this file is a great starting point for anyone looking to set up Fluent Bit. 
+
+Towards the bottom, you will get the actual Fluent Bit configuration. This section defines the inputs:
+
+```
+inputs: |
+    [INPUT]
+        Name tail
+        Path /var/log/containers/*.log
+        multiline.parser docker, cri
+        Tag kube.*
+        Mem_Buf_Limit 5MB
+        Skip_Long_Lines On
+```
+
+We can see that the above lines use the [Tail input plugin](https://docs.fluentbit.io/manual/v/1.0/input/tail) which can be used to monitor text files. Then there are filters:
+
+```
+filters: |
+    [FILTER]
+        Name kubernetes
+        Match kube.*
+        Merge_Log On
+        Keep_Log Off
+        K8S-Logging.Parser On
+        K8S-Logging.Exclude On
+```
+
+This adds Kubernetes metadata. Finally, there are the parsers:
+
+```
+customParsers: |
+    [PARSER]
+        Name docker_no_time
+        Format json
+        Time_Keep Off
+        Time_Key time
+        Time_Format %Y-%m-%dT%H:%M:%S.%L
+```
+
+And finishes with information regarding the volume mounts for the DaemonSet.
 
 To sum up, Fluent Bit is basically fluentd, but with a much smaller footprint and file size. It runs in a more lightweight manner and consumes resources which makes it an ideal log processor for systems that have few resources. There are also a few unique features that Fluent Bit has that fluentd doesn't, and vice versa.
