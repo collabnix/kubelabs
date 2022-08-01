@@ -14,7 +14,7 @@ When it comes to running Fluent Bit, you install it as a DaemonSet on every Kube
 
 ## Setting up Fluent Bit
 
-Great! Now we know all there is to about Fluent Bit, so let's go ahead and install it. There are several different ways you can install Fluent Bit; running it on the cloud, in a docker container, installing it directly into Linux, or since version 1.5.0, even Windows server. Since we are in a Kubernetes environment, let's see how we can install Fluent Bit on a Kubernetes cluster. As with Fluentd, many components go into installing Fluent Bit, but thankfully you will not have to install these by hand as an [official Helm chart](https://github.com/fluent/helm-charts) has been provided. A clear guide as to how Helm charts are installed can be found [in the Helm section](../Helm101/installing-a-chart.md) So go ahead and install the Helm chart:
+Great! Now we know all there is to about Fluent Bit, so let's go ahead and install it. Note that these steps are relevant for Linux environments. There is separate documentation for [Windows environments](https://docs.fluentbit.io/manual/installation/kubernetes#windows-deployment) and [Mac Environments](https://docs.fluentbit.io/manual/installation/macos). There are several different ways you can install Fluent Bit; running it on the cloud, in a docker container, installing it directly into Linux, or since version 1.5.0, even Windows server. Since we are in a Kubernetes environment, let's see how we can install Fluent Bit on a Kubernetes cluster. As with Fluentd, many components go into installing Fluent Bit, but thankfully you will not have to install these by hand as an [official Helm chart](https://github.com/fluent/helm-charts) has been provided. A clear guide as to how Helm charts are installed can be found [in the Helm section](../Helm101/installing-a-chart.md) So go ahead and install the Helm chart:
 
 ```
 helm repo add fluent https://fluent.github.io/helm-charts
@@ -71,6 +71,8 @@ customParsers: |
         Time_Key time
         Time_Format %Y-%m-%dT%H:%M:%S.%L
 ```
+
+This is the Container Runtime Interface parser. By default, Fluent Bit expects the logs to be in Docker interface standard, but you can change it to CRI using the above parser and the relevant lines. 
 
 And finishes with information regarding the volume mounts for the DaemonSet.
 
