@@ -112,6 +112,49 @@ If you already have a comprehensive configuration file that has to get duplicate
 
 Alright, so we know all about Fluentd now, and we have taken a look at the different tags we can use in the fluentd configuration files, let's get it set up on a cluster. For that, you need to have a cluster up and running, and [Minikube](https://minikube.sigs.k8s.io/docs/start/) is the perfect solution. Its easy to set up and use, and is an excellent tool for local development. You can also use clusters hosted elsewhere, as well as the cloud.
 
+Note that Fluentd v0.12 does not support Windows since it's very rare that your cluster would have to deal with a Windows machine. However, if you need to collect logs from a Windows server, Fluent has provided a [guide](https://docs.fluentd.org/v/0.12/use-cases/windows) on how you can do that. If you are working with a Redhat-based environment, refer to the [guide for redhat](https://docs.fluentd.org/v/0.12/articles/install-by-rpm), and if you are using a Debian-based server, refer to the [guide for Debian](https://docs.fluentd.org/v/0.12/articles/install-by-deb). We will be installing fluentd using a Ruby gem, and this is a standard way you can use to install fluentd on any platform that supports gems.
+
+The first thing you need to do is to set up a Network time protocol Daemon on your operating system so that Fluentd can have an accurate timestamp. Since the time an event occurs is crucial to the system, this is a rather necessary step.
+
+The next thing that needs consideration is the file descriptor limit. The file descriptor limit determines how many open files you can have at a moment, and since fluent would generally deal with thousands of files at once, your operating system needs to be able to cater to this need:
+
+```
+root soft nofile 65536
+root hard nofile 65536
+* soft nofile 65536
+* hard nofile 65536
+```
+
+You likely don't need to do this last preparation step, but if you are running a high-load environment, make sure you [optimize your network kernel parameters](https://docs.fluentd.org/v/0.12/articles/before-install#optimize-network-kernel-parameters).
+
+Since we are using a ruby gem, you would have to install a ruby interpreter. Make sure your version is 1.9.3 or higher. You also need the ruby-dev package installed. Both can be installed using ```sudo apt install ruby-full``` on ubuntu and ```sudo yum install ruby``` in RHEL.
+
+Next, we get to installing the Fluentd gem and running it:
+
+```
+gem install fluentd -v "~> 0.12.0" --no-ri --no-rdoc
+fluentd --setup ./fluent
+fluentd -c ./fluent/fluent.conf -vv &
+echo '{"json":"message"}' | fluent-cat debug.test
+```
+
+If you now get a message output similar to ```debug.test: {"json":"message"}```, then you have successfully set up Fluentd on your development environment. Now it's time to create some Fluentd configuration files. We have already looked at the syntax that makes up these files, and now we will look at how to use this syntax from end to end.
+
+## Setting up configuration files
+
+Since we installed Fluentd with a gem, use:
+
+```
+sudo fluentd --setup /etc/fluent
+sudo vi /etc/fluent/fluent.conf
+```
+
+If you installed Fluentd with RPM/DEB/DMG, then use
+
+```
+sudo vi /etc/td-agent/td-agent.conf
+```
+
 First, you need a Fluentd daemonset, which you can grab from the official [GitHub repo](https://github.com/fluent/fluentd-kubernetes-daemonset), so start by cloning the repo itself:
 
 ```
