@@ -118,7 +118,7 @@ The first thing you need to do is to set up a Network time protocol Daemon on yo
 
 The next thing that needs consideration is the file descriptor limit. The file descriptor limit determines how many open files you can have at a moment, and since fluent would generally deal with thousands of files at once, your operating system needs to be able to cater to this need:
 
-```
+```bash
 root soft nofile 65536
 root hard nofile 65536
 * soft nofile 65536
@@ -131,7 +131,7 @@ Since we are using a ruby gem, you would have to install a ruby interpreter. Mak
 
 Next, we get to installing the Fluentd gem and running it:
 
-```
+```bash
 gem install fluentd -v "~> 0.12.0" --no-ri --no-rdoc
 fluentd --setup ./fluent
 fluentd -c ./fluent/fluent.conf -vv &
@@ -144,26 +144,72 @@ If you now get a message output similar to ```debug.test: {"json":"message"}```,
 
 Since we installed Fluentd with a gem, use:
 
-```
+```bash
 sudo fluentd --setup /etc/fluent
 sudo vi /etc/fluent/fluent.conf
 ```
 
 If you installed Fluentd with RPM/DEB/DMG, then use
-
-```
+```bash
 sudo vi /etc/td-agent/td-agent.conf
 ```
 
-First, you need a Fluentd daemonset, which you can grab from the official [GitHub repo](https://github.com/fluent/fluentd-kubernetes-daemonset), so start by cloning the repo itself:
+## Using Fluentd to log information
+
+Since there are a large number of Java applications out there in the world, and since most logging applications are also written in Java, let us see how we can collect logs into Fluentd from these Java applications. For this, we will be using the [fluent-logger-java](https://github.com/fluent/fluent-logger-java) library that is recommended by Fluent. We will also be using the [forward input plugin](https://docs.fluentd.org/input/forward) which listens to TCP sockets to receive event data. Let's start by defining the source section of the configuration file:
 
 ```
-$ git clone https://github.com/fluent/fluentd-kubernetes-daemonset
+<source>
+  @type forward
+  port 24224
+</source>
+<match fluentd.test.**>
+  @type stdout
+</match>
 ```
 
-Once you have the repo, you will find the ```fluentd-daemonset-elasticsearch.yaml``` placed in the root folder alongside several other daemonset resource files. In this case, we will be sticking to the ```fluentd-daemonset-elasticsearch.yaml```, and use it to deploy our DaemonSet, but feel free to also experiment with the other DaemonSets as the rest of the instructions are equally applicable to those as well.
+Then restart your td-agent for the changes to take effect. Now, let's start using the fluent-logger-java by adding the dependency information to the pom.xml:
 
-A quick observation of this DaemonSet shows that it uses the fluentd image with volume mounts, and has a couple of environment variables that define things such as port, SSL verification requirement, and most importantly, elasticsearch credentials. You have to change these credentials out with your elasticsearch credentials. You can use the same ones you used for the Elasticsearch lab.
+```xml
+ <dependency>
+    <groupId>org.fluentd</groupId>
+    <artifactId>fluent-logger</artifactId>
+    <version>${logger.version}</version>
+  </dependency>
+```
+
+This will get the library. Now, you need a Java class that imports this library, initializes an instance of the logger, and writes something to it:
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+import org.fluentd.logger.FluentLogger;
+
+public class Main {
+    private static FluentLogger LOG = FluentLogger.getLogger("fluentd.test");
+
+    public void doApplicationLogic() {
+        // ...
+        Map<String, Object> data = new HashMap<String, Object>();
+        data.put("from", "userA");
+        data.put("to", "userB");
+        LOG.log("follow", data);
+        // ...
+    }
+}
+```
+
+The code itself should be self-explanatory, and this consists of the data we will be feeding into Fluentd. You can go ahead and execute this script:
+
+```bash
+java -jar test.jar
+```
+
+This would send the logs you placed above to Fluentd. Of course, this is a very small sample of what Fluentd can do with a Java application as an input source, but this solution scales up for other large-scale applications as well. Now, you can open up the ```td-agent.log``` file located in ```/var/log/td-agent/``` and check the logs that you sent which should be written to it now. 
+
+## Output logs to the cloud
+
+Writing logs to a log file in your local server is nice, but let's consider the abilities Fluentd has to write logs to a cloud storage platform, such as S3. For this, we will be using the [Amazon output plugin](https://github.com/fluent/fluent-plugin-s3). You will also need a free tier AWS account as well as Apache.
 
 So, to summarize, fluentd is a centralized logging layer that takes in data from an input source and produces a different, more standard form of data to an output source. Now let's look at alternatives that aren't necessarily alternatives: Apache Kafka. Kafka is an important part of any serious logging architecture, and we will take a look at that, as well as how you can get Kafka and fluentd to live together, in the next section.
 
