@@ -209,7 +209,25 @@ This would send the logs you placed above to Fluentd. Of course, this is a very 
 
 ## Output logs to the cloud
 
-Writing logs to a log file in your local server is nice, but let's consider the abilities Fluentd has to write logs to a cloud storage platform, such as S3. For this, we will be using the [Amazon output plugin](https://github.com/fluent/fluent-plugin-s3). You will also need a free tier AWS account as well as Apache.
+Writing logs to a log file in your local server is nice, but let's consider the abilities Fluentd has to write logs to a cloud storage platform, such as S3. For this, we will be using the [Amazon output plugin](https://github.com/fluent/fluent-plugin-s3). You will also need a free tier AWS account as well as Apache. To install the plugin using gems, use:
+
+```
+gem install fluent-plugin-s3
+```
+
+Once again, you would have to dip into the fluentd config (/etc/td-agent/td-agent.conf or /etc/fluentd/fluentd.conf). It will track logs from Apache (/var/log/apache2/access_log) and will tag messages with ```s3.apache.access``` to be identified by Fluentd. We will be using the [Tail input plugin](https://docs.fluentbit.io/manual/v/1.0/input/tail) which can be used to monitor text files.
+
+```
+<source>
+  @type tail
+  format apache2
+  path /var/log/apache2/access_log
+  pos_file /var/log/td-agent/apache2.access_log.pos
+  tag s3.apache.access
+</source>
+```
+
+Note that if you are using a custom log format, the plugin might have some difficulty reading it, so the standard [combined log format](https://httpd.apache.org/docs/2.4/logs.html), or refer to the [in_tail page](https://docs.fluentd.org/input/tail) for more information.
 
 So, to summarize, fluentd is a centralized logging layer that takes in data from an input source and produces a different, more standard form of data to an output source. Now let's look at alternatives that aren't necessarily alternatives: Apache Kafka. Kafka is an important part of any serious logging architecture, and we will take a look at that, as well as how you can get Kafka and fluentd to live together, in the next section.
 
