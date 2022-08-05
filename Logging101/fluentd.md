@@ -227,7 +227,93 @@ Once again, you would have to dip into the fluentd config (/etc/td-agent/td-agen
 </source>
 ```
 
-Note that if you are using a custom log format, the plugin might have some difficulty reading it, so the standard [combined log format](https://httpd.apache.org/docs/2.4/logs.html), or refer to the [in_tail page](https://docs.fluentd.org/input/tail) for more information.
+Note that if you are using a custom log format, the plugin might have some difficulty reading it, so the standard [combined log format](https://httpd.apache.org/docs/2.4/logs.html), or refer to the [in_tail page](https://docs.fluentd.org/input/tail) for more information. Now that we have set an input source, it's time to set the output source. This will be your S3 bucket, and you can define it in the configuration file like so:
+
+```
+<match s3.*.*>
+  @type s3
+
+  aws_key_id YOUR_AWS_KEY_ID
+  aws_sec_key YOUR_AWS_SECRET/KEY
+  s3_bucket YOUR_S3_BUCKET_NAME
+  path logs/
+  buffer_path /var/log/td-agent/s3
+
+  time_slice_format %Y%m%d%H
+  time_slice_wait 10m
+  utc
+
+  buffer_chunk_limit 256m
+</match>
+```
+
+Make sure you replace the parts of the configuration file with your AWS details. This match section has its type defined as s3, and the match tag itself has a regular expression in it, which looks for matching tags. A regex like this will be able to match something like ```s3.apache.access``` which is produced by the input. Now, if you were to pint the Apache server, you should be able to test the configuration. A good tool to help you test this is the [Apache Bench](https://httpd.apache.org/docs/2.4/programs/ab.html) tool which is included in the ```apache2-utils``` package. Ping it with:
+
+```
+ab -n 100 -c 10 http://localhost/
+```
+
+This should generate a log that gets written into your S3 bucket. You should be able to see it by logging in to your AWS account and checking the bucket specified in the configuration file.
+
+## Using Fluentd with the Node and Mongo
+
+NodeJS and MongoDB make up two parts of the MERN/MEAN stacks, and NodeJS (along with Express) acts as the server in this stack while MongoDB acts as the database. In the same way, you can use NodeJS as the input source and MongoDB as the output source with Fluentd. Note that you need a basic knowledge of Node, Mongo, and npm to follow through with this guide. We will see how we can do this. First of all, let's consider Node. As always, we start by modifying the configuration file, and we will be using our usual [forward input plugin](https://docs.fluentd.org/input/forward):
+
+```
+<source>
+  @type forward
+  port 24224
+</source>
+<match fluentd.test.**>
+  @type stdout
+</match>
+```
+
+We will also have to create a simple NodeJS application to get this to work, and we will be using the code below. However, if you already have an application that uses the MERN/MEAN stack on your machine, feel free to use it.
+
+```json
+{
+  "name": "node-example",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "^4.15.3",
+    "fluent-logger": "^2.4.0"
+  }
+}
+```
+
+This will be the ```package.json``` file which has fluent-logger as a dependency. Install everything with ```npm install```.
+
+```js
+var express = require('express');
+var logger = require('fluent-logger');
+var app = express();
+
+// The 2nd argument can be omitted. Here is a default value for options.
+logger.configure('fluentd.test', {
+  host: 'localhost',
+  port: 24224,
+  timeout: 3.0,
+  reconnectInterval: 600000 // 10 minutes
+});
+
+app.get('/', function(request, response) {
+  logger.emit('follow', {from: 'userA', to: 'userB'});
+  response.send('Hello World!');
+});
+var port = process.env.PORT || 3000;
+app.listen(port, function() {
+  console.log("Listening on " + port);
+});
+```
+
+Now, we need to get the respective plugin for Node, which is the [fluent-logger-node](https://www.npmjs.com/package/fluent-logger). This is an npm package that plugs right into your existing NodeJS project:
+
+```
+npm install fluent-logger
+```
+
+Now we have a basic application that sets up a set of simple routes using Express. You can start it with ```node index.js``` or ```npm start``` depending on how much you have configured the application. When you visit the application on the browser (normally on ```http://localhost:3000```), the application should start producing logs that get written to your td-agent.log.
 
 So, to summarize, fluentd is a centralized logging layer that takes in data from an input source and produces a different, more standard form of data to an output source. Now let's look at alternatives that aren't necessarily alternatives: Apache Kafka. Kafka is an important part of any serious logging architecture, and we will take a look at that, as well as how you can get Kafka and fluentd to live together, in the next section.
 
