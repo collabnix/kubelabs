@@ -315,6 +315,68 @@ npm install fluent-logger
 
 Now we have a basic application that sets up a set of simple routes using Express. You can start it with ```node index.js``` or ```npm start``` depending on how much you have configured the application. When you visit the application on the browser (normally on ```http://localhost:3000```), the application should start producing logs that get written to your td-agent.log.
 
+As an alternative to this output log, let us consider using MongoDB. We will be using the official [MongoDB output plugin](https://docs.fluentd.org/output/mongo). Note that you need to have MongoDB and the MongoDB output plugin installed within the same node of your Kubernetes cluster. You can install the plugin with:
+
+```
+gem install fluent-plugin-mongo
+```
+
+There is one point to note about how Fluentd works with MongoDB, and it is that the logs aren't continuously written to MongoDB as a stream. This would be costly in terms of performance, so the data is buffered first, after which the data gets written to MongoDB periodically. To support this data buffering, the configuration must be set in the Fluentd configuration file:
+
+```
+<source>
+  @type tail
+  format apache2
+  path /var/log/apache2/access_log
+  pos_file /var/log/td-agent/apache2.access_log.pos
+  tag mongo.apache.access
+</source>
+```
+
+This gets the tail of the log and tags it with mongo.apache.access. This will then be matched when writing the output to MongoDB. For this, add the specific configuration to the Fluentd configuration file. 
+
+```
+<match mongo.**>
+  # plugin type
+  @type mongo
+
+  # mongodb db + collection
+  database apache
+  collection access
+
+  # mongodb host + port
+  host localhost
+  port 27017
+
+  # interval
+  flush_interval 10s
+
+  # make sure to include the time key
+  include_time_key true
+</match>
+```
+
+If you are running MongoDB on a different host/port, then make sure to change the above values to match. Remember that this won't write a continuous stream of data, and will buffer the data and write periodically. You can define the period by changing the ```flush_interval``` attribute. The default is set to 10 seconds.
+
+To test this system out, ping the Apache server as you did last time using ab.
+
+```
+ab -n 100 -c 10 http://localhost/
+```
+
+This should generate logs that would get buffered, and eventually written once the flush interval is reached. You can then look at the logs by logging into MongoDB (using MongoDB compass or the console):
+
+```
+$ mongo
+> use apache
+> db["access"].findOne();
+{ "_id" : ObjectId("4ed1ed3a340765ce73000001"), "host" : "127.0.0.1", "user" : "-", "method" : "GET", "path" : "/", "code" : "200", "size" : "44", "time" : ISODate("2011-11-27T07:56:27Z") }
+{ "_id" : ObjectId("4ed1ed3a340765ce73000002"), "host" : "127.0.0.1", "user" : "-", "method" : "GET", "path" : "/", "code" : "200", "size" : "44", "time" : ISODate("2011-11-27T07:56:34Z") }
+{ "_id" : ObjectId("4ed1ed3a340765ce73000003"), "host" : "127.0.0.1", "user" : "-", "method" : "GET", "path" : "/", "code" : "200", "size" : "44", "time" : ISODate("2011-11-27T07:56:34Z") }
+```
+
+And that's it! We have successfully used Node + Mongo with FluentD.
+
 So, to summarize, fluentd is a centralized logging layer that takes in data from an input source and produces a different, more standard form of data to an output source. Now let's look at alternatives that aren't necessarily alternatives: Apache Kafka. Kafka is an important part of any serious logging architecture, and we will take a look at that, as well as how you can get Kafka and fluentd to live together, in the next section.
 
 [Next: Apache Kafka](./kafka.md)
