@@ -13,6 +13,14 @@ Unless the image you are building only does a simple task, you would likely use 
 
 But vulnerabilities can be added after the image has been built, and if your image depends on other images, vulnerabilities can be introduced via those other images as well. The result of this is that you can't afford to scan your image once, push it into the container repo, and forget about it. You need to ensure that all the images that already exist in your registry are periodically scanned. You might have some help in this regard depending on the image registry you choose. For instance, registries such as GCR, AWS ECR, Docker hub, etc... have inbuilt repository image scanning capabilities. However, if you host your container registry, then you might need to do this manually.
 
+A good exmaple of a image scanning service is [Snyk](https://snyk.io). It's extremely simple to use, and you only need to run a single command:
+
+```
+docker scan <image-name>
+```
+
+Running this command on your release pipeline should flush out any vulnerabilities in your image.
+
 ### User Service users
 
 If you run your containers with users that have unrestricted access (such as a root user), then an attacker who gains access to your container can easily gain access to the host system since they already have elevated privileges. The solution to this problem is to create a service user when creating the container, and then to ensure that the container is handled by that un-privileged service user.  This way, even if an attacker gets access to the container, they won't be able to do much with the service account and would have to also get access to the root user before they can accomplish anything.
@@ -49,7 +57,7 @@ The solution for this is quite simple. Since the API server being bypassed is th
 
 If you were an ordinary developer working in a sizable organization, then it's highly likely that you already follow a mandatorily enforced set of cluster security policies. However, if you were in a smaller organization, or happened to be the admins of these clusters, then the responsibility would fall on you to maintain cluster security. Developers who are more interested in meeting deadlines and pushing out their products would overlook some security vulnerabilities that they introduce into a system, and it would impossible for you, as an admin, to monitor each resource they push. Instead, you can enable security policies that are enforced at deployment time, which would prevent a resource from being deployed if it does not meet the required security criteria. For instance, if there are containers set to run with root access, you can flush them out before they are deployed and reject the resource.
 
-### Distaster recovery
+### Disaster recovery
 
 A key point to remember here is that while you can make life harder for an attacker, no guarantee implementing all of the above security strategies will still prevent your data from being attacked. This is where disaster management comes in. While your etcd store might allow the attacker to gain privileged access to your cluster, this is not the most important part of your cluster. What is most important is your data. Since data is so valuable, ransomware is a common problem that businesses have to face, and having regular backups of your data that gets stored securely is the best way to avoid coming into these situations. Naturally, you don't have to handle this by hand since there is an excellent solution provided by Kasten called K10. K10 automatically backs up your data regularly and allows you to restore these backups at the click of a button. It also provides end-to-end security, meaning that they make sure that your backups are also secured. Attackers generally anticipate the existence of backups, and may also target these which means that you have to go the extra mile to prevent your backups from being erased.
 
