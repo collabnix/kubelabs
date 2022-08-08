@@ -32,6 +32,79 @@ At this point, the data still isn't very human-friendly. Kibana (similar to Graf
 The dashboards can also be bound to specific roles. For example, people in management roles would want to see different dashboards from those working in system security. This helps improve policy compliance as well as usability. You can also export and share data easily from within Kibana, and create alerts to notify you of certain trigger events. Kibana is a huge application and deserves its own course. But the important takeaway here is that it integrates beautifully into the ELK stack and provides a lot of customizable visualisations.
 
 The best part about the ELK stack is that it is built to run continuously. LogStash will transform and stash data into Elasticsearch, which will then serve this data to Kibana. All in real-time. This means that data about your cluster will always be visible in an up-to-date, understandable manner. Certainly, better than a bunch of log files, isn't it?
+
+## Setting up the Elasticsearch
+
+Now that you know what each letter of the stack stands for, let's go ahead and set it up. Luckily, Elastic has provided us with a [large sample repo](https://github.com/elastic/examples) that we can use to try out the stack with minimal hassle. In particular, we will be using the MonitoringKubernetes sample that covers all three parts of the stack. Note that this sample substitutes Logstash with [Beats](https://www.elastic.co/beats/), which is an alternative provided by Elastic. We could go for another sample such as the [Twitter sample](https://github.com/elastic/examples/tree/master/Common%20Data%20Formats/twitter), however, this requires access to the Twitter API which isn't readily available. However, feel free to try out any sample in the repo. Before we get into the sample, you will need to have a working stack set up. If you don't, then it would be much faster to get started on [Elastic cloud](http://cloud.elastic.co), which has a free tier that would suffice for this sample.
+
+As always, you also need an available Kubernetes cluster. Once again, I recommend [Minikube](https://minikube.sigs.k8s.io/docs/start/) to set up a cluster on your local machine, but feel free to use any cluster that is available to you. Once you have a cluster available, use RBAC to create a cluster role that binds to your elastic user:
+
+```
+kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=<elastic cloud email>
+```
+
+The above command will create a role in your cluster that says that your email from Elastic cloud is a cluster admin. You can then use wget (or curl) to get the files specific to this sample:
+
+```
+mkdir MonitoringKubernetes
+cd MonitoringKubernetes
+wget https://raw.githubusercontent.com/elastic/examples/master/MonitoringKubernetes/download.txt
+sh download.txt
+```
+
+or if you have cloned the whole repo, then just head over to ```examples/MonitoringKubernetes``` folder. Either way, you should have a bunch of yaml files that define the Kubernetes resources, as well as two files, called ```ELASTIC_PASSWORD``` and ```CLOUD_ID```. Set these values with the values you got from setting up your elastic cloud account. Afterward, create a Kubernetes secret:
+
+```
+kubectl create secret generic dynamic-logging --from-file=./ELASTIC_PASSWORD --from-file=./CLOUD_ID --namespace=kube-system
+```
+
+This secret will reside in the ```kube-system```, which is a namespace managed by Kubernetes. You should also check if the ```kube-state-metrics``` pod is running  in the same namespace:
+
+```
+kubectl get pods --namespace=kube-system | grep kube-state
+```
+
+If you get nothing as a result, then create it:
+
+```
+git clone https://github.com/kubernetes/kube-state-metrics.git kube-state-metrics    
+kubectl apply -f kube-state-metrics/examples/standard
+kubectl get pods --namespace=kube-system | grep kube-state 
+```
+
+
+Now, you have all the infrastructure ready to go. The secrets are ready and the metrics pod is up. The next step is to install the sample application, which is going to be the guestbook example provided by the [Kubernets sample repo](https://github.com/kubernetes/examples). The resource file is the guestbook.yaml, which contains declarations for a bunch of services. Start by applying them to your cluster:
+
+```
+kubectl create -f guestbook.yaml 
+```
+
+Now, it's time to deploy the elastic beats resource files. The first will be the lightweight log shipper [Filebeat]https://www.elastic.co/beats/filebeat. This resource file consists of several resources including a ConfigMap, DaemonSet, and RBAC-related resources. However, you can [configure Filebeat](https://www.elastic.co/guide/en/beats/filebeat/current/configuring-howto-filebeat.html) in whichever way you prefer. Deploy it with:
+
+```
+kubectl create -f filebeat-kubernetes.yaml 
+```
+
+Next, we will be deploying the metrics shipper [Metricbeat](https://www.elastic.co/beats/metricbeat), which is [fully configurable](https://www.elastic.co/guide/en/beats/metricbeat/current/configuring-howto-metricbeat.html). Deploy it with:
+
+```
+kubectl create -f metricbeat-kubernetes.yaml 
+```
+
+Finally, we need to install the network analysis data shipper [Packetbeat](https://www.elastic.co/beats/packetbeat) which you can also [configure](https://www.elastic.co/guide/en/beats/packetbeat/current/configuring-howto-packetbeat.html). Deploy with:
+
+```
+kubectl create -f packetbeat-kubernetes.yaml
+```
+
+Now that beats have been set up, it's time to open up Kibana. If you're using elastic cloud, Kibana should already be available. Head over to your Kibana URL and open up the dashboard. To see how changes are reflected in your dashboard, scale your deployments up so that more pods start:
+
+```
+kubectl scale --replicas=2 deployment/frontend
+```
+
+You should now see Kibana reflecting these changes as log streams and visualizations.
+
 ## Drawbacks of Elasticsearch
 
 As great as this system may look, there are some drawback. If your system contains multiple applications from various teams, then all of them would have to have Elasticsearch integration for all this to work. Now, what if one of those applications doesn't have this integration? Then a peice of the system would go missing. If the applications in the system are interconnected, then it would be a requirement for logging to see what processes goes inside each application. This would not be possible if the necessary Elasticsearch integration is not present.

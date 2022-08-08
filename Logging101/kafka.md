@@ -24,6 +24,72 @@ The [Confluent hub](https://www.confluent.io/hub/) is the best place to go for y
 
 Now, what happens if your use case is so specific that there are no existing connectors? Since the connector ecosystem is so large, the possibility of this situation is very low. However, if this situation arises, then you can create your own connector. The Kafka Connect API is easy to understand and well documented, so you will have no trouble getting up and running with it.
 
+## Setting up Kafka
+
+Since Kafka depends on Java, make sure that you first have Java 8 installed.
+
+Now that you are armed with an overall knowledge of Kafka, let's see about setting it up. Depending on your use case, the way you would get started varies, but of course, the first thing is to [download Kafka](https://www.confluent.io/get-started/?product=software). The Confluent version of Kafka is one of the best options since it is well tested, and has plugins such as a REST proxy, connectors, etc... You can also choose to get the [Apache version](https://www.apache.org/dyn/closer.cgi?path=/kafka/3.2.0/kafka_2.13-3.2.0.tgz) instead and the installation instructions are still the same. Once you have the download, simply unzip it somewhere. Inside the bin folder, you will find Kafka-server-start.sh, which is the entry point of the program. Run it with:
+
+```
+$ bin/kafka-server-start.sh config/server.properties
+```
+
+That's all that takes to get a basic Kafka environment up and running. Let's move on to creating topics. As we've discussed, topics are a stream of events and are the most fundamental part of Kafka. You start it with:
+
+```
+$ bin/kafka-topics.sh --create --topic <topic-name> --bootstrap-server localhost:9092
+```
+
+This will create a topic with the name you provide. The bootstrap-server option here is where your resource gets its initial data from, and further configuration related to this server can be found in the ```bootstrap.servers``` value of the ```consumer.properties``` file.
+
+Now that your topic is up, let's start logging events to the topic. For this, you need to run the producer client that will create a few logs and write them into the topic you specify. The content of these logs can be specified by you:
+
+```
+$ bin/kafka-console-producer.sh --topic <topic-name> --bootstrap-server localhost:9092
+LoggingLab101 first event
+LoggingLab101 second event
+```
+
+You can continue typing in newline separate events and use Ctrl + c to exit out. Now, your topic has events written into it, and it's time to read these events. Do so with the consumer in the same way as you did with the producer:
+
+```
+$ bin/kafka-console-consumer.sh --topic quickstart-events --from-beginning --bootstrap-server localhost:9092
+```
+
+Once you have verified that Kafka is working well, it's time to start using Kafka connect. The file you are looking for here is called ```connect-file-<version>.jar```, and this file needs to be added to the ```plugin.path``` variable within the ```config/connect-standalone.properties``` file. If this variable does not exist, create it:
+
+```
+echo "plugin.path=libs/connect-file-3.2.0.jar"
+```
+
+Now, you need some sample data to test with, and you can simply create a text file for this:
+
+```
+echo -e "foo\nbar" > test.txt
+```
+
+Next, it's time to fire up the Kafka connectors. We will be using two in this example, and the file you need to execute to start this is the ```bin/connect-standalone.sh```. The arguments that you need to pass to it are the properties file you just modified, the properties file of the data source (input) and the properties file of the data sink (output), both of which are already provided by Kafka:
+
+```
+bin/connect-standalone.sh config/connect-standalone.properties config/connect-file-source.properties config/connect-file-sink.properties
+```
+
+The connectors provided by Kafka will now start reading and writing lines via the Kafka topic. In this case, the connection that Kafka connect makes is between the input text file, the Kafka topic, and the output text file. Of course, this is a very basic usage of Kafka connect, and you will most likely be using custom-written connectors that read from all sorts of inputs and are written to any number of outputs, but this small example shows Kafka connectors at work. You can verify that the data was indeed handled properly by looking at the output file (```test.sink.txt```). Since the topic that was used still has the data,  you can also go ahead and run the previous command we used to read data from the topic:
+
+```
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic connect-test --from-beginning
+```
+
+Appending a line to the input txt should also show it in the consumer.
+
+Another topic we briefly touched on was [Kafka streams](https://kafka.apache.org/documentation/streams/), and you can find a [starter example](https://kafka.apache.org/quickstart#quickstart_kafkastreams) provided by Apache that you can look through if you are planning on using this part of Kafka.
+
+Now, since you have a Kafka environment up and running along with Kafka connectors, feel free to play around with the system and see how things work. Once you're done, you can tear down the environment by stopping the producer and consumer clients, Kafka broker, and the Zookeeper server (with ```Ctrl + C```). Delete any leftover events with a recursive delete:
+
+```
+rm -rf /tmp/kafka-logs /tmp/zookeeper
+```
+
 ## Kafka and fluentd
 
 At this point, you might be thinking that Kafka can now replace fluentd. Indeed, you can choose between either fluentd or Kafka depending on what best suits your test case. However, this doesn't necessarily need to be the case. You can run both of them together with no issues. Case in point, if you were to look at fluentd's [list of available input plugins](https://www.fluentd.org/datasources), you would be able to see Kafka listed there. This applies to the [available output plugins](https://www.fluentd.org/dataoutputs) as well. In the same way, there exists [Kafka connect plugins for fluentd](https://github.com/fluent/kafka-connect-fluentd). What this means is that the two services can act as data sources/data sink for each other. But why would you want to do that at all? 
