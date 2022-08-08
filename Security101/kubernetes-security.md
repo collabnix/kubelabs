@@ -7,6 +7,7 @@ As individual developers, security is probably not something that is at the fore
 When using third-party images, there is a possibility that the author of the image may not have taken the necessary steps to secure the image. Therefore, ensuring that images comply with the security standard set by your organization is up to you. However, if you are creating your image to be used internally or to be freely available on an image hosting site, there are several steps you should take to secure your image. After all, it would be rather embarrassing if an attacker managed to gain access to a cluster by exploiting a container running your image. So what can be done here? 
 
 ### Check your dependencies
+
 Unless the image you are building only does a simple task, you would likely use a base image or a list of images that your image depends on. You would then build your image on top of this base image. This is one place where things can go wrong since you have little control over the base images and their content. Additionally, you may have images that interact with the underlying operating system and performs some commands that allow attackers to see a backdoor in the system. The easiest way to circumvent this issue is to use as few dependencies as possible. The more images you depend on, the greater the chance of a security risk. When choosing a dependency, make sure you only get an image that has exactly what you want. For instance, if you want to curl, then there is no reason to choose a general-purpose image that has curl/wget/other request handling commands instead of just getting an image that provides curl.
 
 **Image scanning**: You might think that all the above steps sound complicated, but they shouldn't be, because image scanning exists. Image scanning allows you to automatically look at a database of regularly updated vulnerabilities and compare your image and its dependencies against it. Normally, you wouldn't build a commercial-grade image by hand, and would instead allow a pipeline to do that for you. You could simply add image scanning as an additional step that runs after the image itself has been built.
@@ -19,11 +20,37 @@ A good exmaple of a image scanning service is [Snyk](https://snyk.io). It's extr
 docker scan <image-name>
 ```
 
-Running this command on your release pipeline should flush out any vulnerabilities in your image.
+Running this command on your release pipeline should flush out any vulnerabilities in your image. Another excellent tool that can be used is [Sysdig](https://sysdig.com). They provide [container security](https://sysdig.com/use-cases/container-security/) in the same way that Snyk does, allowing you to smoothly integrate image scanning to your existing pipeline. You also get continous compliance which ensures that a new vulnerabilty that affects your image is not found after you release. This includes checking your configuration, ensuring that any credentials used within your image have not been leaked, and protecting your image against insider threats. You also get image compliance, allowing you to present proof that your image complies with any standards put in place by your organization. It also integrates smoothly with your existing [kubernetes clusters](https://sysdig.com/use-cases/kubernetes-security/), as well as your [IaC platforms](https://sysdig.com/products/secure/infrastructure-as-code-security/).
 
 ### User Service users
 
 If you run your containers with users that have unrestricted access (such as a root user), then an attacker who gains access to your container can easily gain access to the host system since they already have elevated privileges. The solution to this problem is to create a service user when creating the container, and then to ensure that the container is handled by that un-privileged service user.  This way, even if an attacker gets access to the container, they won't be able to do much with the service account and would have to also get access to the root user before they can accomplish anything.
+
+So how can you handle this? Docker runs commands as root by default, and you need to change this by adding the service user to your user group in the docker file. The ```usermod``` command can do this for you if you already have an existing user group, or you can create/add to user groups with:
+
+```
+RUN groupadd -r <appname> && useradd -g <appname> <appname>
+```
+
+The next step is to limit what the user can do within this image using the ```chown``` command:
+
+```
+RUN chown -R <appname>:<appname> /app
+```
+
+Next, switch to this user so that the container always runs with the user as opposed to the root user:
+
+```
+USER <appname>
+```
+
+Now, your container will run with the user you specified here, and it adds a layer of protection. However, when you spin up a pod using this image, you have to ensure that you do not misconfigure the yaml so that you override the image commands and start running your pod as root. To ensure this, place the commands:
+
+```
+allowPrivilegeEscalation: false
+```
+
+Read more about this [here](https://kubernetes.io/docs/concepts/security/pod-security-policy/#privilege-escalation).
 
 ### Maintain tight user groups and permissions
 
