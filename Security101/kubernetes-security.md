@@ -74,6 +74,52 @@ Despite all the above measures, pods still need to communicate. After all, that 
 
 This is something that is done quite a lot in Kubernetes, and I have admittedly handled secrets by simply encoding them in base64. By default, most secrets in Kubernetes environments are encoded in base64 and stored as-is. This is a huge security risk since anyone can decode this string and have full access to your secret. Kubernetes provides a solution for this in the form of a resource [EncyptionConfiguration](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/), but you still need to securely store the encryption key. Key management services such as AWS KMS can help you with this. You could also skip having to deal with encryption keys together and use a secret management system.
 
+Let's take a look at the inbuilt Kubernetes encryption resource. The resource is, as always, a normal yaml resource file of kind EncryptionConfiguration:
+
+```yaml
+apiVersion: apiserver.config.k8s.io/v1
+kind: EncryptionConfiguration
+resources:
+  - resources:
+      - secrets
+    providers:
+      - aescbc:
+          keys:
+            - name: key1
+              secret: <BASE 64 ENCODED SECRET>
+      - identity: {}
+```
+
+The kind is defined on the top of the yaml file, after which the keys and their respective secrets are named. These secrets are defined as a list of providers that "provide" secrets to applications that request them. For example, if an application requests the secret for "key1", the provider is matched and the relevant information is released. If there is no matching provider, an error is returned. To define the encoded secret, you can use the base64 command that is present with all Unix machines:
+
+```
+head -c 32 /dev/urandom | base64
+```
+
+Set this value as your secret. Next, you need to set this resource file to be referenced in your [kube-apiserver](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver/), which is the file that configures data for all API objects (which gives it the perfect position to handle you encryption data). Set this flag on the file:
+
+```
+--encryption-provider-config
+```
+
+You will also have to restart your API server to start seeing the effect of the change. Note that since your API server has access to these credentials, you must restrict access to this file. To test whether your secrets are truly encrypted, first create an ordinary Kubernetes secret:
+
+```
+kubectl create secret generic secret1 -n default --from-literal=mykey=mydata
+```
+
+Then use the ```etcdctl``` CLI command to read the secret from etcd:
+
+```
+ETCDCTL_API=3 etcdctl get /registry/secrets/default/secret1 <arguments> | hexdump -C
+```
+
+Finally, describe the secret to ensure that the secret is correctly decrypted:
+
+```
+kubectl describe secret secret1 -n default
+```
+
 ### Secure etcd
 
 Your etcd stores all key-value pairs which are necessary since the whole function of etcd is to monitor and maintain the resources in a Kubernetes cluster. As such, it has comprehensive control over your cluster, and your cluster has a consistent means of contacting etcd. If an attacker was to get access to etcd, they would therefore be able to control your cluster, and since any changes that go on within the pod are reported back to etcd, they would end up getting an insight into this information as well. Since this attacker does not need to use the API between the control plane and the resources, they end up having close to unhindered access to your cluster, which is an obvious problem.
