@@ -120,6 +120,16 @@ Finally, describe the secret to ensure that the secret is correctly decrypted:
 kubectl describe secret secret1 -n default
 ```
 
+The secret key is a good start, but more protection can be afforded by using a rotating secret key. This means that your secret will change regularly, and even if an attacker can gain access to your secret, there is a good probability that the secret would be outdated by the time they get to use it. However, you might notice a big problem here: downtime. If you were to change the secret, you would also have to change every place where the secret is referenced, and you would always have to take down the system while you did it. However, if you are willing to go through a slightly lengthier process, you can eliminate this downtime.
+
+To do this, you need to introduce the new secret in stages. First, generate the new key and add it to the providers as a secondary key, after which you need you to need to restart the ```kube-apiserver```. You then need to reposition the new key so that it is the first key in the ````keys```` array, before restarting the ```kube-apiserver``` again. Finally, get all secrets from all namespaces and replace them with the new key:
+
+```
+kubectl get secrets --all-namespaces -o json | kubectl replace -f -
+```
+
+Remove the old decryption key since it is no longer useful.
+
 ### Secure etcd
 
 Your etcd stores all key-value pairs which are necessary since the whole function of etcd is to monitor and maintain the resources in a Kubernetes cluster. As such, it has comprehensive control over your cluster, and your cluster has a consistent means of contacting etcd. If an attacker was to get access to etcd, they would therefore be able to control your cluster, and since any changes that go on within the pod are reported back to etcd, they would end up getting an insight into this information as well. Since this attacker does not need to use the API between the control plane and the resources, they end up having close to unhindered access to your cluster, which is an obvious problem.
@@ -129,6 +139,8 @@ The solution for this is quite simple. Since the API server being bypassed is th
 ### Security policies
 
 If you were an ordinary developer working in a sizable organization, then it's highly likely that you already follow a mandatorily enforced set of cluster security policies. However, if you were in a smaller organization, or happened to be the admins of these clusters, then the responsibility would fall on you to maintain cluster security. Developers who are more interested in meeting deadlines and pushing out their products would overlook some security vulnerabilities that they introduce into a system, and it would impossible for you, as an admin, to monitor each resource they push. Instead, you can enable security policies that are enforced at deployment time, which would prevent a resource from being deployed if it does not meet the required security criteria. For instance, if there are containers set to run with root access, you can flush them out before they are deployed and reject the resource.
+
+[Open Policy Agent](https://www.openpolicyagent.org) is an excellent tool to support this. OPA uses a unified framework that you can apply across your cloud-native stack, meaning that your entire stack will work with a single set of policies. The policy is defined in a declarative language (called Rego) and can enforce policies on every type of Kubernetes operation out there. You can also check for things like the existence of specific labels on resources, the sources of each image, and the validity of Ingress objects. You can also use admission controllers that manipulate resources that are getting applied so that they adhere to policies. This includes adding sidecar containers to each pod that gets added, automatically identifying and replacing images that get are hosted in non-corporate repositories, use taints and tolerations to mutate deployments. The best way to learn how to use their declarative language and implement OPA on your cluster is using their [interactive playground](https://play.openpolicyagent.org).
 
 ### Disaster recovery
 
