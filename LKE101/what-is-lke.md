@@ -1,3 +1,15 @@
 # Linode Kubernetes Engine
 
-Linode is a fully featured cloud service provider, and LKE is it's Kubernetes engine (similar to AKS or GKE). 
+Linode is a fully featured cloud service provider, and LKE is its Kubernetes engine (similar to AKS or GKE). As with other Kubernetes engines, the aim of LKE is to abstract away the master nodes so that you only have to worry about your Kubernetes worker nodes. There are a lot of things that need to be considered when setting up Kubernetes, especially for large organizations that handle sensitive data. Security, privacy, and robustness are needed to ensure that your customers don't have their information compromised, as well as ensure that they don't face any downtime. Setting up and maintaining such systems can get complicated, which is why LKE does that job for you. In addition to completely handling your master node, LKE also gives you the luxury of taking and setting up your own worker nodes from within the Linode stack. This means that you can maintain your entire architecture within the Linode cloud.
+
+This means that features such as guaranteed uptime and security will also extend to your worker nodes, and thereby the entire Kubernetes stack. Maintaining your own server is a costly business since you need to fix any issues that come up with them, as well as invest heavily in the actual machines, whose processing power is something you may not even fully end up using. Cloud services, on the other hand, manage the servers for you, and allow you to only pay for the resources that you use. Linode is no exception, so let's dive in!
+
+## Setting up
+
+To get started, you need to create an account with Linode, which comes with $50 of credit. You also need kubectl which you will be using to run the various Kubernetes commands. If you have installed Minikube or an equivalent in the past, you likely already have kubectl. If not, you can [follow the official guide](https://kubernetes.io/docs/tasks/tools/#install-kubectl-on-windows) to get the latest version of kubectl installed. This is all you have to do to get up and running with Linode.
+
+## Creating a cluster
+
+To create a cluster, you can use the [cloud manager](https://cloud.linode.com/) which gives you an intuitive interface that you can use to create resources. Simply click on the dropdown in the right-hand corner and select "Create a Kubernetes cluster". Once you do that, there is a handful of information you need to fill in, such as the name, region, and version. Once you do this, your fully managed Linode cluster is up and running. The second step is to create a bunch of worker nodes. The master node, which will be managed by Linode, will communicate with these worker nodes to run your application. This page is self-explanatory, and you can choose between their 2GB plan, the way to their 192GB plan which comes with 192GB of RAM, 32 CPUs, and 3TB of storage. All that will only cost you $1.44 an hour. This is something you will also see across other competing cloud platforms, and this cost-effective computing power is why many large organizations have moved to cloud-based systems.
+
+After you set the nodes that you want to use, you can still edit your configuration later to add or remove worker nodes. All the information relating to your nodes is available at a single glance on the right-hand side of the cloud manager. 
