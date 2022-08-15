@@ -1,0 +1,7 @@
+## Setting up Mongo Express
+
+Now that we have MongoDB set up, we need to get a UI to interface with MongoDB. For this, we will be using [Mongo Express](https://github.com/mongo-express/mongo-express). Mongo Express consists of 1 pod and 1 service, so using a Helm chart is not needed here. Simply create a deployment and service that use the mongo-express image, and gets exposed in port 8081. An example of this can be found [here](https://gitlab.com/nanuchi/youtube-tutorial-series/-/blob/master/linode-kubernetes-engine-demo/test-mongo-express.yaml). Make sure you replace the necessary variables with the values as described in the [mongo-express image page](https://hub.docker.com/_/mongo-express/). The service is an internal service, so you should deploy the resources. However, you will not be able to see the actual UI due to the fact that the service is internal. To expose it to the outside world, you need to introduce and Ingress. If you want a refresher on Ingress, be sure to check out [the Ingress101 section](./../Ingress101/README.md).
+
+## Setting up Ingress
+
+Similar to MongoDB, ingress has a lot of different parts, and requires you to either install all of them manually or use a Helm chart to install everything at once. We will be using Helm here,
