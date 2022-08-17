@@ -21,3 +21,25 @@ kubectl apply -f test-ingress.yaml
 ```
 
 You should now be able to go to your hostname (taken from your LKE cluster), and it should redirect you to the Mongo express landing page. The NodeBalancer, which is now properly configured with an ingress rule, would now resolve it and forward the request to the internal service that is used by Mongo Express.
+
+## Finishing up
+
+Now, you need to attach the pods to the existing volumes. For this, stop the pods and reattach them by scaling down the number of replicas to zero, then setting them back to 3:
+
+```
+kubectl scale --replicas=3 statefulset/mongodb
+```
+
+You can then go to the [volumes page](https://cloud.linode.com/volumes) of cloud manager and see the volumes getting reattached to the pods.
+
+And that's it! You now have a fully working cluster that supports MongoDB + MongoExpress running on LKE. You can extend this to support other frontend/backend services to build your entire application on the cloud.
+
+## Removing resources
+
+Once you are done with this tutorial, you can go ahead and start removing the resources you have deployed. Removing MongoDB is simply a matter of uninstalling the Helm chart:
+
+```
+helm uninstall mongodb
+```
+
+This will stop and remove all resources related to MongoDB in one go. The volumes would get detached since those pods no longer exist, but will not be removed. Since the volumes have data in them, automatically deleting them might become a problem since you can lose your data by accident. However, if you really no longer need these volumes around, go ahead and delete them manually from cloud manager.
