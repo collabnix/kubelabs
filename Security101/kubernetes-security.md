@@ -7,15 +7,50 @@ As individual developers, security is probably not something that is at the fore
 When using third-party images, there is a possibility that the author of the image may not have taken the necessary steps to secure the image. Therefore, ensuring that images comply with the security standard set by your organization is up to you. However, if you are creating your image to be used internally or to be freely available on an image hosting site, there are several steps you should take to secure your image. After all, it would be rather embarrassing if an attacker managed to gain access to a cluster by exploiting a container running your image. So what can be done here? 
 
 ### Check your dependencies
+
 Unless the image you are building only does a simple task, you would likely use a base image or a list of images that your image depends on. You would then build your image on top of this base image. This is one place where things can go wrong since you have little control over the base images and their content. Additionally, you may have images that interact with the underlying operating system and performs some commands that allow attackers to see a backdoor in the system. The easiest way to circumvent this issue is to use as few dependencies as possible. The more images you depend on, the greater the chance of a security risk. When choosing a dependency, make sure you only get an image that has exactly what you want. For instance, if you want to curl, then there is no reason to choose a general-purpose image that has curl/wget/other request handling commands instead of just getting an image that provides curl.
 
 **Image scanning**: You might think that all the above steps sound complicated, but they shouldn't be, because image scanning exists. Image scanning allows you to automatically look at a database of regularly updated vulnerabilities and compare your image and its dependencies against it. Normally, you wouldn't build a commercial-grade image by hand, and would instead allow a pipeline to do that for you. You could simply add image scanning as an additional step that runs after the image itself has been built.
 
 But vulnerabilities can be added after the image has been built, and if your image depends on other images, vulnerabilities can be introduced via those other images as well. The result of this is that you can't afford to scan your image once, push it into the container repo, and forget about it. You need to ensure that all the images that already exist in your registry are periodically scanned. You might have some help in this regard depending on the image registry you choose. For instance, registries such as GCR, AWS ECR, Docker hub, etc... have inbuilt repository image scanning capabilities. However, if you host your container registry, then you might need to do this manually.
 
+A good exmaple of a image scanning service is [Snyk](https://snyk.io). It's extremely simple to use, and you only need to run a single command:
+
+```
+docker scan <image-name>
+```
+
+Running this command on your release pipeline should flush out any vulnerabilities in your image. Another excellent tool that can be used is [Sysdig](https://sysdig.com). They provide [container security](https://sysdig.com/use-cases/container-security/) in the same way that Snyk does, allowing you to smoothly integrate image scanning to your existing pipeline. You also get continous compliance which ensures that a new vulnerabilty that affects your image is not found after you release. This includes checking your configuration, ensuring that any credentials used within your image have not been leaked, and protecting your image against insider threats. You also get image compliance, allowing you to present proof that your image complies with any standards put in place by your organization. It also integrates smoothly with your existing [kubernetes clusters](https://sysdig.com/use-cases/kubernetes-security/), as well as your [IaC platforms](https://sysdig.com/products/secure/infrastructure-as-code-security/).
+
 ### User Service users
 
 If you run your containers with users that have unrestricted access (such as a root user), then an attacker who gains access to your container can easily gain access to the host system since they already have elevated privileges. The solution to this problem is to create a service user when creating the container, and then to ensure that the container is handled by that un-privileged service user.  This way, even if an attacker gets access to the container, they won't be able to do much with the service account and would have to also get access to the root user before they can accomplish anything.
+
+So how can you handle this? Docker runs commands as root by default, and you need to change this by adding the service user to your user group in the docker file. The ```usermod``` command can do this for you if you already have an existing user group, or you can create/add to user groups with:
+
+```
+RUN groupadd -r <appname> && useradd -g <appname> <appname>
+```
+
+The next step is to limit what the user can do within this image using the ```chown``` command:
+
+```
+RUN chown -R <appname>:<appname> /app
+```
+
+Next, switch to this user so that the container always runs with the user as opposed to the root user:
+
+```
+USER <appname>
+```
+
+Now, your container will run with the user you specified here, and it adds a layer of protection. However, when you spin up a pod using this image, you have to ensure that you do not misconfigure the yaml so that you override the image commands and start running your pod as root. To ensure this, place the commands:
+
+```
+allowPrivilegeEscalation: false
+```
+
+Read more about this [here](https://kubernetes.io/docs/concepts/security/pod-security-policy/#privilege-escalation).
 
 ### Maintain tight user groups and permissions
 
@@ -39,6 +74,62 @@ Despite all the above measures, pods still need to communicate. After all, that 
 
 This is something that is done quite a lot in Kubernetes, and I have admittedly handled secrets by simply encoding them in base64. By default, most secrets in Kubernetes environments are encoded in base64 and stored as-is. This is a huge security risk since anyone can decode this string and have full access to your secret. Kubernetes provides a solution for this in the form of a resource [EncyptionConfiguration](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/), but you still need to securely store the encryption key. Key management services such as AWS KMS can help you with this. You could also skip having to deal with encryption keys together and use a secret management system.
 
+Let's take a look at the inbuilt Kubernetes encryption resource. The resource is, as always, a normal yaml resource file of kind EncryptionConfiguration:
+
+```yaml
+apiVersion: apiserver.config.k8s.io/v1
+kind: EncryptionConfiguration
+resources:
+  - resources:
+      - secrets
+    providers:
+      - aescbc:
+          keys:
+            - name: key1
+              secret: <BASE 64 ENCODED SECRET>
+      - identity: {}
+```
+
+The kind is defined on the top of the yaml file, after which the keys and their respective secrets are named. These secrets are defined as a list of providers that "provide" secrets to applications that request them. For example, if an application requests the secret for "key1", the provider is matched and the relevant information is released. If there is no matching provider, an error is returned. To define the encoded secret, you can use the base64 command that is present with all Unix machines:
+
+```
+head -c 32 /dev/urandom | base64
+```
+
+Set this value as your secret. Next, you need to set this resource file to be referenced in your [kube-apiserver](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver/), which is the file that configures data for all API objects (which gives it the perfect position to handle you encryption data). Set this flag on the file:
+
+```
+--encryption-provider-config
+```
+
+You will also have to restart your API server to start seeing the effect of the change. Note that since your API server has access to these credentials, you must restrict access to this file. To test whether your secrets are truly encrypted, first create an ordinary Kubernetes secret:
+
+```
+kubectl create secret generic secret1 -n default --from-literal=mykey=mydata
+```
+
+Then use the ```etcdctl``` CLI command to read the secret from etcd:
+
+```
+ETCDCTL_API=3 etcdctl get /registry/secrets/default/secret1 <arguments> | hexdump -C
+```
+
+Finally, describe the secret to ensure that the secret is correctly decrypted:
+
+```
+kubectl describe secret secret1 -n default
+```
+
+The secret key is a good start, but more protection can be afforded by using a rotating secret key. This means that your secret will change regularly, and even if an attacker can gain access to your secret, there is a good probability that the secret would be outdated by the time they get to use it. However, you might notice a big problem here: downtime. If you were to change the secret, you would also have to change every place where the secret is referenced, and you would always have to take down the system while you did it. However, if you are willing to go through a slightly lengthier process, you can eliminate this downtime.
+
+To do this, you need to introduce the new secret in stages. First, generate the new key and add it to the providers as a secondary key, after which you need you to need to restart the ```kube-apiserver```. You then need to reposition the new key so that it is the first key in the ````keys```` array, before restarting the ```kube-apiserver``` again. Finally, get all secrets from all namespaces and replace them with the new key:
+
+```
+kubectl get secrets --all-namespaces -o json | kubectl replace -f -
+```
+
+Remove the old decryption key since it is no longer useful.
+
 ### Secure etcd
 
 Your etcd stores all key-value pairs which are necessary since the whole function of etcd is to monitor and maintain the resources in a Kubernetes cluster. As such, it has comprehensive control over your cluster, and your cluster has a consistent means of contacting etcd. If an attacker was to get access to etcd, they would therefore be able to control your cluster, and since any changes that go on within the pod are reported back to etcd, they would end up getting an insight into this information as well. Since this attacker does not need to use the API between the control plane and the resources, they end up having close to unhindered access to your cluster, which is an obvious problem.
@@ -49,7 +140,9 @@ The solution for this is quite simple. Since the API server being bypassed is th
 
 If you were an ordinary developer working in a sizable organization, then it's highly likely that you already follow a mandatorily enforced set of cluster security policies. However, if you were in a smaller organization, or happened to be the admins of these clusters, then the responsibility would fall on you to maintain cluster security. Developers who are more interested in meeting deadlines and pushing out their products would overlook some security vulnerabilities that they introduce into a system, and it would impossible for you, as an admin, to monitor each resource they push. Instead, you can enable security policies that are enforced at deployment time, which would prevent a resource from being deployed if it does not meet the required security criteria. For instance, if there are containers set to run with root access, you can flush them out before they are deployed and reject the resource.
 
-### Distaster recovery
+[Open Policy Agent](https://www.openpolicyagent.org) is an excellent tool to support this. OPA uses a unified framework that you can apply across your cloud-native stack, meaning that your entire stack will work with a single set of policies. The policy is defined in a declarative language (called Rego) and can enforce policies on every type of Kubernetes operation out there. You can also check for things like the existence of specific labels on resources, the sources of each image, and the validity of Ingress objects. You can also use admission controllers that manipulate resources that are getting applied so that they adhere to policies. This includes adding sidecar containers to each pod that gets added, automatically identifying and replacing images that get are hosted in non-corporate repositories, use taints and tolerations to mutate deployments. The best way to learn how to use their declarative language and implement OPA on your cluster is using their [interactive playground](https://play.openpolicyagent.org).
+
+### Disaster recovery
 
 A key point to remember here is that while you can make life harder for an attacker, no guarantee implementing all of the above security strategies will still prevent your data from being attacked. This is where disaster management comes in. While your etcd store might allow the attacker to gain privileged access to your cluster, this is not the most important part of your cluster. What is most important is your data. Since data is so valuable, ransomware is a common problem that businesses have to face, and having regular backups of your data that gets stored securely is the best way to avoid coming into these situations. Naturally, you don't have to handle this by hand since there is an excellent solution provided by Kasten called K10. K10 automatically backs up your data regularly and allows you to restore these backups at the click of a button. It also provides end-to-end security, meaning that they make sure that your backups are also secured. Attackers generally anticipate the existence of backups, and may also target these which means that you have to go the extra mile to prevent your backups from being erased.
 
