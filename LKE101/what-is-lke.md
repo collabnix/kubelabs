@@ -48,9 +48,31 @@ helm search repo bitnami/mongo
 
 The setup would be good enough if you were in a development environment where you would be running everything on-premise. But since we are going to be using LKE, we need to change the StorageClass so that it uses Linode's cloud storage. We do this by changing the ```architecture``` parameter. Additionally, we need to have multiple replicas of the database for fault tolerance. Since MongoDB here is a stateful set, we should change the [parameters respective](https://github.com/bitnami/charts/tree/master/bitnami/mongodb#mongodb-statefulset-parameters) to the stateful set. To do this, we need to override the default Helm set up using a ```values.yaml```. Create a YAML file and set the architecture as a replica set. Set a replica count (such as 3), point the storage class to Linode block storage, and set the root password to values of your preference. An example of how all this can be set can be found [here](https://gitlab.com/nanuchi/youtube-tutorial-series/-/blob/master/linode-kubernetes-engine-demo/test-mongodb-values.yaml).
 
+Once you have the yaml file ready, go ahead and install the helm chart:
+
+```
+helm install mongodb --values test-mongodb-values.yaml bitnami/mongodb
+```
+
+This command installs MongoDB with the custom chart values overriding the default values provided. Running this should install the MongoDB pods and other resources needed to get the database up and running on your Linode cluster. You can use ```kubectl get pod``` to see the status of the pods as they get created and start-up. Since we set the replica count to 3, you should be able to see three pods startup. You should also be able to see that several services, as well as statefulsets, have come up using:
+
+```
+kubectl get all
+``` 
+
+The root password you specified will also be included in a secret, which you can see with:
+
+```
+kubectl get secret
+```
+
+Great! Now you have MongoDB setup, and that took barely any configuration. You can now head over to the LKE cloud manager and into the [volumes page](https://cloud.linode.com/volumes) to see that three new pvc's have shown up. If you look at the File System Path column, you should be able to see that these are in fact linked to three physical disks. This means that your 3 replicas of pods had three pvc's created, all of which are linked to three separate disks. If one of your pods were to go down, the other two disks would still be running, thereby giving your application fault tolerance.
+
+Now that we have MongoDB set up, we need to get a UI to interface with the database. For this, we will be using [Mongo Express](https://github.com/mongo-express/mongo-express). 
+
 ## Setting up Mongo Express
 
-Now that we have MongoDB set up, we need to get a UI to interface with MongoDB. For this, we will be using [Mongo Express](https://github.com/mongo-express/mongo-express). Mongo Express consists of 1 pod and 1 service, so using a Helm chart is not needed here. Simply create a deployment and service that use the mongo-express image, and gets exposed in port 8081. An example of this can be found [here](https://gitlab.com/nanuchi/youtube-tutorial-series/-/blob/master/linode-kubernetes-engine-demo/test-mongo-express.yaml). Make sure you replace the necessary variables with the values as described in the [mongo-express image page](https://hub.docker.com/_/mongo-express/). The service is an internal service, so you should deploy the resources. However, you will not be able to see the actual UI due to the fact that the service is internal. To expose it to the outside world, you need to introduce and Ingress. If you want a refresher on Ingress, be sure to check out [the Ingress101 section](./../Ingress101/README.md).
+Mongo Express consists of 1 pod and 1 service, so using a Helm chart is not needed here. Simply create a deployment and service that use the mongo-express image, and gets exposed in port 8081. An example of this can be found [here](https://gitlab.com/nanuchi/youtube-tutorial-series/-/blob/master/linode-kubernetes-engine-demo/test-mongo-express.yaml). Make sure you replace the necessary variables with the values as described in the [mongo-express image page](https://hub.docker.com/_/mongo-express/). The service is an internal service, so you should deploy the resources. However, you will not be able to see the actual UI due to the fact that the service is internal. To expose it to the outside world, you need to introduce and Ingress. If you want a refresher on Ingress, be sure to check out [the Ingress101 section](./../Ingress101/README.md).
 
 ## Setting up Ingress
 
