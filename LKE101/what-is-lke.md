@@ -33,6 +33,7 @@ High availability clusters are separate from the normal clusters you create, and
 To actiavate a high availability cluster, you only need to check the "Enable HA control plane" option when creating a cluster as usual. Note that enabling this option will immediately increase cluster costs greatly. To upgrade an already existing cluster to a HA cluster, go to the cluster instance in cloud manager, and click on the "upgrade to HA option".
 
 ## Lab
+### Setting up MongoDB
 
 Now that you have created you cluster, and know the full extent of LKE's HA cluster abilities, it's time to start creating a cluster yourself. Use the above instructions to set up your account as well as your cluster. Make sure you don't create a high availability cluster to prevent your free credit from drying up. Load up the kubeconfig file so that your are ready to go. We will try out the features of LKE by deploying a MongoDB database. For this, we will be using Helm. If you needs a refresher on Helm, be sure to check out the [Helm101 section](../Helm101/what-is-helm.md). MongoDb has a fair bit different parts that go into creating it. Since this is a database that needs to maintain it's state, MongoDb comes in the form of a StatefulSet. If you need to catch up on StatefulSets, the [StatefulSet101 section](../StatefulSets101/README.md) is where you need to be. In addition to the stateful set config file, you will also need several Service resources that you need to manually install, as well as other configurations. However, using Helm, you can avoid having to do any of this. The Helm chart for MongoDB has all this bundled into one neat package that you can install very easily, and that is the option we will be going for. With the kubeconfig set, install Helm (see Helm section for more), and add the Helm repository:
 
@@ -70,11 +71,11 @@ Great! Now you have MongoDB setup, and that took barely any configuration. You c
 
 Now that we have MongoDB set up, we need to get a UI to interface with the database. For this, we will be using [Mongo Express](https://github.com/mongo-express/mongo-express). 
 
-## Setting up Mongo Express
+### Setting up Mongo Express
 
 Mongo Express consists of 1 pod and 1 service, so using a Helm chart is not needed here. Simply create a deployment and service that use the mongo-express image, and gets exposed in port 8081. An example of this can be found [here](https://gitlab.com/nanuchi/youtube-tutorial-series/-/blob/master/linode-kubernetes-engine-demo/test-mongo-express.yaml). Make sure you replace the necessary variables with the values as described in the [mongo-express image page](https://hub.docker.com/_/mongo-express/). The service is an internal service, so you should deploy the resources. However, you will not be able to see the actual UI due to the fact that the service is internal. To expose it to the outside world, you need to introduce and Ingress. If you want a refresher on Ingress, be sure to check out [the Ingress101 section](./../Ingress101/README.md).
 
-## Setting up Ingress
+### Setting up Ingress
 
 Similar to MongoDB, ingress has a lot of different parts, and requires you to either install all of them manually or use a Helm chart to install everything at once. We will be using Helm here, so we need to start off by adding the Ingress repo: 
 
@@ -94,7 +95,7 @@ kubectl apply -f test-ingress.yaml
 
 You should now be able to go to your hostname (taken from your LKE cluster), and it should redirect you to the Mongo express landing page. The NodeBalancer, which is now properly configured with an ingress rule, would now resolve it and forward the request to the internal service that is used by Mongo Express.
 
-## Finishing up
+### Finishing up
 
 Now, you need to attach the pods to the existing volumes. For this, stop the pods and reattach them by scaling down the number of replicas to zero, then setting them back to 3:
 
@@ -106,7 +107,7 @@ You can then go to the [volumes page](https://cloud.linode.com/volumes) of cloud
 
 And that's it! You now have a fully working cluster that supports MongoDB + MongoExpress running on LKE. You can extend this to support other frontend/backend services to build your entire application on the cloud.
 
-## Removing resources
+### Removing resources
 
 Once you are done with this tutorial, you can go ahead and start removing the resources you have deployed. Removing MongoDB is simply a matter of uninstalling the Helm chart:
 
