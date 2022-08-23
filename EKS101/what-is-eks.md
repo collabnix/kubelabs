@@ -32,4 +32,32 @@ eksctl create cluster --name my-cluster --region region-code --version 1.23 --vp
 
 Even with this longer create command, you can see that this is far less complicated and more straightforward as opposed to writing multiple commands on the AWS CLI, or even navigating through the AWS console.
 
-To start, head over to the EKS area on the AWS console, and navigate to clusters. If you are starting fresh, you will not see any clusters present in this area.
+To start, head over to the EKS area on the AWS console, and navigate to clusters. If you are starting fresh, you will not see any clusters present in this area. To create a cluster, use eksctl. We are going to be creating a cluster with the name "kubelabs-cluster" that runs on Kubernetes v1.24. You can set the region to be anything that is closest to you geographically. We are also going to be creating worker nodes that need to be grouped in a node group, and we will give a name for this node group. Remember earlier that we mentioned worker nodes being EC2 instances? Well, EC2 instances come in different sizes, and you can specify exactly what type of EC2 instance you want your worker nodes to be running, as well as the number of nodes you want. A full list of available types is mentioned [here](https://aws.amazon.com/ec2/instance-types/). We are going to be using the ```t2.micro```, which has 1GB memory, 1 CPU, and is free tier eligible.
+
+```bash
+eksctl create cluster \
+--name kubelabs-cluster \
+--version 1.24 \
+--region <your closest region> \
+--nodegroup-name kubelabs-group \
+--node-type t2.micro \ 
+--nodes 2
+```
+
+You will have to wait sometime until this command is fully executed, and you can track the progress using the console output you get. First, the cluster will be created, at which point you can head over to the clusters page of the AWS console to see the cluster in action. After the cluster is created, the node group will start creating with the worker nodes that are supposed to be in it. Since these nodes are EC2 instances, you can see these nodes come up by heading over to the EC2 instance section of the AWS console. Another thing to note is that since a cluster was created, there is also a kubeconfig cluster created along with it so that the cluster can be accessed via kubectl commands. This config file will be placed in the default location (under the .kube folder) so that you don't have to do any additional configuration to start accessing the cluster from your local machine. You can verify this by running:
+
+```
+kubectl get nodes
+```
+
+and if you can see the 2 nodes, then you are all set.
+
+## Cleaning up
+
+Now, remember that all of the above things are AWS resources, and as such, you will be charged if you leave them running without deleting them after you are done. So this means you have a bunch of stuff (VPCs, cluster, EC2 instances) that you have to get rid of, which would have been a pain if you had to do it manually. However, since eksctl created all these resources for you, it can also get rid of all these resources for you, in the same manner, using a single command:
+
+```
+eksctl delete cluster --name kubelabs-cluster
+```
+
+This will also take a while to run, and all the resources you just created will be removed.
