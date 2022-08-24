@@ -1,2 +1,0 @@
-# Managed Kubernetes Service
-
