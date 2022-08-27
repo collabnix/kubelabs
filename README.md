@@ -223,6 +223,12 @@
 ## GitOps101
 - [What is GitOps](./GitOps101/what-is-gitops.md)
 - [ArgoCD](./GitOps101/argocd.md)
+
+## EKS101
+- [What is EKS](./EKS101/what-is-eks.md)
+
+## LKE101
+- [What is LKE](./LKE101/what-is-lke.md)
 # Contributors
 
 - [Ajeet Singh Raina](https://twitter.com/ajeetsraina)
