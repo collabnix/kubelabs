@@ -3,7 +3,7 @@ kind: Job
 metadata:
   name: wait
 spec:
-completions: 5
+  completions: 5
   template:
     metadata:
       name: wait
