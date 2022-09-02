@@ -9,3 +9,11 @@ However, there are several problems with this approach. The main problem is acce
 Now that we've listed out the problems, and you can see the title of this section, I think you should be able to figure out the solution: **virtual clusters**. 
 
 ## How do virtual clusters work?
+
+To observe how virtual clusters work, we will be taking [Loft](https://loft.sh) into consideration. Similar to how one would manually do it, Loft creates a namespace within the cluster. However, Loft also then deploys a lightweight Kubernetes cluster to the namespace based on [k3s](https://k3s.io), which is a lightweight implementation of k8s. This cluster contained within the namespace will now have a fully featured API server + controller, meaning that it is essentially a cluster of its own. Every time a new cluster is deployed into a namespace, a new virtual cluster is created, and each team or individual can be assigned their own separate cluster. The most interesting part is that you don't have to keep a separate DevOps team to create and destroy the clusters, since Loft allows developers to easily do this themselves. However, it is likely that in large organizations, a team will be there to monitor and handle resource usage, and you will need DevOps engineers to initially set up Loft in your company cluster.
+
+Setting up Loft in your existing cluster isn't particularly difficult. If you have multiple clusters hosted in various cloud service providers, you only have to install Loft on one of those clusters. You can then network the other clusters to it and create a larger self-service cluster. The next step is to handle access by creating users that have various permissions. This is something we couldn't do previously when using only namespaces to segregate the clusters. Once that is done, developers can create their own clusters to suit their needs.
+
+Next, let's go into a hands-on lab.
+
+[Next: Loft Lab](./loft-lab.md)
