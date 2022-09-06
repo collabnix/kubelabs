@@ -234,8 +234,4 @@ ip=$(kubectl get pod www2 -o yaml |grep podIP | awk '{split($0,a,":"); print a[2
 
 The applications now use a remote NFS for their data storage. Depending on requirements, this same approach works with other storage engines such as GlusterFS, AWS EBS, GCE storage or OpenStack Cinder.
 
-## Managing stateful applications
 
-Now that you know all about stateful applications, let us look into how we can efficiently manage them. For this, we will be using [operators](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/).
-
-[Next: Operators](./operators.md)
