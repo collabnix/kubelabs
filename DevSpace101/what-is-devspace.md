@@ -6,8 +6,19 @@ This doesn't really work well with a shift-left idealogy, where the idea is to d
 
 ## What DevSpace does
 
-Instead of going through all the steps, it takes to get your change to a Kubernetes cluster, DevSpace allows you to deploy your code to the cluster with every change. It does this by maintaining a configuration file that uses your dockerfile to continuously create images from your code. Then, the image is deployed to a K8s cluster and is re-deployed by syncing your changes to match with the cluster. Since everyone who uses Kubernetes would have to be familiar with kubectl, DevSpace has the command line syntax made to match that of kubectl.
+Instead of going through all the steps, it takes to get your change to a Kubernetes cluster, DevSpace allows you to deploy your code to the cluster with every change. It does this by maintaining a configuration file that uses your dockerfile to continuously create and reload the container from your code. Now, it's important to note that DevSpace does not create a new image per change and redeploy the whole container since that would be impractical. Instead, it hot reloads the running container to synchronize your files as you code. This means that you can have log streams running from the container, attach debuggers, etc... without having to worry about the container going offline for each change you do. Since everyone who uses Kubernetes would have to be familiar with kubectl, DevSpace has the command line syntax made to match that of kubectl.
 
 The commands are rather simple. For example, ```devspace init``` initializes your repo and prepares it for deployment while ```devspace deploy``` deploys your project using either kubectl or helm. To watch your files for any changes, you use ```devspace dev```.
 
-DevSpace also comes with a handy UI, which you can bring up using ```devspace ui```.
+DevSpace also comes with a handy UI, which you can bring up using ```devspace ui```. From here, you would be able to start terminal sessions, see real-time logs, inspect namespaces and perform monitoring of your DevSpace.
+
+Since we will only be using DevSpace for development work, it will only ever run in a client machine which is why DevSpace is portrayed as a client-only tool. A high-level design of the system can be found below.
+
+<img src="./DevSpace.png" alt="DevSpace architecture" width="700" />
+
+The devspace.yaml allows you to write a declarative script that handles the workflow surrounding the handling of your application. This config file is best written by the person on your team who has the most knowledge of the cluster and its requirements. Preferably an expert in Kubernetes and DevOps. Once this file has been created and the workflow defined, everyone else just has to pull the config file to their local machines and start working with it.
+
+## Lab
+
+Now, let's try DevSpace and see what it has to offer. To do this, we need to first install the DevSpace CLI, after which we will be creating a docker file that DevSpace has to use to create the image. Then, we can initiate and deploy the image using DevSpace.
+
