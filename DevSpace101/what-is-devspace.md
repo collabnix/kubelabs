@@ -72,4 +72,55 @@ To initiate this project, go into the project folder, and run:
 devspace init
 ```
 
-You will then be presented with an interactive wizard which allows you to choose things such as the language used in the application, the method of deployment, and how you need to watch your application. Choose the default options, and you will have configured your project to work with DevSpace.
+You will then be presented with an interactive wizard which allows you to choose things such as the language used in the application, the method of deployment, and how you need to watch your application. Choose the default options, and you will have configured your project to work with DevSpace. You would also notice that this has introduced a devspace.yaml file into your project folder.
+
+If you have worked with any sort of pipelines that can be declared using yaml (such as Bitbucket or Azure DevOps), you would find this file a little familiar. There is a section in the yaml called ```pipelines```. There is one section called "dev", which contains the list of commands that will run when you execute ```devspace dev```, and a section called "deploy" which will run when you call ```devspace deploy```. 
+
+```yaml
+pipelines:
+  dev:
+    run: |-
+        ...
+  deploy:
+    run: |-
+        ...
+```
+
+Running both commands first deploys any dependencies that this project has, and the dev command then deploys the Helm charts as a deployment resource before starting the app in dev mode. The "deploy" option deploys your image by building it, tagging it, and pushing it before deploying it as a Helm chart. In short, use "dev" while you are doing development and use "deploy" when you are planning on deploying your image.
+
+Next comes the images section. This will include the list of images that will get built using your Dockerfile. 
+
+```yaml
+images:
+  app:
+    image: <image-repo>
+    dockerfile: ./Dockerfile
+```
+
+Note that you should try not to build images as much as possible when using the dev mode since that would slow down your development process considerably. After that are the deployments section, which defines how your application should be deployed. 
+
+```yaml
+deployments:
+  app:
+    helm:
+      chart:
+        ...
+      values:
+        ...
+```
+
+If you selected all the defaults, then you also chose Helm as your deployment method, and this will be shown here. If you instead selected some other deployment method such as kubectl, then that will show up. This is also the part which houses the information to use when you run the ```devspace deploy``` command.
+
+When you run the ```devspace dev``` command, that corresponds to the next part of the file. 
+
+```yaml
+dev:
+  app:
+    imageSelector: ghcr.io/loft-sh/devspace/app
+    devImage: ghcr.io/loft-sh/devspace-containers/go:1.18-alpine
+    ports:
+      - port: "2345"
+      - port: "8080"
+```
+
+Under the ```dev``` section of the yaml,  you define everything that is needed to get the hot-reloading development environment up and running. This includes the devImage, the ports that it should open, proxy commands, and so on.
