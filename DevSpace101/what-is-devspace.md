@@ -124,3 +124,32 @@ dev:
 ```
 
 Under the ```dev``` section of the yaml,  you define everything that is needed to get the hot-reloading development environment up and running. This includes the devImage, the ports that it should open, proxy commands, and so on.
+
+Now you have a fully configured DevSpace project that is ready to be deployed. However, you now need a cluster to deploy this project to. If you already have a cluster available, you can go ahead and deploy it to this cluster. If not, using [Minikube](https://minikube.sigs.k8s.io/docs/start/) is the fastest and most convenient way to get a simple, one-node cluster up and running on your local machine. You can install it on any platform, and you can use several drivers ranging from Docker to Hyper-V to set up Minikube.
+
+Once you have a cluster up and running, make sure the kubeconfig file for your cluster is where it should be. Then, make sure that DevSpace uses this kubeconfig file and the cluster associated with it:
+
+```
+devspace use context               
+devspace use namespace collabnix-lab
+```
+
+The first command will set devspace to be used in the context of your Kubernetes cluster specified by the kubeconfig. The second specifies the namespace that will be automatically created during deployment time. Once everything has been set properly, start-up DevSpace:
+
+```
+devspace dev
+```
+
+This will run using the configuration you provided under the ```dev``` part of the ```devspace.yaml```. Note that these lines are written in emulated bash. That means that you can add any ordinary bash commands here and it will run as if it was running in a bash shell. However, since it is emulated, you could just run this command on a Windows machine and have it work the same way. Now, let's start the application. Since we are running a Python application, use:
+
+```
+python main.py
+```
+
+And you're done! You now have an application that gets deployed to a Kubernetes cluster but also gets reloaded every time you make a change, meaning that you can see your changes apply in real-time. Open up the project using your favourite IDE, and do a change. Once the change is done, save it, and your file should get reloaded in the cluster. Since the yaml controls the whole process, if you need to exclude files from being synced, make sure to change that in the ```sync``` part of the yaml.
+
+If you need to perform debugging on your application, DevSpace allows you to attach your debugger by allowing port forwarding. To specify which ports need forwarding, you can edit the yaml. Also don't forget, you also have a UI that you can use for monitoring purposes that you can access with 
+
+```
+devspace ui 
+```
