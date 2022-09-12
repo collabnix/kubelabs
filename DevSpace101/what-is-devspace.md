@@ -148,8 +148,22 @@ python main.py
 
 And you're done! You now have an application that gets deployed to a Kubernetes cluster but also gets reloaded every time you make a change, meaning that you can see your changes apply in real-time. Open up the project using your favourite IDE, and do a change. Once the change is done, save it, and your file should get reloaded in the cluster. Since the yaml controls the whole process, if you need to exclude files from being synced, make sure to change that in the ```sync``` part of the yaml.
 
-If you need to perform debugging on your application, DevSpace allows you to attach your debugger by allowing port forwarding. To specify which ports need forwarding, you can edit the yaml. Also don't forget, you also have a UI that you can use for monitoring purposes that you can access with 
+If you need to perform debugging on your application, DevSpace allows you to attach your debugger by allowing port forwarding. To specify which ports need forwarding, you can edit the yaml. If you head over to your terminal instance that runs DevSpace, you will notice that your application has started syncing. You will also notice that a stream of logs has started getting written to the terminal, which displays any errors or events that need your attention. If you update your project files, this log stream will get updated to show that changes were applied. You can run commands such as:
+
+```
+kubectl get pod
+kubectl get deployment
+kubectl get svc
+```
+
+These will show you all the pods, deployments, and services that have been created when you ran ```devspace dev```. What you should note is that when you updated a file, the pod didn't get recreated. If that happened, you would have to wait until the pod came back up, which would have taken much longer. Instead, only the container the pod was running on got reloaded. You can also use ```helm ls``` to see the helm chart that was used to deploy all this (in the case that you used helm to install the chart). The helm chart gets created out of the values you place under the ```deployment``` section of the devspace yaml. However, if you have your own Helm chart (that is, you create a Helm chart that can be used to deploy your application), then you can specify the helm chart directly in the devspace.yaml.
+
+Also don't forget, you also have a UI that you can use for monitoring purposes that you can access with 
 
 ```
 devspace ui 
 ```
+
+This UI allows you to check the logs of each cluster, which is much more user-friendly than sifting through the logs in the terminal. If you have multiple clusters, then you can select which cluster you want using the drop-down options in the KubeContext. You can then drill down further by selecting which namespace you want. This will give you a list of pods that DevSpace is managing. You can select the pod to get its individual log, and you can also sh into the pod from here using an interactive terminal.
+
+So, to conclude, you can see how DevSpace is a very useful tool for any developer in organizations ranging from small to big. If you are working in a team, the whole team can use a single devspace, and if you're working individually, you can still use DevSpace to hot reload containers. This makes the development process much more efficient, and a lot faster.
