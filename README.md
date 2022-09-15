@@ -232,6 +232,11 @@
 
 ## LKE101
 - [What is LKE](./LKE101/what-is-lke.md)
+
+## Loft101
+- [What is Loft](./Loft101/what-is-loft.md)
+- [Loft Lab](./Loft101/loft-lab.md)
+
 # Contributors
 
 - [Ajeet Singh Raina](https://twitter.com/ajeetsraina)
