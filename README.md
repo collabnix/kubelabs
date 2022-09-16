@@ -237,6 +237,10 @@
 - [What is Loft](./Loft101/what-is-loft.md)
 - [Loft Lab](./Loft101/loft-lab.md)
 
+## Shipa101
+- [What is Shipa](./Shipa101/what-is-shipa.md)
+- [Shipa Lab](./Shipa101/shipa-lab.md)
+
 # Contributors
 
 - [Ajeet Singh Raina](https://twitter.com/ajeetsraina)
