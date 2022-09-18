@@ -75,3 +75,29 @@ kubectl port-forward -n shipa-system svc/dashboard-web-1 8888
 You can then open up the page on localhost (port 8888) and follow the three steps to gain access to the Shipa dashboard. Once you're in, the installation part of Shipa is complete.
 
 ## Separating the teams
+
+Since you're an admin in the Shipa dashboard, you can use the UI to create users. Simply select the user's section from the left-hand pane, and create Users. Once that has been done, you can use the Teams left-hand pane to create a new team. Now that both of these things are done, you have to add the users to the team.
+
+To do this, we will be heading back to the CLI which has been already set up with Shipa.
+
+```
+shipa user-list
+```
+
+This should show you the list of users.
+
+Let's first create a role called "developer":
+
+```
+shipa role add developer team
+```
+
+Then we can set permissions for each of these roles:
+
+```
+shipa role-permission-add developer app cluster.read framework.read framework.update
+```
+
+This assigns several permissions for your role.
+
+The entire team can then be assigned roles, permissions, and granted/removed access. This means that when a new user joins the team, they automatically get the same level of access that the rest of the team has, and you don't have to manually assign the roles to each one of them.
