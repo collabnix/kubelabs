@@ -98,6 +98,19 @@ Then we can set permissions for each of these roles:
 shipa role-permission-add developer app cluster.read framework.read framework.update
 ```
 
-This assigns several permissions for your role.
+This assigns several permissions to your role. Finally, assign the role to the user you just created:
 
-The entire team can then be assigned roles, permissions, and granted/removed access. This means that when a new user joins the team, they automatically get the same level of access that the rest of the team has, and you don't have to manually assign the roles to each one of them.
+```
+shipa role-assign developer <email> shipa-dev-team
+```
+
+The entire team can then be assigned roles, permissions, and granted/removed access. This means that when a new user joins the team, they automatically get the same level of access that the rest of the team has, and you don't have to manually assign the roles to each one of them. Note that while we have created a team and added a user to it, we haven't created any access rules or permissions for that team. These rules and permissions are defined within what is called a Shipa framework. Creating a framework can be done using the UI in the same way as creating a user, so let's head over to the browser.
+
+On the left pane, find the section called frameworks, and add a framework. First, set the name and the namespace to which the framework will apply, then set the security settings. In the input box labelled "Grant access to teams", you can select the shipa-dev-team you just created. The namespace you specified will be the **only** namespace this framework will apply to. Now, you need to create another cluster and [connect it](https://learn.shipa.io/docs/connecting-clusters#cluster-configuration) to Shipa as the development cluster before you can assume the role of a developer and test it out.
+
+To log in as a developer, you would run the same ```shipa login``` command as before, except this time you would use the developer email you used when creating the user initially. As a developer, if you want to deploy your application, you could either:
+
+- Deploy the code directly using ```shipa app deploy <artifact>```
+- Deploy a Docker image using ```shipa app deploy <registry>```
+
+Or, to make things even simpler, just do not do any of that and instead commit your code to a branch in your existing repo. That way, developers don't even have to have the Shipa CLI installed. So how does that work?
