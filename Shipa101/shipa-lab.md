@@ -114,3 +114,9 @@ To log in as a developer, you would run the same ```shipa login``` command as be
 - Deploy a Docker image using ```shipa app deploy <registry>```
 
 Or, to make things even simpler, just do not do any of that and instead commit your code to a branch in your existing repo. That way, developers don't even have to have the Shipa CLI installed. So how does that work?
+
+Your developer would focus on writing application code, after which they will push their raw code to the repository. Once the code has reached the repo, an image will be created by the pipeline using the code. The pipeline that does this has to be configured by the DevOps team. The pipeline can be set to run automatically, after which the image is deployed into your Shipa cluster, and is accessible through the endpoint. This endpoint is automatically created by Shipa as well once you create a new Shipa app. That will also be handled by the DevOps team or someone in the team that has knowledge of Shipa. A developer would have no need to understand any of these underlying concepts. They only have to focus on, for example, the front-end code after which they commit their changes to the repository. A few moments later, they can use the endpoint to see their changes in action. That is all.
+
+And of course, you can always roll back your images or view the list of images that have been created in the past, so all the convenience features are present.
+
+That's all about shipa! If you are looking for something with a little more punch, consider trying [Shipa Pro](https://shipa.io/pricing/) for more features, although the free version should work fine for small teams developing a handful of applications.
