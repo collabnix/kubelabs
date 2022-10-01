@@ -245,6 +245,10 @@
 - [What is DevSpace](./DevSpace101/what-is-devspace.md)
 - [DevSpace Lab](./DevSpace101/devspace-lab.md)
 
+## Kubernetes with GitLab 101
+- [What is GitLab](./GitLab101/what-is-gitlab.md)
+- [Kubernetes with GitLab](./GitLab101/kubernetes-with-gitlab.md)
+
 # Contributors
 
 - [Ajeet Singh Raina](https://twitter.com/ajeetsraina)
