@@ -1,4 +1,4 @@
-# An Ultimate Kubernetes Hands-on Labs and Tutorials
+# Get Started with Kubernetes | Ultimate Hands-on Labs and Tutorials
 
 ![stars](https://img.shields.io/github/stars/collabnix/kubelabs)
 ![forks](https://img.shields.io/github/forks/collabnix/kubelabs)
@@ -240,6 +240,10 @@
 ## Shipa101
 - [What is Shipa](./Shipa101/what-is-shipa.md)
 - [Shipa Lab](./Shipa101/shipa-lab.md)
+
+## DevSpace101
+- [What is DevSpace](./DevSpace101/what-is-devspace.md)
+- [DevSpace Lab](./DevSpace101/devspace-lab.md)
 
 # Contributors
 
