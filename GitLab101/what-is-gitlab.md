@@ -8,14 +8,4 @@ These are all features that most other Git hosting services don't offer, largely
 
 So now that we are clear on the benefits of using GitLab, let's consider how we can connect Kubernetes clusters to GitLab so that we can use as many of these features as possible.
 
-## Lab
-
-To start off, you need a Kubernetes cluster. If you already have a cluster running on a VM or on the cloud, you can use that. If not, the use of [GKE](https://cloud.google.com/kubernetes-engine/docs/deploy-app-cluster) is recommended. GitLab has partnered with GKE to offer $200 of credit in addition to the $300 of credit you get when you sign up in GCP. This applies even if you have an existing account with GCP, so it's a great way to get started. Otherwise, refer to the GitLab guide for setting up an agent server [here](https://docs.gitlab.com/ee/administration/clusters/kas.html).
-
-To set up a cluster in GKE, follow the steps outlined in the [official doc](https://docs.gitlab.com/ee/user/infrastructure/clusters/connect/new_gke_cluster.html). It will take you through the steps of importing an example project, creating and registering an agent for GitLab on GKE, creating GCP credentials, project configuration, and cluster provisioning.
-
-You also need a GitLab account and have GitLab CI/CD activated.
-
-First, take note of the sidebar to your left. This sidebar has the full set of options that GitLab makes available to you. Feel free to browse through them and get a grasp of where all the features we mentioned above can be found. What we are looking for now is the infrastructure section that will lead to the section for Kubernetes clusters. You should be able to connect your Kubernetes cluster from here. If you followed the GKE guide from above, you should be able to simply select the Kubernetes agent running there from the dropdown. Doing this will get you a token, which you need to store securely. You will also note that there is a section called "Recommended Installation method", which has a command placed under it. Copy this command, we will be using it next.
-
-Now, you need to install the agent on your cluster. For this, we will be using [Helm](../Helm101/what-is-helm.md). Helm allows you to install multiple packages together so that you don't have to install each thing manually. Go to GKE and [get your kubeconfig](https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl#view_kubeconfig). Then [set your kubeconfig](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/) so that your local machine has access to your GKE cluster. Now, open a terminal instance, make sure you can access your GKE cluster from it, and run the command that we copied in the previous step.
+[Next: Kubernetes with GitLab](./kubernetes-with-gitlab.md)

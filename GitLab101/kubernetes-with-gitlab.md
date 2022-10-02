@@ -12,6 +12,14 @@ Now, you need to install the agent on your cluster. For this, we will be using [
 
 When you do this, a new namespace, a service account with admin access, a secret for the agents' access token, and a deployment resource for the agent's pod are created. If you wish to customize any of these things, you may do so by changing the Helm charts' yaml. These are the resources created by default. If you are planning to change anything, it's best if you took a look at the [full list of customizable items](https://gitlab.com/gitlab-org/charts/gitlab-agent/-/blob/main/values.yaml) in the values.yaml.
 
-Excellent, now you've finished setting up the GitLab agent on your Kubernetes cluster. Now, let's consider the next steps.
+Excellent, now you've finished setting up the GitLab agent on your Kubernetes cluster. This means that you are done.
 
 We have covered [GitOps](../GitOps101/what-is-gitops.md) before. In that case, we used ArgoCD as the primary example. Now, we will be using the same GitOps workflow, but with GitLab. Of course, you could connect ArgoCD to your GitLab repo and have it update your Kubernetes cluster automatically. For that, look at the previous [ArgoCD section](../GitOps101/argocd.md). However, this time instead of repeating ourselves, let's go ahead and create our own workflow. Similar to ArgoCD, you will be keeping your Kubernetes manifest files in your GitLab repo. Remember that one of the advantages of having a GitLab agent in your k8 cluster is that GitLab can push changes to the cluster in real-time. We will be using this to our advantage by having changes that are pushed to the resource files in the repo get automatically pushed to your Kubernetes cluster.
+
+This is a general overview of the GitOps architecture that you just set up:
+
+![https://docs.gitlab.com/ee/user/clusters/agent/gitops.html](./GitLab-Workflow.png "GitLab GitOps Workflow")
+
+Let us look at the diagram in a little more detail. We see that the developer pushes changes to the repository, and the changes in the manifest files get updated. The GitLab agent running on your Kubernetes cluster identifies that there have been changes (by continuously watching for and pulling changes), and updates the resources in your cluster. As you can see, it is very similar to how ArgoCD works, with the GitLab agent doing most of the work ArgoCD would have. 
+
+Although you are done with setting up GitLab to work with GitOps, there are a whole lot of things you can look into and customize. You can change the [GitOps configuration reference](https://docs.gitlab.com/ee/user/clusters/agent/gitops.html#gitops-configuration-reference), manage [GitOps annotations](https://docs.gitlab.com/ee/user/clusters/agent/gitops.html#gitops-annotations) or see any [troubleshooting options](https://docs.gitlab.com/ee/user/clusters/agent/gitops.html#troubleshooting) you may have.
