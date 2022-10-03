@@ -61,3 +61,11 @@ eksctl delete cluster --name kubelabs-cluster
 ```
 
 This will also take a while to run, and all the resources you just created will be removed.
+
+You now know all about setting up and running a cluster with AWS EKS. However, note that you are running your containers on EC2 instances, which aren't that flexible. So, while you ran the above cluster on a t2.micro instance, you might not be using the full resources that the VM provides. Alternatively, your cluster might grow to the point that you need more resources, forcing you to upgrade the VM. However, you might not end up using the full resources of your upgraded VM.
+
+This means you might end up paying for resources that you don't use which is generally something you don't do when using AWS. Consider the case of AWS Lambda functions, where you have specific functions connected to your API, so that each request will run the function, and you **only pay for the number of times the function runs** instead of paying for an EC2 instance that runs forever. AWS now has a similar concept for running Kubernetes clusters, with [AWS Fargate](https://aws.amazon.com/fargate/).
+
+So now, let's take a look at AWS Fargate.
+
+[Next: AWS Fargate](./aws-fargate.md)
