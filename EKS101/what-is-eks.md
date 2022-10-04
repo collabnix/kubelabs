@@ -66,6 +66,24 @@ You now know all about setting up and running a cluster with AWS EKS. However, n
 
 This means you might end up paying for resources that you don't use which is generally something you don't do when using AWS. Consider the case of AWS Lambda functions, where you have specific functions connected to your API, so that each request will run the function, and you **only pay for the number of times the function runs** instead of paying for an EC2 instance that runs forever. AWS now has a similar concept for running Kubernetes clusters, with [AWS Fargate](https://aws.amazon.com/fargate/).
 
-So now, let's take a look at AWS Fargate.
+So before we finish this lesson, let's take a quick look at AWS Fargate.
 
-[Next: AWS Fargate](./aws-fargate.md)
+## AWS Fargate
+
+The container orchestration part is already managed by EKS, so Fargate focuses on managing the infrastructure your containers and pods run on. This means that Fargate is serverless (just like AWS Lambda), and will spin EC2 instances up and down depending on your workload. You will not be creating any instances on your own account. You don't even need to specify the number of resources that need to be allocated since Fargate is capable of making that decision on its own.
+
+Once the pod/container has finished running, Fargate will automatically spin down the instance, meaning that you will only pay for the resources you used and for how long you used them. Fargate also comes with integrations to other AWS services, such as IAM, CloudWatch, and Elastic Load Balancer. Fargate also works well with [AWS ECS](https://aws.amazon.com/ecs/), which is a container orchestration tool provided by Amazon similar to Kubernetes or Docker swarm.
+
+To make things easier, you can use eksctl to create a cluster with Fargate support. Doing so is as easy as specifying the argument in CLI:
+
+```
+eksctl create cluster --fargate
+```
+
+One thing to note is that running your containers on Fargate means that you will not have any control over the infrastructure that it runs on since all that is managed by AWS. So if you need the environment the container runs in to be specific, EC2 instances are still your best option, so you might want to start considering Nodegroups.
+
+Your Kubernetes cluster consists of nodes, and nodegroups, as the name implies, groups the nodes together. You can group several nodes into a single group in a way that makes logical sense, and have the nodegroup automatically manage itself. So you will still be using EC2 instances, but the Nodegroup will be creating, provisioning, and deleting the instances as needed. However, some features that Fargate offers such as scaling will no longer be available to you. So we can consider it a good middle group between manageability and flexibility.
+
+As one last thing, before we finish, I would like to point out that another possibility is to have both Fargate and EC2 instances running to work for the same cluster. That is, you can create EC2 instances for the nodes that you need fine-grained control over while allowing Fargate to handle any other infrastructure that just needs to run, no matter how or where.
+
+That concludes our lesson on AWS EKS.
