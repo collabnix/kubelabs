@@ -237,7 +237,6 @@
 - [What is Loft](./Loft101/what-is-loft.md)
 - [Loft Lab](./Loft101/loft-lab.md)
 
-
 ## Shipa101
 - [What is Shipa](./Shipa101/what-is-shipa.md)
 - [Shipa Lab](./Shipa101/shipa-lab.md)
@@ -246,9 +245,12 @@
 - [What is DevSpace](./DevSpace101/what-is-devspace.md)
 - [DevSpace Lab](./DevSpace101/devspace-lab.md)
 
+## Kubernetes with GitLab 101
+- [What is GitLab](./GitLab101/what-is-gitlab.md)
+- [Kubernetes with GitLab](./GitLab101/kubernetes-with-gitlab.md)
+
 ## Kubernetes with Jenkins
 - [What is Jenkins](./Jenkins101/what-is-jenkins.md)
-
 
 # Contributors
 
