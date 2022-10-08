@@ -8,5 +8,22 @@ Your Jenkins pipeline can be configured to automate deployment processes. For ex
 
 You may be well aware that Jenkins can be run as a Docker container. So now, we are going to be using the same concept and running Jenkins as a pod in a Kubernetes cluster.
 
+## Why use Jenkins on Kubernetes
+
+Depending on what you are building and what your Jenkins pipelines do, you need to appropriate amount of system resources. So, you might have a pipeline that runs for 3 hours with a high amount of resource usage, as well as a 30-minute light-weight build that barely needs any resources at all. In this case, if you were to install Jenkins as you normally would on an ordinary VM, you have to ensure that the VM has enough resources to run the high-intensity 3 hours build. However, this also means that when the low-intensity 30-minute build is running, you are not using the VM's full potential. If your builds don't continuously run, then there would be a period where the VM sits idle. This is a huge waste of money and resources, especially if your Jenkins VM is a machine on the cloud which you pay for in the number of minutes it runs in.
+
+The next point is reproducibility. If you set up Jenkins on a VM and run jobs there, the config.xml files of the jobs will be present within the machine only. These config files can be added to source control so that any changes that happen to the positions are tracked. However, Jenkins consists of more than just the config file. If there are specific CPU/memory requirements, you need to be able to reproduce those as well.
+
+Both of the above points are covered when using Kubernetes. Since Kubernetes comes with the ability to orchestrate pods, which includes pod scaling, the number of resources can be scaled up or down depending on the job that needs to be run. You can also specify things such as the memory and CPU in the deployment file so that whenever you deploy the resources, it will automatically request the necessary resources for it to run.
+
 ## How it's going to work
 
+First, you are going to need a Kubernetes cluster to run Jenkins on. If you don't have one, I recommend the use of [Minikube](https://minikube.sigs.k8s.io/docs/start/). This will create a single node cluster on your local machine.
+
+Once you have your cluster, you need to create a namespace on which Jenkins will live. Do so with:
+
+```
+kubectl create namespace Jenkins
+```
+
+Now that the namespace is ready, it's time to install Jenkins. For this, we will be using Helm.
