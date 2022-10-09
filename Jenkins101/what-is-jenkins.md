@@ -18,7 +18,7 @@ Both of the above points are covered when using Kubernetes. Since Kubernetes com
 
 ## How it's going to work
 
-First, you are going to need a Kubernetes cluster to run Jenkins on. If you don't have one, I recommend the use of [Minikube](https://minikube.sigs.k8s.io/docs/start/). This will create a single node cluster on your local machine.
+First, you are going to need a Kubernetes cluster to run Jenkins on. If you don't have one, I recommend the use of [Minikube](https://minikube.sigs.k8s.io/docs/start/). This will create a single node cluster on your local machine. This tutorial will also focus on using Minikube to run Jenkins. Certain steps need to be done differently when being run on a different type of multi-node cluster.
 
 Once you have your cluster, you need to create a namespace on which Jenkins will live. Do so with:
 
@@ -26,4 +26,53 @@ Once you have your cluster, you need to create a namespace on which Jenkins will
 kubectl create namespace Jenkins
 ```
 
-Now that the namespace is ready, it's time to install Jenkins. For this, we will be using Helm.
+Now that the namespace is ready, it's time to install Jenkins. For this, we will be using Helm. Helm allows you to install multiple packages together so that you don't have to install each thing manually. If you want a refresher on Helm, be sure to check out the [Helm101 section](../Helm101/what-is-helm.md). If you want to go and jump straight ahead to the installation, it is fairly straightforward, and the full steps can be found [here](https://helm.sh/docs/intro/install/). **Make sure you install Helm 3**. There are some [significant changes](https://helm.sh/docs/faq/changes_since_helm2/) between Helm 2 and Helm 3, which means that the below tutorial will not work if you use Helm 2 instead.
+
+Start by adding the repo to Helm:
+
+```
+helm repo add jenkinsci https://charts.jenkins.io
+helm repo update
+```
+
+The charts within the repo you just added should be visible using:
+
+```
+helm search repo jenkinsci
+```
+
+While Kubernetes is great for orchestrating pods, these pods are ephemeral, meaning that the next time you boot up Minikube, your configuration will be lost. To prevent that from happening we need to create a persistent volume. The volume we create will be named ```jenkins-pv```, and its configuration is as below:
+
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jenkins-pv
+  namespace: jenkins
+spec:
+  storageClassName: jenkins-pv
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 20Gi
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /data/jenkins-volume/
+```
+
+If we take a look at the configuration, it is of kind PersistentVolume, has an access mode of ```ReadWriteOnce``` with 20GB storage capacity. We also use ```Retain``` as the reclaim policy so that it doesn't get deleted when the corresponding PersistentVolumeClaim is deleted. The ```hostPath``` is set inside the ```data``` folder as advised in the [Minikube docs](https://minikube.sigs.k8s.io/docs/handbook/persistent_volumes/#a-note-on-mounts-persistence-and-minikube-hosts). However, the ```data``` folder will only be given root access, meaning that you need to change permissions later.
+
+Place the above configuration in a file called ```jenkins-volume.yaml```, and deploy the file:
+
+```
+kubectl apply -f jenkins-volume.yaml
+```
+
+Now that the volume has been deployed, assign the permissions to your user as we previously stated:
+
+```
+minikube ssh
+sudo chown -R 1000:1000 /data/jenkins-volume
+```
+
+After this, it's time to create a service account.
