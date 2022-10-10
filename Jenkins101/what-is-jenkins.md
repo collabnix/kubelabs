@@ -75,4 +75,41 @@ minikube ssh
 sudo chown -R 1000:1000 /data/jenkins-volume
 ```
 
-After this, it's time to create a service account.
+After this, it's time to create a service account. Since this service account needs to be a cluster-wide role, we will be creating a ClusterRole with certain permissions defined. Create a file called ```jenkins-sa.yaml``` and copy the contents of this [file](https://raw.githubusercontent.com/jenkins-infra/jenkins.io/master/content/doc/tutorials/kubernetes/installing-jenkins-on-kubernetes/jenkins-sa.yaml).
+
+If we take a closer look at this file, you will notice that there are 3 resources here. One of them is the ClusterRole with all the permissions the service account will need, and the other is the service account itself with the namespace it needs to be active on specified. Finally, we have the ClusterRoleBinding which binds the ClusterRols to all the namespaces in your cluster. As before, deploy this file:
+
+```
+kubectl apply -f jenkins-sa.yaml
+```
+
+Now that you have both the service account and the volume ready, you can go ahead and install Jenkins via Helm. The Helm chart has its charts already defined, but we need to change one thing to enable persistence. Copy the content of this [file](https://raw.githubusercontent.com/jenkinsci/helm-charts/main/charts/jenkins/values.yaml) into a file called ```jenkins-values.yaml```. Now open up this file, and change the following:
+
+```
+nodePort: 32000
+```
+
+```
+storageClass: jenkins-pv
+```
+
+```
+serviceAccount:
+  create: false
+name: jenkins
+annotations: {}
+```
+
+After doing these changes, we will pass this file as an argument when running the ```helm install``` command so that it overrides the default configuration. A detailed explanation of what goes on here can be found in the [Helm101, helm charts section](../Helm101/helm-charts.md). It's time to install the chart now. First, define the chart we will be using:
+
+```
+chart=jenkinsci/jenkins
+```
+
+Then, give the install command with the overriding file and name of the chart:
+
+```
+helm install jenkins -n jenkins -f jenkins-values.yaml $chart
+```
+
+If you get an output saying ```STATUS: deployed```, then you've just successfully installed Jenkins on your cluster.
