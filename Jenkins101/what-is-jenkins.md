@@ -113,3 +113,35 @@ helm install jenkins -n jenkins -f jenkins-values.yaml $chart
 ```
 
 If you get an output saying ```STATUS: deployed```, then you've just successfully installed Jenkins on your cluster.
+
+As with installing Jenkins normally, you will need to log in with an admin password. You can get it by running the below command:
+
+```
+jsonpath="{.data.jenkins-admin-password}"
+secret=$(kubectl get secret -n jenkins jenkins -o jsonpath=$jsonpath)
+echo $(echo $secret | base64 --decode)
+```
+
+Then, get the Jenkins URL with:
+
+```
+jsonpath="{.spec.ports[0].nodePort}"
+NODE_PORT=$(kubectl get -n jenkins -o jsonpath=$jsonpath services jenkins)
+jsonpath="{.items[0].status.addresses[0].address}"
+NODE_IP=$(kubectl get nodes -n jenkins -o jsonpath=$jsonpath)
+echo http://$NODE_IP:$NODE_PORT/login
+```
+
+The last command will echo out the login URL, which you can access using your browser. This is where you will use the admin password you copied from the above step.
+
+And now you have Jenkins running on your cluster! If the page still says that Jenkins hasn't started up, check the pods in the Jenkins namespace to see the pods' status:
+
+```
+kubectl get pods -n jenkins
+```
+
+If Jenkins has finished installing and running, there must be a pod called "jenkins-xxx" in a RUNNING state. You could also use this time to forward the port to port 8080:
+
+```
+kubectl -n jenkins port-forward <pod_name> 8080:8080
+```
