@@ -20,6 +20,8 @@ Both of the above points are covered when using Kubernetes. Since Kubernetes com
 
 First, you are going to need a Kubernetes cluster to run Jenkins on. If you don't have one, I recommend the use of [Minikube](https://minikube.sigs.k8s.io/docs/start/). This will create a single node cluster on your local machine. This tutorial will also focus on using Minikube to run Jenkins. Certain steps need to be done differently when being run on a different type of multi-node cluster.
 
+If you are looking to set up Jenkins on a cloud Kuberntes Engine such as GKE, then consider reading through [this official documentation](https://cloud.google.com/architecture/jenkins-on-kubernetes-engine).
+
 Once you have your cluster, you need to create a namespace on which Jenkins will live. Do so with:
 
 ```
@@ -145,3 +147,7 @@ If Jenkins has finished installing and running, there must be a pod called "jenk
 ```
 kubectl -n jenkins port-forward <pod_name> 8080:8080
 ```
+
+This would be a great time to start familiarizing yourself with [Configuration as Code](https://plugins.jenkins.io/configuration-as-code). This will allow you to set the Jenkins configuration as yaml files. Having the environment configured in this manner allows you to dynamically set up Jenkins environments on the fly.
+
+Finally, it's important to point out that you can set up Jenkins using [yaml files](https://www.jenkins.io/doc/book/installing/kubernetes/#install-jenkins-with-yaml-files). But that's for later.
