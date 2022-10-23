@@ -4,8 +4,53 @@ We now know quite a bit about Kubernetes and other related technologies. So let'
 
 ## Useful kubectl flags
 
-kubectl uses flags that apply to many different types of resources, and mastering them will allow you to easily use them with other Kubernetes commands. Let's take a look at them here:
+kubectl uses flags that apply to many different types of resources, and mastering them will allow you to easily use them with other Kubernetes commands. A full list of flags can be found in the [official documentation](https://kubernetes.io/docs/reference/kubectl/kubectl/). Let's take a look at some of the most used ones here:
 
+```
+-A
+```
+
+`-A` stands for "all namespaces" (`--all-namespaces`) and is used to look for resources across all namespaces. So, commands such as 
+
+```
+kubectl get po -A
+```
+
+will return the pods across all namespaces.
+
+```
+-f
+```
+
+This is used to specify a file. A command such as
+
+```
+kubectl apply -f <file_path>
+```
+
+will apply the resources in the file provided in the path.
+
+```
+-n
+```
+
+This is used to specify the namespace, and is short for `--namespace`.
+
+```
+-v
+```
+
+Used to specify the level of verbosity in created logs.
+
+```
+-o
+```
+
+shorthand for `--output`, which formats the output displayed. So if you wanted the output to be in JSON format, use
+
+```
+kubectl ... -o json
+```
 
 The main component of Kubernetes is its pods, so let's start by taking a look at the pod commands. Note that you can use `po` as shorthand:
 
