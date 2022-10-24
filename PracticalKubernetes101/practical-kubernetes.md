@@ -37,12 +37,6 @@ will apply the resources in the file provided in the path.
 This is used to specify the namespace, and is short for `--namespace`.
 
 ```
--v
-```
-
-Used to specify the level of verbosity in created logs.
-
-```
 -o
 ```
 
@@ -51,6 +45,32 @@ shorthand for `--output`, which formats the output displayed. So if you wanted t
 ```
 kubectl ... -o json
 ```
+
+```
+--all
+```
+
+This signifies all the resources. So something like:
+
+```
+kubectl -n my-ns delete pod,svc --all
+```
+
+Will delete all pods and services in the `my-ns` namespace.
+
+```
+-ti
+```
+
+Users of Docker might be familiar with the above command, as it lets you log into pods using `kubectl exec`:
+
+```
+kubectl exec -ti [pod-name] -- /bin/bash
+```
+
+The above flags should cover a good percentage of the flags you will use in day-to-day Kubernetes. Now, let's move on to the Kubernetes resources.
+
+## Kubernetes resources
 
 The main component of Kubernetes is its pods, so let's start by taking a look at the pod commands. Note that you can use `po` as shorthand:
 

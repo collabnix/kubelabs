@@ -250,7 +250,7 @@
 - [Kubernetes with GitLab](./GitLab101/kubernetes-with-gitlab.md)
 
 ## Kubernetes with Jenkins
-- [What is Jenkins](./Jenkins101/what-is-jenkins.md)
+- [Kubernetes on Jenkins](./Jenkins101/kubernetes-on-jenkins.md)
 
 # Contributors
 
