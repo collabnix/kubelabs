@@ -74,13 +74,15 @@ The above flags should cover a good percentage of the flags you will use in day-
 
 There are a couple of common keywords that act as commands when used with kubectl. One of the most common is `get`. You can use `kubectl get` to retrieve anything from pods to namespaces to the very nodes the cluster is running on. We discussed the `-o wide` flag previously, and you can use this flag in conjunction with the `get` command to output more information from whatever you are getting.
 
-The next is `create`. `kubectl create` is a powerful command that can be used to create all sorts of resources inside a cluster. It can also be used in combination with the above flags to perform various operations.
+The next is `create`. `kubectl create` is a powerful command that can be used to create all sorts of resources inside a cluster. It can also be used in combination with the above flags to perform various operations. The opposite command is `kubectl delete`, which gets rid of created resources.
 
 An important part of running Kubernetes is getting detailed information about resources that are running. For that, we use `kubectl describe`. This command can be used to describe details of various resources and provide you a lot of insights about the status of your resources when used with the above flags.
 
 ## Kubernetes resources
 
-The main component of Kubernetes is its pods, so let's start by taking a look at the pod commands. Note that you can use `po` as shorthand:
+Now that the flags and actions have been discussed, let's move on to the resources. There are all sorts of resources in kubectl and it wouldn't make sense to remember most of those. Instead, let's start with the short forms you can use to refer most common resources.
+
+The main component of Kubernetes is its pods who have `po` as shorthand. You can use this for pods and use it with actions and flags listed above, such as:
 
 ```
 kubectl get po -A
@@ -92,16 +94,20 @@ Use the above command with the -o flag to get detailed information about the pod
 kubectl get pods -o wide
 ```
 
+Next is namespaces, which has the shorthand `ns`.
+
 If you have multiple namespaces, you can use:
 
 ```
-kubectl get namespaces
+kubectl get ns
 ```
 
-to list them all out.
+to list them all out. Then comes the services, which has a shorthand `svc`
 
 ```
-kubectl get services
+kubectl get svc
 ```
 
-You could use 
+Deployments are commonly used to deploy multiple pods in a single "deployment". The shorthand for this is `deploy`. A couple of other shorthand resources are `pv` for persistent volumes and `pvc` for persistent volume claims ([more info](../StatefulSets101/README.md)).
+
+You could use many different combinations of the resources, actions, and flags above to do all sorts of things.
