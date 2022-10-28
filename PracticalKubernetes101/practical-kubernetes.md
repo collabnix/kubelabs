@@ -111,3 +111,42 @@ kubectl get svc
 Deployments are commonly used to deploy multiple pods in a single "deployment". The shorthand for this is `deploy`. A couple of other shorthand resources are `pv` for persistent volumes and `pvc` for persistent volume claims ([more info](../StatefulSets101/README.md)).
 
 You could use many different combinations of the resources, actions, and flags above to do all sorts of things.
+
+## Configuration
+
+Before you start using kubectl, you need to make sure you are using the correct kubeconfig that points to the cluster that you will be dealing with, as well as the correct context.
+
+```
+kubectl config view
+```
+
+The above command returns information about the config you are using. Remember that you can use the flags we discussed in here, such as the `-o` flag. For example, a command such as:
+
+```
+kubectl config view -o jsonpath='{.users[*].name}'
+```
+
+will get you the list of all users in the config.
+
+Setting the config is to be done by setting the `KUBECONFIG` variable. You can set multiple kuebconfigs:
+
+```
+KUBECONFIG=~/.kube/config:~/.kube/kubconfig2
+```
+
+Then you can switch between contexts;
+
+```
+kubectl config use-context my-cluster-name   
+```
+
+Before you switch between the contexts, you will need to get all the contexts to see which options you have, which can be done with:
+
+```
+kubectl config get-contexts
+```
+
+## Resources application
+
+We discussed the `kubectl apply` action before. Since applying resources is something that you will have to do regularly, let's look into it in more detail.
+
