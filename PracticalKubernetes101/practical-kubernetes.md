@@ -110,7 +110,7 @@ kubectl get svc
 
 Deployments are commonly used to deploy multiple pods in a single "deployment". The shorthand for this is `deploy`. A couple of other shorthand resources are `pv` for persistent volumes and `pvc` for persistent volume claims ([more info](../StatefulSets101/README.md)).
 
-You could use many different combinations of the resources, actions, and flags above to do all sorts of things.
+You could use many different combinations of the resources, actions, and flags above to do all sorts of things, and covers a large number of the commands you would use in your day-to-day life with Kubernetes. Now, we will combine everything we looked at above and talk about some commonly used commands.
 
 ## Configuration
 
@@ -150,3 +150,24 @@ kubectl config get-contexts
 
 We discussed the `kubectl apply` action before. Since applying resources is something that you will have to do regularly, let's look into it in more detail.
 
+You saw the syntax for applying a single file above. In the same way, you can apply all the files in a directory by specifying the directory instead of the file:
+
+```
+kubectl apply -f <dir>
+```
+
+You could also select specific files and apply them by chaining the `-f` flag:
+
+```
+kubectl apply -f <file1> -f <file2>
+```
+
+You can also substitute the files on your local drive to files online by sending the url instead of the file:
+
+```
+kubectl apply -f https://git.io/vPieo 
+```
+
+## Resource creation
+
+Now let's go to resource creation. `create` can be used to create new resources and is similar to `apply`, in the sense that you can create resources from a file. However, unlike `apply`, it will throw an error if the resource already exists, meaning that creating resources from files is best left to `apply`. `create` has a different usage, which is that it allows the creation of resources on the CLI itself instead of having the resource defined in a file.
