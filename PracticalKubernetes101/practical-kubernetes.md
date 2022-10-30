@@ -108,6 +108,8 @@ to list them all out. Then comes the services, which has a shorthand `svc`
 kubectl get svc
 ```
 
+Other common resources you can use `get` on are `pv`, `configmap`, `secret`, `node`, `event`, as so on.
+
 Deployments are commonly used to deploy multiple pods in a single "deployment". The shorthand for this is `deploy`. A couple of other shorthand resources are `pv` for persistent volumes and `pvc` for persistent volume claims ([more info](../StatefulSets101/README.md)).
 
 You could use many different combinations of the resources, actions, and flags above to do all sorts of things, and covers a large number of the commands you would use in your day-to-day life with Kubernetes. Now, we will combine everything we looked at above and talk about some commonly used commands.
@@ -170,4 +172,30 @@ kubectl apply -f https://git.io/vPieo
 
 ## Resource creation
 
-Now let's go to resource creation. `create` can be used to create new resources and is similar to `apply`, in the sense that you can create resources from a file. However, unlike `apply`, it will throw an error if the resource already exists, meaning that creating resources from files is best left to `apply`. `create` has a different usage, which is that it allows the creation of resources on the CLI itself instead of having the resource defined in a file.
+Now let's go to resource creation. `create` can be used to create new resources and is similar to `apply`, in the sense that you can create resources from a file. However, unlike `apply`, it will throw an error if the resource already exists, meaning that creating resources from files is best left to `apply`. `create` has a different usage, which is that it allows the creation of resources on the CLI itself instead of having the resource defined in a file. For example:
+
+```
+kubectl create job hello --image=busybox:1.28 -- echo "Hello World"
+```
+
+The above command will create a job called hello with the specified image, all without having to create a separate yaml for it.
+
+## Resource update
+
+Now that we know how to create resources, let's take a look at the `rollout` action which allows you to change the resources you created. You can use the `history` keyword:
+
+```
+kubectl rollout history deployment/frontend
+```
+
+Which will give you the history and revision of the deployment. You can change back to the last revision with:
+
+```
+kubectl rollout undo deployment/frontend         
+```
+
+Or you can append the revision number at the end of the command to specify which version you should roll back to with `--to-revision=2`. Once a rollout is underway, you can use the `status` keyword to monitor the status of the deployment, and use `restart` to restart it. The important thing to note is that `rollout` handles whatever task it has been assigned smoothly, and ensures that there are no service outages by performing the action in a controlled manner. However, if you wanted to do an abrupt change and don't mind a service outage, you can consider using the `replace` keyword, which deletes and recreates the resource:
+
+```
+kubectl replace --force -f ./pod.json
+```
