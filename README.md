@@ -263,6 +263,12 @@
 - [Apurva Bhandari](https://www.linkedin.com/in/apurvabhandari-linux)
 
 
+# Join Discord Channel
+
+
+[![Title](https://user-images.githubusercontent.com/34368930/198940642-50d0e7f0-c670-4800-b0ea-5b95d56aaf0e.png)](https://discord.gg/ztZpXzjSmF)
+  
+
 
 
 # Further References:
