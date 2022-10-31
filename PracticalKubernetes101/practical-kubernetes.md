@@ -199,3 +199,11 @@ Or you can append the revision number at the end of the command to specify which
 ```
 kubectl replace --force -f ./pod.json
 ```
+
+You can also set deployments to autoscale while they are currently deployed:
+
+```
+kubectl autoscale deployment foo --min=2 --max=10 
+```
+
+Another part of updating resources is patching them, which is accomplished via the `kubectl patch` command. Note that this command can be used with the previously mentioned resources and flags as well. We will start by taking a look at the commonly used `patch` commands.
