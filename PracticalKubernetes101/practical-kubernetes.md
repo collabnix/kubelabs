@@ -207,3 +207,31 @@ kubectl autoscale deployment foo --min=2 --max=10
 ```
 
 Another part of updating resources is patching them, which is accomplished via the `kubectl patch` command. Note that this command can be used with the previously mentioned resources and flags as well. We will start by taking a look at the commonly used `patch` commands.
+
+As you know, resources are written in yaml. This means that the behaviour of these resources can be changed by manipulating the yaml, even if the resource in question is actively running. This is what the `patch` command does. For example, you can update a node by changing its `spec` like so:
+
+```
+kubectl patch node k8s-node-1 -p '{"spec":{"unschedulable":true}}'
+```
+
+You can do the same with pods by changing their `spec`. In the below case, we are patching out the image with another one:
+
+```
+kubectl patch pod valid-pod --type='json' -p='[{"op": "replace", "path": "/spec/containers/0/image", "value":"new image"}]'
+```
+
+You could also use patch with other resources such as service accounts and deployments:
+
+```
+kubectl patch deployment nginx-deployment --subresource='scale' --type='merge' -p '{"spec":{"replicas":2}}'
+```
+
+## Changing running resources
+
+But you don't always have to patch the `spec` of deployment to do something as common as scaling the number of replicas of a resource. For that, you have `scale`:
+
+```
+kubectl scale --replicas=3 -f foo.yaml 
+```
+
+Note that you can specify resources using the file flag, or the resources themselves directly. Changing resources isn't the only thing that you can do while the pods are running because extracting logs from them is another significant part of maintaining your Kubernetes cluster.
