@@ -235,3 +235,39 @@ kubectl scale --replicas=3 -f foo.yaml
 ```
 
 Note that you can specify resources using the file flag, or the resources themselves directly. Changing resources isn't the only thing that you can do while the pods are running because extracting logs from them is another significant part of maintaining your Kubernetes cluster.
+
+The simple syntax for getting logs from a pod is:
+
+```
+kubectl logs <pod-name>
+```
+
+If you have grouped together your pods using labels, you might want to output the logs of all these pods together using:
+
+```
+kubectl logs -l name=<pod label>
+```
+
+If you are using init containers, you might be interested in getting the logs from these containers, which you can do with the `-c` flag:
+
+```
+kubectl logs <pod> -c <container>
+```
+
+In addition to logging, you can also get metrics for the pods:
+
+```
+kubectl top pod <pod name> --sort-by=cpu
+```
+
+As well as execute commands in running pods, using the `exec` keyword.
+
+```
+kubectl exec <pod> -- ls / 
+```
+
+In the above case, the command `ls /` is run and would show the content of the root directory of the pod. You can use this method to gain interactive access to the pod as well, using:
+
+```
+kubectl exec --stdin --tty <pod> -- /bin/sh
+```
