@@ -260,6 +260,12 @@ In addition to logging, you can also get metrics for the pods:
 kubectl top pod <pod name> --sort-by=cpu
 ```
 
+Pods aren't the only things you can get logs for. You can use the same syntax to get logs for deployments:
+
+```
+kubectl logs deploy/my-deployment
+```
+
 As well as execute commands in running pods, using the `exec` keyword.
 
 ```
@@ -271,3 +277,45 @@ In the above case, the command `ls /` is run and would show the content of the r
 ```
 kubectl exec --stdin --tty <pod> -- /bin/sh
 ```
+
+You can also copy files that are on your local drive to your running pods using `cp`:
+
+``` 
+kubectl cp /path/to/dir my-pod:/path/to/dir
+```
+
+Note that you can also copy files and directories to pod containers using the `-c` flag as we did above. You could also specify exactly which pod you need to copy your files into by specifying the namespace:
+
+```
+kubectl cp /tmp/foo my-namespace/my-pod:/tmp/bar    
+```
+
+You can also copy backward, from the pod into your file system:
+
+```
+kubectl cp my-namespace/my-pod:/tmp/foo /tmp/bar
+```
+
+## Managing nodes and clusters
+
+If you casually use Kubernetes to maintain your cluster, then you most likely have not used commands that managed nodes and clusters. There are a couple of these commands such as `cordon` and `drain` that can be used here, and we will look into the use cases.
+
+If you want to ensure that a node doesn't get any resources running on it for any reason, you can use the `cordon` keyword. This keyword will make the node unschedulable:
+
+```
+kubectl cordon my-node
+```
+
+To allow scheduling, use `uncordon`:
+
+```
+kubectl uncordon my-node 
+```
+
+If you wanted to get rid of a node, you can use:
+
+```
+kubectl drain my-node 
+```
+
+To safely drain a node before deletion. If you are planning on using this command, make sure you also read the official Kubernetes guide on [safely draining a pod](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/).
