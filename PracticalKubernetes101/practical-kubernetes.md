@@ -319,3 +319,19 @@ kubectl drain my-node
 ```
 
 To safely drain a node before deletion. If you are planning on using this command, make sure you also read the official Kubernetes guide on [safely draining a pod](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/).
+
+You can also use the `top` command to get the metrics of a node in the same way you used it to get the metrics of a pod. [Taints and tolerations](../Scheduler101/README.md) which allow you to decide which nodes a pod should be scheduled on can be done with:
+
+```
+kubectl taint nodes foo
+```
+
+Moving on to clusters, you can use `kubectl cluster-info` to get the addresses of the services on a cluster. You can use the `dump` keyword (`kubectl cluster-info dump`) to print out the current state of the cluster to the CLI.
+
+## Output formatting
+
+Before we finish the section on practical Kubernetes, let's look at the ways we can format the output of commands so that they are more human-readable. We already touched on the `-o` flag which is used to signify that we are going to change the way the output is formatted, and we have also briefly discussed a couple of ways we can do this formatting. Since almost all commands that have output can be formatted in this manner, knowing the core concepts of how output formatting works will allow you to use kubectl like a pro. So let's dive deeper into this topic.
+
+### Custom columns
+
+It's a well agreed upon fact that tables are one of the best ways to represent data. This is why the `custom-columns` keyword which allows the `-o` flag to format the output into a table that is easy to read. If you were to dump all the data you get from the output into a table, the table would be confusing and unintuitive. This is why the command is called `custom-columns`, meaning that you specify which parts of the data need to be visualised as a column.
