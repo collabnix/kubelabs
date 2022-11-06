@@ -334,4 +334,29 @@ Before we finish the section on practical Kubernetes, let's look at the ways we 
 
 ### Custom columns
 
-It's a well agreed upon fact that tables are one of the best ways to represent data. This is why the `custom-columns` keyword which allows the `-o` flag to format the output into a table that is easy to read. If you were to dump all the data you get from the output into a table, the table would be confusing and unintuitive. This is why the command is called `custom-columns`, meaning that you specify which parts of the data need to be visualised as a column.
+It's well known that tables are one of the best ways to represent data. This is why the `custom-columns` keyword which allows the `-o` flag to format the output into a table that is easy to read. If you were to dump all the data you get from the output into a table, the table would be confusing and unintuitive. This is why the command is called `custom-columns`, meaning that you specify which parts of the data need to be visualized as a column.
+
+Let's imagine that we want to display some information about a couple of pods. In this case, let's get information such as the name and the pod version. To do this we will use a combination of the actions and flag from before, as well as the `custom-columns` action:
+
+```
+kubectl get pods <pod-name> -o custom-columns=NAME:.metadata.name,RSRC:.metadata.resourceVersion
+```
+
+This will create a table with 2 columns. Name, and RSRC. The values will be displayed accordingly. However, you might notice that this has made the command quite long. If you wanted to get a whole bunch of values, your command would end up being unreadably long, very difficult to understand, and problematic if you needed to fix something with the command. In that case, you can move this string to a file and reference this file from the command. You could declare a `template.txt` file:
+
+```
+NAME          RSRC
+metadata.name metadata.resourceVersion
+```
+
+and send this file to the command:
+
+```
+kubectl get pods <pod-name> -o custom-columns-file=template.txt
+```
+
+This isn't something limited to `custom-column`. You can also use the template on commands such as `-o=jsonpath-file=<filename>`, which is an extension to the `-o=json` flag we looked at earlier.
+
+One final output format you can keep in mind is `-o=yaml`, which formats the output to resemble yaml.
+
+Next, let's look at another extension to `-o`, which is `-v`. `-v` is used to specify verboseness in the output.
