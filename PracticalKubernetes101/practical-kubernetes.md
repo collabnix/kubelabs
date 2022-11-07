@@ -359,4 +359,8 @@ This isn't something limited to `custom-column`. You can also use the template o
 
 One final output format you can keep in mind is `-o=yaml`, which formats the output to resemble yaml.
 
-Next, let's look at another extension to `-o`, which is `-v`. `-v` is used to specify verboseness in the output.
+Next, let's look at another extension to `-o`, which is `-v`. `-v` is used to specify verboseness in the output. The level of verboseness is identified based on an incrementing number starting from 0 and going up to 9, with 0 giving the lowest level of output and 9 giving the most. A list of what each verboseness level shows can be found in the [official documentation](https://kubernetes.io/docs/reference/kubectl/cheatsheet/#kubectl-output-verbosity-and-debugging).
+
+## Conclusion
+
+This brings us to the end of the guide to practical Kubernetes. The flags, actions, and resources you learned here can be used in everyday situation where you have to interact with Kubernetes clusters. There are many more commands and actions that advanced users of Kubernetes will have to use, but this guide is sufficient for anyone looking to jump into Kubernetes and use the kubectl command line like a pro.
