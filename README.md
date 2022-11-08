@@ -252,6 +252,9 @@
 ## Kubernetes with Jenkins
 - [Kubernetes on Jenkins](./Jenkins101/kubernetes-on-jenkins.md)
 
+## Practical Kubernetes
+- [Practical Kubernetes](./PracticalKubernetes101/practical-kubernetes.md)
+
 # Contributors
 
 - [Ajeet Singh Raina](https://twitter.com/ajeetsraina)
