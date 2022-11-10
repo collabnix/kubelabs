@@ -252,8 +252,8 @@
 ## Kubernetes with Jenkins
 - [Kubernetes on Jenkins](./Jenkins101/kubernetes-on-jenkins.md)
 
-## Practical Kubernetes
-- [Practical Kubernetes](./PracticalKubernetes101/practical-kubernetes.md)
+## Kubernetes Cheat Sheet
+- [Kubernetes Cheat Sheet](./Kubernetes%20Cheat%20Sheet/Kubernetes%20Cheat%20Sheet.md)
 
 # Contributors
 
