@@ -67,3 +67,37 @@ You can find more info about this in the [advanced section of the docs](https://
 ## Running Docker in Docker with Kubernetes
 
 Before we start talking about running Docker in Docker with Kubernetes, let's start by discussing what Docker in Docker is.
+
+If you were using a managed GitLab instance, meaning that you would allow GitLab to handle all the details of hosting your runners, your entire pipeline will run on a Docker container instance. When running pipelines, it is normal to create, build, and deploy Docker images. In this case, you will be spinning up a Docker container (from your pipeline) on a Docker container (which runs your pipeline). GitLab supports this configuration (or more specifically, Docker supports this configuration). This image can be found on [Docker Hub](https://hub.docker.com/_/docker) and is specifically made to allow Docker to run within Docker.
+
+If you run multiple Docker containers within Docker, you also need to be able to communicate between the containers. For this, you also need to introduce a service tag with a version that supports Docker in Docker. You also need to ensure that all containers share the same certificate for communication to work, which can be set by placing an environment variable which will tell Docker where it should create the shared certificate.
+
+So your configuration file needs to look something like this:
+
+```yaml
+build_image:
+  image: docker:<tag-version>
+  services:
+    - docker:<tag-version>-dind
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+```
+
+So how does this translate to your Kubernetes cluster? Since you have a runner that works on your Kubernetes cluster, you will be creating a Docker in Kubernetes implementation. This isn't too different from a Docker in Docker implementation and uses the same pipeline script as above, although you will have to edit the config values file and override the Helm chart with the necessary TOML. While with a Docker in Docker implementation with a managed runner, you could just add the above code to your pipeline script and be done with it, there is an extra step you need to take to enable this on your self-managed Kubernetes runner.
+
+You will have to add a `runners` tag, where you can specify the image and volume mount that the Docker cert will be located in. This will be added to the yaml that you pass into the `Helm install` command:
+
+```
+runners:
+  config: |
+    [[runners]]
+      [runners.kubernetes]
+        image = "ubuntu:20.04"
+        privileged = true
+      [[runners.kubernetes.volumes.empty_dir]]
+        name = "docker-certs"
+        mount_path = "/certs/client"
+        medium = "Memory"
+```
+
+The `privileged = true` tag is necessary since Docker needs this mode to start containers. Once the above command is added and the runner is deployed, you can use the same code you used with Docker to start running Docker in Kubernetes containers.
