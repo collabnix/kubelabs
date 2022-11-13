@@ -100,4 +100,22 @@ runners:
         medium = "Memory"
 ```
 
-The `privileged = true` tag is necessary since Docker needs this mode to start containers. Once the above command is added and the runner is deployed, you can use the same code you used with Docker to start running Docker in Kubernetes containers.
+The `privileged = true` tag is necessary since Docker needs this mode to start containers. As you might expect, this introduces some security issues that are important to discuss at this point. Your host machine that runs the pipeline will have a `docker.sock` (`/var/run/docker.sock`) that needs to be exposed to the Docker container on which your Docker daemon will run. This means your Docker daemon will have access to the kernel of the host system and will use as many resources as the node can provide, ignoring any limits you set for the pod. A way around this is to have a dedicated node for build containers and using either `node-selector` or [taints and tolerations](../Scheduler101/Nodes_taints_and_tolerations.md), so that the rest of the resources are not affected by the build containers using up all their resources. Even so, the unrestricted access the Docker daemon gets makes this option less favorable in production. 
+
+A much better approach is to instead use [Kaniko](https://github.com/GoogleContainerTools/kaniko). Kaniko is an open-source container tool that is specially designed to run Docker containers within other Docker containers or Kubernetes pods without using the Docker daemon. The absence of a Docker daemon means that privileged access is not required. So if you're planning on using Docker in Kubernetes, consider also using Kaniko.
+
+If you're using GitLab Runner 14.2 or above, you also get the option to restrict your Docker images based on where they come from. If you work in an organization, then it is likely that they have its own container registry with images that can be trusted. As such, you can configure the TOML to only use images and services from that registry:
+
+```
+[[runners]]
+  (...)
+  executor = "kubernetes"
+  [runners.kubernetes]
+    (...)
+    allowed_images = ["my.registry.tld:5000/*:*"]
+    allowed_services = ["my.registry.tld:5000/*:*"]
+```
+
+The above configuration uses wildcards, and you can also set the exact list of images and services allowed so that GitLab can't use anything else. This would be useful if a security team within your organization first curates a version of an image before allowing it into the container registry, meaning that you can specify that GitLab should use only that version of the image that has been already verified.
+
+Once the above command is added and the runner is deployed, you can use the same code you used with Docker to start running Docker in Kubernetes containers.
