@@ -119,3 +119,40 @@ If you're using GitLab Runner 14.2 or above, you also get the option to restrict
 The above configuration uses wildcards, and you can also set the exact list of images and services allowed so that GitLab can't use anything else. This would be useful if a security team within your organization first curates a version of an image before allowing it into the container registry, meaning that you can specify that GitLab should use only that version of the image that has been already verified.
 
 Once the above command is added and the runner is deployed, you can use the same code you used with Docker to start running Docker in Kubernetes containers.
+
+## Kubernetes secrets and certificates
+
+An important concept behind keeping your credentials encrypted while running a GitLab pipeline is managing Kubernetes secrets. Take a look at the [Kubernetes secrets](../secerts_configmaps101/secrets-configmaps.md) section to get a better idea about how you can create Kubernetes secrets. Once you have an image pull secret, you can specify it and send it to the runner by adding it to the yaml:
+
+```
+imagePullSecrets: [your-image-pull-secret]
+```
+
+If you want to create a certificate, you need to specify that when installing the Helm chart itself by adding the required values:
+
+```
+helm install gitlab gitlab/gitlab \
+  --set certmanager.install=false \
+  --set global.ingress.configureCertmanager=false \
+  --set gitlab-runner.install=false
+```
+
+This will create a self-signed certificate and you can add this to the yaml:
+
+```
+certsSecretName: RELEASE-wildcard-tls-chain
+```
+
+After that, create a new secret with the certificate specified in the file:
+
+```
+kubectl create secret generic <SECRET_NAME> \
+  --namespace <NAMESPACE> \
+  --from-file=<CERTIFICATE_FILENAME>
+```
+
+Then add the value you added as `<SECRET_NAME>` and place it in the values.yaml:
+
+```
+certsSecretName: <SECRET NAME>
+```
