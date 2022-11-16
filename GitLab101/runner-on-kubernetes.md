@@ -156,3 +156,42 @@ Then add the value you added as `<SECRET_NAME>` and place it in the values.yaml:
 ```
 certsSecretName: <SECRET NAME>
 ```
+
+### Tokens in secrets
+
+Before GitLab version 15.6, it was customary to store your runner and registration tokens in the values.yaml and have it sent to the Helm chart. However, this was rather unsafe as your token would be stored in plain text in a yaml file that would be hosted openly on a repository. Therefore, after version 15.6, you are no longer allowed to store the token within the yaml, and are instead encouraged to place the token within a secret. To help with this, a new variable has been introduced: `runners.secret`, where you will place your secret that contains the token. For example, the secret can be created like this:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: GitLab-runner-secret
+type: Opaque
+data:
+  runner-registration-token: <base64 encoded registration token>
+  runner-token: ""
+```
+
+Then you can reference this secret within the values.yaml:
+
+```yaml
+runners:
+  secret: GitLab-runner-secret
+```
+
+## Running GitLab images with non-root users
+
+The default GitLab image requires root permissions, and cannot be run without them. However, you could run a different version of the GitLab image [GitLab Runner UBI](https://gitlab.com/gitlab-org/ci-cd/gitlab-runner-ubi-images/container_registry/1766421?_gl=1*awfj3t*_ga*MTA1NjAwMDYyMC4xNjY4MzE2ODc5*_ga_ENFH3X7M5Y*MTY2ODU4Nzk0Mi43LjAuMTY2ODU4Nzk0Mi4wLjAuMA..).
+
+To get this image to work, the image must be set in the yaml:
+
+```
+image: registry.gitlab.com/gitlab-org/ci-cd/gitlab-runner-ubi-images/gitlab-runner-ocp:v13.11.0
+```
+
+Since you will not be running the image as a root user, you need to set which user you will be running it as:
+
+```
+securityContext:
+    runAsNonRoot: true
+    runAsUser: 999
