@@ -195,3 +195,26 @@ Since you will not be running the image as a root user, you need to set which us
 securityContext:
     runAsNonRoot: true
     runAsUser: 999
+```
+
+## Removing a runner
+
+As the last step, we will consider how we can safely remove a GitLab runner from a Kubernetes cluster.
+
+The first step is to ensure that there are no running jobs, and then pause the runner. Not doing so might mean that the resources in the cluster are locked and will not allow you to delete the chart, resulting in error messages such as:
+
+```
+ERROR: Error cleaning up pod: Unauthorized
+ERROR: Error cleaning up secrets: Unauthorized
+ERROR: Job failed (system failure): Unauthorized
+```
+
+Since we installed everything at once using Helm, we can use the same to uninstall everything at once instead of removing each resource individually. For that, use:
+
+```
+helm delete --namespace <NAMESPACE> <RELEASE-NAME>
+```
+
+This is the same command as that used to install the chart (`install` replaced with `delete`), except you don't have to provide an overriding `values` file with it.
+
+And that concludes the end-to-end guide on operating a GitLab runner on Kubernetes.
