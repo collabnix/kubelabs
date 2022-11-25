@@ -248,6 +248,7 @@
 ## Kubernetes with GitLab 101
 - [What is GitLab](./GitLab101/what-is-gitlab.md)
 - [Kubernetes with GitLab](./GitLab101/kubernetes-with-gitlab.md)
+- [GitLab runner on Kubernetes](./GitLab101/runner-on-kubernetes.md)
 
 ## Kubernetes with Jenkins
 - [Kubernetes on Jenkins](./Jenkins101/kubernetes-on-jenkins.md)

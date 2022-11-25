@@ -23,3 +23,7 @@ This is a general overview of the GitOps architecture that you just set up:
 Let us look at the diagram in a little more detail. We see that the developer pushes changes to the repository, and the changes in the manifest files get updated. The GitLab agent running on your Kubernetes cluster identifies that there have been changes (by continuously watching for and pulling changes), and updates the resources in your cluster. As you can see, it is very similar to how ArgoCD works, with the GitLab agent doing most of the work ArgoCD would have. 
 
 Although you are done with setting up GitLab to work with GitOps, there are a whole lot of things you can look into and customize. You can change the [GitOps configuration reference](https://docs.gitlab.com/ee/user/clusters/agent/gitops.html#gitops-configuration-reference), manage [GitOps annotations](https://docs.gitlab.com/ee/user/clusters/agent/gitops.html#gitops-annotations) or see any [troubleshooting options](https://docs.gitlab.com/ee/user/clusters/agent/gitops.html#troubleshooting) you may have.
+
+GitLab comes with 2 parts when it comes to GitLab pipelines. One is the repo that hosts the code, and the other is the runners on which the GitLab pipelines run. Now that we have figured out how to set up GitLab on Kubernetes, let's take a look at how we can set up a GitLab runner on Kubernetes.
+
+[Next: GitLab Runner](./runner-on-kubernetes.md)
