@@ -26,6 +26,35 @@ mvn clean install
 
 Ensure that the project builds fine. If everything looks good to go, it's time to look at the Jenkins portion of the code.
 
+Let's start by creating a Jekinsfile. This is what will hold your entire Jenkins configuration. For starters, let's come up with a simple pipeline. First checkout the repo, then build it:
+
+```yaml
+pipeline {
+    agent any
+
+    stages {
+        stage('checkout') {
+            steps {
+                checkout([$class: 'GitSCM',
+                        branches: [[name: 'master']],
+                        userRemoteConfigs: [[credentialsId: 'GH-PH',
+                        url: 'https://github.com/Phantom-Intruder/MvnCI']]])
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'mvn clean install'
+            }
+        }
+    }
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}
+```
+
 The first thing to note is that running jobs on your master node can introduce security concerns. For example, anyone with access to your Jenkins pipeline will be able to create a job that runs malicious bash scripts. When this job is executed, the code will run on the host machine.
 
 So the best practice with Jenkins is not to have any jobs running on the master node (as well as making the master node unschedulable). Then, we need to introduce a new agent which we can use to run Jenkins slave nodes on. 
