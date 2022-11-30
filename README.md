@@ -18,7 +18,7 @@
 
 ### PWK:
 
-  - [Preparing 5-Node Kubernetes Cluster on Kubernetes Platform](./kube101.md) 
+  - [Preparing 5-Node Kubernetes Cluster](./kube101.md) 
   - [Setting up WeaveScope For Visualization on Kubernetes](./weave-pwk.md) 
   - [Running Portainer on 5 Node Kubernetes Cluster](https://github.com/collabnix/kubelabs/tree/master/portainer#running-portainer-on-5-node-kubernetes-cluster)
   
