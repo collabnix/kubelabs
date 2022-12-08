@@ -37,8 +37,8 @@ pipeline {
             steps {
                 checkout([$class: 'GitSCM',
                         branches: [[name: 'master']],
-                        userRemoteConfigs: [[credentialsId: 'GH-PH',
-                        url: 'https://github.com/Phantom-Intruder/MvnCI']]])
+                        userRemoteConfigs: [[credentialsId: '<yourcredentials>',
+                        url: 'https://github.com/<repo_url>']]])
             }
         }
         stage('Build') {
@@ -54,6 +54,8 @@ pipeline {
     }
 }
 ```
+
+The last part of the file is the `always` block, which specifies code that needs to run at the end of the pipeline regardless of the outcomes (success, fail, etc...). In this case, we are telling the build to clean the workspace at the end regardless of the outcome.
 
 The first thing to note is that running jobs on your master node can introduce security concerns. For example, anyone with access to your Jenkins pipeline will be able to create a job that runs malicious bash scripts. When this job is executed, the code will run on the host machine.
 
