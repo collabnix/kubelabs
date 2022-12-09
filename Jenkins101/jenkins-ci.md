@@ -26,7 +26,7 @@ mvn clean install
 
 Ensure that the project builds fine. If everything looks good to go, it's time to look at the Jenkins portion of the code.
 
-Let's start by creating a Jekinsfile. This is what will hold your entire Jenkins configuration. For starters, let's come up with a simple pipeline. First checkout the repo, then build it:
+Let's start by creating a Jekinsfile. This is what will hold your entire Jenkins configuration. Create a file called "Jenkinsfile" in the root of your project directory and add the below code into it. First checkout the repo, then build it:
 
 ```yaml
 pipeline {
@@ -55,8 +55,31 @@ pipeline {
 }
 ```
 
-The last part of the file is the `always` block, which specifies code that needs to run at the end of the pipeline regardless of the outcomes (success, fail, etc...). In this case, we are telling the build to clean the workspace at the end regardless of the outcome.
+This is the Jenkins declarative syntax which is a simpler form code that allows you to get up and running with Jenkins quickly. As you may notice, the above code is pretty self-explanatory. You could also create a Groovy file for complex pipelines and use Groovy code (and libraries). At the start, you specify which node you want to run the pipeline on. `any` signifies that the pipeline should run on any available node (only the one node in this case). The last part of the file is the `always` block, which specifies code that needs to run at the end of the pipeline regardless of the outcomes (success, fail, etc...). In this case, we are telling the build to clean the workspace at the end regardless of the outcome.
 
-The first thing to note is that running jobs on your master node can introduce security concerns. For example, anyone with access to your Jenkins pipeline will be able to create a job that runs malicious bash scripts. When this job is executed, the code will run on the host machine.
+At this point, your project directory should look something like this:
 
-So the best practice with Jenkins is not to have any jobs running on the master node (as well as making the master node unschedulable). Then, we need to introduce a new agent which we can use to run Jenkins slave nodes on. 
+```
+.
+├── dependency-reduced-pom.xml
+├── Jenkinsfile
+├── mvnw
+├── mvnw.cmd
+├── pom.xml
+├── src
+│   ├── main
+│   │   └── java
+│   │       └── hello
+│   │           ├── Greeter.java
+│   │           └── HelloWorld.java
+│   └── test
+│       └── java
+│           └── hello
+│               └── GreeterTest.java
+```
+
+You may also have a `target` folder that got created when you ran `mvn clean install`. This folder does not need to be included when pushing to git, so you can also add a .gitignore file that has `target/` specified.
+
+Now, create a repo in GitHub and push this project to that repo. Open up your Jenkins instance and create a new Job. The job type will be a pipeline job. Call it "Maven build", and you will be automatically sent to the pipeline configuration page. Here you will see multiple options, but you can ignore all of that since everything can be defined in the Jenkinsfile. What you do need to specify is what Jenkinsfile you will be using in the build, and for that, go to the pipeline section. Here, select "Pipeline script for SCM" and "Git" as the SCM type. You then need to provide your repository details as well as the credentials. Follow [this guide](https://www.geeksforgeeks.org/how-to-add-git-credentials-in-jenkins/) if you face any issues setting up credentials.
+
+You can then run the build and have the project get built. The unit tests you find as part of the project will be tested as well. 
