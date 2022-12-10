@@ -16,7 +16,11 @@ mvn archetype:generate
 
 This will create an application complete with a Java class and a JUnit test class (which we will be using to run unit tests on Jenkins). You can add something to the existing application if you like, but there is no explicit need to do so as the application will have everything we need to get a sample Jenkins job up and running.
 
+## Starting Jenkins for the first time
+
 Now, start Jenkins. Note that if this is the first time you are starting Jenkins, you will have to follow the starting instructions and use the admin password. You can also select to install all the default plugins, or manually pick only the ones we need. We will be needing all the base pipeline as code plugins as well as GitHub integration plugins (as that is where we will be hosting our code). Don't worry if you forget something. We can always install plugins later.
+
+## Test the Maven application
 
 With Jenkins setup, let's put that aside for a moment and focus on getting the Java application running. Before you do anything, go into the directory where the `pom.xml` is located, and run:
 
@@ -25,6 +29,8 @@ mvn clean install
 ```
 
 Ensure that the project builds fine. If everything looks good to go, it's time to look at the Jenkins portion of the code.
+
+## Creating the Jenkinsfile
 
 Let's start by creating a Jekinsfile. This is what will hold your entire Jenkins configuration. Create a file called "Jenkinsfile" in the root of your project directory and add the below code into it. First checkout the repo, then build it:
 
@@ -80,6 +86,10 @@ At this point, your project directory should look something like this:
 
 You may also have a `target` folder that got created when you ran `mvn clean install`. This folder does not need to be included when pushing to git, so you can also add a .gitignore file that has `target/` specified.
 
+## Final steps
+
 Now, create a repo in GitHub and push this project to that repo. Open up your Jenkins instance and create a new Job. The job type will be a pipeline job. Call it "Maven build", and you will be automatically sent to the pipeline configuration page. Here you will see multiple options, but you can ignore all of that since everything can be defined in the Jenkinsfile. What you do need to specify is what Jenkinsfile you will be using in the build, and for that, go to the pipeline section. Here, select "Pipeline script for SCM" and "Git" as the SCM type. You then need to provide your repository details as well as the credentials. Follow [this guide](https://www.geeksforgeeks.org/how-to-add-git-credentials-in-jenkins/) if you face any issues setting up credentials.
 
-You can then run the build and have the project get built. The unit tests you find as part of the project will be tested as well. 
+You can then run the build and have the project get built. The unit tests you find as part of the project will be tested as well.
+
+Congratulations! You have successfully set up a Jenkins instance in a Kubernetes cluster and run a Jenkins build for a Maven application on it.
