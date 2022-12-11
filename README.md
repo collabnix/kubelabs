@@ -252,6 +252,7 @@
 
 ## Kubernetes with Jenkins
 - [Jenkins on Kubernetes](./Jenkins101/jenkins-on-kubernetes.md)
+- [Using Jenkins on Kubernetes](./Jenkins101/jenkins-ci.md)
 
 ## Practical Kubernetes
 - [Practical Kubernetes](./PracticalKubernetes101/practical-kubernetes.md)
