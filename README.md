@@ -18,7 +18,7 @@
 
 ### PWK:
 
-  - [Preparing 5-Node Kubernetes Cluster on Kubernetes Platform](./kube101.md) 
+  - [Preparing 5-Node Kubernetes Cluster](./kube101.md) 
   - [Setting up WeaveScope For Visualization on Kubernetes](./weave-pwk.md) 
   - [Running Portainer on 5 Node Kubernetes Cluster](https://github.com/collabnix/kubelabs/tree/master/portainer#running-portainer-on-5-node-kubernetes-cluster)
   
@@ -254,8 +254,8 @@
 - [Jenkins on Kubernetes](./Jenkins101/jenkins-on-kubernetes.md)
 - [Using Jenkins on Kubernetes](./Jenkins101/jenkins-ci.md)
 
-## Practical Kubernetes
-- [Practical Kubernetes](./PracticalKubernetes101/practical-kubernetes.md)
+## Kubernetes Cheat Sheet
+- [Kubernetes Cheat Sheet](./Kubernetes%20Cheat%20Sheet/Kubernetes%20Cheat%20Sheet.md)
 
 # Contributors
 
