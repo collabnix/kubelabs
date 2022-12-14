@@ -251,7 +251,8 @@
 - [GitLab runner on Kubernetes](./GitLab101/runner-on-kubernetes.md)
 
 ## Kubernetes with Jenkins
-- [Kubernetes on Jenkins](./Jenkins101/kubernetes-on-jenkins.md)
+- [Jenkins on Kubernetes](./Jenkins101/jenkins-on-kubernetes.md)
+- [Using Jenkins on Kubernetes](./Jenkins101/jenkins-ci.md)
 
 ## Kubernetes Cheat Sheet
 - [Kubernetes Cheat Sheet](./Kubernetes%20Cheat%20Sheet/Kubernetes%20Cheat%20Sheet.md)
@@ -266,12 +267,11 @@
 - [Divyajeet Singh](https://www.linkedin.com/in/divyajeet-singh)
 - [Apurva Bhandari](https://www.linkedin.com/in/apurvabhandari-linux)
 
-
 # Join Collabnix Discord Server
 
 
 [![Title](https://user-images.githubusercontent.com/34368930/198940642-50d0e7f0-c670-4800-b0ea-5b95d56aaf0e.png)](https://discord.gg/ztZpXzjSmF)
-  
+
 
 
 

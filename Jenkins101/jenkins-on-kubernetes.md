@@ -151,3 +151,7 @@ kubectl -n jenkins port-forward <pod_name> 8080:8080
 This would be a great time to start familiarizing yourself with [Configuration as Code](https://plugins.jenkins.io/configuration-as-code). This will allow you to set the Jenkins configuration as yaml files. Having the environment configured in this manner allows you to dynamically set up Jenkins environments on the fly.
 
 Finally, it's important to point out that you can set up Jenkins using [yaml files](https://www.jenkins.io/doc/book/installing/kubernetes/#install-jenkins-with-yaml-files). But that's for later.
+
+Now that we have finished understanding what Jenkins is, and how you can run Jenkins on a Kubernetes cluster, let's get our hands dirty and start using this instance of Jenkins to start the CI process for a small Java application.
+
+[Next: Jenkins CI](jenkins-ci.md)
