@@ -16,4 +16,18 @@ In GCP, the VMs you can create are known as compute instances. They come in diff
 
 ## Regions
 
-The next thing you need to consider is the region of your VPC.
+The next thing you need to consider is the region of your VPC. All resources need to have a region specified for them, which will determine where the resource is created. An example of a region would be something like `us-central1`. Regions are further broken down into zones which allow you to select which zone within the region you can create the resource. An example of a zone would be something like `us-central1-a`, or `us-central1-b`. Each zone has a specific quota, so if you find yourself running into an error along the lines of:
+
+>Insufficient regional quota to satisfy request...
+
+That means you should consider switching to a different zone (or possibly a different region). With most resources, you will need to specify which region/zone you want to create your resource. If you don't, gcloud will ask you if you want the resource to start up in the default region, which will be the region closest to you.
+
+## Cluster creation
+
+We've gone through a lot of theory so far, and you might be thinking that there is much to consider before you can create your cluster. However, that is not true, and you can actually create a whole cluster (including the control plane and worker nodes) with just 1 command, which is outlined below:
+
+```
+gcloud container clusters create --machine-type=n1-standard-1 --zone=us-west3-c collabnix-webserver1
+```
+
+This short command contains everything we spoke about above. Since this command can create a whole cluster, let's take a closer look at the command itself.
