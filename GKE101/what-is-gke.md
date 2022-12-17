@@ -31,3 +31,27 @@ gcloud container clusters create --machine-type=n1-standard-1 --zone=us-west3-c 
 ```
 
 This short command contains everything we spoke about above. Since this command can create a whole cluster, let's take a closer look at the command itself.
+
+First, you specify `gcloud`, which is used to interact with all GCP resources, followed by `container`, which tells that you are looking to manage containers and clusters. The `clusters` keyword specifies that you want to work with GKE clusters, and you then say that you want to `create` one. Next, you specify the machine type you want the nodes to have. `n1-standard-1` is a more mid-level machine in terms of performance, and it is a better option to use since Kubernetes clusters are somewhat demanding. Note that the price you pay will scale with the performance level of the VM. You then define the zone. Omitting this value will result in gcloud asking you for the zone when you try to run the command. Finally, you specify the name of your cluster.
+
+Running the above command will require you to have an environment that has gcloud set up and authorized. The fasted way to do this is by running the cloud shell within GCP console. If you are already in the console, you should be able to spot the shell button in the title bar at the top right corner of the screen. Clicking on it will spin up a small Debian-based VM that has everything you need to start running commands on GCP.
+
+When you run the above command on the cloud shell, it will ask you to authorize the shell to make changes to your GCP project. Accept the authorization and start running the command. Note that it will take a while (about 10 mins) for the cluster to be fully set up. GCP will also run readiness health checks to ensure that the cluster is functioning. By default, the cluster will be created with 3 nodes. If you want to change the number of nodes that get created, you can set the number of nodes when running the command. For example: `--nodes=2`.
+
+Click on the navigation page on the left, and go into the Kubernetes section of GCP. This should show you the cluster that is up and running. Now it's time for us to interact with the cluster.
+
+The cloud shell comes with `kubectl` installed, but if you are using a different client environment, you will need to set up kubectl yourself. However, despite having kubectl set up, you will not be able to interact with the cluster immediately. This is because the shell isn't configured with the correct kubeconfig that will allow it to access the cluster. For you to get the kubeconfig, run:
+
+```
+gcloud container clusters get-credentials collabnix-webserver1 --zone us-west3-c
+```
+
+This command will get the kubeconfig and place it in the proper place so you can start running commands on the cluster immediately. Note that you must specify the zone, or gcloud will throw an error. Try running:
+
+```
+kubectl get po -A
+```
+
+This should give you a list of all pods. From here onwards, you essentially have a fully functioning managed cluster that you can use as you please.
+
+So, as mentioned before, it's really simple getting a cluster up and running in GCP. One command to create the cluster, and one to get access to it.
