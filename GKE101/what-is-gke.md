@@ -54,4 +54,38 @@ kubectl get po -A
 
 This should give you a list of all pods. From here onwards, you essentially have a fully functioning managed cluster that you can use as you please.
 
-So, as mentioned before, it's really simple getting a cluster up and running in GCP. One command to create the cluster, and one to get access to it.
+## Deploying to the cluster
+
+So, as mentioned before, it's really simple getting a cluster up and running in GCP. One command to create the cluster, and one to get access to it. Now, let's deploy something to the cluster. As with all clusters, you can create a deployment yaml and use `kubectl apply -f <file>` to start the cluster. In this case, we will simply use the `kubectl create deployment` command to deploy a simple image by Google. This image will start a new web server within your GKE cluster.
+
+```
+kubectl create deployment hello-server --image=gcr.io/google-samples/hello-app:2.0
+```
+
+Next, let's create a simple service that will expose the deployment using a service of type `LoadBalancer`:
+
+```
+kubectl expose deployment hello-server --type=LoadBalancer --port 8080
+```
+
+This should expose the app on port 8080. Use:
+
+```
+kubectl get svc
+```
+
+to get the list of services, which should include an external IP. You can use this external IP on your web browser to open up the deployed application:
+
+```
+http://[EXTERNAL-IP]:8080
+```
+
+## Deleting the cluster
+
+Since you get charged per every hour your cluster is running (as well as the charges of the compute instances running your worker nodes), let's go ahead and delete the cluster as the final stage of this lab. You can either delete your cluster via the cloud console or use this gcloud command:
+
+```
+gcloud container clusters delete collabnix-webserver1 
+```
+
+And that's it! Your cluster should be now deleted.
