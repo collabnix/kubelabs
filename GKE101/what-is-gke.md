@@ -82,10 +82,16 @@ http://[EXTERNAL-IP]:8080
 
 ## Deleting the cluster
 
-Since you get charged per every hour your cluster is running (as well as the charges of the compute instances running your worker nodes), let's go ahead and delete the cluster as the final stage of this lab. You can either delete your cluster via the cloud console or use this gcloud command:
+The next section of this lesson will go into how you can add service mesh support for GKE. If you are doing that lesson, you may skip deleting the cluster until you have completed the next part. 
+
+Since you get charged per every hour your cluster is running (as well as the charges of the compute instances running your worker nodes), its best that you delete the cluster as the final stage of the lab. You can either delete your cluster via the cloud console or use this gcloud command:
 
 ```
 gcloud container clusters delete collabnix-webserver1 
 ```
 
 And that's it! Your cluster should be now deleted.
+
+Now, let's move on to integrating a service mesh to your cluster.
+
+[Next: GKE Service Mesh](gke-service-mesh.md)

@@ -1,0 +1,7 @@
+# GKE Service Mesh
+
+Similar to other cloud Kubernetes providers, GKE also provides support for service meshes. For a quick refresher on what service meshes are, refer to the [service meshes](../ServiceMesh101/what-are-service-meshes.md) section. If you also want to get an insight into how service meshes are supported on Azure, that's is [also convered](../AKS101/aks-service-mesh.md).
+
+This lesson will also assume you know what Istio is. If you would like to read further on the subject, please refer to the [Istio section](../ServiceMesh101/what-is-istio.md). The reason we would be looking at Istio is that we will be talking about the [Anthos Service Mesh](https://cloud.google.com/service-mesh/docs/overview), which is powered by Istio. Anthos also has full support on GCP, making it the easiest service mesh to set up on your GKE cluster.
+
+The Anthos service mesh provides all the usual features you get from a service mesh, such as managing cluster traffic. This includes the ability to load balance services, perform blue-green deployments, and more. 
