@@ -92,6 +92,6 @@ gcloud container clusters delete collabnix-webserver1
 
 And that's it! Your cluster should be now deleted.
 
-Now, let's move on to integrating a service mesh to your cluster.
+As you saw, it's not too difficult to get a GKE cluster up and running. But if you thought that this was the ultimate level of containerized simplicity Google could offer, you would be wrong. For the next lesson, let's take a deep dive into Cloud Run.
 
-[Next: GKE Service Mesh](gke-service-mesh.md)
+[Next: Cloud Run](cloud-run.md)
