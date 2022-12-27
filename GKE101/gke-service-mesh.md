@@ -12,4 +12,6 @@ It's important to note that while Anthos works well with GKE, it is not limited 
 
 Additionally, since Anthos gets applied across your entire infrastructure, you get management over multiple GKE clusters, which is really useful if you are in a large organization running multiple Kubernetes clusters. Anthos also provides a service mesh dashboard that gives you a complete overview of all the services in your mesh (your whole infrastructure). 
 
-Another interesting version of Anthos is Cloud Run for Anthos.
+We've already spoken about Cloud Run and the benefits it can have over an ordinary Kubernetes cluster. Anthos allows you to get even more flexibility, as well as the functionality of a full-service mesh within your cloud run instance, with Anthos cloud run. You can test deploy their pre-built cloud run app with Anthos if you want to learn more by following this [tutorial](https://cloud.google.com/anthos/run/docs/deploy-application).
+
+Now that you have a good idea of what Anthos is, and what it is capable of, you can follow a hands-on lab to familiarize yourself with Anthos with a [lab provided by Google](https://console.cloud.google.com/marketplace/details/click-to-deploy-images/anthos-sample-deployment). This lab will take you through doing a sample deployment on GCP which will give you practical experience of using Anthos.

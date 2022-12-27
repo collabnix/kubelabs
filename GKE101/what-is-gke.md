@@ -82,15 +82,13 @@ http://[EXTERNAL-IP]:8080
 
 ## Deleting the cluster
 
-The next section of this lesson will go into how you can add service mesh support for GKE. If you are doing that lesson, you may skip deleting the cluster until you have completed the next part. 
-
 Since you get charged per every hour your cluster is running (as well as the charges of the compute instances running your worker nodes), its best that you delete the cluster as the final stage of the lab. You can either delete your cluster via the cloud console or use this gcloud command:
 
 ```
 gcloud container clusters delete collabnix-webserver1 
 ```
 
-And that's it! Your cluster should be now deleted.
+And that's it! Your cluster should be now deleted. While you may need a cluster for future sections of the lesson, you don't need to keep it running uneccssarily since you can provision a new cluster with just a single command.
 
 As you saw, it's not too difficult to get a GKE cluster up and running. But if you thought that this was the ultimate level of containerized simplicity Google could offer, you would be wrong. For the next lesson, let's take a deep dive into Cloud Run.
 
