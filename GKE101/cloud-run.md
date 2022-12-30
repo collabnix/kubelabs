@@ -8,6 +8,8 @@ This is where Google Cloud Run comes in. Cloud run is a service that handles you
 
 From your end, using cloud run is quite simple. You first need to take the container that you want to run, and push it to gcr. You then need to deploy the image to cloud run. And that's it! A simple two step process to get your container up and running in Cloud Run. This is the same number of steps it took you to start a GKE cluster, except with Cloud Run you don't have to manage a cluster after you set it up.
 
+Now let's go ahead with a Cloud Run lab. You can do the lab using the gcloud SDK if you have it installed on your machine, or using the cloud shell.
+
 Cloud run is a cloud service similar to other services GCP makes available. Therefore, you need to first enable the Cloud Run API. You could do this using the GCP console, or using the CLI/SDK:
 
 ```
@@ -20,8 +22,75 @@ As with the GKE clusters, you need to set a compute region where your resources 
 gcloud config set compute/region us-central1
 ```
 
-You then need to 
+You then need to take your Docker image and push it. You can either use the gcloud SDK on your local machine to push an image that you have created or create a new image on Google cloud using cloud shell. If you are using cloud shell, a simple NodeJs application would do. Open up cloud shell and paste in the following commands.
 
+Create a directory for your new project:
+
+```
+mkdir helloworld && cd helloworld
+```
+
+Create a NodeJS application:
+
+```
+echo '{
+  "name": "helloworld",
+  "description": "Simple hello world sample in Node",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Google LLC",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}' > package.json
+```
+
+```
+echo "const express = require('express');
+const app = express();
+const port = process.env.PORT || 8080;
+app.get('/', (req, res) => {
+  const name = process.env.NAME || 'World';
+  res.send('Hello ${name}!');
+});
+app.listen(port, () => {
+  console.log('helloworld: listening on port ${port}');
+});" > index.js
+```
+
+Create a Dockerfile that will be used to make the image:
+
+```
+echo '
+FROM node:12-slim
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install --only=production
+COPY . ./
+CMD [ "npm", "start" ]' > Dockerfile
+```
+
+Now you need to build the image. However, you don't have to do this manually as gcloud offers a single-line command to get the application ready for Cloud Run. You need to get the name of your Google Cloud project, and use it to run the below command on the cloud shell:
+
+```
+gcloud builds submit --tag gcr.io/<project-name>/helloworld
+```
+
+You can list the images and verify that the image has been created:
+
+```
+gcloud container images list
+```
+
+You can test this image locally using Docker as you would any normal Docker image. When you are certain that the image is ready for deployment, you can deploy the image to cloud run with:
+
+```
+gcloud run deploy --image gcr.io/<project-name>/helloworld --allow-unauthenticated --region=$LOCATION
+```
 
 
 gcloud container images delete gcr.io/$GOOGLE_CLOUD_PROJECT/helloworld
