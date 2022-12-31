@@ -92,17 +92,11 @@ You can test this image locally using Docker as you would any normal Docker imag
 gcloud run deploy --image gcr.io/<project-name>/helloworld --allow-unauthenticated --region=$LOCATION
 ```
 
+When you run the command, the image you just created will be deoloyed with a log output like this:
 
-gcloud container images delete gcr.io/$GOOGLE_CLOUD_PROJECT/helloworld
-
-625a213ab16a: Pull complete
-098b7ecb0094: Pull complete
-Digest: sha256:bc93ed5e6ae40569caa4b410dac9141e14314f9cc9a756b0cf63152af4ef22e1
-Status: Downloaded newer image for gcr.io/qwiklabs-gcp-00-c9a357e9b43e/helloworld:latest
-e1fd0174ab6b855bd505dcdc225d22b955e68834ff45bdd80fa98cca14c2a15e
-student_03_e8bcf68266cc@cloudshell:~/helloworld (qwiklabs-gcp-00-c9a357e9b43e)$ gcloud run deploy --image gcr.io/$GOOGLE_CLOUD_PROJECT/helloworld --allow-unauthenticated --region=$LOCATION
+```
 Service name (helloworld):
-Deploying container to Cloud Run service [helloworld] in project [qwiklabs-gcp-00-c9a357e9b43e] region [us-central1]
+Deploying container to Cloud Run service [helloworld] in project <project-name> region [us-central1]
 OK Deploying new service... Done.                                                        
   OK Creating Revision... Revision deployment finished. Checking container health.
   OK Routing traffic...
@@ -110,5 +104,28 @@ OK Deploying new service... Done.
 Done.
 Service [helloworld] revision [helloworld-00001-gis] has been deployed and is serving 100 percent of traffic.
 Service URL: https://helloworld-lj5fky4csa-uc.a.run.app
+```
+
+As you can see from above, the container is run and health checks are performed to ensure that the container is working as intended. IAM policies are also automatically set, and traffic starts being immediately routed into your container. All this happens behind the scenes and requires no configuration from you. If the traffic throughput increases, Cloud Run will automatically increase the number of replicas to handle the increase in traffic by itself.
+
+You can also go to the **Navigation Menu >> Cloud Run** to get a graphical overview of your Cloud Run deployment.
+
+### Cleaning up
+
+Cloud Run doesn't utilize any resources when idle, unlike a GKE cluster where you always have multiple compute instances running. However, it's still necessary to clean up Cloud Run since you are storing the container image within GCP and will get charged for it. Use this command to delete the container image:
+
+```
+gcloud container images delete gcr.io/<project-name>/helloworld
+```
+
+Then delete the Cloud Run instance:
+
+```
+gcloud run services delete helloworld --region=us-central1
+```
+
+Alternatively, you could just delete your whole project if there is nothing else on it.
+
+And that's it! Now, we can move on to learning a different way to run applications on GCP using GKE service meshes.
 
 [Next: GKE Service Mesh](gke-service-mesh.md)
