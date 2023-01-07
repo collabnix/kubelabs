@@ -27,6 +27,20 @@ name = [google_compute_network]
 }
 ```
 
-In this case, we are setting the provider to `google`, meaning that this Terraform file can now automate infrastructure across Google cloud services. After that, we declare a network resource that needs to be created when the file is run.
+In this case, we are setting the provider to `google`, meaning that this Terraform file can now automate infrastructure across Google cloud services. After that, we declare a network resource that needs to be created when the file is run. This is the file that is fed into Terraform.
 
-Then it considers what the desired state should look like and creates an execution plan. Finally, it executes the plan. For the plan to be executed, it would have to use providers that allow access to various resources.   
+Terraform then considers what the desired state should look like and creates an execution plan. Finally, it executes the plan. Before the plan is executed, you get a detailed list of all the changes that would happen to your infrastructure so that you can either confirm or deny that the changes need to be applied. For example
+
+```
+Plan: 4 to add, 1 to change, 0 to destroy.
+```
+
+For the plan to be executed, it would have to use providers that allow access to various resources.
+
+## Lab
+
+Before we start, you need to have Terraform installed. Use the [guide here](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) for that. Alternatively, since we are going to be using Terraform with GKE, you could use the Google cloud shell. The shell comes with Terraform (as well as many other tools) pre-installed so there is no need to spend time setting things up. The shell also has an online IDE that you can use if you are not comfortable with CLI editors such as Vim.
+
+First, let's plan out what we are going to build. We will create a simple cluster with 2 worker nodes. The worker nodes (which are essentially VMs) will be of type n1-standard1 while the master node will be managed by GKE.
+
+The first step is to make a directory that will hold all the .tf files used to declare the infrastructure.
