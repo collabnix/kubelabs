@@ -41,6 +41,21 @@ For the plan to be executed, it would have to use providers that allow access to
 
 Before we start, you need to have Terraform installed. Use the [guide here](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) for that. Alternatively, since we are going to be using Terraform with GKE, you could use the Google cloud shell. The shell comes with Terraform (as well as many other tools) pre-installed so there is no need to spend time setting things up. The shell also has an online IDE that you can use if you are not comfortable with CLI editors such as Vim.
 
-First, let's plan out what we are going to build. We will create a simple cluster with 2 worker nodes. The worker nodes (which are essentially VMs) will be of type n1-standard1 while the master node will be managed by GKE.
+First, let's plan out what we are going to build. We will create a simple cluster with 2 worker nodes. The worker nodes (which are essentially VMs) will be of type n1-standard1 while the master node will be managed by GKE. After that, we will configure cluster access and generate a kubeconfig. All this will be contained in a VPC so that it doesn't intrude on the other cloud services you may have running on your account, so a VPC will also have to be set up using Terraform.
 
-The first step is to make a directory that will hold all the .tf files used to declare the infrastructure.
+The first step is to make a directory that will hold all the .tf files used to declare the infrastructure. If you are using the Google cloud shell, you can use the "Open editor" icon in the top right corner to get into the online IDE. Now we can get started. If you have created a GKE cluster before, you already know that it is mandatory to specify a region in which the cluster gets created. So as a first step, create a file called `terraform.tfvars` and copy these two lines into it:
+
+```
+project_id = "<your-project-id>"
+region     = "us-central1"
+```
+
+To get the project id, go to the [cloud console](https://console.cloud.google.com/apis/dashboard) and select "Manage all projects" to list out all the project's names and IDs. Or you can use this command in the cloud shell:
+
+```
+gcloud config get-value project
+```
+
+.tfvars files hold variables for Terraform. While there are multiple ways to pass variables into Terraform, .tfvars files are the simplest. They are especially useful if you have large configuration files that are difficult to read and you have several properties that change often, where you can specify those variables in .tfvars files and change them instead. It is also useful if multiple .tf files use a specific variable in which case that variable can be defined in a .tfvars file. If the value needs updating, you now only need to change one file.
+
+Now let's create our first resource file: the VPC. Name the file `vpc.tf` and paste the contents of [this file](https://github.com/hashicorp/learn-terraform-provision-gke-cluster/blob/main/vpc.tf). Let's take a closer look at this file. You will notice that the variables you declared in the .tfvars file are referenced here at the very top. After the variable references, you have the provider set as "google" where the vars are used.
