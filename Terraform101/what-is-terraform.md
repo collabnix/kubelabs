@@ -58,4 +58,16 @@ gcloud config get-value project
 
 .tfvars files hold variables for Terraform. While there are multiple ways to pass variables into Terraform, .tfvars files are the simplest. They are especially useful if you have large configuration files that are difficult to read and you have several properties that change often, where you can specify those variables in .tfvars files and change them instead. It is also useful if multiple .tf files use a specific variable in which case that variable can be defined in a .tfvars file. If the value needs updating, you now only need to change one file.
 
+The next file you will be creating is the `versions.tf` file. This file holds the definitions of the required versions for the provider as well as Terraform. Place the contents of [this file](https://github.com/hashicorp/learn-terraform-provision-gke-cluster/blob/main/versions.tf) into the `versions.tf` you created.
+
 Now let's create our first resource file: the VPC. Name the file `vpc.tf` and paste the contents of [this file](https://github.com/hashicorp/learn-terraform-provision-gke-cluster/blob/main/vpc.tf). Let's take a closer look at this file. You will notice that the variables you declared in the .tfvars file are referenced here at the very top. After the variable references, you have the provider set as "google" where the vars are used.
+
+Once the basics have been defined, the actual resources get listed. The definition starts with the `resource` keyword followed by the name of the resource within quotes, which is then followed by the resource type. So in this case:
+
+```
+resource "google_compute_network" "vpc"
+```
+
+The resource name is "google_compute_network" and the resource is a "vpc". The resource definition follows where the specifics of the resource are defined within the braces. In the same way, a subnet is also defined.
+
+Finally, we get to the actual GKE cluster definition.
