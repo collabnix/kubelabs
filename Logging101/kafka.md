@@ -28,16 +28,18 @@ Now, what happens if your use case is so specific that there are no existing con
 
 Since Kafka depends on Java, make sure that you first have Java 8 installed.
 
-Now that you are armed with an overall knowledge of Kafka, let's see about setting it up. Depending on your use case, the way you would get started varies, but of course, the first thing is to [download Kafka](https://www.confluent.io/get-started/?product=software). The Confluent version of Kafka is one of the best options since it is well tested, and has plugins such as a REST proxy, connectors, etc... You can also choose to get the [Apache version](https://www.apache.org/dyn/closer.cgi?path=/kafka/3.2.0/kafka_2.13-3.2.0.tgz) instead and the installation instructions are still the same. Once you have the download, simply unzip it somewhere. Inside the bin folder, you will find Kafka-server-start.sh, which is the entry point of the program. Run it with:
+Now that you are armed with an overall knowledge of Kafka, let's see about setting it up. Depending on your use case, the way you would get started varies, but of course, the first thing is to [download Kafka](https://www.confluent.io/get-started/?product=software). The Confluent version of Kafka is one of the best options since it is well tested, and has plugins such as a REST proxy, connectors, etc... You can also choose to get the [Apache version](https://www.apache.org/dyn/closer.cgi?path=/kafka/3.2.0/kafka_2.13-3.2.0.tgz) instead and the installation instructions are still the same. Once you have the download, simply unzip it somewhere. Inside the bin folder, you will find Kafka-server-start.sh, which is the entry point of the program. A full guide on setting up Kafka on Linux systems can be found in a [guide](https://www.digitalocean.com/community/tutorials/how-to-install-apache-kafka-on-ubuntu-20-04) provided by DigitalOcean. It's best to follow it until step 5 of the guide. However, note that the version of Kafka used is slightly outdated, so keep that in mind when running this line:
 
 ```
-$ bin/kafka-server-start.sh config/server.properties
+curl "https://downloads.apache.org/kafka/2.6.3/kafka_2.13-2.6.3.tgz" -o ~/Downloads/kafka.tgz
 ```
+
+Instead of getting kafka version 2.6.3, go to the [Kafka download page](https://kafka.apache.org/downloads) and use the latest version available.
 
 That's all that takes to get a basic Kafka environment up and running. Let's move on to creating topics. As we've discussed, topics are a stream of events and are the most fundamental part of Kafka. You start it with:
 
 ```
-$ bin/kafka-topics.sh --create --topic <topic-name> --bootstrap-server localhost:9092
+bin/kafka-topics.sh --create -bootstrap-server localhost:2181 --replication-factor 1 --partitions 1 --topic collabnix
 ```
 
 This will create a topic with the name you provide. The bootstrap-server option here is where your resource gets its initial data from, and further configuration related to this server can be found in the ```bootstrap.servers``` value of the ```consumer.properties``` file.
@@ -45,7 +47,7 @@ This will create a topic with the name you provide. The bootstrap-server option 
 Now that your topic is up, let's start logging events to the topic. For this, you need to run the producer client that will create a few logs and write them into the topic you specify. The content of these logs can be specified by you:
 
 ```
-$ bin/kafka-console-producer.sh --topic <topic-name> --bootstrap-server localhost:9092
+$ bin/kafka-console-producer.sh --topic collabnix --bootstrap-server localhost:9092
 LoggingLab101 first event
 LoggingLab101 second event
 ```
@@ -53,7 +55,7 @@ LoggingLab101 second event
 You can continue typing in newline separate events and use Ctrl + c to exit out. Now, your topic has events written into it, and it's time to read these events. Do so with the consumer in the same way as you did with the producer:
 
 ```
-$ bin/kafka-console-consumer.sh --topic quickstart-events --from-beginning --bootstrap-server localhost:9092
+$ bin/kafka-console-consumer.sh --topic collabnix --from-beginning --bootstrap-server localhost:9092
 ```
 
 Once you have verified that Kafka is working well, it's time to start using Kafka connect. The file you are looking for here is called ```connect-file-<version>.jar```, and this file needs to be added to the ```plugin.path``` variable within the ```config/connect-standalone.properties``` file. If this variable does not exist, create it:
