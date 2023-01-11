@@ -70,4 +70,14 @@ resource "google_compute_network" "vpc"
 
 The resource name is "google_compute_network" and the resource is a "vpc". The resource definition follows where the specifics of the resource are defined within the braces. In the same way, a subnet is also defined.
 
-Finally, we get to the actual GKE cluster definition.
+Finally, we get to the actual GKE cluster definition. For this, create a file called `gke.tf` and paste the contents of [this file](https://github.com/hashicorp/learn-terraform-provision-gke-cluster/blob/main/gke.tf). If we look at the configuration file from the top we can see that it is largely similar to the vpc configuration file. To start with, the GKE credentials are defined. For the moment, leave them as they are. Next, the number of worker nodes is defined which is 2 in this case. Afterward, the primary resources are declared. First is the cluster itself with the cluster name, region, and other information defined.
+
+Since the worker nodes of the cluster are going to be made up of compute instances, we need to specify the information about these resources such as the machine type and region. This is done in the node pool configuration that comes below the cluster configuration.
+
+Now that all the configuration files are in place, it's time to start running Terraform. For starters, run:
+
+```
+terraform init
+```
+
+Remember that you specified the provider as "google". Now that you used the init command, the provider will get downloaded. Then the values you provided in the .tfvars file will be used to initialize the provider. You should be able to see a bunch of logs output in the CLI. Once Terraform has been initialized, it's time to apply the changes. If you have been using your GCP account to create clusters in the past, then you can move ahead to the next step. If this is the first time you are doing this with GCP, you need to go into the GCP console and enable the Kubernetes and Computer engine APIs.
