@@ -10,6 +10,10 @@ A topic is simply an ordered list of events. Unlike database records, logs are u
 
 Topics aren't static and can be considered to be a stream of data. This means that topics are being expanded as new events get added in. If you consider a large system, there may be hundreds of such topics that maintain logs for all sorts of events in real-time. I think you can already see how real-time data being appended into a continuous stream can be a gold mine for data scientists or engineers looking to perform analysis and gain insights from the data. So, this naturally means that entire services can be introduced simply to process or simply to visualize and display this data.
 
+## Kafka brokers
+
+Kafka brokers can be likened to worker nodes in a Kubernetes cluster. Each broker is a single Kafka server, and the number of brokers can be scaled up infinitely depending on the amount of data that needs to be streamed. All these brokers together are called a Kafka cluster. While this architecture looks a lot like the Kubernetes architecture, there is one major difference. In a Kubernetes cluster, the client would interact with the Kube API in the master node, which would then get the scheduler to schedule pods. In the case of a cluster, there is no master node, and the client may contact any of the brokers directly. Each broker contains information about all the other brokers and is able to act as an intermediary for the client. Due to this, the brokers are also known as bootstrap servers, which is a command you will be seeing used a lot later in this lesson.
+
 ## Kafka Connect
 
 While Kafka was initially released in 2011, it really started gaining popularity in recent years. This means that many large businesses which already had large quantities of data and processes on how the data was handled would have a hard time switching to Kafka. Additionally, some parts of the system may never be converted to Kafka at all. Kafka connect exists to support these kinds of situations.
@@ -39,15 +43,21 @@ Instead of getting kafka version 2.6.3, go to the [Kafka download page](https://
 That's all that takes to get a basic Kafka environment up and running. Let's move on to creating topics. As we've discussed, topics are a stream of events and are the most fundamental part of Kafka. You start it with:
 
 ```
-bin/kafka-topics.sh --create -bootstrap-server localhost:2181 --replication-factor 1 --partitions 1 --topic collabnix
+~/kafka/bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic collabnix
 ```
 
-This will create a topic with the name you provide. The bootstrap-server option here is where your resource gets its initial data from, and further configuration related to this server can be found in the ```bootstrap.servers``` value of the ```consumer.properties``` file.
+This will create a topic with the name you provide. You can see the bootstrap-server option being used here. This is used to connect to a broker so that metadata about the other brokers can be pulled. Further configuration related to this server can be found in the ```bootstrap.servers``` value of the ```consumer.properties``` file.
+
+List out the topics and ensure that the topic is created:
+
+```
+~/kafka/bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+```
 
 Now that your topic is up, let's start logging events to the topic. For this, you need to run the producer client that will create a few logs and write them into the topic you specify. The content of these logs can be specified by you:
 
 ```
-$ bin/kafka-console-producer.sh --topic collabnix --bootstrap-server localhost:9092
+~/kafka/bin/kafka-console-producer.sh --topic collabnix --bootstrap-server localhost:9092
 LoggingLab101 first event
 LoggingLab101 second event
 ```
@@ -55,13 +65,22 @@ LoggingLab101 second event
 You can continue typing in newline separate events and use Ctrl + c to exit out. Now, your topic has events written into it, and it's time to read these events. Do so with the consumer in the same way as you did with the producer:
 
 ```
-$ bin/kafka-console-consumer.sh --topic collabnix --from-beginning --bootstrap-server localhost:9092
+~/kafka/bin/kafka-console-consumer.sh --topic collabnix --from-beginning --bootstrap-server localhost:9092
 ```
+
+You should see the output:
+
+```
+>LoggingLab101 first event
+>LoggingLab101 second event
+```
+
+This output is a continous output, and will keep looking for messages produced. To test this out, open a new terminal, log into the Kafka user, and run the producer command again. Everything you enter here will be reflected in the consumer output.
 
 Once you have verified that Kafka is working well, it's time to start using Kafka connect. The file you are looking for here is called ```connect-file-<version>.jar```, and this file needs to be added to the ```plugin.path``` variable within the ```config/connect-standalone.properties``` file. If this variable does not exist, create it:
 
 ```
-echo "plugin.path=libs/connect-file-3.2.0.jar"
+echo "plugin.path=libs/connect-file-3.3.1.jar"
 ```
 
 Now, you need some sample data to test with, and you can simply create a text file for this:
@@ -73,13 +92,13 @@ echo -e "foo\nbar" > test.txt
 Next, it's time to fire up the Kafka connectors. We will be using two in this example, and the file you need to execute to start this is the ```bin/connect-standalone.sh```. The arguments that you need to pass to it are the properties file you just modified, the properties file of the data source (input) and the properties file of the data sink (output), both of which are already provided by Kafka:
 
 ```
-bin/connect-standalone.sh config/connect-standalone.properties config/connect-file-source.properties config/connect-file-sink.properties
+~/kafka/bin/connect-standalone.sh config/connect-standalone.properties config/connect-file-source.properties config/connect-file-sink.properties
 ```
 
 The connectors provided by Kafka will now start reading and writing lines via the Kafka topic. In this case, the connection that Kafka connect makes is between the input text file, the Kafka topic, and the output text file. Of course, this is a very basic usage of Kafka connect, and you will most likely be using custom-written connectors that read from all sorts of inputs and are written to any number of outputs, but this small example shows Kafka connectors at work. You can verify that the data was indeed handled properly by looking at the output file (```test.sink.txt```). Since the topic that was used still has the data,  you can also go ahead and run the previous command we used to read data from the topic:
 
 ```
-bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic connect-test --from-beginning
+~/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic connect-test --from-beginning
 ```
 
 Appending a line to the input txt should also show it in the consumer.
