@@ -77,11 +77,13 @@ You should see the output:
 
 This output is a continous output, and will keep looking for messages produced. To test this out, open a new terminal, log into the Kafka user, and run the producer command again. Everything you enter here will be reflected in the consumer output.
 
-Once you have verified that Kafka is working well, it's time to start using Kafka connect. The file you are looking for here is called ```connect-file-<version>.jar```, and this file needs to be added to the ```plugin.path``` variable within the ```config/connect-standalone.properties``` file. If this variable does not exist, create it:
+Once you have verified that Kafka is working well, it's time to start using Kafka connect. The file you are looking for here is called ```connect-file-<version>.jar```, and this file needs to be added to the ```plugin.path``` variable within the ```config/connect-standalone.properties``` file. Open up the `config/connect-standalone.properties` file with any text editor and add the location of the jar, like so:
 
 ```
-echo "plugin.path=libs/connect-file-3.3.1.jar"
+plugin.path=libs/connect-file-3.3.1.jar
 ```
+
+If this variable does not exist, create it.
 
 Now, you need some sample data to test with, and you can simply create a text file for this:
 
@@ -89,10 +91,11 @@ Now, you need some sample data to test with, and you can simply create a text fi
 echo -e "foo\nbar" > test.txt
 ```
 
-Next, it's time to fire up the Kafka connectors. We will be using two in this example, and the file you need to execute to start this is the ```bin/connect-standalone.sh```. The arguments that you need to pass to it are the properties file you just modified, the properties file of the data source (input) and the properties file of the data sink (output), both of which are already provided by Kafka:
+Next, it's time to fire up the Kafka connectors. We will be using two in this example, and the file you need to execute to start this is the ```bin/connect-standalone.sh```. The arguments that you need to pass to it are the properties file you just modified, the properties file of the data source (input) and the properties file of the data sink (output), both of which are already provided by Kafka. Note that you **must** run the command while in the kafka directory so that the relative paths are available:
 
 ```
-~/kafka/bin/connect-standalone.sh ~/kafka/config/connect-standalone.properties ~/kafka/config/connect-file-source.properties ~/kafka/config/connect-file-sink.properties
+cd ~/kafka
+bin/connect-standalone.sh config/connect-standalone.properties config/connect-file-source.properties config/connect-file-sink.properties
 ```
 
 The connectors provided by Kafka will now start reading and writing lines via the Kafka topic. In this case, the connection that Kafka connect makes is between the input text file, the Kafka topic, and the output text file. Of course, this is a very basic usage of Kafka connect, and you will most likely be using custom-written connectors that read from all sorts of inputs and are written to any number of outputs, but this small example shows Kafka connectors at work. You can verify that the data was indeed handled properly by looking at the output file (```test.sink.txt```). Since the topic that was used still has the data,  you can also go ahead and run the previous command we used to read data from the topic:
