@@ -106,7 +106,19 @@ The connectors provided by Kafka will now start reading and writing lines via th
 
 Appending a line to the input txt should also show it in the consumer.
 
-Another topic we briefly touched on was [Kafka streams](https://kafka.apache.org/documentation/streams/), and you can find a [starter example](https://kafka.apache.org/quickstart#quickstart_kafkastreams) provided by Apache that you can look through if you are planning on using this part of Kafka.
+## Kafka Streams
+
+Now that we have explored Kafka topics as well as the consumer-producer model, let's move on to a different concept: [Kafka streams](https://kafka.apache.org/documentation/streams/).
+
+### What is Kafka Streams?
+
+So far, we've looked at how data can be moved in and out of Kafka. You simply use the producer and consumer to read and write data to and from topics. You also saw how to use connectors which are predefined Java classes that help you move logs around specific data sources and sinks without having to spend time writing the code yourself. Moving data around like this is a common practice, but it isn't the only thing Kafka is good for. What if you wanted to transform the data as it passed through?
+
+Imagine you are running a Kubernetes cluster that regularly creates and destroys pods periodically. Every time a pod is created, metadata about that pod is transferred through Kafka. Now imagine you want to separate out the pods that failed the readiness probe. This information would be passed through Kafka, and having a validation within Kafka itself would be the most efficient way to identify these logs and have them sent to a separate topic for further analysis. If you were to do this simple validation by creating your own validation class, you would first have to create consumer and producer objects, subscribe the consumer to the events, start a loop that runs forever and repeatedly validates each log manually, and do all the error handling by yourself.
+
+This is a lot of work but is completely unnecessary thanks to Kafka Streams.
+
+## Teardown Kafka
 
 Now, since you have a Kafka environment up and running along with Kafka connectors, feel free to play around with the system and see how things work. Once you're done, you can tear down the environment by stopping the producer and consumer clients, Kafka broker, and the Zookeeper server (with ```Ctrl + C```). Delete any leftover events with a recursive delete:
 
