@@ -106,6 +106,12 @@ The connectors provided by Kafka will now start reading and writing lines via th
 
 Appending a line to the input txt should also show it in the consumer.
 
+## Kafka partitions
+
+A concept that we now need to touch on is Kafka partitions. Imagine you have a Kubernetes cluster that is continuously growing. You start with 1 worker node and soon, it isn't enough to run all your pods. So you provision a second worker node that starts initializing pods in it. In the same way, if you have only one Kafka broker in your Kafka cluster and it isn't enough to handle the number of logs passing through, you can introduce a second broker that will take on the load. Now that the resource problem has been taken care of, a different problem arises with the size of the topics. Log files can be huge, and there are a large number of these files piling in through to a single topic. However, if a topic is constrained to a single broker, then the topic can never exceed the limits of the broker.
+
+This is where Kafka partitions come in. Topics are allowed to be distributed across multiple brokers while the part of the topic present in a broker is called a partition. These partitions can then be replicated onto other brokers to provide redundancy. 
+
 ## Kafka Streams
 
 Now that we have explored Kafka topics as well as the consumer-producer model, let's move on to a different concept: [Kafka streams](https://kafka.apache.org/documentation/streams/).
@@ -114,9 +120,15 @@ Now that we have explored Kafka topics as well as the consumer-producer model, l
 
 So far, we've looked at how data can be moved in and out of Kafka. You simply use the producer and consumer to read and write data to and from topics. You also saw how to use connectors which are predefined Java classes that help you move logs around specific data sources and sinks without having to spend time writing the code yourself. Moving data around like this is a common practice, but it isn't the only thing Kafka is good for. What if you wanted to transform the data as it passed through?
 
-Imagine you are running a Kubernetes cluster that regularly creates and destroys pods periodically. Every time a pod is created, metadata about that pod is transferred through Kafka. Now imagine you want to separate out the pods that failed the readiness probe. This information would be passed through Kafka, and having a validation within Kafka itself would be the most efficient way to identify these logs and have them sent to a separate topic for further analysis. If you were to do this simple validation by creating your own validation class, you would first have to create consumer and producer objects, subscribe the consumer to the events, start a loop that runs forever and repeatedly validates each log manually, and do all the error handling by yourself.
+Imagine you are running a Kubernetes cluster that regularly creates and destroys pods periodically. Every time a pod is created, metadata about that pod is transferred through Kafka. Now imagine you want to separate out the pods that failed the readiness probe. This information would be passed through Kafka, and having a validation within Kafka itself would be the most efficient way to identify these logs and have them sent to a separate topic for further analysis. If you were to do this simple validation by creating your own validation class, you would first have to create consumer and producer objects, subscribe the consumer to the events, start a loop that runs forever and repeatedly validates each log manually, and do all the error handling by yourself. The resulting class would be about 50 lines long and prone to throwing random errors.
 
-This is a lot of work but is completely unnecessary thanks to Kafka Streams.
+This is a lot of work, but is completely unnecessary thanks to Kafka Streams. Kafka Streams is a Java library that allows you to re-implement the whole thing in a single line statement. A sample of this would be:
+
+```java
+final StreamsBuilder builder = new StreamsBuilder(); // initialize the object
+
+
+```
 
 ## Teardown Kafka
 
