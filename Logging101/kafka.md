@@ -110,7 +110,7 @@ Appending a line to the input txt should also show it in the consumer.
 
 A concept that we now need to touch on is Kafka partitions. Imagine you have a Kubernetes cluster that is continuously growing. You start with 1 worker node and soon, it isn't enough to run all your pods. So you provision a second worker node that starts initializing pods in it. In the same way, if you have only one Kafka broker in your Kafka cluster and it isn't enough to handle the number of logs passing through, you can introduce a second broker that will take on the load. Now that the resource problem has been taken care of, a different problem arises with the size of the topics. Log files can be huge, and there are a large number of these files piling in through to a single topic. However, if a topic is constrained to a single broker, then the topic can never exceed the limits of the broker.
 
-This is where Kafka partitions come in. Topics are allowed to be distributed across multiple brokers while the part of the topic present in a broker is called a partition. These partitions can then be replicated onto other brokers to provide redundancy. 
+This is where partitions come in. Topics are allowed to be distributed across multiple brokers while the part of the topic present in a broker is called a partition. These partitions can then be replicated onto other brokers to provide redundancy. It also means that a single topic can be infinitely large and have as much data flowing in to it from a producer. In the same way, if a consumer wants to read data, it can be read from multiple partitions across different brokers which would significantly improve the read speed.
 
 ## Kafka Streams
 
@@ -122,12 +122,28 @@ So far, we've looked at how data can be moved in and out of Kafka. You simply us
 
 Imagine you are running a Kubernetes cluster that regularly creates and destroys pods periodically. Every time a pod is created, metadata about that pod is transferred through Kafka. Now imagine you want to separate out the pods that failed the readiness probe. This information would be passed through Kafka, and having a validation within Kafka itself would be the most efficient way to identify these logs and have them sent to a separate topic for further analysis. If you were to do this simple validation by creating your own validation class, you would first have to create consumer and producer objects, subscribe the consumer to the events, start a loop that runs forever and repeatedly validates each log manually, and do all the error handling by yourself. The resulting class would be about 50 lines long and prone to throwing random errors.
 
-This is a lot of work, but is completely unnecessary thanks to Kafka Streams. Kafka Streams is a Java library that allows you to re-implement the whole thing in a single line statement. A sample of this would be:
+This is a lot of work, but is completely unnecessary thanks to Kafka Streams. Kafka Streams is a Java library that allows you to re-implement the whole thing in a single line stream statement. This is a more declarative way of doing things where you define what you want done without specifying what needs doing every step of the way.
 
-```java
-final StreamsBuilder builder = new StreamsBuilder(); // initialize the object
+### Kafka Streams lab
 
+Since you already have Kafka running, go ahead an create two new topics. One will be the input topic and the other will be the output topic.
 
+```
+~/kafka/bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic collabnix-streams-input
+
+~/kafka/bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic collabnix-streams-output --config cleanup.policy=compact
+```
+
+Make sure that the topics have been created:
+
+```
+~/kafka/bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+```
+
+You can also replace `--list` with `--describe` to get detailed information about each topic.
+
+```
+~/kafka/bin/kafka-run-class.sh org.apache.kafka.streams.examples.wordcount.WordCountDemo
 ```
 
 ## Teardown Kafka
