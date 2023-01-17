@@ -142,9 +142,32 @@ Make sure that the topics have been created:
 
 You can also replace `--list` with `--describe` to get detailed information about each topic.
 
+Now, start the word count application. This is an application created by Apache to demo the Streams library. It reads any data that you pass in from the producer, processes it so that the count of each word passed in is calculated, and outputs the results to the consumer. Start it with:
+
 ```
 ~/kafka/bin/kafka-run-class.sh org.apache.kafka.streams.examples.wordcount.WordCountDemo
 ```
+
+Open a new terminal instance and start the producer and specify the topic that you created earlier with:
+
+```
+bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic collabnix-streams-input
+```
+
+Open another terminal instance and start the consumer:
+
+```
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 \
+    --topic collabnix-streams-output \
+    --from-beginning \
+    --formatter kafka.tools.DefaultMessageFormatter \
+    --property print.key=true \
+    --property print.value=true \
+    --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer \
+    --property value.deserializer=org.apache.kafka.common.serialization.LongDeserializer
+```
+
+Now, go back to the producer terminal and type in a test sentence. If everything has been set up correctly, you should be able to see the words grouped into occurrences printed out in the consumer terminal. Earlier in the lesson, we did the same thing with the consumer and producer but didn't run a class with the streams library. This meant that anything entered into the producer was output as is in the consumer. Now that a class has been introduced in the middle with the Streams library, the input gets transformed before being output.
 
 ## Teardown Kafka
 
