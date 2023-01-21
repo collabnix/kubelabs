@@ -259,6 +259,11 @@
 - [Jenkins on Kubernetes](./Jenkins101/jenkins-on-kubernetes.md)
 - [Using Jenkins on Kubernetes](./Jenkins101/jenkins-ci.md)
 
+## Kubernetes with Terraform
+- [What is Terraform](./Terraform101/what-is-terraform.md)
+- [Terraform providers](./Terraform101/terraform-providers.md)
+- [Terraform lab](./Terraform101/terraform-lab.md)
+
 ## Kubernetes Cheat Sheet
 - [Kubernetes Cheat Sheet](./Kubernetes%20Cheat%20Sheet/Kubernetes%20Cheat%20Sheet.md)
 
