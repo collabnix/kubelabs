@@ -1,0 +1,1 @@
+Before we get into running Kafka on Kubernetes, you need to have some idea about Kubernetes operators. Head over to the [operators topic](../StatefulSets101/operators.md) to get a quick refresher on the concept.
