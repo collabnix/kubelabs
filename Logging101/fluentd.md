@@ -377,6 +377,6 @@ $ mongo
 
 And that's it! We have successfully used Node + Mongo with FluentD.
 
-So, to summarize, fluentd is a centralized logging layer that takes in data from an input source and produces a different, more standard form of data to an output source. Now let's look at alternatives that aren't necessarily alternatives: Apache Kafka. Kafka is an important part of any serious logging architecture, and we will take a look at that, as well as how you can get Kafka and fluentd to live together, in the next section.
+So, to summarize, fluentd is a centralized logging layer that takes in data from an input source and produces a different, more standard form of data to an output source. Now let's look at an alternative: Fluent Bit.
 
-[Next: Apache Kafka](./kafka.md)
+[Next: Fluent Bit](./fluentdbit.md)
