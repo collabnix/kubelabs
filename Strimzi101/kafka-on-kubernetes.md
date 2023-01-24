@@ -8,6 +8,30 @@ All these operators have the configuration needed to run a Kafka cluster and all
 
 ## Lab
 
-```yaml
-apiVersion: kafka.strizmi.io/v1beta1
+First of all, you need a Kubernetes cluster up and running. A simple [Minikube](https://minikube.sigs.k8s.io/docs/) cluster should work fine. Note that the cluster should have at least 4GB of memory. If you are using Minikube, start Minikube with this command:
+
 ```
+minikube start --memory=4096
+```
+
+Now, you can go ahead and start the deployment. You can use Helm to install the Strimzi chart which will install all the required operators. Start by adding the Helm repo:
+
+```
+helm repo add strimzi https://strimzi.io/charts/
+```
+
+Then install the chart:
+
+```
+helm install strimzi-release strimzi/strimzi-kafka-operator
+```
+
+This will start deploying the resources needed to get a Kafka cluster running on your Kubernetes cluster. Setting up all the resources will take time. Keep track of the deployment with:
+
+```
+kubectl get po --watch
+```
+
+There should be a pod named `strimzi-cluster-operator` which needs to get into a ready state for you to continue. Now, you need to create a Kubernetes resource file specifying what kind of cluster you want. The resource is of a custom `kind`, which is `Kafka`. You can also specify the name, version, replicas, storage type (ephemeral or persistent), etc... Luckily, Strimzi has provided us with a [number of sample yamls](https://github.com/strimzi/strimzi-kafka-operator/tree/main/examples/kafka) that we can use without having to set up each resource manually. In our case, we will be creating a persistent cluster with 3 replicas. You can get the confirmation for that [here](https://strimzi.io/examples/latest/kafka/kafka-persistent.yaml). You can also compare it to the ephermeral example they have provided [here](https://strimzi.io/examples/latest/kafka/kafka-persistent.yaml). You will notice that there is a persistent volume claim in the persistent version that is supposed to help retain data.
+
+Once you deploy the resource, it should start creating pods. Use the watch command again to keep track of the pods that get created and wait until they are all ready.
