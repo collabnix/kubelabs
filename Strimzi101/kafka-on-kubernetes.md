@@ -35,3 +35,21 @@ kubectl get po --watch
 There should be a pod named `strimzi-cluster-operator` which needs to get into a ready state for you to continue. Now, you need to create a Kubernetes resource file specifying what kind of cluster you want. The resource is of a custom `kind`, which is `Kafka`. You can also specify the name, version, replicas, storage type (ephemeral or persistent), etc... Luckily, Strimzi has provided us with a [number of sample yamls](https://github.com/strimzi/strimzi-kafka-operator/tree/main/examples/kafka) that we can use without having to set up each resource manually. In our case, we will be creating a persistent cluster with 3 replicas. You can get the confirmation for that [here](https://strimzi.io/examples/latest/kafka/kafka-persistent.yaml). You can also compare it to the ephermeral example they have provided [here](https://strimzi.io/examples/latest/kafka/kafka-persistent.yaml). You will notice that there is a persistent volume claim in the persistent version that is supposed to help retain data.
 
 Once you deploy the resource, it should start creating pods. Use the watch command again to keep track of the pods that get created and wait until they are all ready.
+
+And that's essentially it! You now have a fully functional Kafka cluster running within Kubernetes. Let's test it out.
+
+We will be doing the same thing we did with Kafka running on our local machine: start a producer, produce logs, and view them in the consumer. Open a new terminal window and start the producer with:
+
+```
+kubectl run kafka-producer -ti --image=quay.io/strimzi/kafka:0.32.0-kafka-3.3.1 --rm=true --restart=Never -- bin/kafka-console-producer.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --topic my-topic
+```
+
+You will note that the command looks similar to a command that is used to start the producer in a local machine. You need to specify the bootstrap-server by setting the broker and the port followed by the topic you will be producing to. Additionally, a Docker image containing Kafka 3.3.1 is used which contains a full instance of Kafka including the scripts used to run the producer and consumer.
+
+Now, let's run the consumer in the same way you ran the producer. Note that you need to run this in a new terminal window.
+
+```
+kubectl run kafka-consumer -ti --image=quay.io/strimzi/kafka:0.32.0-kafka-3.3.1 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --topic my-topic --from-beginning
+```
+
+Type something in the producer window, and you should see it appear in the consumer.
