@@ -193,7 +193,7 @@
 
 ## Logging101
 
-- [Logging introduction](./Logging101/logging-intro.md)
+ - [Logging introduction](./Logging101/logging-intro.md)
  - [Elasticsearch](./Logging101/what-is-elasticsearch.md)
  - [Fluentd](./Logging101/fluentd.md)
  - [Fluent Bit](./Logging101/fluentdbit.md)
@@ -262,6 +262,10 @@
 - [What is Terraform](./Terraform101/what-is-terraform.md)
 - [Terraform providers](./Terraform101/terraform-providers.md)
 - [Terraform lab](./Terraform101/terraform-lab.md)
+
+## Strimzi (Kafka on Kubernetes)
+ - [What is Kafka](./Strimzi101/kafka.md)
+ - [Running Kafka on Kubernetes](./Strimzi101/kafka-on-kubernetes.md)
 
 ## Kubernetes Cheat Sheet
 - [Kubernetes Cheat Sheet](./Kubernetes%20Cheat%20Sheet/Kubernetes%20Cheat%20Sheet.md)
