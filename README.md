@@ -258,11 +258,6 @@
 - [Jenkins on Kubernetes](./Jenkins101/jenkins-on-kubernetes.md)
 - [Using Jenkins on Kubernetes](./Jenkins101/jenkins-ci.md)
 
-## Kubernetes with Terraform
-- [What is Terraform](./Terraform101/what-is-terraform.md)
-- [Terraform providers](./Terraform101/terraform-providers.md)
-- [Terraform lab](./Terraform101/terraform-lab.md)
-
 ## Strimzi (Kafka on Kubernetes)
  - [What is Kafka](./Strimzi101/kafka.md)
  - [Running Kafka on Kubernetes](./Strimzi101/kafka-on-kubernetes.md)
