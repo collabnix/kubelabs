@@ -32,7 +32,7 @@ If the repo shows up properly, then you have successfully added Fluent as a repo
 helm upgrade --install fluent-bit fluent/fluent-bit
 ```
 
-As with Fluentd and Kafka, this will start Fluent Bit as a DaemonSet with default values. You can change them by changing the [values.yaml](https://github.com/fluent/helm-charts/blob/master/charts/fluent-bit/values.yaml) in your local repo. The default file consists of a resource of the type DaemonSet that runs an instance of busybox and requests RBAC support. It also starts a service of type ClusterIp on node 2020. There is also a number of options commented out in the yaml related to Network policies, service monitors, Prometheus, dashboards, ingresses, scaling, pod affinities, and so much more. As such, this file is a great starting point for anyone looking to set up Fluent Bit. 
+As with Fluentd, this will start Fluent Bit as a DaemonSet with default values. You can change them by changing the [values.yaml](https://github.com/fluent/helm-charts/blob/master/charts/fluent-bit/values.yaml) in your local repo. The default file consists of a resource of the type DaemonSet that runs an instance of busybox and requests RBAC support. It also starts a service of type ClusterIp on node 2020. There is also a number of options commented out in the yaml related to Network policies, service monitors, Prometheus, dashboards, ingresses, scaling, pod affinities, and so much more. As such, this file is a great starting point for anyone looking to set up Fluent Bit. 
 
 Towards the bottom, you will get the actual Fluent Bit configuration. This section defines the inputs:
 
@@ -77,3 +77,5 @@ This is the Container Runtime Interface parser. By default, Fluent Bit expects t
 And finishes with information regarding the volume mounts for the DaemonSet.
 
 To sum up, Fluent Bit is basically fluentd, but with a much smaller footprint and file size. It runs in a more lightweight manner and consumes resources which makes it an ideal log processor for systems that have few resources. There are also a few unique features that Fluent Bit has that fluentd doesn't, and vice versa.
+
+If you haven't had enough about logging with Kuberetnes, jump into the [Kafka section](../Strimzi101/kafka.md) of this course, which provides a basic introduction to Kafka and details how to use [Strizmi](https://strimzi.io) to get a Kafka cluster running within your Kubernetes cluster.

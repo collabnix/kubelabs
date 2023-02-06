@@ -193,10 +193,9 @@
 
 ## Logging101
 
-- [Logging introduction](./Logging101/logging-intro.md)
+ - [Logging introduction](./Logging101/logging-intro.md)
  - [Elasticsearch](./Logging101/what-is-elasticsearch.md)
  - [Fluentd](./Logging101/fluentd.md)
- - [Kafka](./Logging101/kafka.md)
  - [Fluent Bit](./Logging101/fluentdbit.md)
 
 ## Helm101
@@ -258,6 +257,10 @@
 ## Kubernetes with Jenkins
 - [Jenkins on Kubernetes](./Jenkins101/jenkins-on-kubernetes.md)
 - [Using Jenkins on Kubernetes](./Jenkins101/jenkins-ci.md)
+
+## Strimzi (Kafka on Kubernetes)
+ - [What is Kafka](./Strimzi101/kafka.md)
+ - [Running Kafka on Kubernetes](./Strimzi101/kafka-on-kubernetes.md)
 
 ## Kubernetes Cheat Sheet
 - [Kubernetes Cheat Sheet](./Kubernetes%20Cheat%20Sheet/Kubernetes%20Cheat%20Sheet.md)

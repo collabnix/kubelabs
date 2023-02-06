@@ -179,10 +179,10 @@ rm -rf /tmp/kafka-logs /tmp/zookeeper
 
 ## Kafka and fluentd
 
-At this point, you might be thinking that Kafka can now replace fluentd. Indeed, you can choose between either fluentd or Kafka depending on what best suits your test case. However, this doesn't necessarily need to be the case. You can run both of them together with no issues. Case in point, if you were to look at fluentd's [list of available input plugins](https://www.fluentd.org/datasources), you would be able to see Kafka listed there. This applies to the [available output plugins](https://www.fluentd.org/dataoutputs) as well. In the same way, there exists [Kafka connect plugins for fluentd](https://github.com/fluent/kafka-connect-fluentd). What this means is that the two services can act as data sources/data sink for each other. But why would you want to do that at all? 
+If you've gone through our [lesson about fluentd](../Logging101/fluentd.md), you might be thinking that Kafka can now replace fluentd. Indeed, you can choose between either fluentd or Kafka depending on what best suits your test case. However, this doesn't necessarily need to be the case. You can run both of them together with no issues. Case in point, if you were to look at fluentd's [list of available input plugins](https://www.fluentd.org/datasources), you would be able to see Kafka listed there. This applies to the [available output plugins](https://www.fluentd.org/dataoutputs) as well. In the same way, there exists [Kafka connect plugins for fluentd](https://github.com/fluent/kafka-connect-fluentd). What this means is that the two services can act as data sources/data sink for each other. But why would you want to do that at all? 
 
 Kafka has a publisher-subscriber model, where Kafka sits on each host and provides a distributed logging system. This ensures that logs will be produced and maintained regardless of issues such as inter-resource connectivity. Fluentd on the other hand is a centralized logging system that can collect all data produced by individual Kafka topics, as well as any other data sources to create a unified logging layer. The basic idea here is that the two services work in two different places, and can be perfectly integrated with each other to provide a very comprehensive logging system.
 
-That just about wraps up this lesson on Kafka.
+Now that you have a good idea on what Kakfa is, let's move on to setting up a Kafka cluster in Kubernetes.
 
-[Next: Fluent Bit](./fluentdbit.md)
+[Next: Kafka on Kubernetes](./kafka-on-kubernetes.md)
