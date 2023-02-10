@@ -27,7 +27,6 @@ sh bootstrap.sh
 
 # What does this script do?
 
-
 The first line `kubeadm init` initializes a Kubernetes control-plane node and execute the below phases:
 
 ```
