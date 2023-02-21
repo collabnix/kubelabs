@@ -16,8 +16,9 @@ git clone https://github.com/collabnix/kubelabs
 ```
 
 ## Bootstrapping the First Node Cluster
-### Change mode executable for bootstrap.sh
+### Change to the kubelabs directory and change mode executable for bootstrap.sh
 ```
+cd kubelabs
 chmod a+x bootstrap.sh
 ```
 ```
