@@ -80,6 +80,12 @@ terraform init
 terraform apply
 ```
 
-Otherwise you can start the pod manually.
+Otherwise you can start the container manually. Use:
+
+```
+docker pull ccdockerrgu/pyproducer:1.0
+```
+
+This will pull and start the producer which will send messages to the consumer. The code for the Python producer can be found in [this file](https://github.com/Phantom-Intruder/infrastructure-configs/blob/master/terraform/kafka/image/kafka-python.py).
 
 What you've seen so far is the most basic implementation of Strimzi. You could just as easily use this in a production cluster. If you have a huge multi-node cluster, you could use taints and tolerations to run Kafka on dedicated nodes. If you are having a cluster in the cloud with a different node in different regions, you can spread your brokers across those regions for better fault tolerance. If you need to expose Kafka, you could easily do it in a secure manner. All of this is fully supported out of the box with Strimzi.
