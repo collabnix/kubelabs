@@ -8,6 +8,11 @@ Networking in Kubernetes is a central part of Kubernetes, but it can be challeng
 	• External-to-Service communications: this is covered by services.
 	• Pod-to-Pod communications: this is the primary focus of this lab.
 
+## The problem with Kubernetes networking
+
+Kubernetes deals with highly distributed systems, where each pod is an isolated unit with its own IP address that needs to communicate with other pods, meaning that its almost as if there were two separate machines trying to talk to each other. However, unlike a conventional context, the number of pods in a cluster can scale at will leading to an unmanagable number of pods. Additionaly, you can have multiple worker nodes one servers located across the world and require pods in each of these nodes to communicate with each other. Trying to use dynamic port allocation to fix the problem would only increase the complexity of the system, meaning that a better solution has to be used. Finally, Kubernetes is supposed to handle everything related to its network by itself.
+
+For example, you could start two nginx pods within the same cluster and have them sucessfully ping each other without having to do any network configuration yourself. You can even reach the containers within those pods without doing any port mapping at all. If you have multiple containers running on the same pod, they can talk to each other via localhost (since they share IP and MAC addresses). If you want ports in your pods being accessed from the outside world, you can easily set up a service such as NodePort or LoadBalancer. All of this is part of the explicitly designed Kubernetes networking model. Let's start by taking a look at  the fundamental rules that are used to define this model.
 
 ## Kubernetes Networking Rules
 
@@ -44,7 +49,26 @@ Kubernetes supports both networking models, so you can base your model of choice
 
 A CNI is simply a link between the container runtime (like Docker or rkt) and the network plugin. The network plugin is nothing but the executable that handles the actual connection of the container to or from the network, according to a set of rules defined by the CNI. So, to put it simply, a CNI is a set of rules and Go libraries that aid in container/network-plugin integration.
 
-All of the CNIs can be deployed by simply running a pod or a daemonset that launches and manages their daemons. Let’s have a look now at the most well-known Kubernetes networking solutions
+All of the CNIs can be deployed by simply running a pod or a daemonset that launches and manages their daemons. What's interesting is that CNIs aren't exclusive to Kubernetes, or even bound to Kubernetes in anyway. There are multiple CNIs available that are part of the CNI project, and these are standalone applications that work across various runtimes. CNI configuration formats are created in json, and look like this:
+
+```json
+{
+	"name": "cniname",
+	"type": "bridge",
+	"bridge": "containernet",
+	"isDefaultGateway": true,
+	"forceAddress": false,
+	"ipam": {
+		"type": "host-local",
+		"subnet": "10.10.0.0/16"
+	}
+}
+```
+
+While the above configuration may seen unfamiliar to you, it is simply a CNI configuration that creates a bridged networked for your pods. So while you may not have seen this configuration before, you most certainly have used it.
+
+
+Let’s have a look now at the most well-known Kubernetes networking solutions
 
 
 ### AWS VPC CNI for Kubernetes
