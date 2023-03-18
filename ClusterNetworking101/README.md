@@ -67,8 +67,11 @@ All of the CNIs can be deployed by simply running a pod or a daemonset that laun
 
 While the above configuration may seen unfamiliar to you, it is simply a CNI configuration that creates a bridged networked for your pods. So while you may not have seen this configuration before, you most certainly have used it.
 
+The network types which are also referred to as interface plugins include bridge, loopback, vlan, macvlan, ipvlan, and so on. If you have looked at Docker networking before, you will notice that these match the network types avilable with Docker. You can find more information about them in the [offical Docker doucmentation](https://docs.docker.com/network/#network-drivers).
 
-Let’s have a look now at the most well-known Kubernetes networking solutions
+The `IPAM` section defines how the ip addresses are assigned to pods. `host-local` IPAM allocates IPv4 and IPv6 addresses out of a specified address range defined by the subnet, while setting the type type to DHCP will set the IP address dynamically based on what the DHCP server assignes. You could also set the type to static, which would allow you to specify a single IP address that won't change.
+
+Let’s have a look now at the most well-known Kubernetes networking solutions.
 
 
 ### AWS VPC CNI for Kubernetes
