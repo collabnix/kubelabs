@@ -262,6 +262,9 @@
  - [What is Kafka](./Strimzi101/kafka.md)
  - [Running Kafka on Kubernetes](./Strimzi101/kafka-on-kubernetes.md)
 
+## Java client for Kubernetes
+ - [Introduction](./JavaClient101/intro.md)
+
 ## Kubernetes Cheat Sheet
 - [Kubernetes Cheat Sheet](./Kubernetes%20Cheat%20Sheet/Kubernetes%20Cheat%20Sheet.md)
 
