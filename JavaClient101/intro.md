@@ -35,3 +35,22 @@ To start off, you need to set up the Kubernetes library you just built. To set u
     </dependency>
 </dependencies>
 ```
+
+Run:
+
+```
+mvn clean install
+```
+
+This will set up the new Kubernetes dependency, which means that you are now all set up to go. What we want to do first is to create a deployment and a service. There are two ways to achieve this. The Java client is powerful enough that you can create both resources without having to touch an external yaml file by declaring everything you would declare in the Yaml from within the Java code. And example of this can be found [here](https://github.com/kubernetes-client/java/blob/master/examples/examples-release-15/src/main/java/io/kubernetes/client/examples/DeployRolloutRestartExample.java) where a deployment is created, restarted and rolled out from within the code itself. However, understanding and maintaining such syntax can become tedious, which is why the client also allows you to use a pre-existing yaml files and use it to deploy the code from within the Java client. This is done by creating a File object from the yaml file and passing it into the relevant method:
+
+```java
+File file = new File("configs/service.yaml");
+V1Service yamlSvc = (V1Service) Yaml.load(file);
+
+CoreV1Api api = new CoreV1Api();
+V1Service createResult =
+        api.createNamespacedService("default", yamlSvc, null, null, null, null);
+```
+
+Its also possible to run other types of commands against the cluster. Examples of what can be done along with code examples can be found in the [examples page](https://github.com/kubernetes-client/java/wiki/3.-Code-Examples).
