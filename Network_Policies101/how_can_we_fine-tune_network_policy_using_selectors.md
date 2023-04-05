@@ -47,3 +47,7 @@ ipBlock can also be used to block specific IPs from an allowed range. This can b
       except:
       - 182.213.50.43/24
 ```
+
+Now that we took a look at allowing traffic into pods, let's move to looking at denying traffic.
+
+[Next: Denying ingress traffic](./Deny_ingress_traffic_that_has_no_rules.md)
