@@ -1,8 +1,8 @@
 # Deny Ingress Traffic That Has No Rules
 
-An effective network security rule starts with denying all traffic by default unless explicitly allowed. This is how firewalls work. By default, Kubernetes regards any pod that is not selected by a NetworkPolicy as “non-isolated”. This means all ingress and egress traffic is allowed. So, a good foundation is to deny all traffic by default unless a NetworkPolicy rule defines which connections should pass. A NetworkPolicy definition for denying all ingress traffic may look like [this](./default-deny-ingress.yaml). You'll notice that it looks like a regular network policy, except without most parts of the policy definition.
+An effective network security rule starts with denying all traffic by default unless explicitly allowed. This is how firewalls work. By default, Kubernetes regards any pod that is not selected by a NetworkPolicy as “non-isolated”. This means all ingress and egress traffic is allowed. So, a good foundation is to deny all traffic by default unless a NetworkPolicy rule defines which connections should pass. A NetworkPolicy definition for denying all ingress traffic may look like this:
 
-## Lab
+## Steps
 ```
 git clone https://github.com/collabnix/kubelabs.git
 cd kubelabs/Network_Policies101/
@@ -67,7 +67,3 @@ You can clean up after this tutorial by deleting the network-policy-demo namespa
 ```
 kubectl delete ns network-policy-demo
 ```
-
-Now that we have looked at denying ingresses, let's look at denying egresses.
-
-[Next: Denying egress traffic](./Deny_egress_traffic_that_has_no_rules.md)

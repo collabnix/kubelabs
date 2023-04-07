@@ -1,6 +1,6 @@
 # Allow All Ingress Traffic Exclusively
 
-We may want to override any other NetworkPolicy that restricts traffic to your pods, perhaps for troubleshooting a connection issue. This can be done by applying [this NetworkPolicy definition](./allow-ingress.yaml).
+We may want to override any other NetworkPolicy that restricts traffic to your pods, perhaps for troubleshooting a connection issue. This can be done by applying the following NetworkPolicy definition:
 
 ## Steps
 ```
@@ -55,5 +55,3 @@ Commercial support is available at
 The only difference we have here is that we add an ingress object with no rules at all.
 
 Be aware, though, that this policy will override any other isolating policy in the same namespace.
-
-[Next: Allow all egress traffic](./allow_all_egress_traffic_exclusively.md)
