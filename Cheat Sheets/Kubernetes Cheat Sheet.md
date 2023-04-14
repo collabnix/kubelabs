@@ -16,8 +16,6 @@ kubectl uses flags that apply to many different types of resources, and masterin
 kubectl get po -A
 ```
 
-will return the pods across all namespaces.
-
 ```
 -f
 ```
@@ -27,8 +25,6 @@ This is used to specify a file. A command such as
 ```
 kubectl apply -f <file_path>
 ```
-
-will apply the resources in the file provided in the path.
 
 ```
 -n
