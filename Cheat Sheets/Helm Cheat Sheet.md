@@ -1,6 +1,6 @@
 # Helm cheat sheet
 
-While the [Helm docs](https://helm.sh/docs/helm/) has extensive information on every command there is with Helm, there are a few commands that you will use regularly enough that it is important to have them memorized. This will also come in handy if you were ever to face an interview where you get asked questions about various Helm commands. It is unlikely that the interviewers will ask you to write multi-line complex commands since you absolutely will have to look through the documentation before you can get there. Instead, the commands they will expect you to know will be the basics that go on to show that you know and have used Helm in the past.
+While the [Helm docs](https://helm.sh/docs/helm/) has extensive information on every command there is with Helm, there are a few commands that you will use regularly enough that it is important to have them memorized. This will also come in handy if you were ever to face an interview where you get asked questions about various Helm commands. It is unlikely that the interviewers will ask you to write multi-line complex commands since you absolutely will have to look through the documentation before you can get there. Instead, the commands they will expect you to know will be the basics that go on to show that you know and have used Helm in the past. First off, you should be familiar with Helm. If you aren't make sure to take a look at [Helm101](../Helm101/what-is-helm.md) for an in-depth tutorial.
 
 Before we begin, if you have consulted the [Kubernetes cheat sheet](./Kubernetes%20Cheat%20Sheet.md) before, you will notice that there are a large number of similarities between the flags, keywords, and commands. So let's start off on familiar ground by looking at these.
 
@@ -66,3 +66,42 @@ helm install examples/hello-world -g
 ```
 
 will install a chart with a generated name that includes the chart name as a prefix. Also, note that `-g` is the shortened form of `--generate-name`.
+
+```
+--password
+--username
+```
+
+These two flags are useful if you are connecting to a private repository that requires authorization. Example:
+
+```
+helm install privatereponame/chartname --username user --password password --generate-name
+```
+
+If you are logging in to a private Helm registry with the `helm registry login` command, you can use the shorthand `-p` and `-u` instead.
+
+```
+-h
+```
+
+Finally, we have `-h`, which allows you to get help on a number of helm commands. So using
+
+```
+helm get all -h
+```
+
+Will show you information on `get all`:
+
+> ```
+> This command prints a human-readable collection of information about the
+> notes, hooks, supplied values, and generated manifest file of the given release.
+>
+>Usage:
+>  helm get all RELEASE_NAME [flags]
+>```
+
+There is a large number of other flags, but the ones mentioned above are the ones that are mostly used. You will be expected to know at least some of these flags while the rest can be easily accessed via the documentation.
+
+## Accessing the documentation
+
+Before we continue, it is important to understand how you can navigate the official documentation since you will have to refer to it sooner or later.
