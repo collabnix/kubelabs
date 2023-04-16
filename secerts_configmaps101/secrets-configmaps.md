@@ -79,7 +79,7 @@ kubectl get secrets,configmaps
 Secrets and ConfigMaps can be mounted as volume within a pod. For the nginx pod, we will need to mount the secrets as nginx-certs, and the ConfigMap as a nginx-config. First, thoug, we need to write a Deployment for nginx, so we have something to work with. Create a file named "nginx-ssl-deployment.yaml" with the following:
 
 ```
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx

@@ -81,7 +81,7 @@ The first part of the command will get all the pod information, which may be too
 
 ```
 ownerReferences:
-  - apiVersion: extensions/v1beta1
+  - apiVersion: apps/v1
 	blockOwnerDeletion: true
 	controller: true
 	kind: ReplicaSet

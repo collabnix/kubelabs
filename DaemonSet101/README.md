@@ -71,7 +71,7 @@ Labels:         name=prometheus-exporter
                 tier=monitoring
 Annotations:    deprecated.daemonset.template.generation: 1
                 kubectl.kubernetes.io/last-applied-configuration:
-                  {"apiVersion":"extensions/v1beta1","kind":"DaemonSet","metadata":{"annotations":{},"name":"prometheus-daemonset","namespace":"default"},"s...
+                  {"apiVersion":"apps/v1","kind":"DaemonSet","metadata":{"annotations":{},"name":"prometheus-daemonset","namespace":"default"},"s...
 Desired Number of Nodes Scheduled: 1Current Number of Nodes Scheduled: 1
 Number of Nodes Scheduled with Up-to-date Pods: 1
 Number of Nodes Scheduled with Available Pods: 1
