@@ -107,3 +107,36 @@ There is a large number of other flags, but the ones mentioned above are the one
 Before we continue, it is important to understand how you can navigate the official documentation since you will have to refer to it sooner or later. The site to the main doc page is [https://helm.sh/docs/](https://helm.sh/docs/). You have several guides here along with a sidebar on the left that has a section `helm commands`. This section expands to show several commands that consist of 90% of the commands you will be using. Clicking on each command leads to the page that describes the command. At the bottom of each page, you will the full list of flags that can be used with the command along with the flags it inherited from its parent (which are also usable). You will find all of the flags mentioned above (and many more) in this section. At the very bottom, you will find commands that are similar to the command you are referring to.
 
 So if you want to do something with a command, but aren't clear on the options, the helm docs are where you need to go.
+
+## Helm commands
+
+Now that we have gone through flags which can apply to multiple commands, let's take a look at the various commands out there.
+
+Before you do anything, you need to install a chart, and before you do that, you need to add the chart repository. So the first command you need to know is:
+
+```
+helm repo add
+```
+
+Example:
+
+```
+helm repo add jenkins https://charts.jenkins.io
+helm repo update
+```
+
+Note that no one will expect you to memorize the names of any repositories. Instead, if you are ever told to add a repository, go to [artifacthub.io](https://artifacthub.io) and search for the package. Most packages come with a readme that will tell you exactly how to get it up and running ([example](https://artifacthub.io/packages/helm/jenkinsci/jenkins)).
+
+Once you have the chart, you need to install it:
+
+```
+helm install
+```
+
+The most basic form of this command is:
+
+```
+helm install jenkins jenkins/jenkins
+```
+
+The above command installs the Jenkins chart and sets up all resources needed to run a Jenkins instance on your Kubernetes cluster. However, by default, the Jenkins service is of type `ClusterIP`, meaning that nothing outside of the clusters' localhost will be able to access it. To change this, you need to override the values in a Helm chart. This will be the case for most charts out there, where you will have to override values to make the chart cater to your specific situation.
