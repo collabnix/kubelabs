@@ -139,4 +139,22 @@ The most basic form of this command is:
 helm install jenkins jenkins/jenkins
 ```
 
-The above command installs the Jenkins chart and sets up all resources needed to run a Jenkins instance on your Kubernetes cluster. However, by default, the Jenkins service is of type `ClusterIP`, meaning that nothing outside of the clusters' localhost will be able to access it. To change this, you need to override the values in a Helm chart. This will be the case for most charts out there, where you will have to override values to make the chart cater to your specific situation.
+The above command installs the Jenkins chart and sets up all resources needed to run a Jenkins instance on your Kubernetes cluster. However, by default, the Jenkins service is of type `ClusterIP`, meaning that nothing outside of the clusters' localhost will be able to access it. To change this, you need to override the values in a Helm chart. This will be the case for most charts out there, where you will have to override values to make the chart cater to your specific situation. The most common way to do this is to override the chart values with separate values.yaml file:
+
+```
+helm install -f myvalues.yaml jenkins jenkins/jenkins
+```
+
+Since this format is so commonly used, it makes sense to memorize this command. There are also other formats:
+
+```
+helm install --set name=prod myredis ./redis
+```
+
+The above sets the values in line. The complete list of ways to use `helm install` can be found in the [docs](https://helm.sh/docs/helm/helm_install/). Once your chart is installed, you can go ahead and list them:
+
+```
+helm list
+```
+
+The command can be used in combination with the flags discussed above.
