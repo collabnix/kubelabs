@@ -125,7 +125,31 @@ helm repo add jenkins https://charts.jenkins.io
 helm repo update
 ```
 
-Note that no one will expect you to memorize the names of any repositories. Instead, if you are ever told to add a repository, go to [artifacthub.io](https://artifacthub.io) and search for the package. Most packages come with a readme that will tell you exactly how to get it up and running ([example](https://artifacthub.io/packages/helm/jenkinsci/jenkins)).
+Note that no one will expect you to memorize the names of any repositories. Instead, if you are ever told to add a repository, go to [artifacthub.io](https://artifacthub.io) and search for the package. Most packages come with a readme that will tell you exactly how to get it up and running ([example](https://artifacthub.io/packages/helm/jenkinsci/jenkins)). Another alternative is:
+
+```
+helm search
+```
+
+This allows you to search for charts from the command line. There are a few variations such as:
+
+```
+helm search hub
+```
+
+Allows you to search artifact hub from the command line.
+
+```
+helm search hub jenkins
+```
+
+will give you all the charts on artifact hub with Jenkins in its name.
+
+```
+helm search repo
+```
+
+Allows you to search all installed repos in your local system for the chart. Note that you need to have the chart already added with `helm repo add` for anything to show up with this command.
 
 Once you have the chart, you need to install it:
 
