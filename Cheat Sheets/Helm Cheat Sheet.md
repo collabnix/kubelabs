@@ -182,3 +182,17 @@ helm list
 ```
 
 The command can be used in combination with the flags discussed above.
+
+The next command to look at is:
+
+```
+helm show
+```
+
+Helm show is used to describe specific resources, and if you were to try and use this command with no prior experience, you will likely run into all sorts of errors, even if you are reading the documentation. This is because the arguments you have to provide to these commands are not in the same format as the arguments provided to other Helm commands. If you want information about a chart, you need to use:
+
+```
+helm show chart <repo-name>/<chart-name>
+```
+
+The chart name alone is not enough. `helm show chart gitlab-runner` would be wrong, it should be `helm show chart gitlab/gitlab-runner`.
