@@ -196,3 +196,11 @@ helm show chart <repo-name>/<chart-name>
 ```
 
 The chart name alone is not enough. `helm show chart gitlab-runner` would be wrong, it should be `helm show chart gitlab/gitlab-runner`.
+
+You can also use this command to show the values of a chart:
+
+```
+helm show values
+```
+
+You can use this command with a number of the flags that were previously discussed. The result of this command would be yaml formatted output that shows the values derived from the chart. This is useful if you want to quickly reference the values for a particular chart. However, the GitHub repos of many available charts also provide the values.yaml, which is easier to access and is much better commented. For example, if you wanted to see the overridable values for Jenkins, you could go to [the related file](https://github.com/jenkinsci/helm-charts/blob/main/charts/jenkins/values.yaml) in GitHub.
