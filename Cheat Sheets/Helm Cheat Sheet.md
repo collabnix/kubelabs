@@ -231,3 +231,17 @@ Your GitLab Runner should now be registered against the GitLab instance reachabl
 ```
 
 The notes section is particularly useful since a lot of chart authors mention any specific details of the chart here.
+
+Now that the chart is installed, let's talk about how we can update it. 
+
+```
+helm upgrade
+```
+
+is the command you should use in this situation, and it releases a new version of the chart. Note that you should specify the name of the release since it is the release that will be changing. You also need to specify the chart name:
+
+```
+helm upgrade -f values.yaml jenkins ./jenkins
+```
+
+You can also use -f to override values by passing in a yaml (or set overriding values in-line). You can also use most of the flags used by `helm install` here as well.
