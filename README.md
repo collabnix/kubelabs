@@ -44,6 +44,9 @@
 - [Kubectl for Docker Beginners](./kubectl-for-docker.md) 
 - [Accessing Kubernetes API](./api.md) 
 
+## Kubernetes CRUD 
+
+- [Using Python](python/README.md)
 
 
 ## Pods101
