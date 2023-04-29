@@ -245,3 +245,11 @@ helm upgrade -f values.yaml jenkins ./jenkins
 ```
 
 You can also use -f to override values by passing in a yaml (or set overriding values in-line). You can also use most of the flags used by `helm install` here as well.
+
+Finally, we get to chart creation. Note that creating a chart is somewhat complicated, and it is unlikely you will be asked to create charts in a situation such as an interview. On occasions when you have to create a chart, you should always take your time to read through the doc so you don't make any mistakes. However, it is important to keep the most basic create command in memory:
+
+```
+helm create <chart_name>
+```
+
+This will create a directory structure with the chart name containing all the boilerplate configuration files that you will need to create a complete chart.
