@@ -81,6 +81,20 @@ helm install privatereponame/chartname --username user --password password --gen
 If you are logging in to a private Helm registry with the `helm registry login` command, you can use the shorthand `-p` and `-u` instead.
 
 ```
+--version
+```
+
+This flag is a common one that you may have used with other CLI tools to get the version of the tool. However, the flag above cannot be used this way. It is to be used to specify a version of a chart:
+
+```
+helm upgrade release-1 jenkins --version [version-number]
+```
+
+The above command will install the version of the Jenkins chart specified.
+
+
+
+```
 -h
 ```
 
@@ -232,6 +246,14 @@ Your GitLab Runner should now be registered against the GitLab instance reachabl
 
 The notes section is particularly useful since a lot of chart authors mention any specific details of the chart here.
 
+Another command that is good to know is:
+
+```
+helm history <release-name>
+```
+
+This will give you the release history.
+
 Now that the chart is installed, let's talk about how we can update it. 
 
 ```
@@ -244,12 +266,24 @@ is the command you should use in this situation, and it releases a new version o
 helm upgrade -f values.yaml jenkins ./jenkins
 ```
 
-You can also use -f to override values by passing in a yaml (or set overriding values in-line). You can also use most of the flags used by `helm install` here as well.
+You can also use -f to override values by passing in a yaml (or set overriding values in-line). You can also use most of the flags used by `helm install` here as well. You could also use the flag `--install` at the end of the command if you want to upgrade if the release exists or install if it doesn't.
 
-Finally, we get to chart creation. Note that creating a chart is somewhat complicated, and it is unlikely you will be asked to create charts in a situation such as an interview. On occasions when you have to create a chart, you should always take your time to read through the doc so you don't make any mistakes. However, it is important to keep the most basic create command in memory:
+Next, we get to chart creation. Note that creating a chart is somewhat complicated, and it is unlikely you will be asked to create charts in a situation such as an interview. On occasions when you have to create a chart, you should always take your time to read through the doc so you don't make any mistakes. However, it is important to keep the most basic create command in memory:
 
 ```
 helm create <chart_name>
 ```
 
 This will create a directory structure with the chart name containing all the boilerplate configuration files that you will need to create a complete chart.
+
+Now that we have gone through the installation commands, let's look at the uninstallation commands. You can uninstall a release the same way you installed it:
+
+```
+helm uninstall <release>
+```
+
+You can remove a repo the same way you added it:
+
+```
+helm repo remove <repo-name>
+```
