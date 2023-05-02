@@ -265,8 +265,9 @@
 ## Java client for Kubernetes
  - [Introduction](./JavaClient101/intro.md)
 
-## Kubernetes Cheat Sheet
-- [Kubernetes Cheat Sheet](./Kubernetes%20Cheat%20Sheet/Kubernetes%20Cheat%20Sheet.md)
+## Cheat Sheets
+- [Kubernetes Cheat Sheet](./Cheat%20Sheets/Kubernetes%20Cheat%20Sheet.md)
+- [Helm Cheat Sheet](./Cheat%20Sheets/Helm%20Cheat%20Sheet.md)
 
 # Contributors
 
