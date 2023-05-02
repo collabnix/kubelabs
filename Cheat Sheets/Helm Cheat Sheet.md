@@ -276,6 +276,7 @@ helm create <chart_name>
 
 This will create a directory structure with the chart name containing all the boilerplate configuration files that you will need to create a complete chart.
 
+
 Now that we have gone through the installation commands, let's look at the uninstallation commands. You can uninstall a release the same way you installed it:
 
 ```
@@ -287,3 +288,9 @@ You can remove a repo the same way you added it:
 ```
 helm repo remove <repo-name>
 ```
+
+## Conclusion
+
+This covers a large number of Helm commands that you get to use on a daily basis. We outlined the important flags that are worth remembering since they can be used in combination with a number of commands, as well as common commands that you can easily remember so that you don't have to consult the documentation during your day-to-day work with Helm. Of course, if there is something that you are unclear about, the docs are your best option, and we covered the most optimal way to browse the docs. We also took a look at how to slightly more advanced commands that you will use sooner or later, but not on a daily basis.
+
+So if you ever need a quick refresher on Helm commands, you can come back and consult this cheat sheet. If you need a full course on Helm, there is the [Helm section](../Helm101/what-is-helm.md).
