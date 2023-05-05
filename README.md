@@ -304,7 +304,7 @@ url: http://127.0.0.1:4000
 ```
 docker run --rm \
   -v "$PWD:/srv/jekyll" \
-  -e BUNDLE_PATH="/srv/jekyll/.--platform=linux/amd64 bundles_cache" \
+  -e BUNDLE_PATH="/srv/jekyll/.bundles_cache" \
   -p 4000:4000 \
   jekyll/builder:3.8 \
   bash -c "gem install bundler && bundle install && bundle exec jekyll serve --host 0.0.0.0 --verbose --config _config.yml,_config_dev.yml"
