@@ -1,7 +1,5 @@
 # Labels and Selectors
-In this tutorial we will learn how labels and selectors work in Kubernetes using two examples.
-1) How Service uses a selector to map the pod to the backend as endpoints
-2) How Pod can be scheduled on custom node using a selector
+In this tutorial we will learn how labels and selectors work in Kubernetes using service and pod scenario. 
 
 # How Service uses a Selector to Map the POD
 In kubernetes, each pod will have a metadata definition underwhich we can define its name and labels. Labels help kubernetes to indentify the object for filtering and group purposes. Label uses key:value syntax , usualy each pod will have unique labels defined.
@@ -85,4 +83,9 @@ Endpoints:         192.168.1.3:80,192.168.1.4:80
 Session Affinity:  None
 Events:            <none>
 ```
+In this way, we can conclude work on how the Labels and selectors work in POD and SERVICE scenarios. 
+
+# Contributors
+[Ashutosh S.Bhakare](https://www.linkedin.com/in/abhakare/).
+
 
