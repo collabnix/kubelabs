@@ -281,6 +281,26 @@
 - [Divyajeet Singh](https://www.linkedin.com/in/divyajeet-singh)
 - [Apurva Bhandari](https://www.linkedin.com/in/apurvabhandari-linux)
 
+## Contribution Guidelines
+
+## Step 1. Clone the repository
+
+```
+ git clone https://github.com/collabnix/kubelabs
+```
+
+## Step 2. Run the container
+
+
+```
+docker run --rm \
+  -v "$PWD:/srv/jekyll" \
+  -e BUNDLE_PATH="/srv/jekyll/.--platform=linux/amd64 bundles_cache" \
+  -p 4000:4000 \
+  jekyll/builder:3.8 \
+  bash -c "gem install bundler && bundle install && bundle exec jekyll serve --host 0.0.0.0 --verbose --config _config.yml,_config_dev.yml"
+ ```
+
 
 
 
