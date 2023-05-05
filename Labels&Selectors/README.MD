@@ -9,5 +9,8 @@ Lets getting into the demo part now
 
 # Creating a Pod with Labels
 
-
+git clone https://github.com/collabnix/dockerlabs
+cd dockerlabs/Labels&Selectors/
+kubectl create -f pod.yml
+deployment.apps/nginx-deployment created
  
