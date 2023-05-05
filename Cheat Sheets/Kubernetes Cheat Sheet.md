@@ -364,3 +364,7 @@ Next, let's look at another extension to `-o`, which is `-v`. `-v` is used to sp
 ## Conclusion
 
 This brings us to the end of the guide to practical Kubernetes. The flags, actions, and resources you learned here can be used in everyday situation where you have to interact with Kubernetes clusters. There are many more commands and actions that advanced users of Kubernetes will have to use, but this guide is sufficient for anyone looking to jump into Kubernetes and use the kubectl command line like a pro.
+
+Helm is a pretty important thing to learn about if you are going to get serious with Kubernetes. So you could also consider looking through the Helm cheat sheet we put together.
+
+[Next: Helm cheat sheet](./Helm%20Cheat%20Sheet.md)
