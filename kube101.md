@@ -25,10 +25,11 @@ chmod a+x bootstrap.sh
 sh bootstrap.sh
 ```
 
+
+
 # What does this script do?
 
 The first line `kubeadm init` initializes a Kubernetes control-plane node and execute the below phases:
-
 ```
 The “init” command executes the following phases:
 
@@ -69,6 +70,9 @@ addon                        Install required addons for passing Conformance tes
   /coredns                     Install the CoreDNS addon to a Kubernetes cluster
   /kube-proxy                  Install the kube-proxy addon to a Kubernetes cluster
 ```
+It also adds a CNI plugin called kube-router using kubectl apply -f https://raw.githubusercontent.com/cloudnativelabs/kube-router/master/daemonset/kubeadm-kuberouter.yaml
+
+You can select any CNI  plugin as per your requirement using: https://kubernetes.io/docs/concepts/cluster-administration/addons/ 
 
 ## Adding New K8s Cluster Node
 
