@@ -24,4 +24,36 @@ eksctl
 
 Technically, you can manage your whole Kubernetes infrastructure through `aws` commands alone, but [eksctl](https://eksctl.io) significantly reduces the complexity of using those commands.
 
-Let's start off with cluster creation. All Kubernetes clusters need a master node, and all three services provide the master node at a very cheap price (AKS provides it free).
+Let's start off with cluster creation. All Kubernetes clusters need a master node, and all three services provide the master node at a very cheap price (AKS provides it free). Then, you also need one or more worker nodes. These are the nodes that do that actual work and therefore cost much more than the master node. In all cases, the worker nodes consist of regular vms provided by the cloud service. There are recommended specs for worker nodes, but the standard vm type should usually be fine. 
+
+```
+az aks create
+```
+
+This is the command used to create a cluster with AKS. This command should be followed by the necessary arguments:
+
+```
+az aks create --resource-group rgname --name clustername --node-count 1 --generate-ssh-keys
+```
+
+The above command shows a sample of how a cluster can be created in AKS.
+
+```
+gcloud container clusters create
+```
+
+This is how you would achieve the same thing with GKE. 
+
+```
+gcloud container clusters create CLUSTER_NAME \
+    --zone COMPUTE_ZONE \
+    --node-locations COMPUTE_ZONE,COMPUTE_ZONE1
+```
+
+Note that you provide the zone directly into the create command with gcloud while you provide the resource group to AKS. Since the zone is contained within the resource group, AKS uses that.
+
+```
+eksctl create cluster
+```
+
+The above command creates a cluster with AWS EKS. Note that while the other two cloud providers require you to provide additional information, with eksctl, the above command alone will create a cluster for you. The region will be your accounts' default region with one managed nodegroup containing two m5.large nodes.
