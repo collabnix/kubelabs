@@ -82,6 +82,9 @@ Wait for 1 minute time till it gets completed.
 
 Copy the command starting with ```kubeadm join ....```. We will need it to be run on the worker node.
 
+In case you missed to copy the token, you can use 
+kubeadm token create --print-join-command 
+This will generate the new token which can be used to add the token lateron 
 
 ## Setting up Worker Node
 
