@@ -1,3 +1,6 @@
+
+# Kubernetes CRUD using Go
+
 Kubernetes is a popular container orchestration platform used by developers to deploy and manage their applications. While Kubernetes provides a powerful command-line interface called kubectl for managing Kubernetes resources, it can also be accessed programmatically using various programming languages such as Python, Go, and Java.
 
 In this blog post, we will focus on using Go to perform CRUD (Create, Read, Update, and Delete) operations on Kubernetes resources. Specifically, we will demonstrate how to perform CRUD operations on deployments using the Kubernetes API and the official Go client library. We will be performing these operations on a local Kubernetes cluster running on Docker Desktop.
