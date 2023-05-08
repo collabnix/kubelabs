@@ -1,0 +1,13 @@
+current directory: /srv/jekyll/.bundles_cache/ruby/2.6.0/gems/json-2.6.3/ext/json
+/usr/local/bin/ruby -I /usr/local/lib/ruby/site_ruby/2.6.0 -r ./siteconf20230505-36-1ml2eq8.rb extconf.rb
+creating Makefile
+
+current directory: /srv/jekyll/.bundles_cache/ruby/2.6.0/gems/json-2.6.3/ext/json
+make "DESTDIR=" clean
+
+current directory: /srv/jekyll/.bundles_cache/ruby/2.6.0/gems/json-2.6.3/ext/json
+make "DESTDIR="
+make: Nothing to be done for 'all'.
+
+current directory: /srv/jekyll/.bundles_cache/ruby/2.6.0/gems/json-2.6.3/ext/json
+make "DESTDIR=" install
