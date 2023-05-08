@@ -43,6 +43,7 @@
 
 - [Kubectl for Docker Beginners](./kubectl-for-docker.md) 
 - [Accessing Kubernetes API](./api.md) 
+- [How to know if Kubernetes is using Docker or Containerd as a runtime](detect.md)
 
 ## Kubernetes CRUD 
 
