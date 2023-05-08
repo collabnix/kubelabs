@@ -33,10 +33,10 @@ az aks create
 This is the command used to create a cluster with AKS. This command should be followed by the necessary arguments:
 
 ```
-az aks create --resource-group rgname --name clustername --node-count 1 --generate-ssh-keys
+az aks create --resource-group rgname --name clustername --node-count 2 --generate-ssh-keys
 ```
 
-The above command shows a sample of how a cluster can be created in AKS.
+The above command shows a sample of how a cluster can be created in AKS, along with 2 worker nodes.
 
 ```
 gcloud container clusters create
@@ -48,12 +48,15 @@ This is how you would achieve the same thing with GKE.
 gcloud container clusters create CLUSTER_NAME \
     --zone COMPUTE_ZONE \
     --node-locations COMPUTE_ZONE,COMPUTE_ZONE1
+    --machine-type=e2-medium 
 ```
 
-Note that you provide the zone directly into the create command with gcloud while you provide the resource group to AKS. Since the zone is contained within the resource group, AKS uses that.
+Note that you provide the zone directly into the create command with gcloud while you provide the resource group to AKS. Since the zone is contained within the resource group, AKS uses that. Also note that similar to AKS, you can specify the worker nodes (and their machine types) with the command.
 
 ```
 eksctl create cluster
 ```
 
-The above command creates a cluster with AWS EKS. Note that while the other two cloud providers require you to provide additional information, with eksctl, the above command alone will create a cluster for you. The region will be your accounts' default region with one managed nodegroup containing two m5.large nodes.
+The above command creates a cluster with AWS EKS. Note that while the other two cloud providers require you to provide additional information, with eksctl, the above command alone will create a cluster for you. The region will be your accounts' default region with one managed node group containing two m5.large nodes. Of course, you can specify the type of nodes.
+
+With that, you can create clusters across all three Kubernetes engines. So now, let us take a look at the various flags that can be used during creation that allow you to change the outcome of the command.
