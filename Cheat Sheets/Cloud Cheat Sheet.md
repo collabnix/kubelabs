@@ -24,7 +24,69 @@ eksctl
 
 Technically, you can manage your whole Kubernetes infrastructure through `aws` commands alone, but [eksctl](https://eksctl.io) significantly reduces the complexity of using those commands.
 
-Let's start off with cluster creation. All Kubernetes clusters need a master node, and all three services provide the master node at a very cheap price (AKS provides it free). Then, you also need one or more worker nodes. These are the nodes that do that actual work and therefore cost much more than the master node. In all cases, the worker nodes consist of regular vms provided by the cloud service. There are recommended specs for worker nodes, but the standard vm type should usually be fine. 
+### Region
+
+As always, let's start off by looking at flags. Flags help you augment a command to perform your specific requirement. The first flag we will look at is the region. In all cases, you need to specify where a resource should get created.
+
+```
+---zone
+```
+
+The above flag lets you set the compute zone that is used when creating a GKE cluster. Note that you can also specify the locations of the individual nodes with:
+
+```
+--node-locations 
+```
+
+In the case of AKS, the situation is different, and you specify the region when you set:
+
+```
+--resource-group
+```
+
+When creating a resource group, you also assign a location to that resource group, which is where the cluster will be created. So when you want to specify a location in AKS, you do so by specifying the resource group instead of an actual location.
+
+Finally, we have EKS:
+
+```
+--region
+```
+
+and 
+
+```
+--zones
+```
+
+Which allows you to specify the regions and zones for your EKS cluster.
+
+### Machine type
+
+Every Kubernetes cluster needs worker nodes. These are the nodes that do that actual work and therefore cost much more than the master node. In all cases, the worker nodes consist of regular vms provided by the cloud service. There are recommended specs for worker nodes, but the standard vm type should usually be fine.
+
+```
+-s 
+```
+
+This is the flag used with AKS to set the machine type, for example:
+
+```
+-s Standard_DS3_v2
+```
+
+It is equally straightforward with GKE:
+
+```
+--machine-type
+```
+
+example:
+
+```
+--machine-type=e2-medium 
+```
+
+Let's start off with cluster creation. All Kubernetes clusters need a master node, and all three services provide the master node at a very cheap price (AKS provides it free). Then, you also need one or more worker nodes. 
 
 ```
 az aks create
