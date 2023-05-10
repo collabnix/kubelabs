@@ -86,6 +86,35 @@ example:
 --machine-type=e2-medium 
 ```
 
+With EKS, you get some more flexibility. You could either define:
+
+```
+--instanceType
+```
+
+and set it to a predefined type of EC2 instance
+
+```
+--instanceType=m5.large
+```
+
+Or specify the actual specs as arguments:
+
+```
+--instance-selector-vcpus
+--instance-selector-memory
+```
+
+which will dynamically decide on the instance that gets spun up:
+
+```
+--instance-selector-vcpus=2 --instance-selector-memory=4
+```
+
+### Connecting to nodes
+
+While the master node can fully manage the worker node, you will still need to ssh into the nodes for troubleshooting purposes. To do this, you will require ssh keys, which you can generate.
+
 Let's start off with cluster creation. All Kubernetes clusters need a master node, and all three services provide the master node at a very cheap price (AKS provides it free). Then, you also need one or more worker nodes. 
 
 ```
