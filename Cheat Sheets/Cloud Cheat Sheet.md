@@ -113,7 +113,33 @@ which will dynamically decide on the instance that gets spun up:
 
 ### Connecting to nodes
 
-While the master node can fully manage the worker node, you will still need to ssh into the nodes for troubleshooting purposes. To do this, you will require ssh keys, which you can generate.
+While the master node can fully manage the worker node, you will still need to ssh into the nodes for troubleshooting purposes. To do this, you will require ssh keys, which you can generate. Note that while these commands are regularly used in day-to-day cluster maintenance, you are not expected to memorize them.
+
+```
+--generate-ssh-keys
+```
+
+This flag needs to be set when creating the AKS cluster, which will result in SSH keys being generated for your worker nodes. You can then use these ssh keys to ssh into your Azure worker nodes.
+
+However, you can also use `kubectl debug` to reach this same goal.
+
+```
+kubectl debug node/aks-nodepool1-12345678-vmss000000 -it --image=mcr.microsoft.com/dotnet/runtime-deps:6.0
+```
+
+The above command will run a container image in the node and connect to it.
+
+You do much the same thing with GKE, where you get the ssh keys and use them to connect to the node:
+
+```
+kubectl --kubeconfig [CLUSTER_KUBECONFIG] get secrets -n [USER_CLUSTER_NAME] ssh-keys \
+-o jsonpath='{.data.ssh\.key}' | base64 -d > \
+~/.ssh/[USER_CLUSTER_NAME].key && chmod 600 ~/.ssh/[USER_CLUSTER_NAME].key
+```
+
+As you can see, the command is slightly complicated, and that is because it queries your cluster for the ssh keys, copies them, assigns the appropriate permissions, and prepares them for use.
+
+As for EKS, since your worker nodes are ordinary EC2 instances and there already is an extensive system to connect to these instances, you can simply go ahead and [specify a key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-launch-instance-wizard.html#liw-key-pair).
 
 Let's start off with cluster creation. All Kubernetes clusters need a master node, and all three services provide the master node at a very cheap price (AKS provides it free). Then, you also need one or more worker nodes. 
 
