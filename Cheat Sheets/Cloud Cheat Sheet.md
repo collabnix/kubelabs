@@ -141,6 +141,50 @@ As you can see, the command is slightly complicated, and that is because it quer
 
 As for EKS, since your worker nodes are ordinary EC2 instances and there already is an extensive system to connect to these instances, you can simply go ahead and [specify a key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-launch-instance-wizard.html#liw-key-pair).
 
+### Setting up multiple nodes
+
+When creating your cluster, there is going to be a certain number of nodes that you want to be started. With AKS, you can specify this number with:
+
+```
+--node-count
+```
+
+So this command will create 2 worker nodes:
+
+```
+--node-count 2
+```
+
+It's pretty similar to GKE:
+
+```
+--num-nodes 2
+```
+
+As well as EKS:
+
+```
+--nodes=2
+```
+
+If you are using autoscaling clusters, you can set min and max nodes using pretty much the same syntax in EKS:
+
+```
+--nodes-min=3 --nodes-max=5
+```
+
+This also exists in GKE, where you have to use a different flag to enable autoscaling before you can set the min and max number of nodes:
+
+```
+--enable-autoscaling --min-nodes=1 --max-nodes=4
+```
+
+It's the same with Azure:
+
+```
+--enable-cluster-autoscaler --min-count 1 --max-count 3
+```
+
 Let's start off with cluster creation. All Kubernetes clusters need a master node, and all three services provide the master node at a very cheap price (AKS provides it free). Then, you also need one or more worker nodes. 
 
 ```
