@@ -185,7 +185,12 @@ It's the same with Azure:
 --enable-cluster-autoscaler --min-count 1 --max-count 3
 ```
 
-Let's start off with cluster creation. All Kubernetes clusters need a master node, and all three services provide the master node at a very cheap price (AKS provides it free). Then, you also need one or more worker nodes. 
+
+### Cluster creationg
+
+Now that we have all the flags we need, let's put them together and create clusters.
+
+All Kubernetes clusters need a master node, and all three services provide the master node at a very cheap price (AKS provides it free). Then, you also need one or more worker nodes. 
 
 ```
 az aks create
@@ -197,7 +202,7 @@ This is the command used to create a cluster with AKS. This command should be fo
 az aks create --resource-group rgname --name clustername --node-count 2 --generate-ssh-keys
 ```
 
-The above command shows a sample of how a cluster can be created in AKS, along with 2 worker nodes.
+The above command shows a sample of how a cluster can be created in AKS, along with 2 worker nodes, and includes all of the flags we discussed previously.
 
 ```
 gcloud container clusters create
@@ -220,4 +225,42 @@ eksctl create cluster
 
 The above command creates a cluster with AWS EKS. Note that while the other two cloud providers require you to provide additional information, with eksctl, the above command alone will create a cluster for you. The region will be your accounts' default region with one managed node group containing two m5.large nodes. Of course, you can specify the type of nodes.
 
-With that, you can create clusters across all three Kubernetes engines. So now, let us take a look at the various flags that can be used during creation that allow you to change the outcome of the command.
+With that, you can create clusters across all three Kubernetes engines. Now that the initial cluster is set up, we need to get the kube config for the cluster so that we can start interacting with it. So let's take a look at how we can do that.
+
+### Get credentials
+
+With AKS, the command is:
+
+```
+az aks get-credentials --resource-group <rg> --name <clustername>
+```
+
+This will automatically get the cluster kubeconfig and place it at `.kube/config` so that kubectl can immediately start using it. If you want to specify a different kubeconfig, you can do so with the `-f` flag:
+
+```
+--file 
+```
+
+or
+
+```
+-f
+```
+
+The syntax is largely similar to GKE, where you have to specify the cluster name and location:
+
+```
+gcloud container clusters get-credentials <clustername> --location=<clusterlocation>
+```
+
+Setting an alternate kubeconfig with GKE is different. For this, you need to create an environment variable called KUBECONFIG and set the path to the config file, which gets used. If not KUBECONFIG variable is present, it is automatically placed in the default location (`.kube/config`).
+
+As for EKS, if you are using eksctl, you don't need to do anything, since the kubeconfig is created when you create the cluster. Setting the config file is the same as with GKE, where you set the KUBECONFIG parameter.
+
+However, you can force update the kubeconfig if you require, using the same format as with AKS and GKE:
+
+```
+aws eks update-kubeconfig --region region-code --name my-cluster
+```
+
+Note that we use `aws eks` and not `eksctl` here.
