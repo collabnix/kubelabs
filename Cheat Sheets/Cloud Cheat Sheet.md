@@ -111,6 +111,18 @@ which will dynamically decide on the instance that gets spun up:
 --instance-selector-vcpus=2 --instance-selector-memory=4
 ```
 
+Note that you can do this with AKS as well:
+
+```
+--node-osdisk-type Ephemeral --node-osdisk-size 48
+```
+
+As well as GKE:
+
+```
+--disk-size=250
+```
+
 ### Connecting to nodes
 
 While the master node can fully manage the worker node, you will still need to ssh into the nodes for troubleshooting purposes. To do this, you will require ssh keys, which you can generate. Note that while these commands are regularly used in day-to-day cluster maintenance, you are not expected to memorize them.
@@ -264,3 +276,5 @@ aws eks update-kubeconfig --region region-code --name my-cluster
 ```
 
 Note that we use `aws eks` and not `eksctl` here.
+
+### Subnetting
