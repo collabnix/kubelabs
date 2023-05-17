@@ -277,4 +277,30 @@ aws eks update-kubeconfig --region region-code --name my-cluster
 
 Note that we use `aws eks` and not `eksctl` here.
 
+### Scaling
+
+One of the most obvious reasons to use Kubernetes is its ability to scale up and down to handle workloads. This ability is especially useful in the case of cloud providers, where you are paying for each moment the machine is running. Therefore it is important to remember the commands associated with scaling so that you don't end up paying for processing time that never gets used.
+
+Let's start with EKS since that has an inbuilt [cluster autoscaler](https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/aws/README.md). Getting this autoscaler running is simply a matter of adding a flag during cluster creation:
+
+```
+--asg-access
+```
+
+So the full command would be:
+
+```
+eksctl create cluster --asg-access
+```
+
+The autoscaler is fairly complex but is worth learning if you primarily use AWS since this will help you save a lot of costs.
+
 ### Subnetting
+
+With all three cloud providers, you need to specify a VPC before you do anything (both Kubernetes related and non-related). With AKS and GKE you need to specify it at the start of the project while eksctl automatically creates one if you haven't specified one. Therefore, it is not mandatory to remember these commands.
+
+If you need to set it manually, you can use the flag:
+
+```
+--vpc-cidr
+```
