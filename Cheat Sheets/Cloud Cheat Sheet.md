@@ -295,12 +295,19 @@ eksctl create cluster --asg-access
 
 The autoscaler is fairly complex but is worth learning if you primarily use AWS since this will help you save a lot of costs.
 
+### Cluster security
+
+Securing your cluster is a very important and lengthy process which has been covered in detail in the [Security101](../Security101/kubernetes-security.md) section. Regardless of the size of the cluster, and whether it is in the cloud or on-prem, you must ensure that your cluster is not vulnerable to attack.
+
+In the case of cloud providers, they already provide several levels of authentication to help you out. While the exact commands for these authentication types aren't something you will need to keep in memory, you will be expected to know about Kubernetes security. So let's look at some commands to go with it.
+
 ### Subnetting
 
 With all three cloud providers, you need to specify a VPC before you do anything (both Kubernetes related and non-related). With AKS and GKE you need to specify it at the start of the project while eksctl automatically creates one if you haven't specified one. Therefore, it is not mandatory to remember these commands.
 
-If you need to set it manually, you can use the flag:
+If you need to set it manually in EKS, you can use the flag:
 
 ```
 --vpc-cidr
 ```
+
