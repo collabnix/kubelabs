@@ -253,6 +253,8 @@ NAME        READY   STATUS    RESTARTS   AGE     IP         NODE                
 webserver   2/2     Running   0          3m37s   10.8.0.5   gke-standard-cluster-1-default-pool-78257330-5hs8   <none>           <none>
 ```
 
+
+
 ## How to verify 2 containers are running inside a Pod?
 
 
@@ -479,6 +481,13 @@ Wed Jan  8 08:59:16 UTC 2020
 
 ```
 kubectl delete -f pods03.yaml
+```
+
+
+## Running Prometheus along with Nginx Container + Config in a single Pod
+
+```
+kubectl apply -f pods05.yaml
 ```
 
 # Contributor
