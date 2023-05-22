@@ -299,7 +299,9 @@ The autoscaler is fairly complex but is worth learning if you primarily use AWS 
 
 Securing your cluster is a very important and lengthy process which has been covered in detail in the [Security101](../Security101/kubernetes-security.md) section. Regardless of the size of the cluster, and whether it is in the cloud or on-prem, you must ensure that your cluster is not vulnerable to attack.
 
-In the case of cloud providers, they already provide several levels of authentication to help you out. While the exact commands for these authentication types aren't something you will need to keep in memory, you will be expected to know about Kubernetes security. So let's look at some commands to go with it.
+In the case of cloud providers, they already provide several levels of authentication to help you out. While the exact commands for these authentication types aren't something you will need to keep in memory, you will be expected to know about Kubernetes security. So let's look at some commands to go with it. However, note that you must add your own security in addition to the security provided by the cloud provider, since you will likely be exposing your application via endpoints that allow attackers to circumvent cloud security if you haven't implemented proper endpoint authentication.
+
+Let's start with GKE. GKE already has a pretty [comprehensive overview](https://cloud.google.com/kubernetes-engine/docs/concepts/security-overview) covering every aspect of cluster security, and is definitely worth reading through if you use GKE primarily.
 
 ### Subnetting
 
