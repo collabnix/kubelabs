@@ -487,7 +487,7 @@ kubectl delete -f pods03.yaml
 ## Running Prometheus along with Nginx Container + Config in a single Pod
 
 ```
-kubectl apply -f pods05.yaml
+kubectl apply -f pods105.yaml
 ```
 
 # Contributor
