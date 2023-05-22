@@ -98,7 +98,7 @@
  
   - [Introductory Slides](https://collabnix.github.io/kubelabs/Slides_Services101/Services101.html) 
   - [Deploy a Kubernetes Service?](./Services101/README.md#deploying--a-kubernetes-service)
-  - [Labels and Selectors] (https://github.com/collabnix/kubelabs/blob/master/Labels-and-Selectors/README.MD)
+  - [Labels and Selectors](https://github.com/collabnix/kubelabs/blob/master/Labels-and-Selectors/README.MD)
   - [Service Exposing More Than One Port](./Services101/README.md#service-exposing-more-than-one-port)
   - [Kubernetes Service Without Pods?](./Services101/README.md#kubernetes-service-without-pods)
   - [Service Discovery](./Services101/README.md#service-discovery)
