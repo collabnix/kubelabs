@@ -128,5 +128,8 @@ spec:
 
 <img width="607" alt="image" src="https://github.com/collabnix/kubelabs/assets/313480/c58ef3f0-07a9-4294-83fa-24f2eeee38f5">
 
+Here's the final view of the Kubeview:
+
+<img width="1223" alt="image" src="https://github.com/collabnix/kubelabs/assets/313480/1ced621d-24d2-4ae1-83d8-98b0a75c3233">
 
 
