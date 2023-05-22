@@ -50,6 +50,10 @@
 - [Using Python](python/README.md)
 - [Using Go](golang/README.md)
 
+## Using AI
+
+- [Deploying Kubernetes via AI](./ai/README.md)
+
 
 ## Pods101
 
