@@ -10,6 +10,10 @@ brew tap sozercan/kubectl-ai https://github.com/sozercan/kubectl-ai
 brew install kubectl-ai
 ```
 
+- Get OpenAI Keys via https://platform.openai.com/account/api-keys
+
+kubectl-ai requires an OpenAI API key or an Azure OpenAI Service API key and endpoint, and a valid Kubernetes configuration.
+
 ## Creating your first Nginx Pod
 
 ```
