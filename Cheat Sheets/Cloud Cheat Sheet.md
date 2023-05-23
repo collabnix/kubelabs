@@ -198,7 +198,7 @@ It's the same with Azure:
 ```
 
 
-### Cluster creationg
+### Cluster creation
 
 Now that we have all the flags we need, let's put them together and create clusters.
 
@@ -295,21 +295,10 @@ eksctl create cluster --asg-access
 
 The autoscaler is fairly complex but is worth learning if you primarily use AWS since this will help you save a lot of costs.
 
-### Cluster security
+### Cluster Deletion
 
-Securing your cluster is a very important and lengthy process which has been covered in detail in the [Security101](../Security101/kubernetes-security.md) section. Regardless of the size of the cluster, and whether it is in the cloud or on-prem, you must ensure that your cluster is not vulnerable to attack.
 
-In the case of cloud providers, they already provide several levels of authentication to help you out. While the exact commands for these authentication types aren't something you will need to keep in memory, you will be expected to know about Kubernetes security. So let's look at some commands to go with it. However, note that you must add your own security in addition to the security provided by the cloud provider, since you will likely be exposing your application via endpoints that allow attackers to circumvent cloud security if you haven't implemented proper endpoint authentication.
 
-Let's start with GKE. GKE already has a pretty [comprehensive overview](https://cloud.google.com/kubernetes-engine/docs/concepts/security-overview) covering every aspect of cluster security, and is definitely worth reading through if you use GKE primarily.
+## Conclusion
 
-### Subnetting
-
-With all three cloud providers, you need to specify a VPC before you do anything (both Kubernetes related and non-related). With AKS and GKE you need to specify it at the start of the project while eksctl automatically creates one if you haven't specified one. Therefore, it is not mandatory to remember these commands.
-
-If you need to set it manually in EKS, you can use the flag:
-
-```
---vpc-cidr
-```
-
+In this cheat sheet, you can find commands and flags for the three major cloud providers. We covered important cloud concepts that are needed before cluster creation such as region specification, machine specification, and infrastructure specification. Following this, we covered cluster creation, cluster authentication, and cluster scaling. Finally, we finished off with cluster deletion. This covers a large part of Kubernetes engine functions that are used daily.
