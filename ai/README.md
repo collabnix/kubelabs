@@ -37,6 +37,16 @@ Use the arrow keys to navigate: ↓ ↑ → ←
     Don't Apply
 ```
 
+Let's break down the different sections of this manifest:
+
+- apiVersion: Specifies the version of the Kubernetes API to use.
+- kind: Specifies the type of resource, which in this case is a Deployment.
+- metadata: Contains metadata for the deployment, including the name.
+- containers: Defines the containers running in the pod.
+- name: Specifies the name of the container.
+- image: Specifies the Docker image to use.
+- ports: Specifies the port configuration for the container.
+
 <img width="861" alt="image" src="https://github.com/collabnix/kubelabs/assets/313480/c32fc25c-23cd-4af6-bcca-c6d627695082">
 
 
@@ -103,6 +113,22 @@ spec:
   
  <img width="939" alt="image" src="https://github.com/collabnix/kubelabs/assets/313480/0e0602be-feed-42bb-93cd-bd11fd301b3c">
 
+
+Let's break down the different sections of this manifest:
+
+- apiVersion: Specifies the version of the Kubernetes API to use.
+- kind: Specifies the type of resource, which in this case is a Deployment.
+- metadata: Contains metadata for the deployment, including the name.
+- spec: Specifies the desired state of the deployment.
+- replicas: Defines the number of replicas (pods) you want to create.
+- selector: Specifies the labels used to select the pods controlled by this deployment.
+- template: Defines the pod template used to create the pods.
+- metadata: Contains labels for the pod.
+- spec: Specifies the pod's specifications.
+- containers: Defines the containers running in the pod.
+- name: Specifies the name of the container.
+- image: Specifies the Docker image to use.
+- ports: Specifies the port configuration for the container.
 
 ```
 kubectl ai "Create Nginx Pod running on port 82 with 3 replicasets labeled web"
