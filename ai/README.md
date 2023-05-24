@@ -299,6 +299,71 @@ spec:
 <img width="753" alt="image" src="https://github.com/collabnix/kubelabs/assets/313480/ae18c810-d3b5-457b-b4a9-2eef35b0b4e8">
 
 
+## Services
 
 
+```
+kubectl ai "create an nginx deployment with 3 replicas under namespace ns1 and this time create service type as NodePort"
+✨ Attempting to apply the following manifest:
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: ns1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: webpage
+        image: ajeetraina/webpage
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  namespace: ns1
+spec:
+  type: NodePort
+  selector:
+    app: nginx
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+    nodePort: 30080
+Use the arrow keys to navigate: ↓ ↑ → ← 
+? Would you like to apply this? [Reprompt/Apply/Don't Apply]: 
++   Reprompt
+  ▸ Apply
+    Don't Apply
+```
+
+## Listing the Kubernetes Resources
+
+```
+kubectl get po,deploy,svc -n ns1
+NAME                                    READY   STATUS    RESTARTS   AGE
+pod/nginx-deployment-58945458f5-5pk6b   1/1     Running   0          28s
+pod/nginx-deployment-58945458f5-7htd7   1/1     Running   0          28s
+pod/nginx-deployment-58945458f5-s6cxm   1/1     Running   0          28s
+
+NAME                               READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/nginx-deployment   3/3     3            3           28s
+
+NAME                    TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+service/nginx-service   NodePort   10.100.230.251   <none>        80:30080/TCP   28s
+```
+
+
+<img width="807" alt="image" src="https://github.com/collabnix/kubelabs/assets/313480/e088ae03-ede5-45a3-b008-2423227ef73d">
 
