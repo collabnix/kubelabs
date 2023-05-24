@@ -270,7 +270,8 @@ spec:
 ✔ Apply
 ```
 
-![Uploading image.png…]()
+<img width="753" alt="image" src="https://github.com/collabnix/kubelabs/assets/313480/ae18c810-d3b5-457b-b4a9-2eef35b0b4e8">
+
 
 
 
