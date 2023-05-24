@@ -367,3 +367,24 @@ service/nginx-service   NodePort   10.100.230.251   <none>        80:30080/TCP  
 
 <img width="807" alt="image" src="https://github.com/collabnix/kubelabs/assets/313480/e088ae03-ede5-45a3-b008-2423227ef73d">
 
+## Quick Question: Why it says <none> for the nginx service?
+
+
+The reason the External-IP is not displaying for your service is because you are using a NodePort type service.
+
+When you create a NodePort service in Kubernetes, it exposes your service on a specific port on each node in the cluster. However, by default, the External-IP field remains <none> because the service is not being exposed externally through a load balancer or an Ingress resource.
+
+In the case of a local development environment like Docker Desktop with Kubernetes enabled, the External-IP field will typically show <none> because it doesn't provide a load balancer or an external IP address.
+
+To access your service in such cases, you can use the cluster's IP address or the NodePort. In your example, the service nginx-service is accessible on port 30080 of any node in your cluster's IP address. You can use the cluster's IP along with the NodePort to access your Nginx service in a web browser.
+
+If you need an external IP for your service, you have a few options:
+
+Use a LoadBalancer service type: If your Kubernetes cluster is running in a cloud provider that supports LoadBalancer services (such as AWS, GCP, or Azure), you can use the LoadBalancer service type. This will provision an external load balancer and assign an external IP to your service.
+
+Use an Ingress resource: If you want to expose your service using a domain name or path-based routing, you can use an Ingress resource. Ingress allows you to define rules for routing external traffic to your service. However, note that you need an Ingress controller set up in your cluster to handle the Ingress resource.
+
+Use a port-forwarding technique: In a local development environment, you can use port-forwarding to access your service directly from your local machine without an external IP. This allows you to forward traffic from a specific port on your local machine to the service running in the cluster. You can use the kubectl port-forward command to achieve this.
+
+Remember that the availability of these options may depend on your Kubernetes environment and the infrastructure you are using.
+
