@@ -207,3 +207,15 @@ spec:
 <img width="978" alt="image" src="https://github.com/collabnix/kubelabs/assets/313480/ff55b205-997c-4a49-a3dc-b91c8f14214d">
 
 
+## Accessing the Nginx Pod via Web Browser
+
+```
+kubectl port-forward nginx 8000:80 -n ns1
+Forwarding from 127.0.0.1:8000 -> 80
+Forwarding from [::1]:8000 -> 80
+Handling connection for 8000
+Handling connection for 8000
+```
+
+<img width="999" alt="image" src="https://github.com/collabnix/kubelabs/assets/313480/69f1c71c-0239-44d8-a94c-50cee8e0c384">
+
