@@ -137,3 +137,73 @@ Here's the final view of the Kubeview:
 <img width="1223" alt="image" src="https://github.com/collabnix/kubelabs/assets/313480/1ced621d-24d2-4ae1-83d8-98b0a75c3233">
 
 
+## Deploying Pod using namespace
+
+```
+kubectl ai "Create a namespace called ns1 and deploy a Nginx Pod"        
+✨ Attempting to apply the following manifest:
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ns1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: ns1
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.7.9
+        ports:
+        - containerPort: 80
+Use the arrow keys to navigate: ↓ ↑ → ← 
+? Would you like to apply this? [Reprompt/Apply/Don't Apply]: 
++   Reprompt
+  ▸ Apply
+    Don't Apply
+```
+
+<img width="1013" alt="image" src="https://github.com/collabnix/kubelabs/assets/313480/e4f6cb3f-cef0-4351-9903-f083454c22be">
+
+
+## Difference between "Create" and "Deploy" [Be Careful]
+
+```
+kubectl ai "Create a namespace called ns1 and create a Nginx Pod"
+✨ Attempting to apply the following manifest:
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ns1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  namespace: ns1
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.7.9
+    ports:
+    - containerPort: 80
+✔ Apply
+```
+
+<img width="978" alt="image" src="https://github.com/collabnix/kubelabs/assets/313480/ff55b205-997c-4a49-a3dc-b91c8f14214d">
+
+
