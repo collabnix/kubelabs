@@ -239,5 +239,39 @@ While it is possible to access a pod directly via a web browser, using a deploym
 
 While it's possible to directly access a pod via a web browser, using a deployment provides a more robust and scalable solution for managing your application in a production environment. It offers benefits such as replication, scalability, rolling updates, versioning, self-healing, and integration with other Kubernetes resources. By leveraging deployments, you can ensure the stability, availability, and efficient management of your application throughout its lifecycle.
 
+## Deployment
+
+This is an example for deploying 3 replicas in the specific namespace
+
+```
+kubectl ai "create an nginx deployment with 3 replicas under namespace ns1"
+✨ Attempting to apply the following manifest:
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: ns1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: webpage
+        image: ajeetraina/webpage
+        ports:
+        - containerPort: 80
+✔ Apply
+```
+
+![Uploading image.png…]()
+
+
 
 
