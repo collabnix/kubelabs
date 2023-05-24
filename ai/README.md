@@ -380,9 +380,9 @@ To access your service in such cases, you can use the cluster's IP address or th
 
 If you need an external IP for your service, you have a few options:
 
-Use a LoadBalancer service type: If your Kubernetes cluster is running in a cloud provider that supports LoadBalancer services (such as AWS, GCP, or Azure), you can use the LoadBalancer service type. This will provision an external load balancer and assign an external IP to your service.
+- Use a LoadBalancer service type: If your Kubernetes cluster is running in a cloud provider that supports LoadBalancer services (such as AWS, GCP, or Azure), you can use the LoadBalancer service type. This will provision an external load balancer and assign an external IP to your service.
 
-Use an Ingress resource: If you want to expose your service using a domain name or path-based routing, you can use an Ingress resource. Ingress allows you to define rules for routing external traffic to your service. However, note that you need an Ingress controller set up in your cluster to handle the Ingress resource.
+- Use an Ingress resource: If you want to expose your service using a domain name or path-based routing, you can use an Ingress resource. Ingress allows you to define rules for routing external traffic to your service. However, note that you need an Ingress controller set up in your cluster to handle the Ingress resource.
 
 Use a port-forwarding technique: In a local development environment, you can use port-forwarding to access your service directly from your local machine without an external IP. This allows you to forward traffic from a specific port on your local machine to the service running in the cluster. You can use the kubectl port-forward command to achieve this.
 
