@@ -297,6 +297,33 @@ The autoscaler is fairly complex but is worth learning if you primarily use AWS 
 
 ### Cluster Deletion
 
+Deleting clusters that you don't need is pretty important on the cloud since it can save you considerable amounts of money. Having an unused cluster that has idling worker nodes also makes it confusing to the cluster administrator when doing cluster maintenance. Fortunately, deleting clusters is a rather simple operation, regardless of the cloud service.
+
+With AKS, you first need to stop the cluster:
+
+```
+az aks stop --name myAKSCluster --resource-group myResourceGroup
+```
+
+You can verify that the cluster is stopped:
+
+```
+az aks show --name myAKSCluster --resource-group myResourceGroup
+```
+
+Finally, you can delete the cluster:
+
+```
+az aks delete --name myAKSCluster --resource-group myResourceGroup
+```
+
+Note that while this deletes the cluster, the nodes are still active. This helps if you want to get the cluster back up and running quickly again. Otherwise, you can delete the node pool as well:
+
+```
+az aks nodepool delete -g myResourceGroup --cluster-name myAKSCluster --name myPool
+```
+
+But this will permanently delete the node pool, making it impossible to reclaim the cluster. Another option, therefore, is to scale down the entire node pool.
 
 
 ## Conclusion
