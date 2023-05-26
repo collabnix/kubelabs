@@ -323,8 +323,27 @@ Note that while this deletes the cluster, the nodes are still active. This helps
 az aks nodepool delete -g myResourceGroup --cluster-name myAKSCluster --name myPool
 ```
 
-But this will permanently delete the node pool, making it impossible to reclaim the cluster. Another option, therefore, is to scale down the entire node pool.
+But this will permanently delete the node pool, making it impossible to reclaim the cluster. Another option, therefore, is to scale down the entire node pool:
 
+```
+az aks nodepool scale --node-count 0 --name nodepool2 --cluster-name myAKSCluster --resource-group myResourceGroup
+```
+
+The above line will scale down the node count to 0, effectively meaning that all active nodes are no longer running.
+
+Deleting clusters with GKE is even more straightforward. To delete the cluster, use:
+
+```
+gcloud container clusters delete CLUSTER_NAME
+```
+
+This will not only delete the cluster but the associated node instances as well. Similar to AKS, you could also scale a node pool as well:
+
+```
+gcloud container clusters resize CLUSTER_NAME \
+    --node-pool POOL_NAME \
+    --num-nodes NUM_NODES
+```
 
 ## Conclusion
 
