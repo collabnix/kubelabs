@@ -295,6 +295,10 @@ eksctl create cluster --asg-access
 
 The autoscaler is fairly complex but is worth learning if you primarily use AWS since this will help you save a lot of costs.
 
+### Managed nodegroups
+
+Nodegroups (or nodepools) are collections of nodes that take away the responsibility of node management from your hands and places it in the hands of the cloud provider. This means that the provisioning and lifecycle management of these nodes is no longer your problem. This is obviously a very important feature of cluster management, and therefore all three cloud providers give you the option of using a nodegroup. So let's see how we can manipulate nodegroups with the CLI.
+
 ### Cluster Deletion
 
 Deleting clusters that you don't need is pretty important on the cloud since it can save you considerable amounts of money. Having an unused cluster that has idling worker nodes also makes it confusing to the cluster administrator when doing cluster maintenance. Fortunately, deleting clusters is a rather simple operation, regardless of the cloud service.
@@ -343,6 +347,18 @@ This will not only delete the cluster but the associated node instances as well.
 gcloud container clusters resize CLUSTER_NAME \
     --node-pool POOL_NAME \
     --num-nodes NUM_NODES
+```
+
+Deleting an EKS cluster is as simple as creating one:
+
+```
+eksctl delete cluster --name CLUSTER_NAME
+```
+
+This will delete the cluster as well as any associated nodes. You could also scale nodegroups in a fairly simple manner:
+
+```
+eksctl scale nodegroup --cluster=<clusterName> --nodes=<desiredCount> --name=<nodegroupName> [ --nodes-min=<minSize> ] [ --nodes-max=<maxSize> ] --wait
 ```
 
 ## Conclusion
