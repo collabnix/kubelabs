@@ -66,7 +66,9 @@
  - [Terminating a Pod](./pods101/deploy-your-first-nginx-pod.md#deleting-the-pod) 
  - [Adding a 2nd container to a Pod](./pods101/deploy-your-first-nginx-pod.md#ading-a-2nd-container-to-a-pod) 
 
- 
+### Kubernetes Tools for Pods
+
+- [Kubetail](https://github.com/collabnix/kubelabs/blob/master/pods101/tools/kubetail.md)
 
 ## ReplicaSet101
 
