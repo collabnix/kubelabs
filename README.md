@@ -65,6 +65,7 @@
  - [Executing Commands against Pod](./pods101/deploy-your-first-nginx-pod.md#executing-commands-against-pods) 
  - [Terminating a Pod](./pods101/deploy-your-first-nginx-pod.md#deleting-the-pod) 
  - [Adding a 2nd container to a Pod](./pods101/deploy-your-first-nginx-pod.md#ading-a-2nd-container-to-a-pod) 
+ - [Labels and Selectors in a Pod](./pods101/labels-and-selectors/README.md)
 
 ### Kubernetes Tools for Pods
 
