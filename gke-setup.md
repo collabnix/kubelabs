@@ -263,6 +263,124 @@ http://34.125.190.171
 <img width="1498" alt="image" src="https://github.com/collabnix/kubelabs/assets/34368930/95b46138-3d16-44da-a769-e39fb8d89d1f">
 
 
+## Where does my Pod got deployed?
+
+```
+kubectl get po -o wide
+NAME                        READY   STATUS    RESTARTS   AGE     IP          NODE                                      NOMINATED NODE   READINESS GATES
+kubeview-6c4fcb74cc-mkbs2   1/1     Running   0          8m48s   10.56.1.7   gke-k8s-lab1-default-pool-35628f19-83xz   <none>           <none>
+ajeetsraina@Q537JQXLVR charts %  
+```
+
+The Nginx Pod with the name "kubeview-6c4fcb74cc-mkbs2" is running on the node "gke-k8s-lab1-default-pool-35628f19-83xz". The node information is displayed in the "NODE" column of the output you provided.
+
+
+## Can I schedule it in some other node
+
+Yes, you can request Kubernetes to deploy a Pod on a specific node by using node selectors or node affinity.
+
+Node selectors allow you to specify a set of key-value pairs in the Pod's specification, and Kubernetes will schedule the Pod on a node that matches the specified labels. You can set the node selector in the Pod's YAML definition using the nodeSelector field.
+
+Node affinity provides more advanced control over Pod scheduling by allowing you to define rules and preferences for Pod placement based on node attributes such as labels, taints, or other custom node properties. You can set node affinity rules in the Pod's YAML definition using the affinity field.
+
+By utilizing node selectors or node affinity, you can influence the scheduling decisions of Kubernetes and deploy Pods on specific nodes based on your requirements.
+
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+            - node-1
+```
+
+
+In the above example, the Pod has a node affinity rule specified using affinity.nodeAffinity. It uses the requiredDuringSchedulingIgnoredDuringExecution strategy, which means the rule must be satisfied during scheduling, but it can be ignored during execution if the node becomes unavailable.
+
+The nodeSelectorTerms field defines a list of node selector rules. In this case, we have a single rule that specifies the kubernetes.io/hostname label key and sets the value to node-1. This indicates that the Pod should be scheduled on a node with the label kubernetes.io/hostname=node-1.
+
+You can modify the values field to match the specific label value of the node you want to target for deployment.
+
+Say, I want to deploy it to gke-k8s-lab1-default-pool-35628f19-762j node
+
+```
+kubectl get nodes
+NAME                                      STATUS   ROLES    AGE   VERSION
+gke-k8s-lab1-default-pool-35628f19-762j   Ready    <none>   91m   v1.25.8-gke.500
+gke-k8s-lab1-default-pool-35628f19-83xz   Ready    <none>   91m   v1.25.8-gke.500
+gke-k8s-lab1-default-pool-35628f19-w5xq   Ready    <none>   91m   v1.25.8-gke.500
+```
+
+
+## Create the new 762-node.yaml
+
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webpage-pod
+spec:
+  nodeName: gke-k8s-lab1-default-pool-35628f19-762j
+  containers:
+  - name: webpage
+    image: ajeetraina/webpage
+    ports:
+    - containerPort: 8004
+
+```
+
+```
+kubectl get po -o wide
+NAME                        READY   STATUS    RESTARTS   AGE   IP          NODE                                      NOMINATED NODE   READINESS GATES
+kubeview-6c4fcb74cc-mkbs2   1/1     Running   0          17m   10.56.1.7   gke-k8s-lab1-default-pool-35628f19-83xz   <none>           <none>
+webpage-pod                 1/1     Running   0          11s   10.56.2.8   gke-k8s-lab1-default-pool-35628f19-762j   <none>           <none>
+```
+
+## Including ns2 Pod
+
+```
+cat 762j-node.yaml 
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ns2
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: ns2
+  name: webpage-pod
+spec:
+  nodeName: gke-k8s-lab1-default-pool-35628f19-762j
+  containers:
+  - name: webpage
+    image: ajeetraina/webpage
+    ports:
+    - containerPort: 8004
+```
+
+```
+kubectl apply -f 762j-node.yaml 
+namespace/ns2 unchanged
+pod/webpage-pod created
+```
+
+<img width="1497" alt="image" src="https://github.com/collabnix/kubelabs/assets/34368930/6a955413-0fb9-4e4d-9ce1-f2b070550974">
 
 
 
