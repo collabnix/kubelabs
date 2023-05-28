@@ -1,3 +1,6 @@
+
+## Using labels and selectors with an Nginx Pod in Kubernetes
+
 Here's an example of using labels and selectors with an Nginx Pod in Kubernetes:
 
 To apply labels to an Nginx Pod, you can use the metadata.labels field in the Pod definition. Here's an example:
