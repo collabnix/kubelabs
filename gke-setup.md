@@ -79,10 +79,59 @@ You should be able to view GKE cluster under Preference UI by now.
 *Be aware that your Kubernetes context can be named differently and it depends on the project's name under which the Kubernetes cluster is being deployed.*
 
 
+## Install gke-gcloud-auth-plugin 
+
+This is required for use with kubectl by following https://cloud.google.com/blog/products/containers-kubernetes/kubectl-auth-changes-in-gke
+
+```
+./google-cloud-sdk/bin/gcloud components install kubectl
+
+
+Your current Google Cloud CLI version is: 432.0.0
+Installing components from version: 432.0.0
+
+┌──────────────────────────────────────────────┐
+│     These components will be installed.      │
+├────────────────────────┬─────────┬───────────┤
+│          Name          │ Version │    Size   │
+├────────────────────────┼─────────┼───────────┤
+│ gke-gcloud-auth-plugin │   0.5.3 │   7.2 MiB │
+│ kubectl                │  1.25.9 │ 107.5 MiB │
+│ kubectl                │  1.25.9 │   < 1 MiB │
+└────────────────────────┴─────────┴───────────┘
+
+For the latest full release notes, please visit:
+  https://cloud.google.com/sdk/release_notes
+
+Do you want to continue (Y/n)?  Y
+
+╔════════════════════════════════════════════════════════════╗
+╠═ Creating update staging area                             ═╣
+╠════════════════════════════════════════════════════════════╣
+╠═ Installing: gke-gcloud-auth-plugin                       ═╣
+╠════════════════════════════════════════════════════════════╣
+╠═ Installing: gke-gcloud-auth-plugin                       ═╣
+╠════════════════════════════════════════════════════════════╣
+╠═ Installing: kubectl                                      ═╣
+╚
+```
+
+
+## Put gcloud under PATH 
+
+```
+./google-cloud-sdk/bin/gcloud container clusters get-credentials k8s-lab1 --zone us-west4-b  --project arctic-robot-387304
+export PATH=./google-cloud-sdk/bin:$PATH
+```
+
 ## Listing the Nodes
 
 ```
 kubectl get nodes
+NAME                                      STATUS   ROLES    AGE   VERSION
+gke-k8s-lab1-default-pool-35628f19-762j   Ready    <none>   47m   v1.25.8-gke.500
+gke-k8s-lab1-default-pool-35628f19-83xz   Ready    <none>   47m   v1.25.8-gke.500
+gke-k8s-lab1-default-pool-35628f19-w5xq   Ready    <none>   47m   v1.25.8-gke.500
 ```
 
 You can connect to your cluster via command-line or using a dashboard.
