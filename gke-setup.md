@@ -388,5 +388,25 @@ pod/webpage-pod created
 
 ```
 gcloud container clusters delete k8s-lab1 --zone asia-east1-a
+
 ```
+
+
+## How to stop GKE Cluster
+
+There is no direct "stop" command available to stop a GKE cluster. The recommended approach to pause or stop GKE cluster is to resize it to zero nodes, effectively scaling it down to no running workloads.
+
+```
+gcloud container clusters resize CLUSTER_NAME --size=0 --zone=ZONE
+```
+
+<img width="1152" alt="image" src="https://github.com/collabnix/kubelabs/assets/34368930/282d7c0b-288f-4eb1-a285-38943ead1664">
+
+
+Bringing it back
+
+```
+gcloud container clusters describe CLUSTER_NAME --zone=ZONE
+```
+
 [ Next >>](https://collabnix.github.io/kubelabs/weave.html)
