@@ -164,6 +164,24 @@ You can see that each `nginx` pod is now running in a different node (virtual ma
 
 ## Expose the nginx cluster as an external service
 
+In your current setup, where you have deployed a single replica of the Nginx Deployment in a specific namespace (ns2), you may not necessarily need a load balancer.
+
+By default, when you create a Deployment in Kubernetes, it will create a single Pod and manage its lifecycle. The Pod will be scheduled on one of the available nodes in your cluster. You can access the Nginx service by using the Pod's IP address directly or by using port forwarding.
+
+Here's an example of how you can access the Nginx service using port forwarding:
+
+```
+kubectl port-forward deployment/nginx-deployment -n ns2 8080:80
+```
+
+This command will forward local port 8080 to the Nginx container's port 80. You can then access the Nginx service by opening a web browser and navigating to http://localhost:8080.
+
+If you need to expose the Nginx service externally and have it accessible from outside the cluster, you can consider using a Service of type LoadBalancer. This will create an external load balancer that will route traffic to the Pods. However, keep in mind that using a LoadBalancer service will incur additional costs and may require specific network configurations depending on your cloud provider.
+
+If your goal is to simply test and access the Nginx service within the cluster, port forwarding should be sufficient. If you have specific requirements for external access or scaling, you can explore using a LoadBalancer service or other options like an Ingress controller.
+
+
+
 ```
 $ kubectl expose deployment nginx --port=80 --target-port=80 \
 --type=LoadBalancer
@@ -194,6 +212,59 @@ GKE provides amazing platform to view `Workloads & Load-balancer` as shown below
 GKE also provides UI for displaying `Loadbalancer`:
 
 ![My Image](https://raw.githubusercontent.com/collabnix/kubelabs/master/images/11.png)
+
+## Installing Kubeview for GKE cluster
+
+```
+git clone https://github.com/benc-uk/kubeview
+cd kubeview
+mv example-values.yaml myvalues.yaml
+```
+
+```
+helm install kubeview ./kubeview -f myvalues.yaml
+NAME: kubeview
+LAST DEPLOYED: Sun May 28 20:40:33 2023
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+NOTES:
+=====================================
+==== KubeView has been deployed! ====
+=====================================
+  To get the external IP of your application, run the following:
+
+  export SERVICE_IP=$(kubectl get svc --namespace default kubeview -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+  echo http://$SERVICE_IP
+
+  NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+        You can watch the status of by running 'kubectl get --namespace default svc -w kubeview'
+ajeetsraina@Q537JQXLVR charts % export SERVICE_IP=$(kubectl get svc --namespace default kubeview -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+  echo http://$SERVICE_IP
+http://
+ajeetsraina@Q537JQXLVR charts % kubectl get po,svc,deploy
+NAME                            READY   STATUS    RESTARTS   AGE
+pod/kubeview-6c4fcb74cc-mkbs2   1/1     Running   0          22s
+
+NAME                 TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+service/kubernetes   ClusterIP      10.60.0.1      <none>        443/TCP        80m
+service/kubeview     LoadBalancer   10.60.15.108   <pending>     80:31787/TCP   22s
+
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/kubeview   1/1     1            1           22s
+```
+
+```
+export SERVICE_IP=$(kubectl get svc --namespace default kubeview -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+  echo http://$SERVICE_IP
+
+http://34.125.190.171
+```
+<img width="1498" alt="image" src="https://github.com/collabnix/kubelabs/assets/34368930/95b46138-3d16-44da-a769-e39fb8d89d1f">
+
+
+
+
 
 ## Cleaning Up
 
