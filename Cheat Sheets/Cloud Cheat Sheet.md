@@ -299,6 +299,37 @@ The autoscaler is fairly complex but is worth learning if you primarily use AWS 
 
 Nodegroups (or nodepools) are collections of nodes that take away the responsibility of node management from your hands and places it in the hands of the cloud provider. This means that the provisioning and lifecycle management of these nodes is no longer your problem. This is obviously a very important feature of cluster management, and therefore all three cloud providers give you the option of using a nodegroup. So let's see how we can manipulate nodegroups with the CLI.
 
+First, let's look at creating a nodegroup. In AKS, the stub that acts as a gateway to all other nodegroup commands is:
+
+```
+az aks nodepool
+```
+
+You would then append a keyword to this command. If you wanted to add a nodepool, you would append `add`:
+
+```
+az aks nodepool add -g MyResourceGroup -n nodepool1 --cluster-name MyManagedCluster --node-osdisk-type Ephemeral --node-osdisk-size 48
+```
+
+As you can see, the flags that were introduced in the previous sections can be used here as well. Note that these parameters are **mandatory**:
+
+```
+-cluster-name
+
+--name --nodepool-name -n
+
+--resource-group -g
+```
+
+In the same way, if you wanted to delete an item, you would append `delete`:
+
+```
+az aks nodepool delete --cluster-name
+                       --name
+                       --resource-group
+                       [--no-wait]
+```
+
 ### Cluster Deletion
 
 Deleting clusters that you don't need is pretty important on the cloud since it can save you considerable amounts of money. Having an unused cluster that has idling worker nodes also makes it confusing to the cluster administrator when doing cluster maintenance. Fortunately, deleting clusters is a rather simple operation, regardless of the cloud service.
