@@ -8,7 +8,7 @@ Lets getting into the demo part now
 # Creating a Pod with Labels
 ```
 git clone https://github.com/collabnix/kubelabs
-cd kubelabs/Labels&Selectors/
+cd kubelabs/Labels-and-Selectors/
 ```
 
 
