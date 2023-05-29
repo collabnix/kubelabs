@@ -295,11 +295,11 @@ eksctl create cluster --asg-access
 
 The autoscaler is fairly complex but is worth learning if you primarily use AWS since this will help you save a lot of costs.
 
-### Managed nodegroups
+### Managed nodepools
 
-Nodegroups (or nodepools) are collections of nodes that take away the responsibility of node management from your hands and places it in the hands of the cloud provider. This means that the provisioning and lifecycle management of these nodes is no longer your problem. This is obviously a very important feature of cluster management, and therefore all three cloud providers give you the option of using a nodegroup. So let's see how we can manipulate nodegroups with the CLI.
+Nodepools (or nodegroups) are collections of nodes that take away the responsibility of node management from your hands and places it in the hands of the cloud provider. This means that the provisioning and lifecycle management of these nodes is no longer your problem. This is obviously a very important feature of cluster management, and therefore all three cloud providers give you the option of using a nodegroup. So let's see how we can manipulate nodegroups with the CLI.
 
-First, let's look at creating a nodegroup. In AKS, the stub that acts as a gateway to all other nodegroup commands is:
+First, let's look at creating a nodepool. In AKS, the stub that acts as a gateway to all other nodepool commands is:
 
 ```
 az aks nodepool
@@ -328,6 +328,51 @@ az aks nodepool delete --cluster-name
                        --name
                        --resource-group
                        [--no-wait]
+```
+
+To list out the node pool:
+
+```
+az aks nodepool list --cluster-name
+                     --resource-group
+```
+
+To start an agent in the node pool:
+
+```
+az aks nodepool start --cluster-name
+                      --name
+                      --resource-group
+                      [--aks-custom-headers]
+                      [--no-wait]
+```
+
+To stop an agent:
+
+```
+az aks nodepool stop --cluster-name
+                     --name
+                     --resource-group
+                     [--aks-custom-headers]
+                     [--no-wait]
+```
+
+The full list of commands that can be specified to `nodepool` can be found in the [official documentation](https://learn.microsoft.com/en-us/cli/azure/aks/nodepool?view=azure-cli-latest).
+
+Now, let's move on to GKE. Creating a node pool is similar:
+
+```
+gcloud container node-pools create POOL_NAME \
+    --cluster CLUSTER_NAME \
+    --service-account SERVICE_ACCOUNT
+```
+
+As with AKS, the cluster name and service account are mandatory.
+
+Listing nodes:
+
+```
+gcloud container node-pools list --cluster CLUSTER_NAME
 ```
 
 ### Cluster Deletion
