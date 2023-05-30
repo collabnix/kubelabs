@@ -375,6 +375,29 @@ Listing nodes:
 gcloud container node-pools list --cluster CLUSTER_NAME
 ```
 
+Describing them:
+
+```
+gcloud container node-pools describe POOL_NAME \
+    --cluster CLUSTER_NAME
+```
+
+With EKS, you have the same concept, except it is called nodegroups instead of nodepools. Other than that, everything including the commands is more or less the same. To create a nodegroup:
+
+```
+eksctl create nodegroup --cluster=<clusterName> [--name=<nodegroupName>]
+```
+
+As with all previous cases, you have to specify the cluster name and the name of the nodegroup.
+
+To list the details of a nodegroup, you use `get` instead of `list`:
+
+```
+eksctl get nodegroup --cluster=<clusterName> [--name=<nodegroupName>]
+```
+
+One very important feature of nodepools/nodegroups is that they can be scaled all at once with very simple commands. This will be covered in the section about cluster deletion since scalig and deletion go hand in hand.
+
 ### Cluster Deletion
 
 Deleting clusters that you don't need is pretty important on the cloud since it can save you considerable amounts of money. Having an unused cluster that has idling worker nodes also makes it confusing to the cluster administrator when doing cluster maintenance. Fortunately, deleting clusters is a rather simple operation, regardless of the cloud service.
