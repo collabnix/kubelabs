@@ -396,11 +396,13 @@ To list the details of a nodegroup, you use `get` instead of `list`:
 eksctl get nodegroup --cluster=<clusterName> [--name=<nodegroupName>]
 ```
 
-One very important feature of nodepools/nodegroups is that they can be scaled all at once with very simple commands. This will be covered in the section about cluster deletion since scalig and deletion go hand in hand.
+One very important feature of nodepools/nodegroups is that they can be scaled all at once with very simple commands. This will be covered in the section about cluster deletion since scaling and deletion go hand in hand.
 
 ### Cluster Deletion
 
-Deleting clusters that you don't need is pretty important on the cloud since it can save you considerable amounts of money. Having an unused cluster that has idling worker nodes also makes it confusing to the cluster administrator when doing cluster maintenance. Fortunately, deleting clusters is a rather simple operation, regardless of the cloud service.
+Before you go deleting any clusters, you should always consider just scaling down the node pools. This is because once the cluster is gone, you will not be able to get it back again. On the other hand, if you scale down a node pool, you could just scale it back up later.
+
+Deleting or scaling down clusters that you don't need is pretty important on the cloud since it can save you considerable amounts of money. Having an unused cluster that has idling worker nodes also makes it confusing to the cluster administrator when doing cluster maintenance. Fortunately, deleting clusters is a rather simple operation, regardless of the cloud service.
 
 With AKS, you first need to stop the cluster:
 
@@ -432,7 +434,7 @@ But this will permanently delete the node pool, making it impossible to reclaim 
 az aks nodepool scale --node-count 0 --name nodepool2 --cluster-name myAKSCluster --resource-group myResourceGroup
 ```
 
-The above line will scale down the node count to 0, effectively meaning that all active nodes are no longer running.
+The above line will scale down the node count to 0, effectively meaning that all active nodes are no longer running. You can scale the node count to anything else you would like by changing the `node-count` value.
 
 Deleting clusters with GKE is even more straightforward. To delete the cluster, use:
 
