@@ -1,0 +1,128 @@
+have_func: checking for rb_enc_raise() in ruby.h... -------------------- yes
+
+"gcc -o conftest -I/usr/local/include/ruby-2.6.0/x86_64-linux-musl -I/usr/local/include/ruby-2.6.0/ruby/backward -I/usr/local/include/ruby-2.6.0 -I.    -O3 -ggdb3 -Wall -Wextra -Wdeclaration-after-statement -Wdeprecated-declarations -Wduplicated-cond -Wimplicit-function-declaration -Wimplicit-int -Wmisleading-indentation -Wpointer-arith -Wrestrict -Wwrite-strings -Wimplicit-fallthrough=0 -Wmissing-noreturn -Wno-cast-function-type -Wno-constant-logical-operand -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-packed-bitfield-compat -Wno-parentheses-equality -Wno-self-assign -Wno-tautological-compare -Wno-unused-parameter -Wno-unused-value -Wsuggest-attribute=format -Wsuggest-attribute=noreturn -Wunused-variable  -fPIC conftest.c  -L. -L/usr/local/lib -Wl,-rpath,/usr/local/lib -L. -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -Wl,-rpath,/usr/local/lib -L/usr/local/lib -lruby  -lm   -lc"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: int main(int argc, char **argv)
+4: {
+5:   return 0;
+6: }
+/* end */
+
+"gcc -o conftest -I/usr/local/include/ruby-2.6.0/x86_64-linux-musl -I/usr/local/include/ruby-2.6.0/ruby/backward -I/usr/local/include/ruby-2.6.0 -I.    -O3 -ggdb3 -Wall -Wextra -Wdeclaration-after-statement -Wdeprecated-declarations -Wduplicated-cond -Wimplicit-function-declaration -Wimplicit-int -Wmisleading-indentation -Wpointer-arith -Wrestrict -Wwrite-strings -Wimplicit-fallthrough=0 -Wmissing-noreturn -Wno-cast-function-type -Wno-constant-logical-operand -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-packed-bitfield-compat -Wno-parentheses-equality -Wno-self-assign -Wno-tautological-compare -Wno-unused-parameter -Wno-unused-value -Wsuggest-attribute=format -Wsuggest-attribute=noreturn -Wunused-variable  -fPIC conftest.c  -L. -L/usr/local/lib -Wl,-rpath,/usr/local/lib -L. -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -Wl,-rpath,/usr/local/lib -L/usr/local/lib -lruby  -lm   -lc"
+conftest.c: In function 't':
+conftest.c:16:57: error: 'rb_enc_raise' undeclared (first use in this function); did you mean 'rb_exc_raise'?
+ int t(void) { void ((*volatile p)()); p = (void ((*)()))rb_enc_raise; return !p; }
+                                                         ^~~~~~~~~~~~
+                                                         rb_exc_raise
+conftest.c:16:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c: At top level:
+cc1: warning: unrecognized command line option '-Wno-self-assign'
+cc1: warning: unrecognized command line option '-Wno-parentheses-equality'
+cc1: warning: unrecognized command line option '-Wno-constant-logical-operand'
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <ruby.h>
+ 4: 
+ 5: /*top*/
+ 6: extern int t(void);
+ 7: int main(int argc, char **argv)
+ 8: {
+ 9:   if (argc > 1000000) {
+10:     int (* volatile tp)(void)=(int (*)(void))&t;
+11:     printf("%d", (*tp)());
+12:   }
+13: 
+14:   return 0;
+15: }
+16: int t(void) { void ((*volatile p)()); p = (void ((*)()))rb_enc_raise; return !p; }
+/* end */
+
+"gcc -o conftest -I/usr/local/include/ruby-2.6.0/x86_64-linux-musl -I/usr/local/include/ruby-2.6.0/ruby/backward -I/usr/local/include/ruby-2.6.0 -I.    -O3 -ggdb3 -Wall -Wextra -Wdeclaration-after-statement -Wdeprecated-declarations -Wduplicated-cond -Wimplicit-function-declaration -Wimplicit-int -Wmisleading-indentation -Wpointer-arith -Wrestrict -Wwrite-strings -Wimplicit-fallthrough=0 -Wmissing-noreturn -Wno-cast-function-type -Wno-constant-logical-operand -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-packed-bitfield-compat -Wno-parentheses-equality -Wno-self-assign -Wno-tautological-compare -Wno-unused-parameter -Wno-unused-value -Wsuggest-attribute=format -Wsuggest-attribute=noreturn -Wunused-variable  -fPIC conftest.c  -L. -L/usr/local/lib -Wl,-rpath,/usr/local/lib -L. -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -Wl,-rpath,/usr/local/lib -L/usr/local/lib -lruby  -lm   -lc"
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <ruby.h>
+ 4: 
+ 5: /*top*/
+ 6: extern int t(void);
+ 7: int main(int argc, char **argv)
+ 8: {
+ 9:   if (argc > 1000000) {
+10:     int (* volatile tp)(void)=(int (*)(void))&t;
+11:     printf("%d", (*tp)());
+12:   }
+13: 
+14:   return 0;
+15: }
+16: extern void rb_enc_raise();
+17: int t(void) { rb_enc_raise(); return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for rb_enc_interned_str() in ruby.h... -------------------- no
+
+"gcc -o conftest -I/usr/local/include/ruby-2.6.0/x86_64-linux-musl -I/usr/local/include/ruby-2.6.0/ruby/backward -I/usr/local/include/ruby-2.6.0 -I.    -O3 -ggdb3 -Wall -Wextra -Wdeclaration-after-statement -Wdeprecated-declarations -Wduplicated-cond -Wimplicit-function-declaration -Wimplicit-int -Wmisleading-indentation -Wpointer-arith -Wrestrict -Wwrite-strings -Wimplicit-fallthrough=0 -Wmissing-noreturn -Wno-cast-function-type -Wno-constant-logical-operand -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-packed-bitfield-compat -Wno-parentheses-equality -Wno-self-assign -Wno-tautological-compare -Wno-unused-parameter -Wno-unused-value -Wsuggest-attribute=format -Wsuggest-attribute=noreturn -Wunused-variable  -fPIC conftest.c  -L. -L/usr/local/lib -Wl,-rpath,/usr/local/lib -L. -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -Wl,-rpath,/usr/local/lib -L/usr/local/lib -lruby  -lm   -lc"
+conftest.c: In function 't':
+conftest.c:16:57: error: 'rb_enc_interned_str' undeclared (first use in this function); did you mean 'rb_sym_interned_p'?
+ int t(void) { void ((*volatile p)()); p = (void ((*)()))rb_enc_interned_str; return !p; }
+                                                         ^~~~~~~~~~~~~~~~~~~
+                                                         rb_sym_interned_p
+conftest.c:16:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c: At top level:
+cc1: warning: unrecognized command line option '-Wno-self-assign'
+cc1: warning: unrecognized command line option '-Wno-parentheses-equality'
+cc1: warning: unrecognized command line option '-Wno-constant-logical-operand'
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <ruby.h>
+ 4: 
+ 5: /*top*/
+ 6: extern int t(void);
+ 7: int main(int argc, char **argv)
+ 8: {
+ 9:   if (argc > 1000000) {
+10:     int (* volatile tp)(void)=(int (*)(void))&t;
+11:     printf("%d", (*tp)());
+12:   }
+13: 
+14:   return 0;
+15: }
+16: int t(void) { void ((*volatile p)()); p = (void ((*)()))rb_enc_interned_str; return !p; }
+/* end */
+
+"gcc -o conftest -I/usr/local/include/ruby-2.6.0/x86_64-linux-musl -I/usr/local/include/ruby-2.6.0/ruby/backward -I/usr/local/include/ruby-2.6.0 -I.    -O3 -ggdb3 -Wall -Wextra -Wdeclaration-after-statement -Wdeprecated-declarations -Wduplicated-cond -Wimplicit-function-declaration -Wimplicit-int -Wmisleading-indentation -Wpointer-arith -Wrestrict -Wwrite-strings -Wimplicit-fallthrough=0 -Wmissing-noreturn -Wno-cast-function-type -Wno-constant-logical-operand -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-packed-bitfield-compat -Wno-parentheses-equality -Wno-self-assign -Wno-tautological-compare -Wno-unused-parameter -Wno-unused-value -Wsuggest-attribute=format -Wsuggest-attribute=noreturn -Wunused-variable  -fPIC conftest.c  -L. -L/usr/local/lib -Wl,-rpath,/usr/local/lib -L. -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -Wl,-rpath,/usr/local/lib -L/usr/local/lib -lruby  -lm   -lc"
+/usr/lib/gcc/x86_64-alpine-linux-musl/8.3.0/../../../../x86_64-alpine-linux-musl/bin/ld: /tmp/ccINhDFn.o: in function `t':
+/srv/jekyll/.bundles_cache/ruby/2.6.0/gems/json-2.6.3/ext/json/ext/parser/conftest.c:17: undefined reference to `rb_enc_interned_str'
+collect2: error: ld returned 1 exit status
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <ruby.h>
+ 4: 
+ 5: /*top*/
+ 6: extern int t(void);
+ 7: int main(int argc, char **argv)
+ 8: {
+ 9:   if (argc > 1000000) {
+10:     int (* volatile tp)(void)=(int (*)(void))&t;
+11:     printf("%d", (*tp)());
+12:   }
+13: 
+14:   return 0;
+15: }
+16: extern void rb_enc_interned_str();
+17: int t(void) { rb_enc_interned_str(); return 0; }
+/* end */
+
+--------------------
+

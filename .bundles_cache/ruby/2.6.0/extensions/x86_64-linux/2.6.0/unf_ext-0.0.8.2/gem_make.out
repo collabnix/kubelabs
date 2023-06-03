@@ -1,0 +1,22 @@
+current directory: /srv/jekyll/.bundles_cache/ruby/2.6.0/gems/unf_ext-0.0.8.2/ext/unf_ext
+/usr/local/bin/ruby -I /usr/local/lib/ruby/site_ruby/2.6.0 -r ./siteconf20230505-36-44vnla.rb extconf.rb
+checking for -lstdc++... yes
+creating Makefile
+
+current directory: /srv/jekyll/.bundles_cache/ruby/2.6.0/gems/unf_ext-0.0.8.2/ext/unf_ext
+make "DESTDIR=" clean
+
+current directory: /srv/jekyll/.bundles_cache/ruby/2.6.0/gems/unf_ext-0.0.8.2/ext/unf_ext
+make "DESTDIR="
+compiling unf.cc
+cc1plus: warning: command line option '-Wdeclaration-after-statement' is valid for C/ObjC but not for C++
+cc1plus: warning: command line option '-Wimplicit-function-declaration' is valid for C/ObjC but not for C++
+cc1plus: warning: command line option '-Wimplicit-int' is valid for C/ObjC but not for C++
+cc1plus: warning: unrecognized command line option '-Wno-self-assign'
+cc1plus: warning: unrecognized command line option '-Wno-parentheses-equality'
+cc1plus: warning: unrecognized command line option '-Wno-constant-logical-operand'
+linking shared-object unf_ext.so
+
+current directory: /srv/jekyll/.bundles_cache/ruby/2.6.0/gems/unf_ext-0.0.8.2/ext/unf_ext
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 unf_ext.so ./.gem.20230505-36-gsxfc5

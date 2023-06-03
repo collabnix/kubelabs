@@ -43,7 +43,16 @@
 
 - [Kubectl for Docker Beginners](./kubectl-for-docker.md) 
 - [Accessing Kubernetes API](./api.md) 
+- [How to know if Kubernetes is using Docker or Containerd as a runtime](detect.md)
 
+## Kubernetes CRUD 
+
+- [Using Python](python/README.md)
+- [Using Go](golang/README.md)
+
+## Using AI
+
+- [Deploying Kubernetes via AI](./ai/README.md)
 
 
 ## Pods101
@@ -56,8 +65,11 @@
  - [Executing Commands against Pod](./pods101/deploy-your-first-nginx-pod.md#executing-commands-against-pods) 
  - [Terminating a Pod](./pods101/deploy-your-first-nginx-pod.md#deleting-the-pod) 
  - [Adding a 2nd container to a Pod](./pods101/deploy-your-first-nginx-pod.md#ading-a-2nd-container-to-a-pod) 
+ - [Labels and Selectors in a Pod](./pods101/labels-and-selectors/README.md)
 
- 
+### Kubernetes Tools for Pods
+
+- [Kubetail](https://github.com/collabnix/kubelabs/blob/master/pods101/tools/kubetail.md)
 
 ## ReplicaSet101
 
@@ -93,6 +105,7 @@
  
   - [Introductory Slides](https://collabnix.github.io/kubelabs/Slides_Services101/Services101.html) 
   - [Deploy a Kubernetes Service?](./Services101/README.md#deploying--a-kubernetes-service)
+  - [Labels and Selectors](https://github.com/collabnix/kubelabs/blob/master/Labels-and-Selectors/README.MD)
   - [Service Exposing More Than One Port](./Services101/README.md#service-exposing-more-than-one-port)
   - [Kubernetes Service Without Pods?](./Services101/README.md#kubernetes-service-without-pods)
   - [Service Discovery](./Services101/README.md#service-discovery)
@@ -278,6 +291,34 @@
 - [Saiyam Pathak](https://twitter.com/SaiyamPathak)
 - [Divyajeet Singh](https://www.linkedin.com/in/divyajeet-singh)
 - [Apurva Bhandari](https://www.linkedin.com/in/apurvabhandari-linux)
+
+## Contribution Guidelines
+
+## Step 1. Clone the repository
+
+```
+ git clone https://github.com/collabnix/kubelabs
+```
+
+## Step 2. Add _config_dev.yml
+
+Add the following entry for local access
+
+```
+url: http://127.0.0.1:4000
+```
+
+## Step 2. Run the container
+
+
+```
+docker run --rm \
+  -v "$PWD:/srv/jekyll" \
+  -e BUNDLE_PATH="/srv/jekyll/.bundles_cache" \
+  -p 4000:4000 \
+  jekyll/builder:3.8 \
+  bash -c "gem install bundler && bundle install && bundle exec jekyll serve --host 0.0.0.0 --verbose --config _config.yml,_config_dev.yml"
+ ```
 
 
 

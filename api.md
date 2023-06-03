@@ -44,6 +44,28 @@ Using the Go or Python client libraries provides accessing `kubectl` in proxy mo
 
 ## Using kubectl proxy
 
+Running kubectl in proxy mode allows you to establish a secure connection to the Kubernetes API server without exposing it directly to the outside world. It acts as a bridge between your local machine and the Kubernetes cluster's API server.
+
+Here are a few reasons why you might want to run kubectl in proxy mode for API access:
+
+- Security: By default, the Kubernetes API server may be configured to only accept connections from within the cluster's network. Running kubectl in proxy mode allows you to securely access the API server from your local machine without needing to expose it externally. This helps protect the API server from unauthorized access and potential security threats.
+
+- Network Restrictions: In some environments, network restrictions or firewalls may prevent direct access to the Kubernetes API server. Running kubectl in proxy mode allows you to bypass these restrictions by establishing a connection through a proxy. This is especially useful in scenarios where you are working remotely or in a restricted network environment.
+
+- Simplified Authentication: Running kubectl in proxy mode can simplify the authentication process. Instead of configuring authentication credentials directly on your local machine, the proxy handles the authentication on your behalf. It may use the authentication options configured on the cluster, such as client certificates or tokens, to authenticate and authorize your API requests.
+
+- Local Development: Proxy mode is often used during local development to interact with the Kubernetes API server running in a remote cluster. It allows developers to test and debug their applications against the cluster's API without the need for direct access or exposing the cluster to the local machine.
+
+To run kubectl in proxy mode, you can use the following command:
+
+```
+kubectl proxy
+```
+
+This will start a local proxy server that listens on a specified port (default is 8001). Once the proxy is running, you can access the Kubernetes API server by making requests to localhost or 127.0.0.1 on the designated port.
+
+Running kubectl in proxy mode provides a secure and convenient way to access the Kubernetes API server, allowing you to interact with and manage your cluster from your local machine.
+
 The following command runs `kubectl` in a mode where it acts as a reverse proxy. It handles locating the API server and authenticating.
 
 ```

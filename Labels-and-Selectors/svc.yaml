@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: myservice
+spec:
+  selector: 
+      demo: kubelabs
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 80
