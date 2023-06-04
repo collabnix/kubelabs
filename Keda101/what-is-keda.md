@@ -12,4 +12,4 @@ The great thing about KEDA is that it is flexible from both ends. It's flexible 
 
 As you might guess, the ability to scale any Kubernetes resource based on just about any type of metric is an incredibly powerful tool. So let's go ahead and jump straight into the lab!
 
-[Next: KEDA Lab]
+[Next: KEDA Lab](./keda-lab.md)
