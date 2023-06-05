@@ -18,4 +18,10 @@ You now have all the configuration files required to do the deployment. The `Dep
 kubectl apply -f deployment/
 ```
 
-While the deployment takes place, let's take a look at what we are deploying.
+While the deployment takes place, let's take a look at what we are deploying. First, you will notice that there are two deployments: MySQL and Redis. The [mysql deployment](https://github.com/turbaszek/keda-example/blob/master/deployment/mysql-deployment.yaml) is straightforward. A Service, a PersistentVolumeClaim, and a Deployment. The service opens up a simple port (3306). The PersistentVolumeClaim is a necessary part of any database system since pods are ephemeral. When the pod goes down, any data that it held would disappear, which would be a pretty terrible design for a database that is designed to hold data forever. Therefore, a permanent volume is used to hold data. Finally, you have the deployment, which holds the main part of the resource. This deployment is a simple MySQL image running with 1 replica on port 3306 with the admin password "keda-talk".
+
+If you look at the [redis deployment](https://github.com/turbaszek/keda-example/blob/master/deployment/redis-deployment.yaml), it's basically the same thing, running on the port with 6379.
+
+You also have a [service account resource](https://github.com/turbaszek/keda-example/blob/master/deployment/make-user.yaml) which creates a cluster role that is an admin. This is the unrestricted role that will be used across the cluster.
+
+Next, you have the app and API deployments, which constitute the web application that will be connecting to the Redis and MySQL applications.
