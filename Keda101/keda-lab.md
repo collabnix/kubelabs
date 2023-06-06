@@ -12,6 +12,14 @@ In this case, we will be using the [MySQL scaler](https://keda.sh/docs/2.10/scal
 git clone https://github.com/turbaszek/keda-example.git
 ```
 
+Since the web application and API are both avialble in the repo and will be hosted locally, you need to first run:
+
+```
+docker build
+```
+
+which will create a Golang application.
+
 You now have all the configuration files required to do the deployment. The `Deployment` folder you find inside the repo are all the files you need to deploy. Go ahead and deploy all the resources to the cluster:
 
 ```
@@ -24,4 +32,33 @@ If you look at the [redis deployment](https://github.com/turbaszek/keda-example/
 
 You also have a [service account resource](https://github.com/turbaszek/keda-example/blob/master/deployment/make-user.yaml) which creates a cluster role that is an admin. This is the unrestricted role that will be used across the cluster.
 
-Next, you have the app and API deployments, which constitute the web application that will be connecting to the Redis and MySQL applications.
+Next, you have the app and API deployments, which constitute the web application that will be connecting to the Redis and MySQL applications. The [API deployment](https://github.com/turbaszek/keda-example/blob/master/deployment/api-deployment.yaml) creates a service with port 3232 that runs with a load balancer. The image that will be used is the image that you previously built with `docker build`. The [App deployment](https://github.com/turbaszek/keda-example/blob/master/deployment/app-deployment.yaml) is the same thing, except it handles the application and not the API.
+
+You probably can see where KEDA is going to fit in now. You have the API and the application, as well as the database. When the number of requests that come into the database increase, the number of pods for the API and application will also increment to handle the extra traffic. In the same way, when the number of requests decreases, the number of pods will go down to save costs.
+
+Now that the cluster and the application are ready, install KEDA. It is recommended you use Helm for this, as Helm will largely take care of the setup for you.
+
+Add the repo:
+
+```
+helm repo add kedacore https://kedacore.github.io/charts
+```
+
+Update it:
+
+```
+helm repo update
+```
+
+Then install KEDA in the correct namespace:
+
+```
+kubectl create namespace keda
+helm install keda kedacore/keda --namespace keda
+```
+
+You can then see that the KEDA resources have been set up in the keda namespace:
+
+```
+kubectl get po -n keda
+```
