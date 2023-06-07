@@ -28,7 +28,7 @@ kubectl apply -f deployment/
 
 While the deployment takes place, let's take a look at what we are deploying. First, you will notice that there are two deployments: MySQL and Redis. The [mysql deployment](https://github.com/turbaszek/keda-example/blob/master/deployment/mysql-deployment.yaml) is straightforward. A Service, a PersistentVolumeClaim, and a Deployment. The service opens up a simple port (3306). The PersistentVolumeClaim is a necessary part of any database system since pods are ephemeral. When the pod goes down, any data that it held would disappear, which would be a pretty terrible design for a database that is designed to hold data forever. Therefore, a permanent volume is used to hold data. Finally, you have the deployment, which holds the main part of the resource. This deployment is a simple MySQL image running with 1 replica on port 3306 with the admin password "keda-talk".
 
-If you look at the [redis deployment](https://github.com/turbaszek/keda-example/blob/master/deployment/redis-deployment.yaml), it's basically the same thing, running on the port with 6379.
+If you look at the [redis deployment](https://github.com/turbaszek/keda-example/blob/master/deployment/redis-deployment.yaml), it's basically the same thing, running on the port with 6379. We will be scaling based on MySQL, so there is no need to look deeply into the redis deployment. You can avoid deploying it altogether if you prefer.
 
 You also have a [service account resource](https://github.com/turbaszek/keda-example/blob/master/deployment/make-user.yaml) which creates a cluster role that is an admin. This is the unrestricted role that will be used across the cluster.
 
@@ -62,3 +62,33 @@ You can then see that the KEDA resources have been set up in the keda namespace:
 ```
 kubectl get po -n keda
 ```
+
+Before you start scaling anything, look at the initial state of the pods. Open up a new terminal instance and use:
+
+```
+kubectl get po --watch
+```
+
+Make sure you set the namespace with `-n` if you deployed the API in a specific namespace. You now have an auto-updating view of the pods and their replicas.
+
+Now, deploy the `mysql-hpa.yaml` found in the keda folder:
+
+```
+kubectl apply -f keda/mysql-hpa.yaml
+```
+
+This is where the dummy deployment we saw earlier comes into place. The dummy pod will now be scaled up and down by KEDA depending on the MySQL row count. Insert some items into the MySQL database:
+
+```
+kubectl exec $(kubectl get pods | grep "server" | cut -f 1 -d " ") -- keda-talk mysql insert
+```
+
+If you look at the watch window that you opened up earlier, you should see additional replicas of the pods getting created.
+
+Now let's look at scaling down. Delete items from the MySQL pod:
+
+```
+kubectl exec $(kubectl get pods | grep "server" | cut -f 1 -d " ") -- keda-talk mysql delete
+```
+
+Go back to the watch window, and you should see the number of pods decreasing.
