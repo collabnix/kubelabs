@@ -92,3 +92,7 @@ kubectl exec $(kubectl get pods | grep "server" | cut -f 1 -d " ") -- keda-talk 
 ```
 
 Go back to the watch window, and you should see the number of pods decreasing.
+
+## Conclusion
+
+This wraps up the lesson on KEDA. What we tried out was a simple demonstration of a MySQL scaler, but it is a good representation of what you can expect with other data sources. If you want to try out other scalers, make sure you check out the [official samples page](https://github.com/kedacore/samples).
