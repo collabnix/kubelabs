@@ -25,4 +25,18 @@ Now, the installation will begin. After a minute or so, use this command to view
 kubectl logs -n kubesphere-system $(kubectl get pod -n kubesphere-system -l 'app in (ks-install, ks-installer)' -o jsonpath='{.items[0].metadata.name}') -f
 ```
 
-You will see the installation happening. Note that installation will take a while (around 20 minutes) depending on the speed of your machine and cluster.
+You will see the installation happening. Note that installation will take a while (around 20 minutes) depending on the speed of your machine and cluster. In the end, you should see a message giving you the login details and providing the URL you can use.
+
+Depending on the cluster you are using, the URL may or may not work. Run:
+
+```
+kubectl get svc -n kubesphere-system
+```
+
+To get the list of services. The service you should look for is `ks-console`. If you cannot connect to the KubeSphere dashboard from the provided URL, use port forwarding:
+
+```
+kubectl port-forward ks-console-xxxx 80:30880 
+```
+
+You should now be able to access the dashboard via `127.0.0.1:30880`.

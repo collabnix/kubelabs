@@ -7,3 +7,5 @@ But why stop there? If you have a team of network engineers or IT admins, they l
 For a non-Kubernetes person, explaining the concept of Helm charts and how they can be used might be a little tricky, and Kubesphere has a solution for that too. Kubesphere provides its own app store that allows you to select which service you wish to integrate into your Kubernetes cluster and allows you to deploy it with a single click of a button. So if you wanted to add sonarqube integration to your cluster, you only have to select the option in the App Store and deploy.
 
 If this wasn't enough features for you, you also have things such as an in-built istio service mesh and direct integration with [KubeEdge](https://kubeedge.io/en/), and additional features are being added all the time. So let's get started with installing and setting up KubeSphere.
+
+[Next: Kubesphere Lab](./kubesphere-lab.md)
