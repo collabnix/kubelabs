@@ -377,6 +377,6 @@ $ mongo
 
 And that's it! We have successfully used Node + Mongo with FluentD.
 
-So, to summarize, fluentd is a centralized logging layer that takes in data from an input source and produces a different, more standard form of data to an output source. Now let's look at an alternative: Fluent Bit.
+Now that we have looked at an end to end usage of fluentd, let's look at how you can get fluentd running on a Kubernetes cluster while aggregating logs from within that same cluster.
 
-[Next: Fluent Bit](./fluentdbit.md)
+[Next: fluentd on Kubernetes](./fluentd-kube.md)
