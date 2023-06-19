@@ -32,7 +32,15 @@ The answer is fluent configs. We look into them in detail in the last section, a
 
 Let's go through this configuration block line by line. The first thing to be mentioned is the `source`. This is where the data comes from. In this case, we will simply look at log files and get their tail. The `path` specifies where the logs come from. The `pos_file` holds a record of the position (up to where have the logs already been read?). Then comes `tag`, which tags the logs with a specific tag which will be used to pick up the logs later. You also have some self-explanatory parameters there, followed by a `parse` tag that specifies a grok pattern used to parse the logs. This pattern needs to change to match your log files so that the data is represented properly in Kibana.
 
-The next part is the `match` tag, which matches all logs with the `myapp.log` tag. It then redirects these parsed logs to elasticsearch.
+The next part is the `match` tag, which matches all logs with the `myapp.log` tag. It then redirects these parsed logs to elasticsearch. The details of elasticsearch follow. Having `logstash_format` is useful if you want to be able to index logs with `logstash-*`. With that, our configuration file is complete. Now that that's taken care of, let's look at integrating this config file with your Kubernetes cluster. The integration will happen in the form of a ConfigMap, and the file you just created will be used as-is. This ConfigMap will be mounted as a volume:
+
+```
+- name: config-volume
+  mountPath: /fluentd/etc/kubernetes.conf
+  subPath: Kubernetes.conf
+```
+
+Add this to the `volumeMounts` section of your deployment yaml, and deploy the file into your cluster.
 
 So, to summarize, fluentd is a centralized logging layer that takes in data from an input source and produces a different, more standard form of data to an output source. Now let's look at an alternative: Fluent Bit.
 
