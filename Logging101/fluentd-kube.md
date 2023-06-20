@@ -42,6 +42,18 @@ The next part is the `match` tag, which matches all logs with the `myapp.log` ta
 
 Add this to the `volumeMounts` section of your deployment yaml, and deploy the file into your cluster.
 
+If you fetch the configmaps from your cluster with:
+
+```
+kubectl get configmap
+```
+
+you will see that the map is present. Since you also deployed the fluentd deployment, any old fluentd pods should have terminated and new ones that are bound to the configmap should have started. If you look at the logs of the fluentd pod that got created, you will notice that the logs produced are being tailed:
+
+> following tail of log: xxx.log
+
+This means that the logs have been processed by fluentd, and most likely pushed to elasticsearch.
+
 So, to summarize, fluentd is a centralized logging layer that takes in data from an input source and produces a different, more standard form of data to an output source. Now let's look at an alternative: Fluent Bit.
 
 [Next: Fluent Bit](./fluentdbit.md)
