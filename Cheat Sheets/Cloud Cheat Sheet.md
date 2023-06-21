@@ -198,7 +198,7 @@ It's the same with Azure:
 ```
 
 
-### Cluster creationg
+### Cluster creation
 
 Now that we have all the flags we need, let's put them together and create clusters.
 
@@ -295,19 +295,173 @@ eksctl create cluster --asg-access
 
 The autoscaler is fairly complex but is worth learning if you primarily use AWS since this will help you save a lot of costs.
 
-### Cluster security
+### Managed nodepools
 
-Securing your cluster is a very important and lengthy process which has been covered in detail in the [Security101](../Security101/kubernetes-security.md) section. Regardless of the size of the cluster, and whether it is in the cloud or on-prem, you must ensure that your cluster is not vulnerable to attack.
+Nodepools (or nodegroups) are collections of nodes that take away the responsibility of node management from your hands and places it in the hands of the cloud provider. This means that the provisioning and lifecycle management of these nodes is no longer your problem. This is obviously a very important feature of cluster management, and therefore all three cloud providers give you the option of using a nodegroup. So let's see how we can manipulate nodegroups with the CLI.
 
-In the case of cloud providers, they already provide several levels of authentication to help you out. While the exact commands for these authentication types aren't something you will need to keep in memory, you will be expected to know about Kubernetes security. So let's look at some commands to go with it.
-
-### Subnetting
-
-With all three cloud providers, you need to specify a VPC before you do anything (both Kubernetes related and non-related). With AKS and GKE you need to specify it at the start of the project while eksctl automatically creates one if you haven't specified one. Therefore, it is not mandatory to remember these commands.
-
-If you need to set it manually in EKS, you can use the flag:
+First, let's look at creating a nodepool. In AKS, the stub that acts as a gateway to all other nodepool commands is:
 
 ```
---vpc-cidr
+az aks nodepool
 ```
 
+You would then append a keyword to this command. If you wanted to add a nodepool, you would append `add`:
+
+```
+az aks nodepool add -g MyResourceGroup -n nodepool1 --cluster-name MyManagedCluster --node-osdisk-type Ephemeral --node-osdisk-size 48
+```
+
+As you can see, the flags that were introduced in the previous sections can be used here as well. Note that these parameters are **mandatory**:
+
+```
+-cluster-name
+
+--name --nodepool-name -n
+
+--resource-group -g
+```
+
+In the same way, if you wanted to delete an item, you would append `delete`:
+
+```
+az aks nodepool delete --cluster-name
+                       --name
+                       --resource-group
+                       [--no-wait]
+```
+
+To list out the node pool:
+
+```
+az aks nodepool list --cluster-name
+                     --resource-group
+```
+
+To start an agent in the node pool:
+
+```
+az aks nodepool start --cluster-name
+                      --name
+                      --resource-group
+                      [--aks-custom-headers]
+                      [--no-wait]
+```
+
+To stop an agent:
+
+```
+az aks nodepool stop --cluster-name
+                     --name
+                     --resource-group
+                     [--aks-custom-headers]
+                     [--no-wait]
+```
+
+The full list of commands that can be specified to `nodepool` can be found in the [official documentation](https://learn.microsoft.com/en-us/cli/azure/aks/nodepool?view=azure-cli-latest).
+
+Now, let's move on to GKE. Creating a node pool is similar:
+
+```
+gcloud container node-pools create POOL_NAME \
+    --cluster CLUSTER_NAME \
+    --service-account SERVICE_ACCOUNT
+```
+
+As with AKS, the cluster name and service account are mandatory.
+
+Listing nodes:
+
+```
+gcloud container node-pools list --cluster CLUSTER_NAME
+```
+
+Describing them:
+
+```
+gcloud container node-pools describe POOL_NAME \
+    --cluster CLUSTER_NAME
+```
+
+With EKS, you have the same concept, except it is called nodegroups instead of nodepools. Other than that, everything including the commands is more or less the same. To create a nodegroup:
+
+```
+eksctl create nodegroup --cluster=<clusterName> [--name=<nodegroupName>]
+```
+
+As with all previous cases, you have to specify the cluster name and the name of the nodegroup.
+
+To list the details of a nodegroup, you use `get` instead of `list`:
+
+```
+eksctl get nodegroup --cluster=<clusterName> [--name=<nodegroupName>]
+```
+
+One very important feature of nodepools/nodegroups is that they can be scaled all at once with very simple commands. This will be covered in the section about cluster deletion since scaling and deletion go hand in hand.
+
+### Cluster Deletion
+
+Before you go deleting any clusters, you should always consider just scaling down the node pools. This is because once the cluster is gone, you will not be able to get it back again. On the other hand, if you scale down a node pool, you could just scale it back up later.
+
+Deleting or scaling down clusters that you don't need is pretty important on the cloud since it can save you considerable amounts of money. Having an unused cluster that has idling worker nodes also makes it confusing to the cluster administrator when doing cluster maintenance. Fortunately, deleting clusters is a rather simple operation, regardless of the cloud service.
+
+With AKS, you first need to stop the cluster:
+
+```
+az aks stop --name myAKSCluster --resource-group myResourceGroup
+```
+
+You can verify that the cluster is stopped:
+
+```
+az aks show --name myAKSCluster --resource-group myResourceGroup
+```
+
+Finally, you can delete the cluster:
+
+```
+az aks delete --name myAKSCluster --resource-group myResourceGroup
+```
+
+Note that while this deletes the cluster, the nodes are still active. This helps if you want to get the cluster back up and running quickly again. Otherwise, you can delete the node pool as well:
+
+```
+az aks nodepool delete -g myResourceGroup --cluster-name myAKSCluster --name myPool
+```
+
+But this will permanently delete the node pool, making it impossible to reclaim the cluster. Another option, therefore, is to scale down the entire node pool:
+
+```
+az aks nodepool scale --node-count 0 --name nodepool2 --cluster-name myAKSCluster --resource-group myResourceGroup
+```
+
+The above line will scale down the node count to 0, effectively meaning that all active nodes are no longer running. You can scale the node count to anything else you would like by changing the `node-count` value.
+
+Deleting clusters with GKE is even more straightforward. To delete the cluster, use:
+
+```
+gcloud container clusters delete CLUSTER_NAME
+```
+
+This will not only delete the cluster but the associated node instances as well. Similar to AKS, you could also scale a node pool as well:
+
+```
+gcloud container clusters resize CLUSTER_NAME \
+    --node-pool POOL_NAME \
+    --num-nodes NUM_NODES
+```
+
+Deleting an EKS cluster is as simple as creating one:
+
+```
+eksctl delete cluster --name CLUSTER_NAME
+```
+
+This will delete the cluster as well as any associated nodes. You could also scale nodegroups in a fairly simple manner:
+
+```
+eksctl scale nodegroup --cluster=<clusterName> --nodes=<desiredCount> --name=<nodegroupName> [ --nodes-min=<minSize> ] [ --nodes-max=<maxSize> ] --wait
+```
+
+## Conclusion
+
+In this cheat sheet, you can find commands and flags for the three major cloud providers. We covered important cloud concepts that are needed before cluster creation such as region specification, machine specification, and infrastructure specification. Following this, we covered cluster creation, cluster authentication, and cluster scaling. Finally, we finished off with cluster deletion. This covers a large part of Kubernetes engine functions that are used daily.
