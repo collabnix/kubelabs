@@ -52,7 +52,19 @@ you will see that the map is present. Since you also deployed the fluentd deploy
 
 > following tail of log: xxx.log
 
-This means that the logs have been processed by fluentd, and most likely pushed to elasticsearch.
+This means that the logs have been processed by fluentd, and most likely pushed to elasticsearch. Since Kibana has been installed, you can verify that the logs are actually in elasticsearch by looking at the Kibana dashboard. Use:
+
+```
+kubectl get svc
+```
+
+to see if the Kibana service is running. Note that at this point, Kibana does not have an external IP, meaning that you won't be able to open it up in your browser. To remedy, this, use port forwarding:
+
+```
+kubectl port-forward kibana-xxx 5601:5601
+```
+
+Now, you should be able to go to `127.0.0.1:5601` and access the Kibana dashboard. However, you might notice that you see no logs at this point. This is because you first need to create an index. Go into the settings page and select "index management". From here, create an index. If you used `logstash_format true` in your kubeconfig, you should use `logstash-*` as the index.
 
 So, to summarize, fluentd is a centralized logging layer that takes in data from an input source and produces a different, more standard form of data to an output source. Now let's look at an alternative: Fluent Bit.
 
