@@ -1,7 +1,6 @@
 
-# Installing kubernetes with kubeadm on Ubuntu 16.04+/Debian 9+/HypriotOS v1.0.1+
+# Installing kubernetes with kubeadm on Ubuntu 16.04+ & Debian 9+
 
-## Disable Swap on all nodes(Master+workers)
 ```
 sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 sudo swapoff -a
@@ -21,7 +20,9 @@ sudo apt-get update
 sudo apt-get install -y kubelet kubeadm kubectl
 sudo apt-mark hold kubelet kubeadm kubectl
 ```
+
 ## Install and Use Containerd:
+
 ```
 # Configure persistent loading of modules
 sudo tee /etc/modules-load.d/containerd.conf <<EOF
@@ -62,13 +63,13 @@ sudo systemctl enable containerd
 systemctl status  containerd
 ```
 
-## Initialize kubeadm - This is only for Master
+## Initialize kubeadm (Only for Master Node)
 
 ```
 kubeadm init
 ```
 
-## Setting up kubeconfig - This is only for Master Node
+## Setting up kubeconfig (Only for Master Node)
 
 ```
   mkdir -p $HOME/.kube
@@ -77,21 +78,21 @@ kubeadm init
 ```
 
 
-## Copying token from kubeadmn init snippet - This you should copy from Master. This you will get from Master node only
+## Copying token from kubeadmn init snippet (Copy from Master)
 
 ```
 kubeadm join <control-plane-host>:<control-plane-port> --token <token> --discovery-token-ca-cert-hash sha256:<hash>
 ```
 
 
-## Installing Network Plugin - This is only for Master Node
+## Installing Network Plugin (Only for Master Node)
 
 ```
 kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 ```
 
 
-## Joining Worker Nodes - This is only for Worker Nodes
+## Joining Worker Nodes (Only for Worker Nodes)
 
 ```
 kubeadm join --token <token> <control-plane-host>:<control-plane-port> --discovery-token-ca-cert-hash sha256:<hash>
