@@ -8,6 +8,13 @@
 ![Twitter](https://img.shields.io/twitter/follow/collabnix?style=social)
 
 
+# 📝 Join our Community
+
+- Join 8400+ DevOps Engineers today via [Community Slack](https://launchpass.com/collabnix)
+- Join our [Discord Server](https://discord.gg/QEkCXAXYSe)
+- Fork, Contribute & Share via [Kubelabs GITHUB Repository](https://github.com/collabnix/kubelabs)
+-  Click and Follow us over Twitter [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/fold_left.svg?style=social&label=Follow%20%40collabnix)](https://twitter.com/collabnix)
+
 ## Pre-requisite:
 
 - [Introductory Slides](https://collabnix.github.io/kubelabs/Kubernetes_Intro_slides-1/Kubernetes_Intro_slides-1.html) 
