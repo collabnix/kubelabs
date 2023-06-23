@@ -66,6 +66,8 @@ kubectl port-forward kibana-xxx 5601:5601
 
 Now, you should be able to go to `127.0.0.1:5601` and access the Kibana dashboard. However, you might notice that you see no logs at this point. This is because you first need to create an index. Go into the settings page and select "index management". From here, create an index. If you used `logstash_format true` in your kubeconfig, you should use `logstash-*` as the index.
 
-So, to summarize, fluentd is a centralized logging layer that takes in data from an input source and produces a different, more standard form of data to an output source. Now let's look at an alternative: Fluent Bit.
+Now, head back to the dashboard and you should see all of the logs being produced by your application being written to the Kibana dashboard. Since you explicitly specified the path to your logs, you will notice that **only** your logs will be shown. You will also not get fluentd logs since we added `exclude_path ["/var/log/containers/fluent*"]` into the config.
+
+So, to summarize, fluentd is a centralized logging layer that takes in data from an input source and produces a different, more standard form of data to an output source. We've seen how this can be done on a dedicated machine with fluentd running on it, as well as with a Kubernetes cluster where the entire ELK stack runs within the cluster itself. Now let's look at an alternative: Fluent Bit.
 
 [Next: Fluent Bit](./fluentdbit.md)

@@ -209,6 +209,7 @@
  - [Logging introduction](./Logging101/logging-intro.md)
  - [Elasticsearch](./Logging101/what-is-elasticsearch.md)
  - [Fluentd](./Logging101/fluentd.md)
+ - [Fluentd on Kubernetes](./Logging101/fluentd-kube.md)
  - [Fluent Bit](./Logging101/fluentdbit.md)
 
 ## Helm101
