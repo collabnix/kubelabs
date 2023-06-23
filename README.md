@@ -11,7 +11,7 @@ A Curated List of Kubernetes Labs and Tutorials
 
 - A $0 Learning Platform for All Levels - from the ground Up
 - Over 500+ Highly Interactive Docker Tutorials and Guides
-- Well tested on Docker Desktop  and can be run on Browser (no Infrastructure required)
+- Well tested on Kubernetes Cluster  and can be run on Browser (no Infrastructure required)
 
 # 📝 Join our Community
 
