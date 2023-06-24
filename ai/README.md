@@ -18,7 +18,23 @@ kubectl-ai requires an OpenAI API key or an Azure OpenAI Service API key and end
 export OPENAI_API_KEY=<your OpenAI key>
 ```
 
+## Setting up Kubeview
 
+## Using Helm
+
+Assuming that you have already installed Git and Helm on your laptop, follow the below steps
+
+```
+git clone https://github.com/benc-uk/kubeview
+cd kubeview/charts/
+helm install kubeview kubeview
+```
+
+## Testing it locally
+
+```
+kubectl port-forward svc/kubeview -n default 80:80
+```
 
 ## Deploying Pod using namespace
 
