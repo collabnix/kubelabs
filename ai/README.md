@@ -75,6 +75,11 @@ Use the arrow keys to navigate: ↓ ↑ → ←
     Don't Apply
 ```
 
+The YAML manifest you provided creates a basic Nginx pod with the name "nginx-pod" and exposes port 80. 
+To apply this manifest and create the pod, you can use the kubectl apply command.
+Save the manifest in a file, for example, nginx-pod.yaml, and then execute the following command in your terminal:
+
+
 <img width="1013" alt="image" src="https://github.com/collabnix/kubelabs/assets/313480/e4f6cb3f-cef0-4351-9903-f083454c22be">
 
 
