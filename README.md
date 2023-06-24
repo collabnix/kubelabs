@@ -278,6 +278,10 @@
 ## Java client for Kubernetes
  - [Introduction](./JavaClient101/intro.md)
 
+## KEDA
+- [What is KEDA](./Keda101/what-is-keda.md)
+- [KEDA lab](./Keda101/keda-lab.md)
+
 ## Cheat Sheets
 - [Kubernetes Cheat Sheet](./Cheat%20Sheets/Kubernetes%20Cheat%20Sheet.md)
 - [Helm Cheat Sheet](./Cheat%20Sheets/Helm%20Cheat%20Sheet.md)
