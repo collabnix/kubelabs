@@ -14,6 +14,10 @@ brew install kubectl-ai
 
 kubectl-ai requires an OpenAI API key or an Azure OpenAI Service API key and endpoint, and a valid Kubernetes configuration.
 
+```
+export OPENAI_API_KEY=<your OpenAI key>
+```
+
 
 
 ## Deploying Pod using namespace
