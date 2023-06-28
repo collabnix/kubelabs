@@ -46,3 +46,9 @@ You should now be able to access the dashboard via `127.0.0.1:30880`.
 Now that we have access to the dashboard, let's take a look around. The dashboard itself takes some getting used to, as everything may not be clear from the outset. To start, let's take a closer look at the different concepts of KubeSphere.
 
 First off, you have clusters, which correspond to the clusters you have with Kubernetes. These clusters contain workspaces, which are described as "isolated logical unit used to organize projects". Projects in this case refer to namespaces. Each project would have everything a namespace typically has, from pods to deployments to PVCs. You can click into any of these items and access the individual Kubernetes resources. Since you are an admin, you also can create new resources from within KubeSphere itself using the interactive wizards that are provided. You also can look at logs, ssh into different pods, all from within the interface being used here.
+
+You now have control over your entire cluster without leaving the dashboard at all. However, you could also push configurations using kubectl from your local machine. We will get into this later. For now, let's move on to the case of access control.
+
+### Access control
+
+The golden rule of access control is that the amount of authorization given to any user should be the minimum amount required to fulfill their role. So it wouldn't make a lot of sense to hand over admin rights to a QA tester who is only interested in seeing the logs of a pod. Kubernetes has [RBAC](../RBAC101/README.md) to handle these situations, and KubeSphere seamlessly integrates with this to provide fine-grained access control. You can specify the level of access each user has for each level, from each cluster to namespace. 
