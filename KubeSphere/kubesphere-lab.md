@@ -11,7 +11,7 @@ This sets the latest supported version of Kubernetes for Kubesphere while also s
 
 ### Deployment
 
-Now that you have a cluster, let's install Kubesphere. This is a fairly straightforward process. Simple open up your terminal and paste in these kubectl commands:
+Now that you have a cluster, let's install Kubesphere. This is a fairly straightforward process. Simply open up your terminal and paste in these kubectl commands:
 
 ```
 kubectl apply -f https://github.com/kubesphere/ks-installer/releases/download/v3.3.2/kubesphere-installer.yaml
@@ -51,4 +51,6 @@ You now have control over your entire cluster without leaving the dashboard at a
 
 ### Access control
 
-The golden rule of access control is that the amount of authorization given to any user should be the minimum amount required to fulfill their role. So it wouldn't make a lot of sense to hand over admin rights to a QA tester who is only interested in seeing the logs of a pod. Kubernetes has [RBAC](../RBAC101/README.md) to handle these situations, and KubeSphere seamlessly integrates with this to provide fine-grained access control. You can specify the level of access each user has for each level, from each cluster to namespace. 
+The golden rule of access control is that the amount of authorization given to any user should be the minimum amount required to fulfill their role. So it wouldn't make a lot of sense to hand over admin rights to a QA tester who is only interested in seeing the logs of a pod. Kubernetes has [RBAC](../RBAC101/README.md) to handle these situations, and KubeSphere seamlessly integrates with this to provide fine-grained access control. You can specify the level of access each user has for each level, from each cluster to namespace.
+
+Click on the platform icon in the top left corner, and select access control. This will show you a list of workspaces. On the left pane, you will see the options "Users" and "Platform Roles". These two will allow you to define access across the entire cluster. If you were to head to the "Platform Roles", you would see a set of predefined roles with varying levels of access that can be assigned to users. If you can't find a fine-tuned role that matches the user you want to create, you can create one yourself using the interactive wizard. Creating users is also a breeze with the users' tab which allows you to create a user and set the role that the user needs to have.
