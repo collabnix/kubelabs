@@ -289,6 +289,10 @@ A Curated List of Kubernetes Labs and Tutorials
 ## Java client for Kubernetes
  - [Introduction](./JavaClient101/intro.md)
 
+
+## For Node Developers
+- [Kubernetes for Node Developers](./nodejs.md)
+
 ## Cheat Sheets
 - [Kubernetes Cheat Sheet](./Cheat%20Sheets/Kubernetes%20Cheat%20Sheet.md)
 - [Helm Cheat Sheet](./Cheat%20Sheets/Helm%20Cheat%20Sheet.md)
