@@ -18,6 +18,15 @@ kubectl-ai requires an OpenAI API key or an Azure OpenAI Service API key and end
 export OPENAI_API_KEY=<your OpenAI key>
 ```
 
+## Installing on CentOS
+
+```
+yum install wget
+wget https://github.com/sozercan/kubectl-ai/releases/download/v0.0.10/kubectl-ai_linux_amd64.tar.gz
+tar xvf kubectl-ai_linux_amd64.tar.gz
+mv kubectl-ai /usr/local/bin/kubectl-ai
+```
+
 ## Setting up Kubeview
 
 ## Using Helm
