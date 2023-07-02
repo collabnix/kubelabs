@@ -1,0 +1,21 @@
+## kubectl ai "Create a namespace ns3, create a Pod with two containers, the first named todo-list using a Docker image ajeetraina/todo and a 
+## second container based on prom/prometheus:v2.30.3 docker image and container exposed to port 9090"
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ns3
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: todo-list
+  namespace: ns3
+spec:
+  containers:
+  - name: todo-list
+    image: ajeetraina/todo
+  - name: prometheus
+    image: prom/prometheus:v2.30.3
+    ports:
+    - containerPort: 9090
