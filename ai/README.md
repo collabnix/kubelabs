@@ -275,3 +275,43 @@ Use a port-forwarding technique: In a local development environment, you can use
 
 Remember that the availability of these options may depend on your Kubernetes environment and the infrastructure you are using.
 
+
+## Running Multiple Containers in a Pod
+
+
+```
+kubectl ai "Create a namespace ns3, create a Pod with two containers, the frist named todo-list using a Docker image ajeetraina/todo and a second container based on prom/prometheus:v2.30.3 docker image and container exposed to port 9090"
+```
+
+It creates a YAML file
+
+```
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ns3
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: todo-list
+  namespace: ns3
+spec:
+  containers:
+  - name: todo-list
+    image: ajeetraina/todo
+  - name: prometheus
+    image: prom/prometheus:v2.30.3
+    ports:
+    - containerPort: 9090
+```
+
+## Portforwarding
+
+```
+kubectl port-forward todo-list 3000:3000 9090:9090 -n ns3
+```
+
+<img width="1499" alt="image" src="https://github.com/collabnix/kubelabs/assets/313480/d567b54e-5151-44ed-b432-eb134e55008b">
+
+
