@@ -328,6 +328,16 @@ kubectl ai "Create a namespace ns3, create a Pod with container named todo-list 
 kubectl port-forward todo-list 3000:3000 -n ns3
 ```
 
+```
+kubectl get po -n ns3 --selector=role=web
+NAME        READY   STATUS    RESTARTS   AGE
+web-9t6vs   1/1     Running   0          6m58s
+web-jbc6w   1/1     Running   0          6m58s
+web-k8klv   1/1     Running   0          6m58s
+web-rnm5x   1/1     Running   0          6m58s
+ajeetsraina@Q537JQXLVR ~ %
+```
+
 <img width="1504" alt="image" src="https://github.com/collabnix/kubelabs/assets/313480/9f57c9a9-3201-41f4-b0c4-ba388a97d1bc">
 
 
