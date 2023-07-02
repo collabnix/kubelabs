@@ -315,3 +315,19 @@ kubectl port-forward todo-list 3000:3000 9090:9090 -n ns3
 <img width="1499" alt="image" src="https://github.com/collabnix/kubelabs/assets/313480/d567b54e-5151-44ed-b432-eb134e55008b">
 
 
+
+## ReplicaSet
+
+```
+kubectl ai "Create a namespace ns3, create a Pod with container named todo-list using ajeetraina/todo as Docker image, create a ReplicaSet by name web, that manages 4 replicas of the container image, then replicaset should manage Pods with the label role:web"
+```
+
+## Port Forwarding
+
+```
+kubectl port-forward todo-list 3000:3000 -n ns3
+```
+
+<img width="1504" alt="image" src="https://github.com/collabnix/kubelabs/assets/313480/9f57c9a9-3201-41f4-b0c4-ba388a97d1bc">
+
+
