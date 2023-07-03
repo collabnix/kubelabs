@@ -1,7 +1,7 @@
 ## Kubesphere lab
 
 ### Requirements
-First off, you need a Kubernetes cluster. Kubesphere supports deploying on a Linux VM (as well as their own managed Kubesphere cloud), but we will be doing this lab by deploying on a Kubernetes cluster. Since Kubesphere has so many features you will need a fair bit of resources. As such, it is best if the cluster has 4GB memory and at least 3 cores. [Minikube](https://minikube.sigs.k8s.io/docs/start/) is a great way to get a single-node cluster up and running on your local machine. As of the time of writing, minikube supports Kubernetes version 1.26 by default, which is not supported by Kubesphere. So when running minikube, use this command:
+First off, you need a Kubernetes cluster. Kubesphere supports deploying on a Linux VM (as well as their own managed Kubesphere cloud), but we will be doing this lab by deploying on a Kubernetes cluster. Since Kubesphere has so many features you will need a fair bit of resources. As such, it is best if the cluster has 4GB memory and at least 3 cores. [Minikube](https://minikube.sigs.k8s.io/docs/start/) is a great way to get a single-node cluster up and running on your local machine. As of the time of writing, minikube supports Kubernetes version 1.26 by default, which is only partially supported by Kubesphere. You may use the latest version if you don't intend to use feature such as setting up multiple host-member cluster, or using KubeEdge. Otherwise, when running minikube, use this command:
 
 ```
 minikube start --kubernetes-version=v1.23.17 --cpus 3 --memory 4g
@@ -54,3 +54,11 @@ You now have control over your entire cluster without leaving the dashboard at a
 The golden rule of access control is that the amount of authorization given to any user should be the minimum amount required to fulfill their role. So it wouldn't make a lot of sense to hand over admin rights to a QA tester who is only interested in seeing the logs of a pod. Kubernetes has [RBAC](../RBAC101/README.md) to handle these situations, and KubeSphere seamlessly integrates with this to provide fine-grained access control. You can specify the level of access each user has for each level, from each cluster to namespace.
 
 Click on the platform icon in the top left corner, and select access control. This will show you a list of workspaces. On the left pane, you will see the options "Users" and "Platform Roles". These two will allow you to define access across the entire cluster. If you were to head to the "Platform Roles", you would see a set of predefined roles with varying levels of access that can be assigned to users. If you can't find a fine-tuned role that matches the user you want to create, you can create one yourself using the interactive wizard. Creating users is also a breeze with the users' tab which allows you to create a user and set the role that the user needs to have.
+
+Since you are setting the users and roles at a platform level, the users created will have access across the entire platform. However, if you need to drill down to a deeper level, you can head into your workspace and either set roles at a workspace level or go down into each workspace and set roles for each project (namespace).
+
+### Add-ons
+
+Now that we've covered the dashboard and access control, let's take a look at another powerful feature KubeSphere provides: add-ons. With an ordinary Kubernetes cluster, you would have to manually set up each different config that you want. However, with KubeSphere, you can get everything up and running with a few lines in YAML. Let's first start by taking a look at this YAML. It is already present in your KubeSphere instance, and you can access it by going to the dashboard > CRDs and searching for "Config". Open up the config that shows up.
+
+A better view of the config can be found [here](https://github.com/kubesphere/ks-installer/blob/master/deploy/cluster-configuration.yaml).
