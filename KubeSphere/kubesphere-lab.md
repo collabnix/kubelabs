@@ -61,4 +61,22 @@ Since you are setting the users and roles at a platform level, the users created
 
 Now that we've covered the dashboard and access control, let's take a look at another powerful feature KubeSphere provides: add-ons. With an ordinary Kubernetes cluster, you would have to manually set up each different config that you want. However, with KubeSphere, you can get everything up and running with a few lines in YAML. Let's first start by taking a look at this YAML. It is already present in your KubeSphere instance, and you can access it by going to the dashboard > CRDs and searching for "Config". Open up the config that shows up.
 
-A better view of the config can be found [here](https://github.com/kubesphere/ks-installer/blob/master/deploy/cluster-configuration.yaml).
+A better view of the config can be found [here](https://github.com/kubesphere/ks-installer/blob/master/deploy/cluster-configuration.yaml). This version also has line-by-line comments that good for reference.
+
+The first property we will look at is elastic search since it is required by several other options. Go to:
+
+```yaml
+es:
+  enabled: true # Change this value
+  logMaxAge: 7
+  elkPrefix: logstash
+  basicAuth:
+    enabled: false
+```
+
+Now, ElasticSearch will be running. This allows any other services that require data logging to work. The first of such services is auditing. Auditing allows you to continuously collect security log information that gets logged in elastic search. Another equally important feature is alerting. This allows you to get alerted when certain things such as resource usage, pod availability, etc... reach a certain threshold.
+
+```yaml
+ alerting:
+    enabled: true # Change this value
+```
