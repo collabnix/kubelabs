@@ -8,7 +8,7 @@ metadata:
 spec: 
   containers:
   - name: todo-container  
-    image: ajeetraina/tod
+    image: ajeetraina/todo
     imagePullPolicy: IfNotPresent 
   nodeSelector: 
     mynode: worker-1
