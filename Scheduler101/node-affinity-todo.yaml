@@ -1,3 +1,5 @@
+# kubectl label nodes node2 mynode=worker-1
+# kubectl label nodes node3 mynode=worker-3
 apiVersion: v1
 kind: Pod
 metadata:
