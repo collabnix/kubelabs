@@ -74,9 +74,36 @@ es:
     enabled: false
 ```
 
-Now, ElasticSearch will be running. This allows any other services that require data logging to work. The first of such services is auditing. Auditing allows you to continuously collect security log information that gets logged in elastic search. Another equally important feature is alerting. This allows you to get alerted when certain things such as resource usage, pod availability, etc... reach a certain threshold.
+Now, ElasticSearch will be running. This allows any other services that require data logging to work. The first of such services is auditing. Auditing allows you to continuously collect security log information that gets logged in elastic search. 
+
+```yaml
+ auditing:
+    enabled: true $ Change this value
+```
+
+Another equally important feature is alerting. This allows you to get alerted when certain things such as resource usage, pod availability, etc... reach a certain threshold.
 
 ```yaml
  alerting:
     enabled: true # Change this value
+```
+
+In addition to the above option, if you want custom alerting rules, you need to introduce Thanos ruler, so your alerting block needs to look like this:
+
+```yaml
+ alerting:
+    enabled: true # Change this value
+    thanosruler:
+       replicas: 1
+       resources: {}
+```
+
+Next, there's monitoring. Note that Prometheus gets automatically installed with KubeSphere so you will immediately get cluster monitoring. However, you can get additional monitoring (such as GPU monitoring):
+
+```yaml
+ monitoring:
+      # type: external   # Whether to specify the external Prometheus stack and need to modify the endpoint at the next line.
+      endpoint: http://prometheus-operated.kubesphere-monitoring-system.svc:9090
+      GPUMonitoring:
+        enabled: true # Change this value
 ```
