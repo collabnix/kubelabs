@@ -12,9 +12,9 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 kubectl -n ingress-nginx get pod
 
 NAME                                        READY   STATUS      RESTARTS   AGE
-ingress-nginx-admission-create-szn97        0/1     Completed   0          70s
-ingress-nginx-admission-patch-plpcx         0/1     Completed   0          70s
-ingress-nginx-controller-6b94c75599-vpjjd   1/1     Running     0          70s
+ingress-nginx-admission-create-w4r54        0/1     Completed   0          30s
+ingress-nginx-admission-patch-vxs6c         0/1     Completed   1          30s
+ingress-nginx-controller-6b94c75599-z27dp   1/1     Running     0          30s
 ```
 
 Your local Kubernetes cluster is ready to serve real HTTP traffic.
