@@ -107,3 +107,25 @@ Next, there's monitoring. Note that Prometheus gets automatically installed with
       GPUMonitoring:
         enabled: true # Change this value
 ```
+
+Remember we spoke about being easily able to install Helm charts with a couple of clicks? Let's look at that next. An add-on that adds the KubeSphere app store to your KubeSphere installation can be enabled:
+
+```yaml
+openpitrix:
+    store:
+      enabled: true # Enable the KubeSphere App Store.
+```
+
+Now that you have enabled the store, a new option would show up in the top left corner that allows you to go into the store. From here, you have access to a number of Helm charts in the same way you would in the Artifact Hub. Except in this case, you can install the chart into your cluster in addition to viewing it.
+
+So far, we have covered the smaller features KubeSphere has to offer, so let's move on to the other areas with Jenkins:
+
+```yaml
+devops:                  
+    enabled: true         # Enable KubeSphere DevOps System.
+    jenkinsCpuReq: 0.5
+    jenkinsCpuLim: 1
+    jenkinsMemoryReq: 4Gi
+    jenkinsMemoryLim: 4Gi  # Recommend keep same as requests.memory.
+    jenkinsVolumeSize: 16Gi
+```
