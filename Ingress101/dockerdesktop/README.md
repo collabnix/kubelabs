@@ -33,18 +33,17 @@ If you check the ingress objects with:
 
 ```
 kubectl get ingress
-
-NAME            CLASS    HOSTS                    ADDRESS   PORTS   AGE
-hello-ingress   <none>   hello.127.0.0.1.nip.io             80      7s
+NAME            CLASS    HOSTS                    ADDRESS     PORTS   AGE
+hello-ingress   <none>   hello.127.0.0.1.nip.io   localhost   80      5m10s
 ```
 
 you will find the hello-ingress object to be reachable on http://hello.127.0.0.1.nip.io (this requires nip.io Domains to work 
 in your current network; if not look for “DNS rebind protection”). 
 Once you point your browser to that address you will be welcomed with the Hello Nginx screen.
 
+<img width="1074" alt="image" src="https://github.com/collabnix/kubelabs/assets/313480/46634542-77e5-40d5-9ef2-16eb08e5a4c4">
 
 
-![image](https://github.com/collabnix/kubelabs/assets/313480/2056387d-1211-49ba-9e8e-13d18859c901)
 
 It tells a bit about your cluster: the pod name of the process running this simple page and the IP address of the pod.
 
