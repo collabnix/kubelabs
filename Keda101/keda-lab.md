@@ -63,6 +63,14 @@ You can then see that the KEDA resources have been set up in the keda namespace:
 kubectl get po -n keda
 ```
 
+Now run:
+
+```
+kubectl get sa -n keda
+```
+
+You will notice that a service account has been created. In this example, we will be using a mysql instance that will be running on your local machine, and therefore will no require any additional authorization. As such, this service account will not be used. However, if you were using KEDA in a commercial situation then you would most likely be connecting to resources on the cloud where the service account and its related features will be necessary. Therefore, we will talk about the authentication aspect later.
+
 Before you start scaling anything, look at the initial state of the pods. Open up a new terminal instance and use:
 
 ```
@@ -92,6 +100,42 @@ kubectl exec $(kubectl get pods | grep "server" | cut -f 1 -d " ") -- keda-talk 
 ```
 
 Go back to the watch window, and you should see the number of pods decreasing.
+
+Now that you have a basic idea of KEDA and how it works, let's take a look at external authentication. Imagine you are trying to scale resources on an EKS cluster as opposed to your local machine. KEDA needs to be able to authorize itself to do that. Depending on your cloud provider, the exact steps will defer, but you only have to edit a couple of lines in one file. This makes the whole authorization process painless.
+
+First off, open up the `values.yaml` for the KEDA helm chart. This section is the important part:
+
+```
+serviceAccount:
+  # -- Specifies whether a service account should be created
+  create: true
+  # -- The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: keda-operator
+  # -- Specifies whether a service account should automount API-Credentials
+  automountServiceAccountToken: true
+  # -- Annotations to add to the service account
+  annotations: {}
+```
+
+The part that needs to be modified is the `annotations` section. So if you want to scale an EKS cluster based on SQS messages, then you first need an IAM role that has access to SQS, and you need to add this role arn as an annotation.
+
+```
+annotations: 
+    eks.amazonaws.com/role-arn: arn:aws:iam::<account-id>:role/<role-name>
+```
+
+Next, you need to change the ScaleObject resource. The mysql-hpa.yaml has the trigger specified as the mysql db. However, it does not have an option called `identityOwner`. This is becase we are not using authentication here, and therefore do not need such a thing. In order to add authentication, this key should be added and the value set to `operator`:
+
+```
+metadata:
+    ...
+    identityOwner: operator
+```
+
+And that's it! You only needed to modify two lines and you have full authorization among the cluster.
+
+While this is the easiest way to provide authentication, it is not the only way to do it. You could also change the `identityOwner` to `pod`, and create a `TriggerAuthentication` resource and feed in the AWS access keys (which isn't very secure), or have the keda service account assume a role that has access to the necessary resources (which is much more secure). There is a number of different ways to authorize, and these are covered in the [KEDA documentation](https://keda.sh/docs/1.4/concepts/authentication/).
 
 ## Conclusion
 
