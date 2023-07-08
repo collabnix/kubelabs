@@ -31,6 +31,12 @@ Start the pod running nginx
 kubectl run --image=nginx nginx-app --port=80 --env="DOMAIN=cluster"
 ```
 
+Accessing the app on browser
+
+```
+kubectl port-forward nginx-app 80:80
+```
+
 Expose a port through with a service
 
 ```

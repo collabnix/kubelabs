@@ -4,13 +4,24 @@
 ![forks](https://img.shields.io/github/forks/collabnix/kubelabs)
 ![issues](https://img.shields.io/github/issues/collabnix/kubelabs)
 ![GitHub contributors](https://img.shields.io/github/contributors/collabnix/kubelabs)
-![Visitor count](https://shields-io-visitor-counter.herokuapp.com/badge?page=collabnix.kubelabs)
 ![Twitter](https://img.shields.io/twitter/follow/collabnix?style=social)
 
+A Curated List of Kubernetes Labs and Tutorials
+
+- A $0 Learning Platform for All Levels - from the ground Up
+- Over 500+ Highly Interactive Docker Tutorials and Guides
+- Well tested on Kubernetes Cluster  and can be run on Browser (no Infrastructure required)
+
+# 📝 Join our Community
+
+- Join 8400+ DevOps Engineers today via [Community Slack](https://launchpass.com/collabnix)
+- Join our [Discord Server](https://discord.gg/QEkCXAXYSe)
+- Fork, Contribute & Share via [Kubelabs GITHUB Repository](https://github.com/collabnix/kubelabs)
+-  Click and Follow us over Twitter [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/fold_left.svg?style=social&label=Follow%20%40collabnix)](https://twitter.com/collabnix)
 
 ## Pre-requisite:
 
-- [Introductory Slides](./Kubernetes_Intro_slides-1/Kubernetes_Intro_slides-1.html) 
+- [Introductory Slides](https://collabnix.github.io/kubelabs/Kubernetes_Intro_slides-1/Kubernetes_Intro_slides-1.html) 
 - [Deep Dive into Kubernetes Architecture](./Kubernetes_Architecture.md) 
 
 
@@ -281,6 +292,9 @@
 ## KEDA
 - [What is KEDA](./Keda101/what-is-keda.md)
 - [KEDA lab](./Keda101/keda-lab.md)
+
+## For Node Developers
+- [Kubernetes for Node Developers](./nodejs.md)
 
 ## Cheat Sheets
 - [Kubernetes Cheat Sheet](./Cheat%20Sheets/Kubernetes%20Cheat%20Sheet.md)
