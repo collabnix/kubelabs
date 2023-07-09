@@ -129,3 +129,7 @@ devops:
     jenkinsMemoryLim: 4Gi  # Recommend keep same as requests.memory.
     jenkinsVolumeSize: 16Gi
 ```
+
+The above code snippet can be used to install Jenkins into your Kubernetes cluster so that you may access it from within KubeSphere. Enabling the above option will introduce a new section in your KubeSphere dashboard that allows you to create and run jobs in the same way you would with Jenkins. Boilerplate code is provided for different types of builds, and you can create your build from scratch. The user interface you get when you run the job is better than the original Jenkins UI and arguably more modern than Blueocean. We will not be covering this option in depth here since it is more related to Jenkins than Kubernetes.
+
+The next option is service meshes. If you need a quick refresher on what services meshes are and what they can do for your cluster, head over to the [service mesh section](../ServiceMesh101/what-are-service-meshes.md). KubeSphere allows you to efficiently install an Istio service mesh by configuring a few lines of the installer.yaml. If you want a better understanding of Istio, we have covered that in the [Istio section](../ServiceMesh101/what-is-istio.md).
