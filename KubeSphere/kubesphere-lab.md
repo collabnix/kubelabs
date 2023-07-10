@@ -98,6 +98,36 @@ In addition to the above option, if you want custom alerting rules, you need to 
        resources: {}
 ```
 
+At this point, it is important to mention that the KubeSphere version at the time of writing (v3.3.2) has a bug with alerting and Thanos ruler. It has already been fixed, and this issue will not persist from v3.3.3 onwards. However, if you get an error when running the kubesphere installer saying that the monitoring module has failed, there are a couple of extra steps you need to take to get it up and running.
+
+First, use:
+
+```
+kubectl get po -n kubesphere-system
+```
+
+to get the list of pods, and look for a pod that starts with "ks-installer". Grab the full name of the pod, and exec into it:
+
+```
+kubectl exec -it -n kubesphere-system ks-installer-xxxx sh
+```
+
+Now, head over to the prometheus folder within the pod:
+
+```
+cd  /kubesphere/kubesphere/prometheus
+```
+
+Three files need changing:
+
+```
+/kubesphere/kubesphere/prometheus $ vi alertmanager/alertmanager-podDisruptionBudget.yaml
+/kubesphere/kubesphere/prometheus $ vi prometheus/prometheus-podDisruptionBudget.yaml
+/kubesphere/kubesphere/prometheus $ vi thanos-ruler/thanos-ruler-podDisruptionBudget.yaml
+```
+
+The error comes from the very first line of these 3 files where the `apiVersion` is set to ` policy/v1beta1`. This needs to be changed to `apiVersion: policy/v1`.
+ 
 Next, there's monitoring. Note that Prometheus gets automatically installed with KubeSphere so you will immediately get cluster monitoring. However, you can get additional monitoring (such as GPU monitoring):
 
 ```yaml
@@ -133,3 +163,17 @@ devops:
 The above code snippet can be used to install Jenkins into your Kubernetes cluster so that you may access it from within KubeSphere. Enabling the above option will introduce a new section in your KubeSphere dashboard that allows you to create and run jobs in the same way you would with Jenkins. Boilerplate code is provided for different types of builds, and you can create your build from scratch. The user interface you get when you run the job is better than the original Jenkins UI and arguably more modern than Blueocean. We will not be covering this option in depth here since it is more related to Jenkins than Kubernetes.
 
 The next option is service meshes. If you need a quick refresher on what services meshes are and what they can do for your cluster, head over to the [service mesh section](../ServiceMesh101/what-are-service-meshes.md). KubeSphere allows you to efficiently install an Istio service mesh by configuring a few lines of the installer.yaml. If you want a better understanding of Istio, we have covered that in the [Istio section](../ServiceMesh101/what-is-istio.md).
+
+```yaml
+servicemesh:
+    enabled: true # Enable this option
+    istio:
+      components:
+        ingressGateways:
+        - name: istio-ingressgateway
+          enabled: false
+        cni:
+          enabled: false
+```
+
+The above code block will enable the Istio service mesh on your Kubernetes cluster.
