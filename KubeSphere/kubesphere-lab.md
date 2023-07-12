@@ -126,7 +126,16 @@ Three files need changing:
 /kubesphere/kubesphere/prometheus $ vi thanos-ruler/thanos-ruler-podDisruptionBudget.yaml
 ```
 
-The error comes from the very first line of these 3 files where the `apiVersion` is set to ` policy/v1beta1`. This needs to be changed to `apiVersion: policy/v1`.
+The error comes from the very first line of these 3 files where the `apiVersion` is set to ` policy/v1beta1`. This needs to be changed to `apiVersion: policy/v1`. Once all the files have been changed, run:
+
+```
+kubectl apply -f kubernetes/ --force
+kubectl apply -f prometheus/
+kubectl apply -f alertmanager/
+kubectl apply -f thanos-ruler/
+```
+
+This will fix issues across the alerting and monitoring systems.
  
 Next, there's monitoring. Note that Prometheus gets automatically installed with KubeSphere so you will immediately get cluster monitoring. However, you can get additional monitoring (such as GPU monitoring):
 
@@ -176,4 +185,4 @@ servicemesh:
           enabled: false
 ```
 
-The above code block will enable the Istio service mesh on your Kubernetes cluster.
+The above code block will enable the Istio service mesh on your Kubernetes cluster. If you were to head to the monitoring section of your KuberSphere cluster, you would see that Istio has been added as an option in addition to the other monitoring services you have enabled.
