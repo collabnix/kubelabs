@@ -186,3 +186,13 @@ servicemesh:
 ```
 
 The above code block will enable the Istio service mesh on your Kubernetes cluster. If you were to head to the monitoring section of your KuberSphere cluster, you would see that Istio has been added as an option in addition to the other monitoring services you have enabled.
+
+Next, let's move on to logging. You might be asking why there is another logging option if we have the ELK stack running. This is because while many different logging systems can run with KubeSphere, it might be a hassle to handle each and every one of them manually. Instead with this option, you could have all logs present in a single unified console. In addition to Elasticsearch, other log connectors can also be applied, as well as an inbuilt logging system.
+
+```yaml
+ logging:
+    enabled: false
+    logsidecar:
+      enabled: true
+      replicas: 2
+```
