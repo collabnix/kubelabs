@@ -191,8 +191,20 @@ Next, let's move on to logging. You might be asking why there is another logging
 
 ```yaml
  logging:
-    enabled: false
+    enabled: true # Enable this option
     logsidecar:
       enabled: true
       replicas: 2
+```
+
+Next, let's move to network policies. If you need a refresher on what network policies are, refer to the [network policy](../Network_Policies101/how_can_we_fine-tune_network_policy_using_selectors.md) section. What they essentially do is allow or prevent access to and from pods. This is important for Kubernetes security since there can be a number of different security threats that arise if you just allow any external IP to reach your pod. With that being said, if you were to assign ingresses and egress on a pod-by-pod basis, getting a cluster set up would be a long and arduous process. Therefore, it is possible to assign pods to pod pools and assign network policies to each pool. This is also supported by KubeSphere:
+
+```
+network:
+    networkpolicy:
+      enabled: true # Enabe this option
+    ippool: # Use Pod IP Pools to manage the Pod network address space. Pods to be created can be assigned IP addresses from a Pod IP Pool.
+      type: none # Specify "calico" for this field if Calico is used as your CNI plugin. "none" means that Pod IP Pools are disabled.
+    topology: # Use Service Topology to view Service-to-Service communication based on Weave Scope.
+      type: none # Specify "weave-scope" for this field to enable Service Topology. "none" means that Service Topology is disabled.
 ```
