@@ -57,6 +57,16 @@ Click on the platform icon in the top left corner, and select access control. Th
 
 Since you are setting the users and roles at a platform level, the users created will have access across the entire platform. However, if you need to drill down to a deeper level, you can head into your workspace and either set roles at a workspace level or go down into each workspace and set roles for each project (namespace).
 
+Now that we have established how KubeSphere has an extensive access control methodology in place, let's look at authentication. If you are setting KubeSphere up for your organization, they likely have some method of single sign-on enabled. So instead of getting your users to individually create new accounts themselves, why not use the AD accounts they already have to give them cluster access?
+
+KubeSphere supports multiple types of external authentication out of the box. A full list of these types can be found [in the docs](https://www.kubesphere.io/docs/v3.3/access-control-and-account-management/external-authentication/set-up-external-authentication/). Of these, we will be looking at LDAP and OIDC since they are the most widely used. To set up either of the authentication systems, you only need to edit a file in the KuberSphere system:
+
+```
+kubectl -n kubesphere-system edit cc ks-installer
+```
+
+Navigate to the authentication section of this file.
+
 ### Add-ons
 
 Now that we've covered the dashboard and access control, let's take a look at another powerful feature KubeSphere provides: add-ons. With an ordinary Kubernetes cluster, you would have to manually set up each different config that you want. However, with KubeSphere, you can get everything up and running with a few lines in YAML. Let's first start by taking a look at this YAML. It is already present in your KubeSphere instance, and you can access it by going to the dashboard > CRDs and searching for "Config". Open up the config that shows up.
@@ -199,12 +209,24 @@ Next, let's move on to logging. You might be asking why there is another logging
 
 Next, let's move to network policies. If you need a refresher on what network policies are, refer to the [network policy](../Network_Policies101/how_can_we_fine-tune_network_policy_using_selectors.md) section. What they essentially do is allow or prevent access to and from pods. This is important for Kubernetes security since there can be a number of different security threats that arise if you just allow any external IP to reach your pod. With that being said, if you were to assign ingresses and egress on a pod-by-pod basis, getting a cluster set up would be a long and arduous process. Therefore, it is possible to assign pods to pod pools and assign network policies to each pool. This is also supported by KubeSphere:
 
-```
+```yaml
 network:
     networkpolicy:
       enabled: true # Enabe this option
-    ippool: # Use Pod IP Pools to manage the Pod network address space. Pods to be created can be assigned IP addresses from a Pod IP Pool.
-      type: none # Specify "calico" for this field if Calico is used as your CNI plugin. "none" means that Pod IP Pools are disabled.
-    topology: # Use Service Topology to view Service-to-Service communication based on Weave Scope.
-      type: none # Specify "weave-scope" for this field to enable Service Topology. "none" means that Service Topology is disabled.
+    ippool:
+      type: none 
+    topology:
+      type: none
 ```
+
+Next, we have redis, which is easily enabled and requires little explanation:
+
+```yaml
+redis:
+      enabled: true # Enable this option
+      enableHA: false
+      volumeSize: 2Gi
+```
+
+You can enable a high availability option right from here and set the size of the Redis instance, and that instance will be deployed to your cluster.
+
