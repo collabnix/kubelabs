@@ -65,7 +65,43 @@ KubeSphere supports multiple types of external authentication out of the box. A 
 kubectl -n kubesphere-system edit cc ks-installer
 ```
 
-Navigate to the authentication section of this file.
+Navigate to the authentication section of the file:
+
+```yaml
+authentication:
+  jwtSecret: "" 
+```
+
+The `jwtSecret` is not needed for LDAP. Instead, we will be adding several new keys. This will include authentication retry limits, login history retention periods, etc...
+
+```yaml
+authenticateRateLimiterMaxTries: 10
+authenticateRateLimiterDuration: 10m0s
+loginHistoryRetentionPeriod: 168h
+maximumClockSkew: 10s
+multipleLogin: true
+```
+
+The above options manage the configurations for both LDAP and OIDC. Next, we need to specify the actual oauth options:
+
+```yaml
+oauthOptions:
+  accessTokenMaxAge: 1h
+  accessTokenInactivityTimeout: 30m
+  identityProviders:
+  - name: LDAP
+    type: LDAPIdentityProvider
+    mappingMethod: auto
+    provider:
+      host: 192.168.0.2:389
+      managerDN: uid=root,cn=users,dc=nas
+      managerPassword: ********
+      userSearchBase: cn=users,dc=nas
+      loginAttribute: uid
+      mailAttribute: mail
+```
+
+Since LDAP deals with tokens, you need to set the times that the token should remain valid. The identity provider should be set to LDAP and the information for the provider must be supplied.
 
 ### Add-ons
 
