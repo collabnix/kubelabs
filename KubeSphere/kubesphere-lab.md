@@ -101,7 +101,18 @@ oauthOptions:
       mailAttribute: mail
 ```
 
-Since LDAP deals with tokens, you need to set the times that the token should remain valid. The identity provider should be set to LDAP and the information for the provider must be supplied.
+Since LDAP deals with tokens, you need to set the times that the token should remain valid. The identity provider should be set to LDAP and the information for the provider must be supplied. The setup for OIDC is largely the same, except you provide the OIDC providers' name, which is Google in this instance. You also have to set up the clientID and clientSecret which you can get from your Google project that holds the AD.
+
+```yaml
+- name: google
+  type: OIDCIdentityProvider
+  mappingMethod: auto
+  provider:
+    clientID: '********'
+    clientSecret: '********'
+    issuer: https://accounts.google.com
+    redirectURL:  'https://ks-console/oauth/redirect/google'
+```
 
 ### Add-ons
 
