@@ -114,6 +114,8 @@ Since LDAP deals with tokens, you need to set the times that the token should re
     redirectURL:  'https://ks-console/oauth/redirect/google'
 ```
 
+You can also use GitHub as an identity provider using the same method. If the options available are insufficient and you require a different authentication method to authorize your application with you account system, you can also expand the kubesphere OAuth2 authentication plug-in. This is beyond the scope of this tutorial, but there is extensive documentation on how to do this [here](https://www.kubesphere.io/docs/v3.3/access-control-and-account-management/external-authentication/use-an-oauth2-identity-provider).
+
 ### Add-ons
 
 Now that we've covered the dashboard and access control, let's take a look at another powerful feature KubeSphere provides: add-ons. With an ordinary Kubernetes cluster, you would have to manually set up each different config that you want. However, with KubeSphere, you can get everything up and running with a few lines in YAML. Let's first start by taking a look at this YAML. It is already present in your KubeSphere instance, and you can access it by going to the dashboard > CRDs and searching for "Config". Open up the config that shows up.
@@ -135,7 +137,7 @@ Now, ElasticSearch will be running. This allows any other services that require 
 
 ```yaml
  auditing:
-    enabled: true $ Change this value
+    enabled: true # Change this value
 ```
 
 Another equally important feature is alerting. This allows you to get alerted when certain things such as resource usage, pod availability, etc... reach a certain threshold.
