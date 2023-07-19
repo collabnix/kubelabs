@@ -256,6 +256,25 @@ Next, let's move on to logging. You might be asking why there is another logging
       replicas: 2
 ```
 
+If you are hosting your cluster in AWS, it is easier to work with opensearch instead of elasticsearch. KubeSphere gives you access to opensearch. and allows you to configure it within your cluster using the yaml file:
+
+```yaml
+opensearch:   
+  enabled: true # Enable this option
+  logMaxAge: 7
+  opensearchPrefix: <prefix>
+  basicAuth:
+    enabled: true
+    username: "admin"
+    password: "admin"
+  externalOpensearchHost: ""
+  externalOpensearchPort: ""
+  dashboard:
+    enabled: true
+```
+
+The above block will enable opensearch with a max log retention period of 7 days. Replace the `opensearchPrefix` value with the value you would like the logs to be indexed with. The `basicAuth` section has the username and password in the same way elasticsearch does, and you can specify an external opensearch host and port if necessary.
+
 Next, let's move to network policies. If you need a refresher on what network policies are, refer to the [network policy](../Network_Policies101/how_can_we_fine-tune_network_policy_using_selectors.md) section. What they essentially do is allow or prevent access to and from pods. This is important for Kubernetes security since there can be a number of different security threats that arise if you just allow any external IP to reach your pod. With that being said, if you were to assign ingresses and egress on a pod-by-pod basis, getting a cluster set up would be a long and arduous process. Therefore, it is possible to assign pods to pod pools and assign network policies to each pool. This is also supported by KubeSphere:
 
 ```yaml
@@ -278,4 +297,3 @@ redis:
 ```
 
 You can enable a high availability option right from here and set the size of the Redis instance, and that instance will be deployed to your cluster.
-
