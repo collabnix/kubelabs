@@ -262,6 +262,10 @@
 - [What is DevSpace](./DevSpace101/what-is-devspace.md)
 - [DevSpace Lab](./DevSpace101/devspace-lab.md)
 
+## KubeSphere101
+- [What is KubeSphere](./KubeSphere/what-is-kubesphere.md)
+- [KubeSphere lab](./KubeSphere/kubesphere-lab.md)
+
 ## Kubernetes with GitLab 101
 - [What is GitLab](./GitLab101/what-is-gitlab.md)
 - [Kubernetes with GitLab](./GitLab101/kubernetes-with-gitlab.md)

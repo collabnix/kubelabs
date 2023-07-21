@@ -297,3 +297,7 @@ redis:
 ```
 
 You can enable a high availability option right from here and set the size of the Redis instance, and that instance will be deployed to your cluster.
+
+## Conclusion
+
+With that, we have now covered almost all the options KubeSphere provides to you. The only area that was not covered in this tutorial is [Edge Nodes](https://www.kubesphere.io/docs/v3.3/installing-on-linux/cluster-operation/add-edge-nodes/), which allows you to utilize the power of Edge computing with you Kubernetes nodes. Make sure you regularly check the KubeSphere page to see if there are any updates since it is regularly maintained.
