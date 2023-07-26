@@ -77,4 +77,10 @@ you would see that a pod by the name of `helm-guestbook` is not running. In fact
 kubectl port-forward svc/helm-guestbook 9090:80
 ```
 
-And then go to http://localhost:9090.
+And then go to http://localhost:9090. You should see a web application.
+
+And that's it! Notice you didn't deploy any files yourself. You didn't add the repo with Helm, or install it. In fact, you didn't even clone the repo. All this was handled by ArgoCD. If there is a push to the repo, ArgoCD will automatically deploy the change to your cluster without any intervention from you.
+
+## Conclusion
+
+In this lab, we have seen how you can use ArgoCD to automate deployments to your EKS cluster with no intervention from yourself. This is roughly the same method you use when using ArgoCD with other cloud Kubernetes engines, as well as self-managed Kubernetes clusters.
