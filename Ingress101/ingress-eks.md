@@ -30,4 +30,10 @@ Once this file is ready, you can deploy it into your cluster the same way you wo
 kubectl apply -f ingress-eks.yaml
 ```
 
-Now it's time to retrieve the ID of the load balancer your deployment created.
+Now it's time to retrieve the ID of the load balancer your deployment created. To do this, run the following command:
+
+```
+kubectl get ingress -A
+```
+
+You should see the load balancer address now. The rest of the configuration will happen from the AWS side. So open up AWS console and head over to the EC2 section. From here. you should be able to see the "Load Balacers" subsection. Open this page and search for the correct load balancer using the address you copied.
