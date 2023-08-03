@@ -22,7 +22,18 @@ alb.ingress.kubernetes.io/healthy-threshold-count: '2'
 alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
 ```
 
-If you have ever set up a target group with the AWS console before, you will find most of these annotations familiar, such as the health check timeouts and healthy threshold counts. You need to specify all the public subnets you created here, and the rest of the annotations are all related to the target group that will be created. You can find the final version of the file [here](./ingress-eks.yaml). 
+If you have ever set up a target group with the AWS console before, you will find most of these annotations familiar, such as the health check timeouts and healthy threshold counts. You need to specify all the public subnets you created here, and the rest of the annotations are all related to the target group that will be created. 
+
+The above configuration will create a load balancer with an HTTP listener. If you want an HTTPS listener, there are 2 other annotations that you need to add:
+
+```
+alb.ingress.kubernetes.io/certificate-arn: "arn:xxx"
+alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+```
+
+You need to specify that the port that gets created needs to listen to HTTPS instead of HTTP and provide the arn of your certificate (which is required to make HTTPS compatible).
+
+You can find the final version of the file [here](./ingress-eks.yaml). 
 
 Once this file is ready, you can deploy it into your cluster the same way you would deploy any other Kubernetes resource:
 
@@ -36,4 +47,4 @@ Now it's time to retrieve the ID of the load balancer your deployment created. T
 kubectl get ingress -A
 ```
 
-You should see the load balancer address now. The rest of the configuration will happen from the AWS side. So open up AWS console and head over to the EC2 section. From here. you should be able to see the "Load Balacers" subsection. Open this page and search for the correct load balancer using the address you copied.
+You should see the load balancer address now. Since you created this load balancer using an ingress, make sure that any changes you do to this lb come from within the same ingress file. This is because AWS knows that you used an ingress file to create the lb, and will consider it the single source of truth. Therefore any changes that you do from within the AWS console will be reverted after a couple of hours by AWS.
