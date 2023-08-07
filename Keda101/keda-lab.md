@@ -120,6 +120,22 @@ serviceAccount:
 
 The part that needs to be modified is the `annotations` section. So if you want to scale an EKS cluster based on SQS messages, then you first need an IAM role that has access to SQS, and you need to add this role arn as an annotation.
 
+If you added the arn, then setting up authentication is a simple matter. While Keda provides resources specifically geared towards authentication, you won't need to use any of that. In the Keda authentication types, there exists a type called `operator`. This type allows the keda service account to directly acquire the role of the IAM arn you provided. As long as the arn has the permissions necessary, keda can function. The triggers will look like the following:
+
+```yaml
+  triggers:
+  - type: aws-sqs-queue
+    authenticationRef:
+      name: keda-trigger-auth-aws-credentials-activity-distributor
+    metadata:
+      queueURL: <your_queue_url>
+      queueLength: "1"
+      awsRegion: "us-east-1"
+      identityOwner: operator  # This is where the identityOwner needs to be set
+```
+
+If you set the `identityOwner` to something else, such as `pod`, you could set up Keda to authenticate by assuming a role that has the necessary permissions instead of acquiring the IAM role itself. You could also completely scrap this part and choose to provide access keys.
+
 ## Conclusion
 
 This wraps up the lesson on KEDA. What we tried out was a simple demonstration of a MySQL scaler, but it is a good representation of what you can expect with other data sources. If you want to try out other scalers, make sure you check out the [official samples page](https://github.com/kedacore/samples).
