@@ -134,7 +134,43 @@ If you added the arn, then setting up authentication is a simple matter. While K
       identityOwner: operator  # This is where the identityOwner needs to be set
 ```
 
-If you set the `identityOwner` to something else, such as `pod`, you could set up Keda to authenticate by assuming a role that has the necessary permissions instead of acquiring the IAM role itself. You could also completely scrap this part and choose to provide access keys.
+If you set the `identityOwner` to something else, such as `pod`, you could set up Keda to authenticate by assuming a role that has the necessary permissions instead of acquiring the IAM role itself. You could also completely scrap this part and choose to provide access keys. In this case, you would use several additional resources. For starters, you need to include your access keys in a secret. So start by defining a resource of kind `secret`:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: keda-secret
+  namespace: keda
+data:
+  AWS_ACCESS_KEY_ID: <AWS ACCESS KEY>
+  AWS_SECRET_ACCESS_KEY: <AWS SECRET KEY>
+```
+
+You should then assign this resource to a Keda-specific custom resource called "TriggerAuthentication":
+
+```yaml
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: keda-trigger-authentication
+  namespace: keda
+spec:
+  secretTargetRef:
+  - parameter: awsAccessKeyID
+    name: keda-secret
+    key: AWS_ACCESS_KEY_ID
+  - parameter: awsSecretAccessKey
+    name: keda-secret
+    key: AWS_SECRET_ACCESS_KEY
+```
+
+This `TriggerAuthentication` resource should then be referenced within the actual `ScaledJob` resource under the `triggered` section:
+
+```yaml
+authenticationRef:
+  name: keda-trigger-authentication
+```
 
 ## Conclusion
 
