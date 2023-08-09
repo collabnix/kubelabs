@@ -172,6 +172,10 @@ authenticationRef:
   name: keda-trigger-authentication
 ```
 
+This will allow your `ScaledJob` resource to read the authentication keys that you added to your secret via the `TriggerAuthentication` resource. Of course, if you don't want to have your access keys even as a secret, you can use the operator authentication type described above. Additionally, Keda support [several different authentication types](https://keda.sh/docs/2.11/concepts/authentication/) out of the box.
+
+With the above configuration, a new Keda job will start every time a message is sent to the SQS queue. The job should have the necessary configurations to read the content of the message sent to the queue, and the message in SQS should get consumed by the job that starts. Once the job succeeds, it will terminate. If there is a failure, the job will exit and a new job will get created. It will then attempt to consume the message.
+
 ## Conclusion
 
 This wraps up the lesson on KEDA. What we tried out was a simple demonstration of a MySQL scaler, but it is a good representation of what you can expect with other data sources. If you want to try out other scalers, make sure you check out the [official samples page](https://github.com/kedacore/samples).
