@@ -178,4 +178,4 @@ With the above configuration, a new Keda job will start every time a message is 
 
 ## Conclusion
 
-This wraps up the lesson on KEDA. What we tried out was a simple demonstration of a MySQL scaler, but it is a good representation of what you can expect with other data sources. If you want to try out other scalers, make sure you check out the [official samples page](https://github.com/kedacore/samples).
+This wraps up the lesson on KEDA. What we tried out was a simple demonstration of a MySQL scaler followed by a demonstration of using various authentication methods to connect and consume messages from AWS SQS. This is a good representation of what you can expect from other data sources. If you were considering using this with a different Kubernetes engine running on a different cloud provider, the concept would still work. Make sure you read through the authentication page, which contains different methods of authentication for different cloud providers. If you want to try out other scalers, make sure you check out the [official samples page](https://github.com/kedacore/samples).
