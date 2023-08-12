@@ -1,0 +1,14 @@
+# kubectl label nodes node2 mynode=worker-1
+apiVersion: v1 
+kind: Pod 
+metadata: 
+  name: todo-pod 
+  labels: 
+    env: test 
+spec: 
+  containers:
+  - name: todo-container  
+    image: ajeetraina/todo
+    imagePullPolicy: IfNotPresent 
+  nodeSelector: 
+    mynode: worker-1

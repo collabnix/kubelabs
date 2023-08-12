@@ -1,0 +1,427 @@
+current directory: /srv/jekyll/.bundles_cache/ruby/2.6.0/gems/commonmarker-0.23.9/ext/commonmarker
+/usr/local/bin/ruby -I /usr/local/lib/ruby/site_ruby/2.6.0 -r ./siteconf20230505-36-1255oox.rb extconf.rb
+creating Makefile
+
+current directory: /srv/jekyll/.bundles_cache/ruby/2.6.0/gems/commonmarker-0.23.9/ext/commonmarker
+make "DESTDIR=" clean
+
+current directory: /srv/jekyll/.bundles_cache/ruby/2.6.0/gems/commonmarker-0.23.9/ext/commonmarker
+make "DESTDIR="
+compiling arena.c
+arena.c: In function 'cmark_arena_pop':
+arena.c:38:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+     struct arena_chunk *n = A->prev;
+     ^~~~~~
+arena.c: In function 'cmark_arena_reset':
+arena.c:54:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+     struct arena_chunk *n = A->prev;
+     ^~~~~~
+arena.c: In function 'arena_calloc':
+arena.c:64:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   size_t sz = nmem * size + sizeof(size_t);
+   ^~~~~~
+arena.c:71:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   struct arena_chunk *chunk;
+   ^~~~~~
+arena.c:79:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   void *ptr = (uint8_t *) chunk->ptr + chunk->used;
+   ^~~~
+arena.c: In function 'arena_realloc':
+arena.c:89:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   void *new_ptr = arena_calloc(1, size);
+   ^~~~
+arena.c: At top level:
+cc1: warning: unrecognized command line option '-Wno-self-assign'
+cc1: warning: unrecognized command line option '-Wno-parentheses-equality'
+cc1: warning: unrecognized command line option '-Wno-constant-logical-operand'
+compiling autolink.c
+autolink.c: In function 'www_match':
+autolink.c:200:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_node *node = cmark_node_new_with_mem(CMARK_NODE_LINK, parser->mem);
+   ^~~~~~~~~~
+autolink.c:208:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_node *text = cmark_node_new_with_mem(CMARK_NODE_TEXT, parser->mem);
+   ^~~~~~~~~~
+autolink.c: In function 'url_match':
+autolink.c:261:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_node *node = cmark_node_new_with_mem(CMARK_NODE_LINK, parser->mem);
+   ^~~~~~~~~~
+autolink.c:267:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_node *text = cmark_node_new_with_mem(CMARK_NODE_TEXT, parser->mem);
+   ^~~~~~~~~~
+autolink.c: In function 'validate_protocol':
+autolink.c:315:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   char prev_char = data[-((ptrdiff_t)rewind) - len - 1];
+   ^~~~
+autolink.c: In function 'postprocess_text':
+autolink.c:332:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   uint8_t *data = text->as.literal.data;
+   ^~~~~~~
+autolink.c:364:31: warning: passing argument 1 of 'validate_protocol' discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+         if (validate_protocol("mailto:", data + start + offset + max_rewind, rewind, max_rewind)) {
+                               ^~~~~~~~~
+autolink.c:299:36: note: expected 'char *' but argument is of type 'const char *'
+ static bool validate_protocol(char protocol[], uint8_t *data, size_t rewind, size_t max_rewind) {
+                               ~~~~~^~~~~~~~~~
+autolink.c:369:31: warning: passing argument 1 of 'validate_protocol' discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+         if (validate_protocol("xmpp:", data + start + offset + max_rewind, rewind, max_rewind)) {
+                               ^~~~~~~
+autolink.c:299:36: note: expected 'char *' but argument is of type 'const char *'
+ static bool validate_protocol(char protocol[], uint8_t *data, size_t rewind, size_t max_rewind) {
+                               ~~~~~^~~~~~~~~~
+autolink.c:419:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+     cmark_node *link_node = cmark_node_new_with_mem(CMARK_NODE_LINK, parser->mem);
+     ^~~~~~~~~~
+autolink.c:427:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+     cmark_node *link_text = cmark_node_new_with_mem(CMARK_NODE_TEXT, parser->mem);
+     ^~~~~~~~~~
+autolink.c:438:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+     cmark_node *post = cmark_node_new_with_mem(CMARK_NODE_TEXT, parser->mem);
+     ^~~~~~~~~~
+autolink.c: In function 'create_autolink_extension':
+autolink.c:502:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_mem *mem = cmark_get_default_mem_allocator();
+   ^~~~~~~~~
+autolink.c: At top level:
+cc1: warning: unrecognized command line option '-Wno-self-assign'
+cc1: warning: unrecognized command line option '-Wno-parentheses-equality'
+cc1: warning: unrecognized command line option '-Wno-constant-logical-operand'
+compiling blocks.c
+blocks.c: In function 'cmark_parser_reset':
+blocks.c:135:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_node *document = make_document(parser->mem);
+   ^~~~~~~~~~
+blocks.c: In function 'finalize':
+blocks.c:313:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_strbuf *node_content = &b->content;
+   ^~~~~~~~~~~~
+blocks.c:338:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+       cmark_strbuf tmp = CMARK_BUF_INIT(parser->mem);
+       ^~~~~~~~~~~~
+blocks.c: In function 'add_child':
+blocks.c:404:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_node *child =
+   ^~~~~~~~~~
+blocks.c: In function 'process_footnotes':
+blocks.c:486:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   unsigned int ix = 0;
+   ^~~~~~~~
+blocks.c:505:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+         char n[32];
+         ^~~~
+blocks.c:508:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+         cmark_strbuf buf = CMARK_BUF_INIT(parser->mem);
+         ^~~~~~~~~~~~
+blocks.c:517:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+         cmark_strbuf buf = CMARK_BUF_INIT(parser->mem);
+         ^~~~~~~~~~~~
+blocks.c: In function 'check_open_blocks':
+blocks.c:1056:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_node *container = parser->root;
+   ^~~~~~~~~~
+blocks.c: In function 'add_text_to_container':
+blocks.c:1351:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   const cmark_node_type ctype = S_type(container);
+   ^~~~~
+blocks.c:1389:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+       int matches_end_condition;
+       ^~~
+blocks.c: At top level:
+cc1: warning: unrecognized command line option '-Wno-self-assign'
+cc1: warning: unrecognized command line option '-Wno-parentheses-equality'
+cc1: warning: unrecognized command line option '-Wno-constant-logical-operand'
+compiling buffer.c
+buffer.c: In function 'cmark_strbuf_grow':
+buffer.c:53:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   bufsize_t new_size = target_size + target_size / 2;
+   ^~~~~~~~~
+buffer.c: In function 'cmark_strbuf_strchr':
+buffer.c:172:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   const unsigned char *p =
+   ^~~~~
+buffer.c: In function 'cmark_strbuf_strrchr':
+buffer.c:186:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   bufsize_t i;
+   ^~~~~~~~~
+buffer.c: At top level:
+cc1: warning: unrecognized command line option '-Wno-self-assign'
+cc1: warning: unrecognized command line option '-Wno-parentheses-equality'
+cc1: warning: unrecognized command line option '-Wno-constant-logical-operand'
+compiling cmark.c
+compiling cmark_ctype.c
+compiling commonmark.c
+commonmark.c: In function 'S_render_node':
+commonmark.c:405:18: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+       emph_delim = "_";
+                  ^
+commonmark.c:407:18: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+       emph_delim = "*";
+                  ^
+commonmark.c:466:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+       char *footnote_label = renderer->mem->calloc(node->parent_footnote_def->as.literal.len + 1, sizeof(char));
+       ^~~~
+commonmark.c:481:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+       char *footnote_label = renderer->mem->calloc(node->as.literal.len + 1, sizeof(char));
+       ^~~~
+commonmark.c: At top level:
+cc1: warning: unrecognized command line option '-Wno-self-assign'
+cc1: warning: unrecognized command line option '-Wno-parentheses-equality'
+cc1: warning: unrecognized command line option '-Wno-constant-logical-operand'
+compiling commonmarker.c
+In file included from houdini.h:9,
+                 from commonmarker.c:3:
+config.h:8: warning: "HAVE_STDBOOL_H" redefined
+ #define HAVE_STDBOOL_H
+ 
+In file included from /usr/local/include/ruby-2.6.0/ruby/ruby.h:24,
+                 from /usr/local/include/ruby-2.6.0/ruby.h:33,
+                 from commonmarker.h:9,
+                 from commonmarker.c:1:
+/usr/local/include/ruby-2.6.0/x86_64-linux-musl/ruby/config.h:26: note: this is the location of the previous definition
+ #define HAVE_STDBOOL_H 1
+ 
+commonmarker.c: In function 'prepare_parser':
+commonmarker.c:128:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_parser *parser = cmark_parser_new(options);
+   ^~~~~~~~~~~~
+commonmarker.c:138:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+     cmark_syntax_extension *syntax_extension =
+     ^~~~~~~~~~~~~~~~~~~~~~
+commonmarker.c: In function 'rb_render_html':
+commonmarker.c:577:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+     cmark_syntax_extension *syntax_extension =
+     ^~~~~~~~~~~~~~~~~~~~~~
+commonmarker.c:588:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   char *html = cmark_render_html(node, options, extensions);
+   ^~~~
+commonmarker.c: In function 'rb_render_xml':
+commonmarker.c:610:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   char *xml = cmark_render_xml(node, options);
+   ^~~~
+commonmarker.c: In function 'rb_render_commonmark':
+commonmarker.c:626:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   int width = 120;
+   ^~~
+commonmarker.c:632:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   int options;
+   ^~~
+commonmarker.c:639:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   char *cmark = cmark_render_commonmark(node, options, width);
+   ^~~~
+commonmarker.c: In function 'rb_render_plaintext':
+commonmarker.c:654:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   int width = 120;
+   ^~~
+commonmarker.c:660:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   int options;
+   ^~~
+commonmarker.c:667:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   char *text = cmark_render_plaintext(node, options, width);
+   ^~~~
+commonmarker.c: In function 'rb_html_escape_href':
+commonmarker.c:1175:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_mem *mem = cmark_node_mem(node);
+   ^~~~~~~~~
+commonmarker.c: In function 'rb_html_escape_html':
+commonmarker.c:1196:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_mem *mem = cmark_node_mem(node);
+   ^~~~~~~~~
+commonmarker.c: At top level:
+cc1: warning: unrecognized command line option '-Wno-self-assign'
+cc1: warning: unrecognized command line option '-Wno-parentheses-equality'
+cc1: warning: unrecognized command line option '-Wno-constant-logical-operand'
+compiling core-extensions.c
+compiling ext_scanners.c
+compiling footnotes.c
+compiling houdini_href_e.c
+compiling houdini_html_e.c
+compiling houdini_html_u.c
+compiling html.c
+html.c: In function 'S_put_footnote_backref':
+html.c:66:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   char m[32];
+   ^~~~
+html.c: At top level:
+cc1: warning: unrecognized command line option '-Wno-self-assign'
+cc1: warning: unrecognized command line option '-Wno-parentheses-equality'
+cc1: warning: unrecognized command line option '-Wno-constant-logical-operand'
+compiling inlines.c
+inlines.c: In function 'adjust_subj_node_newlines':
+inlines.c:297:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   int since_newline;
+   ^~~
+inlines.c: In function 'scan_to_closing_backticks':
+inlines.c:334:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+     bufsize_t numticks = 0;
+     ^~~~~~~~~
+inlines.c: In function 'handle_backticks':
+inlines.c:406:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+     cmark_node *node = make_code(subj, startpos, endpos - openticks.len - 1, cmark_chunk_buf_detach(&buf));
+     ^~~~~~~~~~
+inlines.c: In function 'handle_hyphen':
+inlines.c:609:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   int numhyphens = subj->pos - startpos;
+   ^~~
+inlines.c: In function 'handle_backslash':
+inlines.c:839:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   unsigned char nextchar = peek_char(subj);
+   ^~~~~~~~
+inlines.c: In function 'handle_pointy_brace':
+inlines.c:998:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+     cmark_node *node = make_raw_html(subj, subj->pos - matchlen - 1, subj->pos - 1, contents);
+     ^~~~~~~~~~
+inlines.c:1008:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+       cmark_node *node = make_raw_html(subj, subj->pos - matchlen - 1, subj->pos - 1, contents);
+       ^~~~~~~~~~
+inlines.c: In function 'handle_close_bracket':
+inlines.c:1256:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+       cmark_node *fnref = make_simple(subj->mem, CMARK_NODE_FOOTNOTE_REFERENCE);
+       ^~~~~~~~~~
+inlines.c:1302:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+       cmark_node *next_node;
+       ^~~~~~~~~~
+inlines.c: At top level:
+cc1: warning: unrecognized command line option '-Wno-self-assign'
+cc1: warning: unrecognized command line option '-Wno-parentheses-equality'
+cc1: warning: unrecognized command line option '-Wno-constant-logical-operand'
+compiling iterator.c
+iterator.c: In function 'cmark_iter_new':
+iterator.c:13:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_mem *mem = root->content.mem;
+   ^~~~~~~~~
+iterator.c: In function 'cmark_consolidate_text_nodes':
+iterator.c:99:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_iter *iter = cmark_iter_new(root);
+   ^~~~~~~~~~
+iterator.c: In function 'cmark_node_own':
+iterator.c:132:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_iter *iter = cmark_iter_new(root);
+   ^~~~~~~~~~
+iterator.c: At top level:
+cc1: warning: unrecognized command line option '-Wno-self-assign'
+cc1: warning: unrecognized command line option '-Wno-parentheses-equality'
+cc1: warning: unrecognized command line option '-Wno-constant-logical-operand'
+compiling latex.c
+latex.c: In function 'get_link_type':
+latex.c:165:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   const char *url = cmark_node_get_url(node);
+   ^~~~~
+latex.c:177:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   const char *title = cmark_node_get_title(node);
+   ^~~~~
+latex.c: At top level:
+cc1: warning: unrecognized command line option '-Wno-self-assign'
+cc1: warning: unrecognized command line option '-Wno-parentheses-equality'
+cc1: warning: unrecognized command line option '-Wno-constant-logical-operand'
+compiling linked_list.c
+compiling man.c
+man.c: In function 'S_render_node':
+man.c:126:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+         char list_number_s[LIST_NUMBER_SIZE];
+         ^~~~
+man.c: At top level:
+cc1: warning: unrecognized command line option '-Wno-self-assign'
+cc1: warning: unrecognized command line option '-Wno-parentheses-equality'
+cc1: warning: unrecognized command line option '-Wno-constant-logical-operand'
+compiling map.c
+compiling node.c
+node.c: In function 'S_node_unlink':
+node.c:840:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_node *parent = node->parent;
+   ^~~~~~~~~~
+node.c: In function 'cmark_node_insert_before':
+node.c:870:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_node *old_prev = node->prev;
+   ^~~~~~~~~~
+node.c:881:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_node *parent = node->parent;
+   ^~~~~~~~~~
+node.c: In function 'cmark_node_insert_after':
+node.c:903:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_node *old_next = node->next;
+   ^~~~~~~~~~
+node.c:914:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_node *parent = node->parent;
+   ^~~~~~~~~~
+node.c: In function 'cmark_node_prepend_child':
+node.c:940:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_node *old_first_child = node->first_child;
+   ^~~~~~~~~~
+node.c: In function 'cmark_node_append_child':
+node.c:964:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_node *old_last_child = node->last_child;
+   ^~~~~~~~~~
+node.c: At top level:
+cc1: warning: unrecognized command line option '-Wno-self-assign'
+cc1: warning: unrecognized command line option '-Wno-parentheses-equality'
+cc1: warning: unrecognized command line option '-Wno-constant-logical-operand'
+compiling plaintext.c
+plaintext.c: In function 'S_render_node':
+plaintext.c:189:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+       char n[32];
+       ^~~~
+plaintext.c: At top level:
+cc1: warning: unrecognized command line option '-Wno-self-assign'
+cc1: warning: unrecognized command line option '-Wno-parentheses-equality'
+cc1: warning: unrecognized command line option '-Wno-constant-logical-operand'
+compiling plugin.c
+compiling references.c
+compiling registry.c
+registry.c: In function 'cmark_register_plugin':
+registry.c:23:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_llist *syntax_extensions_list = cmark_plugin_steal_syntax_extensions(plugin),
+   ^~~~~~~~~~~
+registry.c: At top level:
+cc1: warning: unrecognized command line option '-Wno-self-assign'
+cc1: warning: unrecognized command line option '-Wno-parentheses-equality'
+cc1: warning: unrecognized command line option '-Wno-constant-logical-operand'
+compiling render.c
+compiling scanners.c
+compiling strikethrough.c
+strikethrough.c: In function 'create_strikethrough_extension':
+strikethrough.c:160:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   cmark_mem *mem = cmark_get_default_mem_allocator();
+   ^~~~~~~~~
+strikethrough.c: At top level:
+cc1: warning: unrecognized command line option '-Wno-self-assign'
+cc1: warning: unrecognized command line option '-Wno-parentheses-equality'
+cc1: warning: unrecognized command line option '-Wno-constant-logical-operand'
+compiling syntax_extension.c
+compiling table.c
+table.c: In function 'row_from_string':
+table.c:181:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+       node_cell *cell = append_row_cell(parser->mem, row);
+       ^~~~~~~~~
+table.c: In function 'try_opening_table_header':
+table.c:331:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   uint8_t *alignments =
+   ^~~~~~~
+table.c: In function 'matches':
+table.c:454:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+     table_row *new_row = row_from_string(
+     ^~~~~~~~~
+table.c: In function 'html_render':
+table.c:757:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+       int i = 0;
+       ^~~
+table.c: At top level:
+cc1: warning: unrecognized command line option '-Wno-self-assign'
+cc1: warning: unrecognized command line option '-Wno-parentheses-equality'
+cc1: warning: unrecognized command line option '-Wno-constant-logical-operand'
+compiling tagfilter.c
+compiling tasklist.c
+tasklist.c: In function 'open_tasklist_item':
+tasklist.c:83:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   bufsize_t matched = scan_tasklist(input, len, 0);
+   ^~~~~~~~~
+tasklist.c: At top level:
+cc1: warning: unrecognized command line option '-Wno-self-assign'
+cc1: warning: unrecognized command line option '-Wno-parentheses-equality'
+cc1: warning: unrecognized command line option '-Wno-constant-logical-operand'
+compiling utf8.c
+compiling xml.c
+linking shared-object commonmarker/commonmarker.so
+
+current directory: /srv/jekyll/.bundles_cache/ruby/2.6.0/gems/commonmarker-0.23.9/ext/commonmarker
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 commonmarker.so ./.gem.20230505-36-s0rs5m/commonmarker

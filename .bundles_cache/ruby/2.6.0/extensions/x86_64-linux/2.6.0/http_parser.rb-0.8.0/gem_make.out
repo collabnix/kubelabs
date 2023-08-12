@@ -1,0 +1,58 @@
+current directory: /srv/jekyll/.bundles_cache/ruby/2.6.0/gems/http_parser.rb-0.8.0/ext/ruby_http_parser
+/usr/local/bin/ruby -I /usr/local/lib/ruby/site_ruby/2.6.0 -r ./siteconf20230505-36-1lmzh7i.rb extconf.rb
+creating Makefile
+
+current directory: /srv/jekyll/.bundles_cache/ruby/2.6.0/gems/http_parser.rb-0.8.0/ext/ruby_http_parser
+make "DESTDIR=" clean
+
+current directory: /srv/jekyll/.bundles_cache/ruby/2.6.0/gems/http_parser.rb-0.8.0/ext/ruby_http_parser
+make "DESTDIR="
+compiling ruby_http_parser.c
+ruby_http_parser.c: In function 'on_message_begin':
+ruby_http_parser.c:112:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   VALUE ret = Qnil;
+   ^~~~~
+ruby_http_parser.c: In function 'on_header_value':
+ruby_http_parser.c:168:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   int new_field = 0;
+   ^~~
+ruby_http_parser.c: In function 'on_headers_complete':
+ruby_http_parser.c:214:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   VALUE ret = Qnil;
+   ^~~~~
+ruby_http_parser.c: In function 'on_body':
+ruby_http_parser.c:235:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   VALUE ret = Qnil;
+   ^~~~~
+ruby_http_parser.c: In function 'on_message_complete':
+ruby_http_parser.c:254:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   VALUE ret = Qnil;
+   ^~~~~
+ruby_http_parser.c: In function 'Parser_initialize':
+ruby_http_parser.c:319:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   VALUE default_header_value_type = Qnil;
+   ^~~~~
+ruby_http_parser.c: In function 'Parser_execute':
+ruby_http_parser.c:353:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   char *ptr = RSTRING_PTR(data);
+   ^~~~
+ruby_http_parser.c:359:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   size_t nparsed = ryah_http_parser_execute(&wrapper->parser, &settings, ptr, len);
+   ^~~~~~
+ruby_http_parser.c:365:17: warning: comparison of integer expressions of different signedness: 'size_t' {aka 'long unsigned int'} and 'long int' [-Wsign-compare]
+     if (nparsed < len)
+                 ^
+ruby_http_parser.c: In function 'Parser_set_header_value_type':
+ruby_http_parser.c:492:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   ParserWrapper *wrapper = NULL;
+   ^~~~~~~~~~~~~
+ruby_http_parser.c: At top level:
+cc1: warning: unrecognized command line option '-Wno-self-assign'
+cc1: warning: unrecognized command line option '-Wno-parentheses-equality'
+cc1: warning: unrecognized command line option '-Wno-constant-logical-operand'
+compiling ryah_http_parser.c
+linking shared-object ruby_http_parser.so
+
+current directory: /srv/jekyll/.bundles_cache/ruby/2.6.0/gems/http_parser.rb-0.8.0/ext/ruby_http_parser
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 ruby_http_parser.so ./.gem.20230505-36-r4egv6

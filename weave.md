@@ -36,5 +36,18 @@ Now get ready to access via  http://localhost:4040.
 
 ![My Image](https://raw.githubusercontent.com/collabnix/dockerlabs/master/kubernetes/workshop/weave.jpg)
 
+
+## Note:
+
+If you're using Docker Desktop for Mac, follow the below steps:
+
+```
+kubectl apply -f https://github.com/weaveworks/scope/releases/download/v1.13.2/k8s-scope.yaml
+kubectl port-forward -n weave "$(kubectl get -n weave pod --selector=weave-scope-component=app -o jsonpath='{.items..metadata.name}')" 4040
+```
+
+The URL is: http://localhost:4040.
+
+
 [Next >>](https://collabnix.github.io/kubelabs/dockerdesktopformac/index.html)
 

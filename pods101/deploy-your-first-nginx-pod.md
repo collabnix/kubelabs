@@ -1,6 +1,6 @@
 # Deploying Your First Nginx Pod
 
-## What are K8s Pods?
+## What are Kubernetess Pods?
 
 - Kubernetes pods are the foundational unit for all higher Kubernetes objects.
 - A pod hosts one or more containers.
@@ -23,9 +23,32 @@ Containers in a Pod run on a “logical host”; they use the same network names
 So if an application needs several containers running on the same host, why not just make a single container with everything you need? Well first, you’re likely to violate the “one process per container” principle. This is important because with multiple processes in the same container it is harder to troubleshoot the container. That is because logs from different processes will be mixed together and it is harder manage the processes lifecycle. For example to take care of “zombie” processes when their parent process dies. Second, using several containers for an application is simpler, more transparent, and enables decoupling software dependencies. Also, more granular containers can be reused between teams.
 
 
+## A Typical Pod creation Workflow
+
+<img width="891" alt="image" src="https://github.com/collabnix/kubelabs/assets/34368930/458ca251-8d23-4a9b-a48d-e3172d7236c6">
+
+
+The workflow for creating a Pod in Kubernetes typically involves the following steps:
+
+- Create a Pod Manifest: A Pod is defined using a YAML or JSON manifest file that describes its desired state. The manifest includes information such as the Pod name, container specifications, networking details, and any additional configurations.
+- Apply the Manifest: Use the kubectl apply command to apply the Pod manifest and create the Pod. For example:
+```
+kubectl apply -f pod.yaml
+```
+
+- API Server Validation: The kubectl apply command sends the Pod manifest to the Kubernetes API server. The API server validates the manifest's syntax and checks for any conflicts or errors.
+- Pod Scheduler: Once the Pod manifest is validated, the Kubernetes scheduler assigns the Pod to a suitable worker node. The scheduler takes into account factors such as resource availability, node affinity rules, and other scheduling constraints.
+- Container Creation: The assigned worker node receives the Pod specification and initiates the creation of containers within the Pod. The container runtime, such as Docker or containerd, pulls the container images specified in the Pod manifest and starts the containers.
+- Pod Status: The Pod goes through different status phases, including "Pending" while it's being scheduled, "Running" when the containers are successfully started, and "Completed" or "Failed" when the Pod's primary container finishes its execution.
+- Monitoring and Logging: Kubernetes provides various monitoring and logging mechanisms to track the status, resource usage, and events related to the Pod. You can use tools like Prometheus, Grafana, or Kubernetes Dashboard to monitor and visualize Pod metrics.
+
+
+
+
 ## Pre-requisite:
 
-    {{< kat-button >}}
+    - Play with Kubernetes
+    - Clone the repo
 
 ## Steps
 
@@ -253,6 +276,8 @@ NAME        READY   STATUS    RESTARTS   AGE     IP         NODE                
 webserver   2/2     Running   0          3m37s   10.8.0.5   gke-standard-cluster-1-default-pool-78257330-5hs8   <none>           <none>
 ```
 
+
+
 ## How to verify 2 containers are running inside a Pod?
 
 
@@ -479,6 +504,13 @@ Wed Jan  8 08:59:16 UTC 2020
 
 ```
 kubectl delete -f pods03.yaml
+```
+
+
+## Running Prometheus along with Nginx Container + Config in a single Pod
+
+```
+kubectl apply -f pods105.yaml
 ```
 
 # Contributor

@@ -4,13 +4,24 @@
 ![forks](https://img.shields.io/github/forks/collabnix/kubelabs)
 ![issues](https://img.shields.io/github/issues/collabnix/kubelabs)
 ![GitHub contributors](https://img.shields.io/github/contributors/collabnix/kubelabs)
-![Visitor count](https://shields-io-visitor-counter.herokuapp.com/badge?page=collabnix.kubelabs)
 ![Twitter](https://img.shields.io/twitter/follow/collabnix?style=social)
 
+A Curated List of Kubernetes Labs and Tutorials
+
+- A $0 Learning Platform for All Levels - from the ground Up
+- Over 500+ Highly Interactive Docker Tutorials and Guides
+- Well tested on Kubernetes Cluster  and can be run on Browser (no Infrastructure required)
+
+# 📝 Join our Community
+
+- Join 8400+ DevOps Engineers today via [Community Slack](https://launchpass.com/collabnix)
+- Join our [Discord Server](https://discord.gg/QEkCXAXYSe)
+- Fork, Contribute & Share via [Kubelabs GITHUB Repository](https://github.com/collabnix/kubelabs)
+-  Click and Follow us over Twitter [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/fold_left.svg?style=social&label=Follow%20%40collabnix)](https://twitter.com/collabnix)
 
 ## Pre-requisite:
 
-- [Introductory Slides](./Kubernetes_Intro_slides-1/Kubernetes_Intro_slides-1.html) 
+- [Introductory Slides](https://collabnix.github.io/kubelabs/Kubernetes_Intro_slides-1/Kubernetes_Intro_slides-1.html) 
 - [Deep Dive into Kubernetes Architecture](./Kubernetes_Architecture.md) 
 
 
@@ -43,7 +54,16 @@
 
 - [Kubectl for Docker Beginners](./kubectl-for-docker.md) 
 - [Accessing Kubernetes API](./api.md) 
+- [How to know if Kubernetes is using Docker or Containerd as a runtime](detect.md)
 
+## Kubernetes CRUD 
+
+- [Using Python](python/README.md)
+- [Using Go](golang/README.md)
+
+## Using AI
+
+- [Deploying Kubernetes via AI](./ai/README.md)
 
 
 ## Pods101
@@ -56,8 +76,11 @@
  - [Executing Commands against Pod](./pods101/deploy-your-first-nginx-pod.md#executing-commands-against-pods) 
  - [Terminating a Pod](./pods101/deploy-your-first-nginx-pod.md#deleting-the-pod) 
  - [Adding a 2nd container to a Pod](./pods101/deploy-your-first-nginx-pod.md#ading-a-2nd-container-to-a-pod) 
+ - [Labels and Selectors in a Pod](./pods101/labels-and-selectors/README.md)
 
- 
+### Kubernetes Tools for Pods
+
+- [Kubetail](https://github.com/collabnix/kubelabs/blob/master/pods101/tools/kubetail.md)
 
 ## ReplicaSet101
 
@@ -93,6 +116,7 @@
  
   - [Introductory Slides](https://collabnix.github.io/kubelabs/Slides_Services101/Services101.html) 
   - [Deploy a Kubernetes Service?](./Services101/README.md#deploying--a-kubernetes-service)
+  - [Labels and Selectors](https://github.com/collabnix/kubelabs/blob/master/Labels-and-Selectors/README.MD)
   - [Service Exposing More Than One Port](./Services101/README.md#service-exposing-more-than-one-port)
   - [Kubernetes Service Without Pods?](./Services101/README.md#kubernetes-service-without-pods)
   - [Service Discovery](./Services101/README.md#service-discovery)
@@ -193,10 +217,9 @@
 
 ## Logging101
 
-- [Logging introduction](./Logging101/logging-intro.md)
+ - [Logging introduction](./Logging101/logging-intro.md)
  - [Elasticsearch](./Logging101/what-is-elasticsearch.md)
  - [Fluentd](./Logging101/fluentd.md)
- - [Kafka](./Logging101/kafka.md)
  - [Fluent Bit](./Logging101/fluentdbit.md)
 
 ## Helm101
@@ -259,13 +282,20 @@
 - [Jenkins on Kubernetes](./Jenkins101/jenkins-on-kubernetes.md)
 - [Using Jenkins on Kubernetes](./Jenkins101/jenkins-ci.md)
 
-## Kubernetes with Terraform
-- [What is Terraform](./Terraform101/what-is-terraform.md)
-- [Terraform providers](./Terraform101/terraform-providers.md)
-- [Terraform lab](./Terraform101/terraform-lab.md)
+## Strimzi (Kafka on Kubernetes)
+ - [What is Kafka](./Strimzi101/kafka.md)
+ - [Running Kafka on Kubernetes](./Strimzi101/kafka-on-kubernetes.md)
 
-## Kubernetes Cheat Sheet
-- [Kubernetes Cheat Sheet](./Kubernetes%20Cheat%20Sheet/Kubernetes%20Cheat%20Sheet.md)
+## Java client for Kubernetes
+ - [Introduction](./JavaClient101/intro.md)
+
+
+## For Node Developers
+- [Kubernetes for Node Developers](./nodejs.md)
+
+## Cheat Sheets
+- [Kubernetes Cheat Sheet](./Cheat%20Sheets/Kubernetes%20Cheat%20Sheet.md)
+- [Helm Cheat Sheet](./Cheat%20Sheets/Helm%20Cheat%20Sheet.md)
 
 # Contributors
 
@@ -276,6 +306,34 @@
 - [Saiyam Pathak](https://twitter.com/SaiyamPathak)
 - [Divyajeet Singh](https://www.linkedin.com/in/divyajeet-singh)
 - [Apurva Bhandari](https://www.linkedin.com/in/apurvabhandari-linux)
+
+## Contribution Guidelines
+
+## Step 1. Clone the repository
+
+```
+ git clone https://github.com/collabnix/kubelabs
+```
+
+## Step 2. Add _config_dev.yml
+
+Add the following entry for local access
+
+```
+url: http://127.0.0.1:4000
+```
+
+## Step 2. Run the container
+
+
+```
+docker run --rm \
+  -v "$PWD:/srv/jekyll" \
+  -e BUNDLE_PATH="/srv/jekyll/.bundles_cache" \
+  -p 4000:4000 \
+  jekyll/builder:3.8 \
+  bash -c "gem install bundler && bundle install && bundle exec jekyll serve --host 0.0.0.0 --verbose --config _config.yml,_config_dev.yml"
+ ```
 
 
 
