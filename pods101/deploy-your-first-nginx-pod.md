@@ -2,6 +2,9 @@
 
 ## What are Kubernetess Pods?
 
+[![YouTube](https://github.com/collabnix/kubelabs/blob/master/pods101.png)](https://www.youtube.com/embed/i0d5ta83c-k)
+
+
 - Kubernetes pods are the foundational unit for all higher Kubernetes objects.
 - A pod hosts one or more containers.
 - It can be created using either a command or a YAML/JSON file.

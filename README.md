@@ -307,6 +307,14 @@ A Curated List of Kubernetes Labs and Tutorials
 - [Divyajeet Singh](https://www.linkedin.com/in/divyajeet-singh)
 - [Apurva Bhandari](https://www.linkedin.com/in/apurvabhandari-linux)
 
+## Workshop Video
+
+
+
+[![YouTube](https://github.com/collabnix/kubelabs/blob/master/k8sworkshop.png)](https://www.youtube.com/embed/i0d5ta83c-k)
+
+
+
 ## Contribution Guidelines
 
 ## Step 1. Clone the repository
