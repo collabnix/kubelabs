@@ -289,6 +289,9 @@ A Curated List of Kubernetes Labs and Tutorials
 ## Java client for Kubernetes
  - [Introduction](./JavaClient101/intro.md)
 
+## KEDA
+- [What is KEDA](./Keda101/what-is-keda.md)
+- [KEDA lab](./Keda101/keda-lab.md)
 
 ## For Node Developers
 - [Kubernetes for Node Developers](./nodejs.md)
