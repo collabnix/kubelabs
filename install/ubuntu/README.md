@@ -1,6 +1,10 @@
 
-# Installing kubernetes with kubeadm on Ubuntu 16.04+/Debian 9+/HypriotOS v1.0.1+
+# Installing kubernetes with kubeadm on Ubuntu 16.04+ & Debian 9+
 
+```
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+sudo swapoff -a
+```
 
 ## Installing kubeadm kubectl kubelet
 
@@ -17,13 +21,55 @@ sudo apt-get install -y kubelet kubeadm kubectl
 sudo apt-mark hold kubelet kubeadm kubectl
 ```
 
-## Initialize kubeadm - This is only for Master
+## Install and Use Containerd:
+
+```
+# Configure persistent loading of modules
+sudo tee /etc/modules-load.d/containerd.conf <<EOF
+overlay
+br_netfilter
+EOF
+
+# Load at runtime
+sudo modprobe overlay
+sudo modprobe br_netfilter
+
+# Ensure sysctl params are set
+sudo tee /etc/sysctl.d/kubernetes.conf<<EOF
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+net.ipv4.ip_forward = 1
+EOF
+
+# Reload configs
+sudo sysctl --system
+
+# Add Docker repo
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+# Install containerd
+sudo apt update
+sudo apt install -y containerd.io
+
+# Configure containerd and start service
+sudo su -
+mkdir -p /etc/containerd
+containerd config default>/etc/containerd/config.toml
+
+# restart containerd
+sudo systemctl restart containerd
+sudo systemctl enable containerd
+systemctl status  containerd
+```
+
+## Initialize kubeadm (Only for Master Node)
 
 ```
 kubeadm init
 ```
 
-## Setting up kubeconfig - This is only for Master Node
+## Setting up kubeconfig (Only for Master Node)
 
 ```
   mkdir -p $HOME/.kube
@@ -32,21 +78,21 @@ kubeadm init
 ```
 
 
-## Copying token from kubeadmn init snippet - This you should copy from Master. This you will get from Master node only
+## Copying token from kubeadmn init snippet (Copy from Master)
 
 ```
 kubeadm join <control-plane-host>:<control-plane-port> --token <token> --discovery-token-ca-cert-hash sha256:<hash>
 ```
 
 
-## Installing Network Plugin - This is only for Master Node
+## Installing Network Plugin (Only for Master Node)
 
 ```
 kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 ```
 
 
-## Joining Worker Nodes - This is only for Worker Nodes
+## Joining Worker Nodes (Only for Worker Nodes)
 
 ```
 kubeadm join --token <token> <control-plane-host>:<control-plane-port> --discovery-token-ca-cert-hash sha256:<hash>
