@@ -2,4 +2,65 @@
 
 Now that you have all the requirements down, it's time to start creating the Terraform file. For starters, you need a VPC to host everything in, along with a subnet that can allocate your IPs. We will be creating 2 subnets: 1 private and 1 public. The cluster will be held within the private subnet for security reasons while there will be an ALB that connects to the public subnet and allows internet access to select ports on the cluster.
 
-Let's start off with the VPC creation. To make things better formatted, we will create 3 files. One to hold the vpc variables, another to hold the outputs, and a final file that holds the actual VPC configuration. The variables file will hold all the variables, which is handy since you have every changing value consolidated into one file. After your VPC finishes being created, it will have things such as the VPC ID which is needed for future steps, since we need to assign this ID to every other resource we create. As with EKS, we will be using a module to help us create the VPC.
+Let's start off with the VPC creation. To make things better formatted, we will create 3 files. One to hold the vpc variables, another to hold the outputs, and a final file that holds the actual VPC configuration. The variables file will hold all the variables, which is handy since you have every changing value consolidated into one file. After your VPC finishes being created, it will have things such as the VPC ID which is needed for future steps, since we need to assign this ID to every other resource we create. 
+
+So for starters, we will create the vpc variable file. Name this file `vpc-variable.tf` and include the below variables:
+
+```
+variable "vpc_name" {
+  description = "VPC Name"
+  type = string 
+  default = "myvpc"
+}
+
+variable "vpc_cidr_block" {
+  description = "VPC CIDR Block"
+  type = string 
+  default = "10.0.0.0/16"
+}
+
+variable "vpc_availability_zones" {
+  description = "VPC Availability Zones"
+  type = list(string)
+  default = ["us-east-1a", "us-east-1b"]
+}
+
+variable "vpc_public_subnets" {
+  description = "VPC Public Subnets"
+  type = list(string)
+  default = ["172.13.1.0/24", "172.13.2.0/24"]
+}
+
+variable "vpc_private_subnets" {
+  description = "VPC Private Subnets"
+  type = list(string)
+  default = ["172.13.3.0/24", "172.13.4.0/24"]
+}
+
+variable "vpc_enable_nat_gateway" {
+  description = "Enable NAT Gateways for Private Subnets"
+  type = bool
+  default = true  
+}
+
+variable "vpc_single_nat_gateway" {
+  description = "Enable single NAT Gateway"
+  type = bool
+  default = true
+}
+```
+
+The variables are self-explanatory. There is the VPC name, CIDR block, and azs. Then there are the private and public subnets. Now that you have all the variables defined, it's simply a matter of plugging these variables into the VPC module.
+
+As with EKS, we will be using a module to help us create the VPC.
+
+Start by defining the vpc module:
+
+```
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "5.1.1"
+}
+```
+
+Now, add the variables previously defined as follows:
