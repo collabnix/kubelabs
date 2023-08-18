@@ -52,7 +52,7 @@ variable "vpc_single_nat_gateway" {
 
 The variables are self-explanatory. There is the VPC name, CIDR block, and azs. Then there are the private and public subnets. Now that you have all the variables defined, it's simply a matter of plugging these variables into the VPC module.
 
-As with EKS, we will be using a module to help us create the VPC.
+As with EKS, we will be using a module to help us create the VPC. Call this file `vpc-module.tf`
 
 Start by defining the vpc module:
 
@@ -64,3 +64,26 @@ module "vpc" {
 ```
 
 Now, add the variables previously defined as follows:
+
+```
+name = "collabnix"
+cidr = var.vpc_cidr_block
+azs = data.aws_availability_zones.available.names
+public_subnets = var.vpc_public_subnets
+private_subnets = var.vpc_private_subnets  
+```
+
+Enable the NAT gateway and DNS:
+
+```
+enable_nat_gateway = true
+single_nat_gateway = true
+enable_dns_hostnames = true
+enable_dns_support   = true
+```
+
+And that's it! This will automatically create the new VPC, subnet, and relevant security groups.
+
+Once all that is created, you need some way to be able to reference these resources. After all, every other resource you create is going to be inside them and therefore needs their relevant ids. So, you now need an output file. This output file will handle all of the outputs such as ids and other variables that get created after the script has finished running.
+
+Create a file called `vpc-outputs.tf` and define the outputs.
