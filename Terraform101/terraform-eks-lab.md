@@ -87,3 +87,36 @@ And that's it! This will automatically create the new VPC, subnet, and relevant 
 Once all that is created, you need some way to be able to reference these resources. After all, every other resource you create is going to be inside them and therefore needs their relevant ids. So, you now need an output file. This output file will handle all of the outputs such as ids and other variables that get created after the script has finished running.
 
 Create a file called `vpc-outputs.tf` and define the outputs.
+
+```
+output "vpc_id" {
+  description = "VPC ID"
+  value       = module.vpc.vpc_id
+}
+
+output "vpc_cidr_block" {
+  description = "VPC CIDR blocks"
+  value       = module.vpc.vpc_cidr_block
+}
+
+output "private_subnets" {
+  description = "Private subnet IDs"
+  value       = module.vpc.private_subnets
+}
+
+output "public_subnets" {
+  description = "Public subnets IDs"
+  value       = module.vpc.public_subnets
+}
+
+output "azs" {
+  description = "Az list"
+  value       = module.vpc.azs
+}
+```
+
+This will allow you to output important information such as VPC IDs, and CIDR blocks alongside information about the subnet. This information can then be used by other Terraform resources like this:
+
+```
+subnet_ids = module.vpc.private_subnets
+```
