@@ -120,3 +120,33 @@ This will allow you to output important information such as VPC IDs, and CIDR bl
 ```
 subnet_ids = module.vpc.private_subnets
 ```
+
+At this point, you should have everything you need to set up your VPC, subnet, and security groups. Now, it's time to set up the cluster. Similar to the VPC, we will be using the EKS module to set it up, and likewise, we will have files for variables and outputs. Let's start with creating the variable file. Name it `eks-variables.tf` and populate it with the below values:
+
+```
+variable "cluster_name" {
+  description = "Name of the EKS cluster."
+  type        = string
+  default     = "COLLABNIX"
+}
+
+variable "cluster_service_ipv4_cidr" {
+  description = "ipv4 cidr for kubernetes cluster"
+  type        = string
+  default     = null
+}
+
+variable "cluster_version" {
+  description = "Kubernetes version"
+  type        = string
+  default     = null
+}
+
+variable "cluster_endpoint_public_access_cidrs" {
+  description = "Public API server endpoint accessible CIDR blocks"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
+```
+
+Next, let's define the file that houses the EKSmodule.
