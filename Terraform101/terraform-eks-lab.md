@@ -149,4 +149,43 @@ variable "cluster_endpoint_public_access_cidrs" {
 }
 ```
 
-Next, let's define the file that houses the EKSmodule.
+Before we get defining the cluster tf file, there are a couple of prerequisites that need to be created. As you already know, a cluster has nodes that are basically VMs. In the case of AWS, these are EC2 instances. As such, we need to create an IAM role that is able to work with them, along with a couple of specialized EKS policies. Create a file called `eks-iamrole.tf` and add the following script:
+
+```
+resource "aws_iam_role" "eks_nodegroup_role" {
+  name = "eks-nodegroup-role"
+
+  assume_role_policy = jsonencode({
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "ec2.amazonaws.com"
+      }
+    }]
+    Version = "2012-10-17"
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "eks-AmazonEKSWorkerNodePolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+  role       = aws_iam_role.eks_nodegroup_role.name
+}
+
+resource "aws_iam_role_policy_attachment" "eks-AmazonEKS_CNI_Policy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+  role       = aws_iam_role.eks_nodegroup_role.name
+}
+
+resource "aws_iam_role_policy_attachment" "eks-AmazonEC2ContainerRegistryReadOnly" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  role       = aws_iam_role.eks_nodegroup_role.name
+}
+
+resource "aws_iam_role_policy_attachment" "eks-AmazonSSMFullAccess" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMFullAccess"
+  role       = aws_iam_role.eks_nodegroup_role.name
+}
+```
+
+Next, let's define the file that houses the EKS resource. Call this file `eks-cluster.tf`, and populate it with the below content:
