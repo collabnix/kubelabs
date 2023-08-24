@@ -152,8 +152,8 @@ variable "cluster_endpoint_public_access_cidrs" {
 Before we get defining the cluster tf file, there are a couple of prerequisites that need to be created. As you already know, a cluster has nodes that are basically VMs. In the case of AWS, these are EC2 instances. As such, we need to create an IAM role that is able to work with them, along with a couple of specialized EKS policies. Create a file called `eks-iamrole.tf` and add the following script:
 
 ```
-resource "aws_iam_role" "eks_nodegroup_role" {
-  name = "eks-nodegroup-role"
+resource "aws_iam_role" "eks_iam_role" {
+  name = "eks_iam_role"
 
   assume_role_policy = jsonencode({
     Statement = [{
@@ -188,4 +188,32 @@ resource "aws_iam_role_policy_attachment" "eks-AmazonSSMFullAccess" {
 }
 ```
 
+This role will be used by the EKS nodegroups. As such, they have policies about EC2, EKS, and SSM. A role like this gets created for you when you use `eksctl` to create a cluster.
+
 Next, let's define the file that houses the EKS resource. Call this file `eks-cluster.tf`, and populate it with the below content:
+
+```
+resource "aws_eks_cluster" "eks_cluster" {
+  name     = var.cluster_name
+  role_arn = aws_iam_role.eks_iam_role.arn
+  version = var.cluster_version
+
+  vpc_config {
+    subnet_ids = module.vpc.private_subnets
+    endpoint_private_access = "true"
+    endpoint_public_access  = "false"
+    public_access_cidrs     = var.cluster_endpoint_public_access_cidrs    
+  }
+
+  kubernetes_network_config {
+    service_ipv4_cidr = var.cluster_service_ipv4_cidr
+  }
+  
+  depends_on = [
+    aws_iam_role_policy_attachment.eks-AmazonEKSClusterPolicy,
+    aws_iam_role_policy_attachment.eks-AmazonEKSVPCResourceController,
+  ]
+}
+```
+
+The above script will create the entire cluster. You specify the cluster name, role, version, and vpc_config along with any other dependencies.
