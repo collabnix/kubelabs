@@ -216,4 +216,83 @@ resource "aws_eks_cluster" "eks_cluster" {
 }
 ```
 
-The above script will create the entire cluster. You specify the cluster name, role, version, and vpc_config along with any other dependencies.
+The above script will create the entire cluster. You specify the cluster name, role, version, and vpc_config along with any other dependencies. As with the creation of the VPC, running this Terraform file will create a bunch of resources that you will need to reference in the future. Therefore, we need an EKS outputs file. Create a new file and call it `eks-outputs.tf`. Populate it with the following:
+
+```
+output "cluster_id" {
+  description = "ID of the EKS cluster."
+  value       = aws_eks_cluster.eks_cluster.id
+}
+
+output "cluster_arn" {
+  description = "Cluster ARN."
+  value       = aws_eks_cluster.eks_cluster.arn
+}
+
+output "cluster_endpoint" {
+  description = "EKS Kubernetes API endpoint."
+  value       = aws_eks_cluster.eks_cluster.endpoint
+}
+
+output "cluster_version" {
+  description = "Kubernetes version."
+  value       = aws_eks_cluster.eks_cluster.version
+}
+
+output "cluster_iam_role_name" {
+  description = "IAM role name of the EKS cluster."
+  value       = aws_iam_role.eks_dr_master_role.name 
+}
+
+output "cluster_iam_role_arn" {
+  description = "IAM role ARN of the EKS cluster."
+  value       = aws_iam_role.eks_dr_master_role.arn
+}
+
+output "cluster_primary_security_group_id" {
+  description = "Cluster SG."
+  value       = aws_eks_cluster.eks_cluster.vpc_config[0].cluster_security_group_id
+}
+
+output "node_group_public_id" {
+  description = "Public Node Group ID"
+  value       = aws_eks_node_group.eks_ng_public.id
+}
+
+output "node_group_public_arn" {
+  description = "Public Node Group ARN"
+  value       = aws_eks_node_group.eks_ng_public.arn
+}
+
+output "node_group_public_status" {
+  description = "Public Node Group status"
+  value       = aws_eks_node_group.eks_ng_public.status 
+}
+
+output "node_group_public_version" {
+  description = "Public Node Group Kubernetes Version"
+  value       = aws_eks_node_group.eks_ng_public.version
+}
+
+output "node_group_private_id" {
+  description = "Node Group 1 ID"
+  value       = aws_eks_node_group.eks_ng_private.id
+}
+
+output "node_group_private_arn" {
+  description = "Private Node Group ARN"
+  value       = aws_eks_node_group.eks_ng_private.arn
+}
+
+output "node_group_private_status" {
+  description = "Private Node Group status"
+  value       = aws_eks_node_group.eks_ng_private.status 
+}
+
+output "node_group_private_version" {
+  description = "Private Node Group Kubernetes Version"
+  value       = aws_eks_node_group.eks_ng_private.version
+}
+```
+
+You might notice that this output file is a fair bit longer than the previous one. This is because the cluster has several important variables that need to be used by other resources.
