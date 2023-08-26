@@ -216,7 +216,7 @@ resource "aws_eks_cluster" "eks_cluster" {
 }
 ```
 
-The above script will create the entire cluster. You specify the cluster name, role, version, and vpc_config along with any other dependencies. As with the creation of the VPC, running this Terraform file will create a bunch of resources that you will need to reference in the future. Therefore, we need an EKS outputs file. Create a new file and call it `eks-outputs.tf`. Populate it with the following:
+The above script will create the cluster. However, note that we have not mentioned anything about nodegroups in the above tf script. Running this script alone will create a control plane and set up the cluster in EKS, but you won't be able to deploy anything since you don't have any nodes. You specify the cluster name, role, version, and vpc_config along with any other dependencies. As with the creation of the VPC, running this Terraform file will create a bunch of resources that you will need to reference in the future. Therefore, we need an EKS outputs file. Create a new file and call it `eks-outputs.tf`. Populate it with the following:
 
 ```
 output "cluster_id" {
@@ -295,4 +295,4 @@ output "node_group_private_version" {
 }
 ```
 
-You might notice that this output file is a fair bit longer than the previous one. This is because the cluster has several important variables that need to be used by other resources.
+You might notice that this output file is a fair bit longer than the previous one. This is because the cluster has several important variables that need to be used by other resources. You first have the cluster identifiers, such as the cluster ID, arn, and endpoint. These values are needed when you want to deploy applications to your cluster. The next two values concern the IAM roles that you will be using to deal with that cluster. You also get the cluster security group information in the next variable. We will be diving into the security group in more detail later. Since any ports that we need to open should happen from the security group, we will need to add those configurations as well.
