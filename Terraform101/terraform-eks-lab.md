@@ -264,11 +264,6 @@ output "node_group_public_arn" {
   value       = aws_eks_node_group.eks_ng_public.arn
 }
 
-output "node_group_public_status" {
-  description = "Public Node Group status"
-  value       = aws_eks_node_group.eks_ng_public.status 
-}
-
 output "node_group_public_version" {
   description = "Public Node Group Kubernetes Version"
   value       = aws_eks_node_group.eks_ng_public.version
@@ -284,11 +279,6 @@ output "node_group_private_arn" {
   value       = aws_eks_node_group.eks_ng_private.arn
 }
 
-output "node_group_private_status" {
-  description = "Private Node Group status"
-  value       = aws_eks_node_group.eks_ng_private.status 
-}
-
 output "node_group_private_version" {
   description = "Private Node Group Kubernetes Version"
   value       = aws_eks_node_group.eks_ng_private.version
@@ -296,3 +286,7 @@ output "node_group_private_version" {
 ```
 
 You might notice that this output file is a fair bit longer than the previous one. This is because the cluster has several important variables that need to be used by other resources. You first have the cluster identifiers, such as the cluster ID, arn, and endpoint. These values are needed when you want to deploy applications to your cluster. The next two values concern the IAM roles that you will be using to deal with that cluster. You also get the cluster security group information in the next variable. We will be diving into the security group in more detail later. Since any ports that we need to open should happen from the security group, we will need to add those configurations as well.
+
+Next comes the outputs for the node group. Since we have a public and private node group, there is information about both node groups here such as the ID, ARN, version, etc... With that, we have now exposed all information about the cluster to be used by other scripts.
+
+We are nearing the end of the configurations. The very last thing to define is the node groups themselves.
