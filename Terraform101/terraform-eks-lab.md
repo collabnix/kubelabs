@@ -253,7 +253,48 @@ output "cluster_primary_security_group_id" {
   description = "Cluster SG."
   value       = aws_eks_cluster.eks_cluster.vpc_config[0].cluster_security_group_id
 }
+```
 
+You might notice that this output file is a fair bit longer than the previous one. This is because the cluster has several important variables that need to be used by other resources. You first have the cluster identifiers, such as the cluster ID, arn, and endpoint. These values are needed when you want to deploy applications to your cluster. The next two values concern the IAM roles that you will be using to deal with that cluster. You also get the cluster security group information in the next variable. We will be diving into the security group in more detail later. Since any ports that we need to open should happen from the security group, we will need to add those configurations as well.
+
+We are nearing the end of the configuration. The very last thing to define is the node groups themselves. Before we do that, you need to create an ec2 key-pair. This is going to be used to connect to the nodegroup instances. However, this cannot be automated as of yet by Terraform, so you will need to do it manually. Head over to the EC2 section in AWS and select the key pair option. Create a key pair with all the default options and name it "eks-key". Now, we are ready to create the nodegroups. We will have public and private nodegroups. Let's start with the private nodegroup. Begin by creating a file called `node-group-private.tf`:
+
+```
+resource "aws_eks_node_group" "eks_ng_private" {
+  cluster_name    = aws_eks_cluster.eks_cluster.name
+
+  node_group_name = "eks-ng-private"
+  node_role_arn   = aws_iam_role.eks_iam_role.arn
+  subnet_ids      = module.vpc.private_subnets
+  
+  ami_type = "AL2_x86_64"  
+  capacity_type = "ON_DEMAND"
+  disk_size = 100
+  instance_types = ["t3.small"]
+  
+  
+  remote_access {
+    ec2_ssh_key = "eks-key"    
+  }
+
+  scaling_config {
+    desired_size = 2
+    min_size     = 1    
+    max_size     = 2
+  }
+
+  depends_on = [
+    aws_iam_role_policy_attachment.eks-AmazonEKSWorkerNodePolicy,
+    aws_iam_role_policy_attachment.eks-AmazonEKS_CNI_Policy,
+    aws_iam_role_policy_attachment.eks-AmazonEC2ContainerRegistryReadOnly,
+  ]  
+  tags = {
+    Name = "Private-Node-Group"
+  }
+}
+```
+
+```
 output "node_group_public_id" {
   description = "Public Node Group ID"
   value       = aws_eks_node_group.eks_ng_public.id
@@ -285,8 +326,4 @@ output "node_group_private_version" {
 }
 ```
 
-You might notice that this output file is a fair bit longer than the previous one. This is because the cluster has several important variables that need to be used by other resources. You first have the cluster identifiers, such as the cluster ID, arn, and endpoint. These values are needed when you want to deploy applications to your cluster. The next two values concern the IAM roles that you will be using to deal with that cluster. You also get the cluster security group information in the next variable. We will be diving into the security group in more detail later. Since any ports that we need to open should happen from the security group, we will need to add those configurations as well.
-
 Next comes the outputs for the node group. Since we have a public and private node group, there is information about both node groups here such as the ID, ARN, version, etc... With that, we have now exposed all information about the cluster to be used by other scripts.
-
-We are nearing the end of the configurations. The very last thing to define is the node groups themselves.
