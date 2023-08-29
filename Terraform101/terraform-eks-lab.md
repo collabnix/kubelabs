@@ -294,6 +294,10 @@ resource "aws_eks_node_group" "eks_ng_private" {
 }
 ```
 
+Most of the above values are self-explanatory. We set the cluster name so that the node group knows which cluster to attach to. Then the IAM role that we created earlier is set. Note that we make use of outputs here. The IAM role ARN is not something that is hardcoded, and we are taking the output value of the previous .tf file that ran and created the role. This is a good demonstration of why the output files are important.
+
+Additionally, we set the subnet IDs that we specified in the VPC module (which were hardcoded there) and then give information about the type of machines we want our nodes to be. In this case, we are using a machine with a disk size of 100 and a t3 small instance to ensure that we don't go beyond free tier limits. Next comes the key pair that you made earlier. Since the key is already in AWS, you can just specify the name of the key and EKS will automatically use it.
+
 ```
 output "node_group_public_id" {
   description = "Public Node Group ID"
