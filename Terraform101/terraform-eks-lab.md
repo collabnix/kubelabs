@@ -298,6 +298,10 @@ Most of the above values are self-explanatory. We set the cluster name so that t
 
 Additionally, we set the subnet IDs that we specified in the VPC module (which were hardcoded there) and then give information about the type of machines we want our nodes to be. In this case, we are using a machine with a disk size of 100 and a t3 small instance to ensure that we don't go beyond free tier limits. Next comes the key pair that you made earlier. Since the key is already in AWS, you can just specify the name of the key and EKS will automatically use it.
 
+Next is the scaling section. Depending on the workload faced by your EKS cluster, the number of nodes needs to scale up and down so that operations keep running smoothly. However, you need some control over this scaling as it can affect your costs. In the above case, we tell AWS to keep at least 1 node running at all times, and a maximum of 2 nodes if needed. We then finish the node group configuration by setting the dependent IAM policies so that the permissions are in place. With that, the node group is complete.
+
+In the same way, you exposed the output values of the EKS cluster and VPC, the outputs of this node group need to be available to other resources. So we need another output file. Since the node group is part of the EKS cluster, it makes logical sense to simply put the outputs in the EKS outputs file instead of creating a new one, thereby logically grouping everything. So open up the `eks-outputs.tf` file and append these output values:
+
 ```
 output "node_group_public_id" {
   description = "Public Node Group ID"
