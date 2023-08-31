@@ -334,4 +334,20 @@ output "node_group_private_version" {
 }
 ```
 
-Next comes the outputs for the node group. Since we have a public and private node group, there is information about both node groups here such as the ID, ARN, version, etc... With that, we have now exposed all information about the cluster to be used by other scripts.
+Since we have a public and private node group, there is information about both node groups here such as the ID, ARN, version, etc... With that, we have now exposed all information about the cluster to be used by other scripts.
+
+Once your cluster has finished setting up, you might want to run kubectl commands on it. While this can be done from your host machine, you might also want to do things such as create namespaces from within your Terraform scripts themselves. This means that your scripts need to create the cluster and also connect to the cluster that was newly created to run a `kubectl create ns` command in it. To do this, we need to introduce a Kubernetes provider. Create a file called `kubernetes-provider.tf` and add the following blocks:
+
+```
+data "aws_eks_cluster_auth" "cluster" {
+  name = aws_eks_cluster.eks_cluster.id
+}
+
+provider "kubernetes" {
+  host = aws_eks_cluster.eks_cluster.endpoint
+  cluster_ca_certificate = base64decode(aws_eks_cluster.eks_cluster.certificate_authority[0].data)
+  token = data.aws_eks_cluster_auth.cluster.token
+}
+```
+
+You can see a number of outputs being used here.
