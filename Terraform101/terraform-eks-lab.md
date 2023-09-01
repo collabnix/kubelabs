@@ -2,7 +2,19 @@
 
 Now that you have all the requirements down, it's time to start creating the Terraform file. For starters, you need a VPC to host everything in, along with a subnet that can allocate your IPs. We will be creating 2 subnets: 1 private and 1 public. The cluster will be held within the private subnet for security reasons while there will be an ALB that connects to the public subnet and allows internet access to select ports on the cluster.
 
-Let's start off with the VPC creation. To make things better formatted, we will create 3 files. One to hold the vpc variables, another to hold the outputs, and a final file that holds the actual VPC configuration. The variables file will hold all the variables, which is handy since you have every changing value consolidated into one file. After your VPC finishes being created, it will have things such as the VPC ID which is needed for future steps, since we need to assign this ID to every other resource we create. 
+Let's start off with the VPC creation. To make things better formatted, we will create 3 files. One to hold the vpc variables, another to hold the outputs, and a final file that holds the actual VPC configuration. The variables file will hold all the variables, which is handy since you have every changing value consolidated into one file. After your VPC finishes being created, it will have things such as the VPC ID which is needed for future steps, since we need to assign this ID to every other resource we create.
+
+variable "aws_region" {
+  description = "AWS region"
+  type = string
+  default = "us-east-1"  
+}
+
+variable "environment" {
+  description = "env var used as a prefix"
+  type = string
+  default = "collabnix-cluster"
+}
 
 So for starters, we will create the vpc variable file. Name this file `vpc-variable.tf` and include the below variables:
 
@@ -350,4 +362,4 @@ provider "kubernetes" {
 }
 ```
 
-You can see a number of outputs being used here.
+You can see several outputs being referenced here, such as the ID of the cluster, along with the cluster endpoint, certificate authority, and cluster token. This is so that any kubectl commands that need to run in the future know exactly what cluster they need to run on, and that the command has the necessary authority to run it.
