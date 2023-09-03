@@ -103,6 +103,7 @@ default backend - 404
 
 - Ingress is tightly integrated into Kubernetes, meaning that your existing workflows around kubectl will likely extend nicely to managing ingress. Note that an ingress controller typically doesn’t eliminate the need for an external load balancer — the ingress controller simply adds an additional layer of routing and control behind the load balancer.
 
+[Next: Ingress with EKS](./ingress-eks.md)
 
 # Contributors
 

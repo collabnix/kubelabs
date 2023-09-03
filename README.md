@@ -157,6 +157,7 @@ A Curated List of Kubernetes Labs and Tutorials
    - [Ingress](./Ingress101#ingress)
    - [How to Use Nginx Ingress Controller](./Ingress101#how-to-use-nginx-ingress-controller)
    - [Ingress Controllers and Ingress Resources](./Ingress101#ingress-controllers-and-ingress-resources)
+- [Ingress with EKS](./Ingress101/ingress-eks.md)
   
 
 
@@ -246,6 +247,7 @@ A Curated List of Kubernetes Labs and Tutorials
 ## GitOps101
 - [What is GitOps](./GitOps101/what-is-gitops.md)
 - [ArgoCD](./GitOps101/argocd.md)
+- [ArgoCD with EKS](./GitOps101/argocd-eks.md)
 
 ## Managed Kubernetes Service
 - [Managed Kubernetes Service Intro](./ManagedKubernetes/readme.md)
@@ -273,6 +275,10 @@ A Curated List of Kubernetes Labs and Tutorials
 - [What is DevSpace](./DevSpace101/what-is-devspace.md)
 - [DevSpace Lab](./DevSpace101/devspace-lab.md)
 
+## KubeSphere101
+- [What is KubeSphere](./KubeSphere/what-is-kubesphere.md)
+- [KubeSphere lab](./KubeSphere/kubesphere-lab.md)
+
 ## Kubernetes with GitLab 101
 - [What is GitLab](./GitLab101/what-is-gitlab.md)
 - [Kubernetes with GitLab](./GitLab101/kubernetes-with-gitlab.md)
@@ -293,6 +299,10 @@ A Curated List of Kubernetes Labs and Tutorials
 - [What is KEDA](./Keda101/what-is-keda.md)
 - [KEDA lab](./Keda101/keda-lab.md)
 
+## Terraform EKS
+- [What is Terraform](./Terraform101/what-is-terraform.md)
+- [Terraform EKS Lab](./Terraform101/terraform-eks-lab.md)
+
 ## For Node Developers
 - [Kubernetes for Node Developers](./nodejs.md)
 
@@ -309,6 +319,14 @@ A Curated List of Kubernetes Labs and Tutorials
 - [Saiyam Pathak](https://twitter.com/SaiyamPathak)
 - [Divyajeet Singh](https://www.linkedin.com/in/divyajeet-singh)
 - [Apurva Bhandari](https://www.linkedin.com/in/apurvabhandari-linux)
+
+## Workshop Video
+
+
+
+[![YouTube](https://github.com/collabnix/kubelabs/blob/master/k8sworkshop.png)](https://www.youtube.com/embed/i0d5ta83c-k)
+
+
 
 ## Contribution Guidelines
 
