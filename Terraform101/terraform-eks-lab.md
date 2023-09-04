@@ -366,4 +366,12 @@ You can see several outputs being referenced here, such as the ID of the cluster
 
 ## Running the scripts
 
-Now with everything set up, it's time to start deploying the Terraform scripts. To begin, you need to install the Terraform CLI, which is pretty straightforward if you [follow the docs](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli). You then need to set up access between your Terraform scripts and your AWS account. To do so, you need to [generate access keys](https://docs.aws.amazon.com/cli/latest/userguide/cli-services-iam-create-creds.html) for your IAM user. You can choose to restrict the amount of access the user has so that only the necessary resources that Terraform needs to create can be accessed by Terraform. Take the access key and secret key and put it in a file called
+Now with everything set up, it's time to start deploying the Terraform scripts. To begin, you need to install the Terraform CLI, which is pretty straightforward if you [follow the docs](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli). Next, you need to set up access between your Terraform scripts and AWS account. You don't need any special configuration for this. If you have already done `aws configure`, Terraform should be able to use those credentials.
+
+Open up a terminal or command prompt and run:
+
+```
+terraform init
+```
+
+This will download all the necessary providers such as AWS and Kubernetes, alongside the required modules such as EKS and VPC.
