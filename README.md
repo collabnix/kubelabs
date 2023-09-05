@@ -20,6 +20,14 @@ A Curated List of Kubernetes Labs and Tutorials
 -  Click and Follow us over Twitter [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/fold_left.svg?style=social&label=Follow%20%40collabnix)](https://twitter.com/collabnix)
 -  Access [450+ blogs](https://collabnix.com) on Docker, Kubernetes and Cloud-Native Technology
 
+# Featured Articles
+
+- [Kubernetes CrashLoopBackOff Error: What It Is and How to Fix It?](https://collabnix.com/kubernetes-crashloopbackoff-error-what-it-is-and-how-to-fix-it/)
+- [Update Your Kubernetes App Configuration Dynamically using ConfigMap](https://collabnix.com/update-your-kubernetes-app-configuration-dynamically-using-configmap/)
+- [Streamline Your Deployment Workflow: Utilizing Docker Desktop for Local Development and OpenShift for Production Deployment](https://collabnix.com/streamline-your-deployment-workflow-utilizing-docker-desktop-for-local-development-and-openshift-for-production-deployment/)
+- [The Impact of Kube-proxy Downtime on Kubernetes Clusters](https://collabnix.com/the-impact-of-kube-proxy-downtime-on-kubernetes-clusters/)
+- [How to add a Secret to a Deployment in Kubernetes using Kubectl patch](https://collabnix.com/how-to-add-a-secret-to-a-deployment-in-kubernetes-using-kubectl-patch/)
+
 ## Pre-requisite:
 
 - [Introductory Slides](https://collabnix.github.io/kubelabs/Kubernetes_Intro_slides-1/Kubernetes_Intro_slides-1.html) 
