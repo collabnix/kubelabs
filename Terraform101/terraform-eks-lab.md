@@ -374,4 +374,10 @@ Open up a terminal or command prompt and run:
 terraform init
 ```
 
-This will download all the necessary providers such as AWS and Kubernetes, alongside the required modules such as EKS and VPC.
+This will download all the necessary providers such as AWS and Kubernetes, alongside the required modules such as EKS and VPC. While it isn't really necessary, you can head over to the `.terraform` folder that will have been created as a result of the last command so that you can see how the modules and providers have been downloaded and structured within your local machine. Once you have a good idea of the way Terraform handles external providers, we can move on to the next step. As you might have guessed, we are about to deploy a whole bunch of resources to AWS. Since there are several files that have been created which may have errors in them, run the following command:
+
+```
+terraform validate
+```
+
+This will identify any obvious errors or mistakes made in the configuration files. However, note that this isn't a guarantee that fixing those errors means that there will be no errors going forward.
