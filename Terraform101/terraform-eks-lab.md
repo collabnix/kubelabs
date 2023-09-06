@@ -380,4 +380,14 @@ This will download all the necessary providers such as AWS and Kubernetes, along
 terraform validate
 ```
 
-This will identify any obvious errors or mistakes made in the configuration files. However, note that this isn't a guarantee that fixing those errors means that there will be no errors going forward.
+This will identify any obvious errors or mistakes made in the configuration files. However, note that this isn't a guarantee that fixing those errors means that there will be no errors going forward. If validation fails, you will get a detailed error telling you how to fix it, if it passes, you are good to move on to the next part.
+
+One great command that needs to be mentioned is `terraform fmt`. This will format the Terraform configuration files to have the correct indentation and line spacing so that the code looks nice. You only have to run it once and all the configuration files across the directory will be properly formatted.
+
+Now we are ready to do the actual deployment, but it's always recommended to do one final step before that. Run the below command:
+
+```
+terraform plan
+```
+
+This command does a dry run of the deployment. It deploys the configuration files without actually deploying anything. It also provides an output that shows everything that has changed. If there were any errors that weren't caught by `terraform validate`, you will see them being displayed here. There might be mistakes or errors that were made which don't technically count as syntax errors. Since this is the first time you are running Terraform, you might notice that everything is 
