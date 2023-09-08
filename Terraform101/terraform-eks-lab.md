@@ -393,3 +393,13 @@ terraform plan
 This command does a dry run of the deployment. It deploys the configuration files without actually deploying anything. It also provides an output that shows everything that has changed. If there were any errors that weren't caught by `terraform validate`, you will see them displayed here. There might be mistakes or errors that were made which don't technically count as syntax errors, and these can be caught here. Even so, this won't catch all the errors that may appear, and some may show up only when you actually apply the configurations. Since this is the first time you are running Terraform, you might notice that everything has a green `+` sign next to it, indicating that all resources are going to be created. You can also see an exhaustive list of resources. It's worth going through them all one by one to make sure you aren't doing anything you don't intend to do.
 
 In any subsequent runs, this command will also show you any resources that are getting removed as well as resources that remain unchanged. This allows you to have a complete overview of exactly what will happen when you run the final command. This is the plan that you have when deploying. You can also save this plan onto a file that can be read by Terraform so that you can come back at a later point and apply the configurations as dictated in this plan.
+
+Once you have verified that everything is correct, it is finally time to apply your changes. Run this command:
+
+```
+terraform apply
+```
+
+This will run `terraform plan` again and ask you one more time to verify the changes that you are about to make. Type in `yes` and the cluster creation will begin.
+
+The deployment will take a fair bit of time, and it is a good opportunity to look at how Terraform does the actual deployment. It will create the pre-requisite resources first before moving on to the dependent resources. The command can fail at any moment which would result in the deployment halting. What's important to note is that when the application fails, Terraform will NOT remove all of the resources it has created so far. Instead, it will take note of the point where it failed and do nothing beyond that. You can then fix the issue and run `terraform apply` again, which will start the deployment from the point where it failed, meaning that it doesn't have to create all those resources it did before.
