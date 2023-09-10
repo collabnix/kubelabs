@@ -406,4 +406,18 @@ The deployment will take a fair bit of time, and it is a good opportunity to loo
 
 A very important concept here is that Terraform does not like any external sources meddling with the infrastructure changes they do. For example, if you found out that you had accidentally duplicated an IAM role in your Terraform configuration, and therefore had a redundant role created by Terraform, you might want to simply head over to the IAM section on the AWS console and delete that role. However, this would be quite a headache the next time you want Terraform to do anything. This is because Terraform created that role, and now it no longer exists. To function properly, Terraform keeps a `.tfstate` file that you will notice getting created the second `terraform apply` starts running. If you open up this file, you will see that the entire state of your infrastructure is being written into this file. However, if you were to go off on your own and change resources in AWS, the state written in this file will no longer correctly reflect the state of your actual infrastructure. This means that the next time you run `terraform apply`, the command will fail.
 
-So, the bottom line is that you should not modify resources created by Terraform yourself. If you want some change to happen, do it in the Terraform configuration scripts, and apply the changes. Terraform will handle the rest without breaking your infrastructure.
+So, the bottom line is that you should not modify resources created by Terraform yourself. If you want some change to happen, do it in the Terraform configuration scripts, and apply the changes. Terraform will handle the rest without breaking your infrastructure. However, if you happen to have existing infrastructure that was not created by Terraform, you can [import existing resources](https://developer.hashicorp.com/terraform/language/state/import) as long as you're running Terraform v1.5.0 or later. For example, to import an already existing ec2 instance, you would say:
+
+```
+import {
+  to = aws_instance.example
+  id = "i-abcd1234"
+}
+
+resource "aws_instance" "example" {
+  name = "hashi"
+  ...
+}
+```
+
+This will add the infrastructure to the `.tfstate` file, allowing you to manage it with the rest of the configurations.
