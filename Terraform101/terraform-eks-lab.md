@@ -423,3 +423,13 @@ resource "aws_instance" "example" {
 This will add the infrastructure to the `.tfstate` file, allowing you to manage it with the rest of the configurations.
 
 Now that we have looked at the ins and outs of `terraform apply`, let's continue with the actual application. Once the apply command has been completed, you should be able to head over to the AWS console and ensure that the resources are now created. This would include everything from the VPC, subnets, security groups, IAM roles, EKS cluster, nodegroups, and worker nodes. If you notice that something is missing, check to see if the apply command failed somewhere along the way. If not, there might be something missing from your configuration files. Whatever the case may be, remember that you should NOT create the resource manually since Terraform will not have any control over it. If you create a manual resource that depends on a resource the Terraform created (for example, you create a NAT gateway manually that links to a subnet created by AWS), then if you want to change anything about the subnet, you won't be able to do it with Terraform. This is because Terraform might have to delete and re-create the subnet for any changes to happen, and deleting a subnet is not possible if there are any dependent resources attached to it. If the dependent resource was also created by Terraform, this wouldn't be an issue since Terraform has control over it and will delete it in the correct order.
+
+Now that the cluster is up and running, you can connect to this cluster. Use:
+
+```
+aws eks update-kubeconfig --name collabnix --region us-east-1 --alias collabnix
+```
+
+This will update your local kubeconfig file with the cluster information which will allow you to use `kubectl` commands as needed. Once you are confident that your infrastructure has been set up properly, let's move on to the final part of the process: deleting infrastructure.
+
+## Destroying infrastructure
