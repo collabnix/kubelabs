@@ -433,3 +433,11 @@ aws eks update-kubeconfig --name collabnix --region us-east-1 --alias collabnix
 This will update your local kubeconfig file with the cluster information which will allow you to use `kubectl` commands as needed. Once you are confident that your infrastructure has been set up properly, let's move on to the final part of the process: deleting infrastructure.
 
 ## Destroying infrastructure
+
+Since the cluster you created costs a fair bit of money to keep running, you should destroy it once you have finished the lab. Provided that you haven't made any changes manually using the AWS console or CLI, you should be able to delete everything in one step with:
+
+```
+terraform destroy
+```
+
+Similar to `terraform apply`, you will get a full list of all the resources that will be changed. In this case, you will see everything being deleted. Confirm the deletion and the cluster along with any VPCs, subnets, and other supporting resources should start getting destroyed. Similar to the apply command, it will take some time for the destroy command to complete. Once it is done, head over to the EKS page in the console and ensure that the cluster no longer exists.
