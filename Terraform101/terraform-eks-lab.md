@@ -441,3 +441,7 @@ terraform destroy
 ```
 
 Similar to `terraform apply`, you will get a full list of all the resources that will be changed. In this case, you will see everything being deleted. Confirm the deletion and the cluster along with any VPCs, subnets, and other supporting resources should start getting destroyed. Similar to the apply command, it will take some time for the destroy command to complete. Once it is done, head over to the EKS page in the console and ensure that the cluster no longer exists.
+
+## Conclusion
+
+We have now reached the end of the Terraform lab about setting up an entire EKS cluster (along with the relevant pre-requisite resources) using Terraform. This is just the first step and only a fraction of what both Terraform and EKS can do. If you want more information on how Terraform can help you with EKS and other AWS resources, the best place for you to go is the [docs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs).
