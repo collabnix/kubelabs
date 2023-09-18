@@ -13,11 +13,17 @@ Here's a big picture of how this is going to work:
 - logstash transforms and filters the logs before sending them forward to elasticsearch
 - Kibana queries elasticsearch and visualizes the log data
 
-Note that logstash here is optional. You could very well send logs directly from filebeat to elasticsearch. However, in a real-world situation, rarely, you wouldn't want to use GROK patterns to match specific patterns that allow Kibana to show the data in a better-formatted manner, or filter logs based on the type of log, or add index patterns that allow the data to be retrieved much faster. Therefore, we will be sending the data to logstash first to transform it.
+Note that logstash here is optional. You could very well send logs directly from filebeat to elasticsearch. However, in a real-world situation, rarely, you wouldn't want to use GROK patterns to match specific patterns that allow Kibana to show the data in a better-formatted manner, or filter logs based on the type of log, or add index patterns that allow the data to be retrieved much faster. If you have a large number of logs, logstash will also act as a buffer and prevent sending all the logs at once to elasticsearch, which would overload it. Therefore, we will be sending the data to logstash first in this example.
 
 As you can imagine, all of the above components are quite complex and require multiple resources to be deployed to get up and running. Therefore, we will be using Helm charts for each of the above components that automatically set up all the required resources for us. We could also use the single Kubernetes manifest file that elastic provides us, but the Helm chart allows for better flexibility.
 
 ### Setting up
+
+To keep everything logically grouped together, we will be installing all the components in a namespace called `kube-logging`. So create it:
+
+```
+kubectl create ns kube-logging
+```
 
 The first component we will look into is filebeat. To set up filebeat, go ahead and get the relevant Helm chart from [its artifacthub page](https://artifacthub.io/packages/helm/elastic/filebeat?modal=install). Then use the provided commands to install the Helm chart:
 
@@ -26,7 +32,13 @@ helm repo add elastic https://helm.elastic.co
 ```
 
 ```
-helm install my-filebeat elastic/filebeat --version 8.5.1
+helm install filebeat  elastic/filebeat --version 8.5.1 -n kube-logging
 ```
 
-If your kubeconfig file is set properly and it is pointed to your cluster, the command should run with no issues.
+If your kubeconfig file is set properly and it is pointed to your cluster, the command should run with no issues. You can then open up a terminal instance and run:
+
+```
+kubectl get po -n kube-logging
+```
+
+This will show you the filebeat pods that have started running in the kube-logging namespace. While the default configuration is meant to work out of the box, it won't fit our specific needs, so let's go ahead and customize it. To get the values.yaml, head back over to the Helm chart page on [Artifact hub](https://artifacthub.io/packages/helm/elastic/filebeat/7.6.1) and click on the "Default Values" option. Download this default values file.
