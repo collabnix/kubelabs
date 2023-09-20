@@ -44,3 +44,16 @@ kubectl get po -n kube-logging
 This will show you the filebeat pods that have started running in the kube-logging namespace. While the default configuration is meant to work out of the box, it won't fit our specific needs, so let's go ahead and customize it. To get the values.yaml, head back over to the Helm chart page on [Artifact hub](https://artifacthub.io/packages/helm/elastic/filebeat/7.6.1) and click on the "Default Values" option. Download this default values file.
 
 We will start by modifying this file. The values file provides configuration to support running filebeat as both a DaemonSet as well as a regular Deployment. By default, the DaemonSet configuration will be active, but we don't need that right now, so let's go ahead and disable it. Under the `daemonset` section, change `enabled: true` to `enabled: false`.  You can then skip the rest of the DaemonSet section and head over to the `deployment` section. Then set change enabled to true to get filebeat deployed as a deployment. You might notice that the daemonset section and the deployment section are pretty much the same, so you only need to do the configuration for one section for it to work.
+
+If you have used filebeat before, you would be well aware of the `filebeat.yaml`. This is the file where you specify the filebeat configurations, such as where to get the logs from, and where to send the logs to. In this case, we will be declaring the yaml within the values.yaml. There is a basic filebeat.yml defined within the values file to help you get started. We will be changing everything here. Replace this block with the below code:
+
+```
+filebeat.yml: |
+    filebeat.inputs:
+    - input_type: log
+      paths:
+        - /path/to/logs/*.log
+      document_type: mixlog
+    output.logstash:
+      hosts: ["logstash-logstash:5044"]
+```
