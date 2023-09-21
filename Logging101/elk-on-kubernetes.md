@@ -52,8 +52,12 @@ filebeat.yml: |
     filebeat.inputs:
     - input_type: log
       paths:
-        - /path/to/logs/*.log
+        - /var/log/containers/*.log
       document_type: mixlog
     output.logstash:
       hosts: ["logstash-logstash:5044"]
 ```
+
+The path provided above will get all the logs produced by the container. We will be marking these logs as type "mixlog" and filtering these out based on this type later in the flow. The last piece of configuration is `output.logstash` which tells where the log should be sent to. Here, we specify logstash instead of elasticsearch. The filebeat configuration is now complete. We will now handle the second part of the log flow: logstash. As with filebeat, we will be using Helm charts to get logstash up on the Kubernetes cluster. We will also be changing the values file in the same way.
+
+To start, head over to the logstash chart on [Artifact Hub](https://artifacthub.io/packages/helm/elastic/logstash). As with filebeat, download the values file.
