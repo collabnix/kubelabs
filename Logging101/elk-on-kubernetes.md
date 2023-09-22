@@ -60,4 +60,27 @@ filebeat.yml: |
 
 The path provided above will get all the logs produced by the container. We will be marking these logs as type "mixlog" and filtering these out based on this type later in the flow. The last piece of configuration is `output.logstash` which tells where the log should be sent to. Here, we specify logstash instead of elasticsearch. The filebeat configuration is now complete. We will now handle the second part of the log flow: logstash. As with filebeat, we will be using Helm charts to get logstash up on the Kubernetes cluster. We will also be changing the values file in the same way.
 
-To start, head over to the logstash chart on [Artifact Hub](https://artifacthub.io/packages/helm/elastic/logstash). As with filebeat, download the values file.
+To start, head over to the logstash chart on [Artifact Hub](https://artifacthub.io/packages/helm/elastic/logstash). As with filebeat, download the values file. While in filebeat we had the filebeat.yml to set our configuration, in logstash we have a `logstash.conf`. We will be declaring the logstash conf in the yaml as we did before. Remove any default logstash conf values that may exist, and replace them with:
+
+```
+logstashPipeline:
+ logstash.conf: |
+   input {
+     beats {
+      type => mixlog
+      port => 5044
+     }
+   }
+   filter {
+      if [type] == "mixlog" {
+        grok {
+          match => {
+            "message" => "%{TIMESTAMP_ISO8601:timestamp}"
+          }
+        }
+      }
+    }
+   output { elasticsearch { hosts => "http://elasticsearch:9200" } }
+```
+
+In the above config, we declare that we will be getting inputs from filebeat from port 5044 (which is the port filebeat exposes). This port will send logs of type "mixlog" which we declared in the filebeat.yml. Now, logstash will start gathering all logs that filebeat sends from port 5044, which we can either redirect to Elasticsearch or perform some processing on. In this case, we will be using GROK patterns to do the filtering. GROK patterns are very similar to regex patterns and can be used in other log-matching services such as fluentd. In this case, we declare that for any log to go through, it must have a timestamp.
