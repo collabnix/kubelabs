@@ -1,0 +1,121 @@
+﻿apiVersion: installer.kubesphere.io/v1alpha1
+kind: ClusterConfiguration
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: >
+      {"apiVersion":"installer.kubesphere.io/v1alpha1","kind":"ClusterConfiguration","metadata":{"annotations":{},"labels":{"version":"v3.3.2"},"name":"ks-installer","namespace":"kubesphere-system"},"spec":{"alerting":{"enabled":false},"auditing":{"enabled":false},"authentication":{"jwtSecret":""},"common":{"core":{"console":{"enableMultiLogin":true,"port":30880,"type":"NodePort"}},"es":{"basicAuth":{"enabled":false,"password":"","username":""},"elkPrefix":"logstash","externalElasticsearchHost":"","externalElasticsearchPort":"","logMaxAge":7},"gpu":{"kinds":[{"default":true,"resourceName":"nvidia.com/gpu","resourceType":"GPU"}]},"minio":{"volumeSize":"20Gi"},"monitoring":{"GPUMonitoring":{"enabled":false},"endpoint":"http://prometheus-operated.kubesphere-monitoring-system.svc:9090"},"openldap":{"enabled":false,"volumeSize":"2Gi"},"redis":{"enableHA":false,"enabled":false,"volumeSize":"2Gi"}},"devops":{"enabled":false,"jenkinsMemoryLim":"4Gi","jenkinsMemoryReq":"2Gi","jenkinsVolumeSize":"8Gi"},"edgeruntime":{"enabled":false,"kubeedge":{"cloudCore":{"cloudHub":{"advertiseAddress":[""]},"service":{"cloudhubHttpsNodePort":"30002","cloudhubNodePort":"30000","cloudhubQuicNodePort":"30001","cloudstreamNodePort":"30003","tunnelNodePort":"30004"}},"enabled":false,"iptables-manager":{"enabled":true,"mode":"external"}}},"etcd":{"endpointIps":"localhost","monitoring":false,"port":2379,"tlsEnable":true},"events":{"enabled":false},"gatekeeper":{"enabled":false},"local_registry":"","logging":{"enabled":false,"logsidecar":{"enabled":true,"replicas":2}},"metrics_server":{"enabled":false},"monitoring":{"gpu":{"nvidia_dcgm_exporter":{"enabled":false}},"node_exporter":{"port":9100},"storageClass":""},"multicluster":{"clusterRole":"none"},"network":{"ippool":{"type":"none"},"networkpolicy":{"enabled":false},"topology":{"type":"none"}},"openpitrix":{"store":{"enabled":false}},"persistence":{"storageClass":""},"servicemesh":{"enabled":false,"istio":{"components":{"cni":{"enabled":false},"ingressGateways":[{"enabled":false,"name":"istio-ingressgateway"}]}}},"terminal":{"timeout":600}}}
+  labels:
+    version: v3.3.2
+  name: ks-installer
+  namespace: kubesphere-system
+spec:
+  alerting:
+    enabled: false
+  auditing:
+    enabled: false
+  authentication:
+    jwtSecret: ''
+  common:
+    core:
+      console:
+        enableMultiLogin: true
+        port: 30880
+        type: NodePort
+    es:
+      basicAuth:
+        enabled: false
+        password: ''
+        username: ''
+      elkPrefix: logstash
+      externalElasticsearchHost: ''
+      externalElasticsearchPort: ''
+      logMaxAge: 7
+    gpu:
+      kinds:
+        - default: true
+          resourceName: nvidia.com/gpu
+          resourceType: GPU
+    minio:
+      volumeSize: 20Gi
+    monitoring:
+      GPUMonitoring:
+        enabled: false
+      endpoint: 'http://prometheus-operated.kubesphere-monitoring-system.svc:9090'
+    openldap:
+      enabled: false
+      volumeSize: 2Gi
+    redis:
+      enableHA: false
+      enabled: false
+      volumeSize: 2Gi
+  devops:
+    enabled: true
+    jenkinsMemoryLim: 4Gi
+    jenkinsMemoryReq: 2Gi
+    jenkinsVolumeSize: 8Gi
+  edgeruntime:
+    enabled: false
+    kubeedge:
+      cloudCore:
+        cloudHub:
+          advertiseAddress:
+            - ''
+        service:
+          cloudhubHttpsNodePort: '30002'
+          cloudhubNodePort: '30000'
+          cloudhubQuicNodePort: '30001'
+          cloudstreamNodePort: '30003'
+          tunnelNodePort: '30004'
+      enabled: false
+      iptables-manager:
+        enabled: true
+        mode: external
+  etcd:
+    endpointIps: localhost
+    monitoring: false
+    port: 2379
+    tlsEnable: true
+  events:
+    enabled: false
+  gatekeeper:
+    enabled: false
+  local_registry: ''
+  logging:
+    enabled: false
+    logsidecar:
+      enabled: true
+      replicas: 2
+  metrics_server:
+    enabled: false
+  monitoring:
+    gpu:
+      nvidia_dcgm_exporter:
+        enabled: false
+    node_exporter:
+      port: 9100
+    storageClass: ''
+  multicluster:
+    clusterRole: none
+  network:
+    ippool:
+      type: none
+    networkpolicy:
+      enabled: false
+    topology:
+      type: none
+  openpitrix:
+    store:
+      enabled: false
+  persistence:
+    storageClass: ''
+  servicemesh:
+    enabled: false
+    istio:
+      components:
+        cni:
+          enabled: false
+        ingressGateways:
+          - enabled: false
+            name: istio-ingressgateway
+  terminal:
+    timeout: 600
