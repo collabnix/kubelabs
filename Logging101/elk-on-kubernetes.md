@@ -87,10 +87,10 @@ In the above config, we declare that we will be getting inputs from filebeat fro
 
 Note that all of these steps assume that you are running the entire stack on one single namespace. If, for example, you have logstash in one namespace and elasticsearch in another namespace, this above configuration will not work. This is because we are simply referring to elasticsearch with "http://elasticsearch:9200" without providing any namespaces, which means elasticsearch will automatically assume that it should look within the same namespace. If you need to specify a different namespace, you would have to use the full svc name: elasticsearch.different-namespace.svc.cluster.local:9200.
 
-The filebeat configuration is now complete, and we can move on to the next phase of the flow: elasticsearch. As with the previous two components, we will be setting up elasticsearch using the relevant Helm chart. Go to the page in the [Artifact Hub](https://artifacthub.io/packages/helm/elastic/elasticsearch) and get the provided install command:
+The filebeat configuration is now complete, and we can move on to the next phase of the flow: elasticsearch. As with the previous two components, you can set up elasticsearch using the relevant Helm chart. Go to the page in the [Artifact Hub](https://artifacthub.io/packages/helm/elastic/elasticsearch) and get the provided install command:
 
 ```
 helm install my-elasticsearch elastic/elasticsearch --version 8.5.1
 ```
 
-As before, there are several values we need to override for the elasticsearch Helm chart.
+As before, there are several values you will have to override before it will work with your configuration. However, you also have a second option if you require more flexibility over the elasticsearch cluster. Instead of using Helm, go ahead and use [this yaml](https://gist.github.com/harsh4870/ccd6ef71eaac2f09d7e136307e3ecda6). Once you have created a file from it, we can modify the file so that we have all our fine-grained configs.
