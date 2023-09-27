@@ -93,4 +93,25 @@ The filebeat configuration is now complete, and we can move on to the next phase
 helm install my-elasticsearch elastic/elasticsearch --version 8.5.1
 ```
 
-As before, there are several values you will have to override before it will work with your configuration. However, you also have a second option if you require more flexibility over the elasticsearch cluster. Instead of using Helm, go ahead and use [this yaml](https://gist.github.com/harsh4870/ccd6ef71eaac2f09d7e136307e3ecda6). Once you have created a file from it, we can modify the file so that we have all our fine-grained configs.
+As before, there are several values you will have to override before it will work with your configuration. However, you also have a second option if you require more flexibility over the elasticsearch cluster. Instead of using Helm, go ahead and use [this yaml](https://gist.github.com/harsh4870/ccd6ef71eaac2f09d7e136307e3ecda6). Once you have created a file from it, we can modify the file so that we have all our fine-grained configs. You might notice that this file only contains a StatefulSet. However, for elasticsearch to be exposed to other services such as logstash and Kibana, it needs a service. So create a file called `elasticsearch_svc.yaml` and add this into it:
+
+```
+kind: Service
+apiVersion: v1
+metadata:
+  name: elasticsearch
+  namespace: kube-logging
+  labels:
+    app: elasticsearch
+spec:
+  selector:
+    app: elasticsearch
+  clusterIP: None
+  ports:
+    - port: 9200
+      name: rest
+    - port: 9300
+      name: inter-node
+```
+
+The above yaml will allow services to call elasticsearch for port 9200. As you can see, it is fairly straightforward. So let's move on to the StatefulSet.
