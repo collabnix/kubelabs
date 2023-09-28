@@ -58,7 +58,14 @@ filebeat.yml: |
       hosts: ["logstash-logstash:5044"]
 ```
 
-The path provided above will get all the logs produced by the container. We will be marking these logs as type "mixlog" and filtering these out based on this type later in the flow. The last piece of configuration is `output.logstash` which tells where the log should be sent to. Here, we specify logstash instead of elasticsearch. The filebeat configuration is now complete. We will now handle the second part of the log flow: logstash. As with filebeat, we will be using Helm charts to get logstash up on the Kubernetes cluster. We will also be changing the values file in the same way.
+The path provided above will get all the logs produced by the container. We will be marking these logs as type "mixlog" and filtering these out based on this type later in the flow. The last piece of configuration is `output.logstash` which tells where the log should be sent to. Here, we specify logstash instead of elasticsearch. Note that since this is loading a regular filebeat container, you are allowed to do additional configuration that you would normally do with a pod. For example, if instead of just getting the container logs of the same pod-like we are doing here, you wanted to get the logs from a different pod, that would be possible. To do so, you would have to copy the logs from your source container to a network volume mount (such as EFS) which would mean that the volume now has your source pods' logs. To mount these volumes, you would use the `extraVolumes` and `extraVolumeMounts` options that you see in the Helm values file. You can then mount this volume into your filebeat pod and change the filebeat.yml to point at the mounted volume:
+
+```
+paths:
+  - /different_pod_logs/*.log
+```
+
+The filebeat configuration is now complete. We will now handle the second part of the log flow: logstash. As with filebeat, we will be using Helm charts to get logstash up on the Kubernetes cluster. We will also be changing the values file in the same way.
 
 To start, head over to the logstash chart on [Artifact Hub](https://artifacthub.io/packages/helm/elastic/logstash). As with filebeat, download the values file. While in filebeat we had the filebeat.yml to set our configuration, in logstash we have a `logstash.conf`. We will be declaring the logstash conf in the yaml as we did before. Remove any default logstash conf values that may exist, and replace them with:
 
@@ -114,4 +121,4 @@ spec:
       name: inter-node
 ```
 
-The above yaml will allow services to call elasticsearch for port 9200. As you can see, it is fairly straightforward. So let's move on to the StatefulSet.
+The above yaml will allow services to call elasticsearch for port 9200. As you can see, it is fairly straightforward. So let's move on to the StatefulSet. There are a few main configs that you need to consider in 
