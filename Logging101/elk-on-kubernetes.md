@@ -102,7 +102,7 @@ helm install my-elasticsearch elastic/elasticsearch --version 8.5.1
 
 Unlike with the previous two modules, the elasticsearch chart can be installed as-is and work properly. This is because elasticsearch is being used here as somewhat of a data store. No data is being transformed or filtered, and since the data is already being fed in by filebeat, there is no need to set up custom volume mounts. Installing the chart will create an elasticsearch statefulset that will create two pods. It will also create a service that runs on port 9200. This way, you have a fully functional elasticsearch istance that logstash can reach. 
 
-However, you also have a second option if you require more flexibility over the elasticsearch cluster. Instead of using Helm, go ahead and use [this yaml](https://gist.github.com/harsh4870/ccd6ef71eaac2f09d7e136307e3ecda6). Once you have created a file from it, we can modify the file so that we have all our fine-grained configs. You might notice that this file only contains a StatefulSet. However, for elasticsearch to be exposed to other services such as logstash and Kibana, it needs a service. So create a file called `elasticsearch_svc.yaml` and add this into it:
+However, you also have a second option if you require more flexibility over the elasticsearch cluster. Instead of using Helm, go ahead and use [this yaml](https://gist.github.com/harsh4870/ccd6ef71eaac2f09d7e136307e3ecda6). If you are fine with the level of customizability the Helm chart provides, you can skip this part and head straight to the Kibana section. Once you have created a file from it, we can modify the file so that we have all our fine-grained configs. You might notice that this file only contains a StatefulSet. However, for elasticsearch to be exposed to other services such as logstash and Kibana, it needs a service. So create a file called `elasticsearch_svc.yaml` and add this into it:
 
 ```
 kind: Service
@@ -123,4 +123,4 @@ spec:
       name: inter-node
 ```
 
-The above yaml will allow services to call elasticsearch for port 9200. As you can see, it is fairly straightforward. So let's move on to the StatefulSet. There are a few main configs that you need to consider in 
+The above yaml will allow services to call elasticsearch for port 9200. As you can see, it is fairly straightforward. So let's move on to the StatefulSet. The only config you need to set is the `cluster.name` config which is where you need to set the name of your elasticsearch cluster. Apart from that, everything else is filled in. In cases where a large amount of data is going to be flowing into your cluster, you can increase the `ES_JAVA_OPTS` value to something higher than 512 MB. You also have fine-grained control over things such as the DNS policy and init commands used when starting the elasticsearch cluster.
