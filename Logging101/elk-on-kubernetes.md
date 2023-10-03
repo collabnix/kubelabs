@@ -125,4 +125,10 @@ spec:
 
 The above yaml will allow services to call elasticsearch for port 9200. As you can see, it is fairly straightforward. So let's move on to the StatefulSet. The only config you need to set is the `cluster.name` config which is where you need to set the name of your elasticsearch cluster. Apart from that, everything else is filled in. In cases where a large amount of data is going to be flowing into your cluster, you can increase the `ES_JAVA_OPTS` value to something higher than 512 MB. You also have fine-grained control over things such as the DNS policy and init commands used when starting the elasticsearch cluster. Once you have finished doing all the necessary configurations, you can go ahead and deploy the elasticsearch cluster with the `kubectl apply` command. You are almost done with the ELK stack setup.
 
-The final part of the stack is Kibana. Now that you have all the necessary pieces in place to capture, filter, and store your logs in elasticsearch, it is time to start making use of this data by visualizing it.
+The final part of the stack is Kibana. Now that you have all the necessary pieces in place to capture, filter, and store your logs in elasticsearch, it is time to start making use of this data by visualizing it. As with the other modules, we can use Helm to install Kibana:
+
+```
+helm install my-kibana elastic/kibana --version 8.5.1
+```
+
+You should also take the values yaml and make modifications to it. Specifically, you might notice that the values file has the elasticsearch host defined as "https://elasticsearch-master:9200". Change this to "https://elasticsearch:9200" since that is the name of the service that runs elasticsearch. Apart from that, there are no major modifications that need doing, and simply installing the chart should get Kibana to start working. While installing this may get Kibana up and running, you won't yet be able to access it from your browser.
