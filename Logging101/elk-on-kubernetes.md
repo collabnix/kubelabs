@@ -131,4 +131,10 @@ The final part of the stack is Kibana. Now that you have all the necessary piece
 helm install my-kibana elastic/kibana --version 8.5.1
 ```
 
-You should also take the values yaml and make modifications to it. Specifically, you might notice that the values file has the elasticsearch host defined as "https://elasticsearch-master:9200". Change this to "https://elasticsearch:9200" since that is the name of the service that runs elasticsearch. Apart from that, there are no major modifications that need doing, and simply installing the chart should get Kibana to start working. While installing this may get Kibana up and running, you won't yet be able to access it from your browser.
+You should also take the values yaml and make modifications to it. Specifically, you might notice that the values file has the elasticsearch host defined as "https://elasticsearch-master:9200". Change this to "https://elasticsearch:9200" since that is the name of the service that runs elasticsearch. Apart from that, there are no major modifications that need doing, and simply installing the chart should get Kibana to start working. While installing this may get Kibana up and running, you won't yet be able to access it from your browser. This is due to the Helm chart having a cluster IP setup. You can use port forwarding to forward your localhost port to the Kibana port and access Kibana this way.
+
+```
+kubectl port-forward <kibana-pod-name> 5601:5601
+```
+
+This will allow you to access Kibana at http://localhost:5601.
