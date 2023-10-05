@@ -137,4 +137,6 @@ You should also take the values yaml and make modifications to it. Specifically,
 kubectl port-forward <kibana-pod-name> 5601:5601
 ```
 
-This will allow you to access Kibana at http://localhost:5601.
+This will allow you to access Kibana at http://localhost:5601. You could also edit the svc and set the type to "NodePort" which would allow you to access the port using the IP of the pod. If you are running a managed cluster on something like EKS, you will have to open the port from the security group or firewall to allow external access to Kibana. However, all this is not necessary in a testing setup, so we will be sticking to port forwarding.
+
+Now that Kibana is accessible, you might notice that the dashboard is empty. This is because Kibana lacks any indexes. Since we are using logstash and the logstash format, we can simply ask Kibana to index any entries that come formatted with "logstash-*". To set this index, head over to the main menu > stack management > index patterns and choose "Create index pattern". Once you type in the proper index, Kibana will search elasticsearch and match the index pattern with the logs. If no results are found, then something has gone wrong with the process. There might be some issue with either filebeat, logstash, or elasticsearch. If everything is working fine, you should see several logs matching the pattern, and you can go ahead and add the index.
