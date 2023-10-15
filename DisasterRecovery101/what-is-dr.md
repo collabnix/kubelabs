@@ -4,4 +4,6 @@ When you create a production-grade application, you assure your clients a certai
 
 ## Overview
 
-We will start by defining an overview of how our DR system will kick into place.
+We will start by defining an overview of how our DR system will kick into place. There are two major components of our cluster: the cluster itself, and the applications that run on the cluster. We also have to think about the load balancers and how DNS traffic would get routed to the new cluster ingresses instead of the old ones. There are two ways to set up a Kubernetes cluster. The first is to create it manually, which is going to take a lot of time. Unfortunately, in a DR situation where we are trying to set up a new cluster as fast as possible, this isn't ideal. A much better option is to have your entire infrastructure written as code using a tool such as Terraform, and simply run a command that will automatically create all your infrastructure in the DR region for you. We have already covered the topic of how to use Terraform scripts to set up an EKS cluster [on our Terraform section](../Terraform101/terraform-eks-lab.md). This is what we will be using here.
+
+The second main part is the applications that run on the cluster.
