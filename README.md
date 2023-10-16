@@ -256,6 +256,7 @@ A Curated List of Kubernetes Labs and Tutorials
 ## GitOps101
 - [What is GitOps](./GitOps101/what-is-gitops.md)
 - [ArgoCD](./GitOps101/argocd.md)
+- [ArgoCD with EKS](./GitOps101/argocd-eks.md)
 
 ## Managed Kubernetes Service
 - [Managed Kubernetes Service Intro](./ManagedKubernetes/readme.md)
