@@ -6,8 +6,8 @@ The script will be written in Python and take in a cluster endpoint as an argume
 
 - A command to add the new cluster to ArgoCD (`argocd cluster add dr-cluster`)
 - A command to create any namespaces that will be needed for further deployments (kubectl create ns <namespace>)
-- A command that sets the correct destination namespace (argocd app set <app> --dest-server <new_endpoint>)
-- A command that force syncs the application so that it will automatically deploy to the new destination.
+- A command that sets the correct destination namespace (argocd app set <app-name> --dest-server <new_endpoint>)
+- A command that force syncs the application so that it will automatically deploy to the new destination (argocd app sync <app-name>)
 
 The first step is to define the arguments:
 
@@ -17,5 +17,22 @@ parser.add_argument(
     "--dest-server",
     required=True,
     help="Server URL for destination cluster",
+)
+```
+
+Now, we need to use the subprocess library to run ArgoCD CLI commands, similar to if we were running them on a local terminal. The first of these commands will be the list command which is used to list all the applications running on the (now-disabled) cluster:
+
+```
+argocd app list --project <project-name> -o name
+```
+
+We also need to capture the output, so we should assign the result to a variable and set the necessary arguments:
+
+```
+result = subprocess.run(
+    ["argocd", "app", "list", "--project", "<project-name>", "-o", "name"],
+    text=True,
+    capture_output=True,
+    check=True,
 )
 ```
