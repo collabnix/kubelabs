@@ -36,3 +36,17 @@ result = subprocess.run(
     check=True,
 )
 ```
+
+Now that we have the list of applications, it is time to start a loop that will go through this list and switch all the modules from one cluster to another. We will keep all the commands pointed to one file using the `with` command:
+
+```
+with open("change-applications.sh", "w") as file:
+```
+
+To start, we need to add the cluster to argocd:
+
+```
+file.write("argocd cluster add <cluster-name>\n")
+```
+
+Make sure that you have added your new cluster to your local kubeconfig. Otherwise, the above `cluster add` command will fail.
