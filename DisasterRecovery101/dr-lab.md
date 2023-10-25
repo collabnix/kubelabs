@@ -49,4 +49,14 @@ To start, we need to add the cluster to argocd:
 file.write("argocd cluster add <cluster-name>\n")
 ```
 
-Make sure that you have added your new cluster to your local kubeconfig. Otherwise, the above `cluster add` command will fail.
+Make sure that you have added your new cluster to your local kubeconfig. Otherwise, the above `cluster add` command will fail. Since we already have the list of applications, start a `for` loop:
+
+```
+for application_name in application_names:
+```
+
+Inside the loop, start running the `set` commands so that each application has the set command running in it:
+
+```
+argocd_command = f'argocd app set {application_name} --dest-namespace <namespace> --dest-server {args.dest_server}\n'
+```
