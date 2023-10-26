@@ -60,3 +60,28 @@ Inside the loop, start running the `set` commands so that each application has t
 ```
 argocd_command = f'argocd app set {application_name} --dest-namespace <namespace> --dest-server {args.dest_server}\n'
 ```
+
+Followed by the sync command to force the application to update and switch to the new cluster:
+
+```
+argocd_sync = f'argocd app sync {application_name}\n'
+```
+
+Next, we write both those commands to the file we are creating:
+
+```
+file.write(argocd_command)
+file.write(argocd_sync)
+```
+
+With that, the loop is complete:
+
+```python
+with open("sync-modules.sh", "w") as file:
+    file.write("argocd cluster add <cluster-name>\n")
+    for application_name in application_names:
+        argocd_command = f'argocd app set {application_name} --dest-namespace <namespace> --dest-server {args.dest_server}\n'
+        argocd_sync = f'argocd app sync {application_name}\n'
+        file.write(argocd_command)
+        file.write(argocd_sync)
+```
