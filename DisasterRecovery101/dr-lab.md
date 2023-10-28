@@ -77,7 +77,7 @@ file.write(argocd_sync)
 With that, the loop is complete:
 
 ```python
-with open("sync-modules.sh", "w") as file:
+with open("change-applications.sh", "w") as file:
     file.write("argocd cluster add <cluster-name>\n")
     for application_name in application_names:
         argocd_command = f'argocd app set {application_name} --dest-namespace <namespace> --dest-server {args.dest_server}\n'
@@ -85,3 +85,11 @@ with open("sync-modules.sh", "w") as file:
         file.write(argocd_command)
         file.write(argocd_sync)
 ```
+
+If you have additional commands you would like to get run before the deployments start happening (such as the creation of a new namespace), it can be done at the start of the `with` command. You can also modify the `argocd` command to have any of the flags and options [used by the set command](https://argo-cd.readthedocs.io/en/stable/user-guide/commands/argocd_app_set/). So if you wanted to create a namespace called "application" and have the deployments be done into that namespace, you would add the line:
+
+```
+file.write("kubectl create ns application\n")
+```
+
+Under the `with` command, then modify the `argocd app set` command by adding `--dest-namespace application`.
