@@ -93,3 +93,14 @@ file.write("kubectl create ns application\n")
 ```
 
 Under the `with` command, then modify the `argocd app set` command by adding `--dest-namespace application`.
+
+Since you used the `with` command to open the file, you don't have to close it, which means this is all that is required.
+
+## Usage
+
+Now that we have the entire DR plan in place, let's view what would happen during a DR situation, and what we would need to do to get everything back up and running. To start, we will be getting the cluster up and running with the below commands:
+
+`terraform init`
+`terraform apply`
+
+This will set up both the cluster and any resources required to start the cluster.
