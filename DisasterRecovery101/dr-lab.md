@@ -103,4 +103,10 @@ Now that we have the entire DR plan in place, let's view what would happen durin
 `terraform init`
 `terraform apply`
 
-This will set up both the cluster and any resources required to start the cluster.
+This will set up both the cluster and any resources required to start the cluster. Starting the cluster will take a certain amount of time depending on how many nodes you have assigned to your node group. Once it is up, take the cluster endpoint head over to the location of your Python script, and run it:
+
+```
+python create_cluster.py --dest-server <server endpoint>
+```
+
+This will create a file called "change-applications.sh". Look it over to ensure that everything you need is in there. It should have any custom commands you placed as well as the set command that changes the location of the cluster, along with force sync commands.
