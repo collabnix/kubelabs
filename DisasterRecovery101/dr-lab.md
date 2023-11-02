@@ -109,4 +109,12 @@ This will set up both the cluster and any resources required to start the cluste
 python create_cluster.py --dest-server <server endpoint>
 ```
 
-This will create a file called "change-applications.sh". Look it over to ensure that everything you need is in there. It should have any custom commands you placed as well as the set command that changes the location of the cluster, along with force sync commands.
+This will create a file called "change-applications.sh". Look it over to ensure that everything you need is in there. It should have any custom commands you placed as well as the set command that changes the location of the cluster, along with force sync commands. If everything looks as it should be, go ahead and run the file:
+
+```
+sh change-applications.sh
+```
+
+If you have already logged into ArgoCD CLI via the terminal, then the commands should run sequentially and the pods should start scheduling in the new cluster. You can see this happen in real-time with the ArgoCD CLI.
+
+And that's it!
