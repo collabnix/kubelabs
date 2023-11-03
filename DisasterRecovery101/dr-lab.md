@@ -117,4 +117,4 @@ sh change-applications.sh
 
 If you have already logged into ArgoCD CLI via the terminal, then the commands should run sequentially and the pods should start scheduling in the new cluster. You can see this happen in real-time with the ArgoCD CLI.
 
-And that's it!
+And that's it! You now have a full DR solution that will allow you to get your systems up and running in about 30 minutes. In a regular full-scale application, there would be things such as databases where you want to get the DB up and running with minimal data loss in the new region. When it comes to these matters, it's either better to hand off the management of these critical servers to a database service provider entirely so that they can handle the database DR (since database-related issues can get critical) or to have your own on-prem servers that you have a good handle on. You can then use these servers to host your databases during a DR situation.
