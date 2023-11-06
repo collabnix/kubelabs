@@ -331,7 +331,7 @@ A Curated List of Kubernetes Labs and Tutorials
 
 [![YouTube](https://github.com/collabnix/kubelabs/blob/master/k8sworkshop.png)](https://www.youtube.com/embed/i0d5ta83c-k)
 
-
+[Click Here](https://www.youtube.com/embed/i0d5ta83c-k) if the link is not working for you.
 
 ## Contribution Guidelines
 
