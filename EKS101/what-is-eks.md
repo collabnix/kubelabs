@@ -52,6 +52,10 @@ kubectl get nodes
 
 and if you can see the 2 nodes, then you are all set.
 
+## Additional considerations
+
+Now that you have the entire cluster running on AWS, there are some things you may want to tweak to your liking. Firstly is the security group. While eksctl creates a default security group that has all the permissions needed to run your EKS cluster, it's best if you go back in and take another look at it. Firstly, ensure that your inbound rules do not allow 0.0.0.0, which would allow all external IPs to connect to your EKS ports. Instead, only allow IPs that you want to access your cluster through. You can do this by specifying the proper CIDR ranges and their associated ports. On the other hand, with outbound ports, allowing 0.0.0.0 is fine since this allows your cluster to communicate with any resource from outside your network.
+
 ## Cleaning up
 
 Now, remember that all of the above things are AWS resources, and as such, you will be charged if you leave them running without deleting them after you are done. So this means you have a bunch of stuff (VPCs, cluster, EC2 instances) that you have to get rid of, which would have been a pain if you had to do it manually. However, since eksctl created all these resources for you, it can also get rid of all these resources for you, in the same manner, using a single command:
