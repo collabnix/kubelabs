@@ -166,6 +166,7 @@ A Curated List of Kubernetes Labs and Tutorials
    - [Ingress](./Ingress101#ingress)
    - [How to Use Nginx Ingress Controller](./Ingress101#how-to-use-nginx-ingress-controller)
    - [Ingress Controllers and Ingress Resources](./Ingress101#ingress-controllers-and-ingress-resources)
+- [Ingress with EKS](./Ingress101/ingress-eks.md)
   
 
 
