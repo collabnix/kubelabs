@@ -66,7 +66,7 @@ First, go to your EKS cluster on the AWS console and add a tag with a value. Nex
 
 Next, take a look at the IAM role that is used by the cluster in the overview section. eksctl would have already given you the ideal level of permissions in the IAM role, so there is not much you would want to remove from here. However, if you want to allow your cluster to access any additional items, you should add those permissions at this point. The networking section shows you information about the network your cluster is in, including the IPv4 range, subnets, and security group. You can also manage access to the cluster endpoint from here.
 
-The add-ons section allows you to get add-ons for your EKS cluster from the AWS marketplace, and the observability section is where you would enable CloudWatch container insights to get metrics and reports on your containers. Of course, if you wanted to go beyond what AWS was providing, you could go for tools such as Prometheus that give you better fine-grained control as well as better cross-platform integration.
+The add-ons section allows you to get add-ons for your EKS cluster from the AWS marketplace, and the observability section is where you would enable CloudWatch container insights to get metrics and reports on your containers. Of course, if you wanted to go beyond what AWS was providing, you could go for tools such as Prometheus that give you better fine-grained control as well as better cross-platform integration. With that, we have covered pretty much every additional thing you can do with your EKS cluster.
 
 ## Cleaning up
 
@@ -98,7 +98,11 @@ eksctl create cluster --fargate
 
 One thing to note is that running your containers on Fargate means that you will not have any control over the infrastructure that it runs on since all that is managed by AWS. So if you need the environment the container runs in to be specific, EC2 instances are still your best option, so you might want to start considering Nodegroups.
 
-Your Kubernetes cluster consists of nodes, and nodegroups, as the name implies, groups the nodes together. You can group several nodes into a single group in a way that makes logical sense, and have the nodegroup automatically manage itself. So you will still be using EC2 instances, but the Nodegroup will be creating, provisioning, and deleting the instances as needed. However, some features that Fargate offers such as scaling will no longer be available to you. So we can consider it a good middle group between manageability and flexibility.
+## Node groups
+
+Your Kubernetes cluster consists of nodes, and nodegroups, as the name implies, groups the nodes together. You can group several nodes into a single group in a way that makes logical sense and have the node group automatically manage itself. So you will still be using EC2 instances, but the Nodegroup will be creating, provisioning, and deleting the instances as needed. In short, it handles scaling as required by the resources in your cluster. This is especially important if your cluster doesn't have a steady workload throughout the day. For instance, if the amount of resources used in the peak of the day is around 3 or 4 times the number of resources used during off-peak hours, you can create a node group with a minimum of 1 node and a maximum of 4 nodes, which means that depending on load, EKS will automatically scale between the required resources.
+
+However, some features that Fargate offers such as scaling will no longer be available to you. So we can consider it a good middle group between manageability and flexibility.
 
 As one last thing, before we finish, I would like to point out that another possibility is to have both Fargate and EC2 instances running to work for the same cluster. That is, you can create EC2 instances for the nodes that you need fine-grained control over while allowing Fargate to handle any other infrastructure that just needs to run, no matter how or where.
 
