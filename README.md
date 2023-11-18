@@ -14,7 +14,7 @@ A Curated List of Kubernetes Labs and Tutorials
 
 # 📝 Join our Community
 
-- Join 8800+ DevOps Engineers today via [Community Slack](https://launchpass.com/collabnix)
+- Join 9000+ DevOps Engineers today via [Community Slack](https://launchpass.com/collabnix)
 - Join our [Discord Server](https://discord.gg/QEkCXAXYSe)
 - Fork, Contribute & Share via [Kubelabs GITHUB Repository](https://github.com/collabnix/kubelabs)
 -  Click and Follow us over Twitter [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/fold_left.svg?style=social&label=Follow%20%40collabnix)](https://twitter.com/collabnix)
