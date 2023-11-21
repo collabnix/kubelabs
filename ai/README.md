@@ -14,7 +14,36 @@ brew install kubectl-ai
 
 kubectl-ai requires an OpenAI API key or an Azure OpenAI Service API key and endpoint, and a valid Kubernetes configuration.
 
+```
+export OPENAI_API_KEY=<your OpenAI key>
+```
 
+## Installing on CentOS
+
+```
+yum install wget
+wget https://github.com/sozercan/kubectl-ai/releases/download/v0.0.10/kubectl-ai_linux_amd64.tar.gz
+tar xvf kubectl-ai_linux_amd64.tar.gz
+mv kubectl-ai /usr/local/bin/kubectl-ai
+```
+
+## Setting up Kubeview
+
+## Using Helm
+
+Assuming that you have already installed Git and Helm on your laptop, follow the below steps
+
+```
+git clone https://github.com/benc-uk/kubeview
+cd kubeview/charts/
+helm install kubeview kubeview
+```
+
+## Testing it locally
+
+```
+kubectl port-forward svc/kubeview -n default 80:80
+```
 
 ## Deploying Pod using namespace
 
@@ -54,6 +83,11 @@ Use the arrow keys to navigate: ↓ ↑ → ←
   ▸ Apply
     Don't Apply
 ```
+
+The YAML manifest you provided creates a basic Nginx pod with the name "nginx-pod" and exposes port 80. 
+To apply this manifest and create the pod, you can use the kubectl apply command.
+Save the manifest in a file, for example, nginx-pod.yaml, and then execute the following command in your terminal:
+
 
 <img width="1013" alt="image" src="https://github.com/collabnix/kubelabs/assets/313480/e4f6cb3f-cef0-4351-9903-f083454c22be">
 
@@ -240,4 +274,70 @@ If you need an external IP for your service, you have a few options:
 Use a port-forwarding technique: In a local development environment, you can use port-forwarding to access your service directly from your local machine without an external IP. This allows you to forward traffic from a specific port on your local machine to the service running in the cluster. You can use the kubectl port-forward command to achieve this.
 
 Remember that the availability of these options may depend on your Kubernetes environment and the infrastructure you are using.
+
+
+## Running Multiple Containers in a Pod
+
+
+```
+kubectl ai "Create a namespace ns3, create a Pod with two containers, the frist named todo-list using a Docker image ajeetraina/todo and a second container based on prom/prometheus:v2.30.3 docker image and container exposed to port 9090"
+```
+
+It creates a YAML file
+
+```
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ns3
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: todo-list
+  namespace: ns3
+spec:
+  containers:
+  - name: todo-list
+    image: ajeetraina/todo
+  - name: prometheus
+    image: prom/prometheus:v2.30.3
+    ports:
+    - containerPort: 9090
+```
+
+## Portforwarding
+
+```
+kubectl port-forward todo-list 3000:3000 9090:9090 -n ns3
+```
+
+<img width="1499" alt="image" src="https://github.com/collabnix/kubelabs/assets/313480/d567b54e-5151-44ed-b432-eb134e55008b">
+
+
+
+## ReplicaSet
+
+```
+kubectl ai "Create a namespace ns3, create a Pod with container named todo-list using ajeetraina/todo as Docker image, create a ReplicaSet by name web, that manages 4 replicas of the container image, then replicaset should manage Pods with the label role:web"
+```
+
+## Port Forwarding
+
+```
+kubectl port-forward todo-list 3000:3000 -n ns3
+```
+
+```
+kubectl get po -n ns3 --selector=role=web
+NAME        READY   STATUS    RESTARTS   AGE
+web-9t6vs   1/1     Running   0          6m58s
+web-jbc6w   1/1     Running   0          6m58s
+web-k8klv   1/1     Running   0          6m58s
+web-rnm5x   1/1     Running   0          6m58s
+ajeetsraina@Q537JQXLVR ~ %
+```
+
+<img width="1504" alt="image" src="https://github.com/collabnix/kubelabs/assets/313480/9f57c9a9-3201-41f4-b0c4-ba388a97d1bc">
+
 

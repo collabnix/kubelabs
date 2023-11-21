@@ -83,8 +83,8 @@ pod "nginx" deleted
 - Node affinity is conceptually similar to nodeSelector – it allows you to constrain which nodes your pod is eligible to be scheduled on, based on labels on the node.
 
 - There are currently two types of node affinity.
-1. requiredDuringSchedulingIgnoredDuringExecution  (Preferred during scheduling, ignored during execution; we are also known as "hard" requirements)
-2. preferredDuringSchedulingIgnoredDuringExecution  (Required during scheduling, ignored during execution; we are also known as "soft" requirements)
+1. requiredDuringSchedulingIgnoredDuringExecution (Required during scheduling, ignored during execution; also known as "hard" requirements)
+2. preferredDuringSchedulingIgnoredDuringExecution (Preferred during scheduling, ignored during execution; also known as "soft" requirements)
 
 ## Steps
 
