@@ -1,0 +1,5 @@
+# ConfigMaps
+
+ConfigMaps are a fundamental part of any Kubernetes infrastructure. You are unlikely to find any major Kubernetes applications, be it a library, support infrastructure, or cloud provider that doesn't rely on ConfigMaps. So what are they?
+
+[ConfigMaps](https://kubernetes.io/docs/concepts/configuration/configmap/) is simply a key-value store that keeps your data in plain text. This is in contrast to [secrets](../secerts_configmaps101/secrets-configmaps.md) which also do the same thing, but also encrypt your data. As the name implies, you would generally use ConfigMaps to store configurations that would be separate from your actual application. This way, if you wanted to change a configuration (such as an API endpoint your pod was calling), you could do it by simply changing the ConfigMap without having to change the actual application or deployment yaml, thereby removing the need to re-deploy your application once again.
