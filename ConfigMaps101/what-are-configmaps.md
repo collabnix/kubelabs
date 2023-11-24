@@ -24,5 +24,7 @@ As you can see, the `kind: ConfigMap` is specified here and it follows a general
 ```
 data:
   initdb.sql: |-
-    <SQL Command>
+    INSERT INTO users (username, email) VALUES ('john_doe', 'john.doe@example.com');
 ```
+
+There are numerous examples of different file structures being used within ConfigMaps across Kubelabs. For example, if you look at the [logging section](../Logging101/fluentd.md), you will see that the fluentd configuration file gets defined in a ConfigMaps with its own format. Meanwhile, if you wanted to add a user to an EKS cluster, you would do so by adding the user in a YAML format into the aws_auth ConfigMap. In this manner, just about every type of file can be defined within a ConfigMap.
