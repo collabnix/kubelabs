@@ -136,7 +136,7 @@ metadata:
 spec:
   containers:
   - name: orphan
-	image: httpd
+    image: httpd
 ```
 
 It looks a lot like the other pods, but it is using Apache (httpd) instead of Nginx for an image. Using kubectl, we can apply this definition like:
