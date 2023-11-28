@@ -31,4 +31,90 @@ There are numerous examples of different file structures being used within Confi
 
 So now you have a pretty good idea of what ConfigMaps are and what they are capable of, as well as knowledge of how you define them. So let's move on to how you would use a ConfigMap that has already been defined. As a resource that holds multiple values, there are several ways you could use the resource in a pod. One of the most popular methods is to add the ConfigMap as a volume mount. In the deployment yaml, simply specify the name of the ConfigMap as a volume, and your pod would have access to the ConfigMap the same way it would have access to any other volume. Another method of accessing the ConfigMap is to pass it as a command line argument. This is useful if you have multiple ConfigMaps, and which one you want available to your pod gets decided at runtime. You could also have the ConfigMap placed as an environment variable for a container and get it to read the environment variable and subsequently the value from the ConfigMap.
 
-Now that you have a pretty good idea of the flexibility ConfigMaps provide, let's take a look at a full example. We will begin by defining a ConfigMap and then proceed to show all the different ways he ConfigMap can be used in a pod.
+Now that you have a pretty good idea of the flexibility ConfigMaps provide, let's take a look at a full example. We will begin by defining a ConfigMap and then proceed to show all the different ways the ConfigMap can be used in a pod. We will use the same MongoDB example from before:
+
+```
+# configmap.yaml
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: example-configmap
+data:
+  # Key-value pairs for configuration data
+  DATABASE_URL: "mongodb://mongo-server:27017/mydatabase"
+  API_KEY: "your_api_key_here"
+  DEBUG_MODE: "true"
+```
+
+You can see the ConfigMap defined with the database URL, API key, and debug mode turned on. As with all Kubernetes resources, you will have to deploy this file into your cluster:
+
+```
+kubectl apply -f configmap.yaml
+```
+
+Finally, let's reference it in a sample deployment:
+
+```
+# pod.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: example-pod
+spec:
+  containers:
+  - name: my-container
+    image: your-image
+    env:
+    - name: DATABASE_URL
+      valueFrom:
+        configMapKeyRef:
+          name: example-configmap
+          key: DATABASE_URL
+    - name: API_KEY
+      valueFrom:
+        configMapKeyRef:
+          name: example-configmap
+          key: API_KEY
+    - name: DEBUG_MODE
+      valueFrom:
+        configMapKeyRef:
+          name: example-configmap
+          key: DEBUG_MODE
+```
+
+In this case, `valueFrom` is used to reference the values from the ConfigMap for each environment variable. Therefore, we are referencing the ConfigMap as env variables. Inside the `valueFrom` key, we also provide the `configMapKeyRef`, with the name of the key being passed in so that the value can be retrieved as a parameter. Since here we only have 3 variables, it wasn't really complicated. However, in a case where there were a large number of vars, you can imagine the deployment yaml would end up getting very repetitive and long, which would eventually make it unreadable. So, let's look at how you can mount the ConfigMap as a volume:
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-container
+        image: my-nodejs-app:latest
+        env:
+        - name: MONGODB_CONFIG_FILE
+          value: "/etc/mongodb-config/mongodb-configmap.properties"
+        volumeMounts:
+        - name: config-volume
+          mountPath: "/etc/mongodb-config"
+      volumes:
+      - name: config-volume
+        configMap:
+          name: mongodb-configmap
+
+```
+
+In this example, the `MONGODB_CONFIG_FILE` environment variable is set to the path of the file containing the entire ConfigMap. This file will be mounted into the container. A volume is defined with the name `config-volume` and is associated with the ConfigMap `mongodb-configmap`. This volume is mounted into the container at the path `/etc/mongodb-config`.
