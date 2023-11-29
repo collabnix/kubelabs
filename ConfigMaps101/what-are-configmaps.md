@@ -117,4 +117,21 @@ spec:
 
 ```
 
-In this example, the `MONGODB_CONFIG_FILE` environment variable is set to the path of the file containing the entire ConfigMap. This file will be mounted into the container. A volume is defined with the name `config-volume` and is associated with the ConfigMap `mongodb-configmap`. This volume is mounted into the container at the path `/etc/mongodb-config`.
+In this example, the `MONGODB_CONFIG_FILE` environment variable is set to the path of the file containing the entire ConfigMap. This file will be mounted into the container. A volume is defined with the name `config-volume` and is associated with the ConfigMap `mongodb-configmap`. This volume is mounted into the container at the path `/etc/mongodb-config`. This way, there will be no repetition and all of the environment variables would still be accessible.
+
+You could also safely remove the `env` key and still have all the data in the ConfigMap accessible:
+
+```
+containers:
+- name: mongodb
+  image: mongo:latest
+  ports:
+  - containerPort: 27017
+  volumeMounts:
+  - name: mongodb-config-volume
+    mountPath: /etc/mongod
+volumes:
+- name: mongodb-config-volume
+  configMap:
+    name: mongodb-config
+```
