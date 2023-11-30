@@ -135,3 +135,18 @@ volumes:
   configMap:
     name: mongodb-config
 ```
+
+Or you could directly inject the values from the ConfigMap into your containers environment using the `envFrom` key:
+
+```
+containers:
+- name: mongodb
+  image: mongo:latest
+  ports:
+  - containerPort: 27017
+  envFrom:
+  - configMapRef:
+      name: mongodb-config
+```
+
+In this version, the envFrom field is used to directly reference the ConfigMap. This will inject all the key-value pairs from the ConfigMap as environment variables into the container.
