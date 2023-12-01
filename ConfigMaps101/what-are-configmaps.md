@@ -149,4 +149,6 @@ containers:
       name: mongodb-config
 ```
 
-In this version, the envFrom field is used to directly reference the ConfigMap. This will inject all the key-value pairs from the ConfigMap as environment variables into the container.
+In this version, the envFrom field is used to directly reference the ConfigMap. This will inject all the key-value pairs from the ConfigMap as environment variables into the container. 
+
+So, as you can see, there is a lot of flexibility when it comes to what you can define inside a ConfigMap, as well as in the ways you can refer to the ConfigMap. It's a very simple, yet very useful resource. As you progress along Kubernetes, you will constantly come across this particular resource, so make sure you understand it well before moving ahead to more complex resources.
