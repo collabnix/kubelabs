@@ -149,6 +149,14 @@ containers:
       name: mongodb-config
 ```
 
-In this version, the envFrom field is used to directly reference the ConfigMap. This will inject all the key-value pairs from the ConfigMap as environment variables into the container. 
+In this version, the envFrom field is used to directly reference the ConfigMap. This will inject all the key-value pairs from the ConfigMap as environment variables into the container.
+
+Now that we have looked at various ways we can reference an existing ConfigMap, let's look at all the ways we can create a ConfigMap. The first method is to declare it in a yaml file, which is the example that has been used so far. However, there is also a way to define it in line with a `kubectl create configmap` command:
+
+```
+kubectl create configmap example-configmap –from-literal=DATABASE_URL="mongodb://mongo-server:27017/mydatabase" –from-literal=API_KEY"your_api_key_here" –from-literal=DEBUG_MODE="true"
+```
+
+This would create the same ConfigMap as the one we had defined before. As you can see, the longer the ConfigMap, the longer the command will be. And this ConfigMap with 3 values is itself a pretty messy command, which is why defining it as a yaml is always better. However, there are some use cases where the above method would be preferred. For example, if you wanted to auto-generate a bunch of ConfigMaps and create them in the cluster with a script, or you have a dynamic ConfigMap that changes during deployment time.
 
 So, as you can see, there is a lot of flexibility when it comes to what you can define inside a ConfigMap, as well as in the ways you can refer to the ConfigMap. It's a very simple, yet very useful resource. As you progress along Kubernetes, you will constantly come across this particular resource, so make sure you understand it well before moving ahead to more complex resources.
