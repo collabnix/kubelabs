@@ -159,4 +159,16 @@ kubectl create configmap example-configmap –from-literal=DATABASE_URL="mongodb
 
 This would create the same ConfigMap as the one we had defined before. As you can see, the longer the ConfigMap, the longer the command will be. And this ConfigMap with 3 values is itself a pretty messy command, which is why defining it as a yaml is always better. However, there are some use cases where the above method would be preferred. For example, if you wanted to auto-generate a bunch of ConfigMaps and create them in the cluster with a script, or you have a dynamic ConfigMap that changes during deployment time.
 
+You have already seen how you can define a ConfigMap using a yaml file. However, you can also create a ConfigMap from any other file type as well, such as a text file. You do this using a command similar to the above one, and it automatically creates a resource of kind ConfigMap that has the contents of the file you specified as its data:
+
+```
+kubectl create configmap example-configmap –from-file=key1=mongodb.txt
+```
+
+You can then describe the ConfigMap to see its full resource definition:
+
+```
+kubectl describe configmap example-configmap
+```
+
 So, as you can see, there is a lot of flexibility when it comes to what you can define inside a ConfigMap, as well as in the ways you can refer to the ConfigMap. It's a very simple, yet very useful resource. As you progress along Kubernetes, you will constantly come across this particular resource, so make sure you understand it well before moving ahead to more complex resources.
