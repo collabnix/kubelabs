@@ -151,6 +151,23 @@ containers:
 
 In this version, the envFrom field is used to directly reference the ConfigMap. This will inject all the key-value pairs from the ConfigMap as environment variables into the container.
 
+You can also load the ConfigMap as a command line argument in a deployment yaml. You do this using the `command` key. For example:
+
+```
+containers:
+    - name: mongodb
+      command: ["mongo", "--database-host", "$(DATABASE_URL)"]
+      image: mongo:latest
+      env:
+        - name: DATABASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: example-configmap
+              key: DATABASE_URL
+```
+
+This command runs when the pod starts, meaning that the value will be extracted from the ConfigMap at this point.
+
 Now that we have looked at various ways we can reference an existing ConfigMap, let's look at all the ways we can create a ConfigMap. The first method is to declare it in a yaml file, which is the example that has been used so far. However, there is also a way to define it in line with a `kubectl create configmap` command:
 
 ```
