@@ -182,10 +182,18 @@ You have already seen how you can define a ConfigMap using a yaml file. However,
 kubectl create configmap example-configmap –from-file=key1=mongodb.txt
 ```
 
+List the ConfigMaps:
+
+```
+kubectl get configmaps
+```
+
 You can then describe the ConfigMap to see its full resource definition:
 
 ```
 kubectl describe configmap example-configmap
 ```
+
+Next, let's quickly look at immutable ConfigMaps. If you don't want the contents of a ConfigMap to be changed after you deploy it, you can add the key `immutable` at the root level of the ConfigMap yaml, and it will throw a forbidden error if you try to change the existing ConfigMap. If you want to change the resource from this point forward, you will have to delete the old resource and create a new one.
 
 So, as you can see, there is a lot of flexibility when it comes to what you can define inside a ConfigMap, as well as in the ways you can refer to the ConfigMap. It's a very simple, yet very useful resource. As you progress along Kubernetes, you will constantly come across this particular resource, so make sure you understand it well before moving ahead to more complex resources.
