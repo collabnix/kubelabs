@@ -136,7 +136,7 @@ volumes:
     name: mongodb-config
 ```
 
-Or you could directly inject the values from the ConfigMap into your containers environment using the `envFrom` key:
+The above method will make the ConfigMap be considered as a volume instead of having it entered as an environment variable. This means that if you were to update the ConfigMap while the container was running, the container would take the new values immediately. On the other hand, if you had loaded them up as environment variables, you would have to restart the container since the variables are assigned during pod startup. Or you could directly inject the values from the ConfigMap into your container environment using the `envFrom` key:
 
 ```
 containers:
