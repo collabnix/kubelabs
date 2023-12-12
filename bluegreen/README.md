@@ -22,7 +22,7 @@ pod/bluepod created
 $ kubectl get pods --show-labels
 NAME        READY   STATUS    RESTARTS   AGE   LABELS
 bluepod         1/1     Running   0          25m   app=blue
-```
+
 $ kubectl apply -f green.yml 
 pod/greenpod created
 ```
