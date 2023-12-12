@@ -89,7 +89,7 @@ controlplane $ kubectl get svc
 NAME         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE
 kubernetes   ClusterIP   10.96.0.1      <none>        443/TCP   2d5h
 myapp        ClusterIP   10.100.35.84   <none>        80/TCP    2s
-
+```
 curl 10.100.35.84
 <html><body><h1>It works!</h1></body></html>
 Hello from Blue-Pod
