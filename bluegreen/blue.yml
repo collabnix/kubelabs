@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: bluepod
+    labels: 
+        app: blue
+spec:
+    containers:
+    - name: webpage
+      image: docker.io/httpd 
