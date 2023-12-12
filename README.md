@@ -309,6 +309,10 @@ A Curated List of Kubernetes Labs and Tutorials
 - [What is KEDA](./Keda101/what-is-keda.md)
 - [KEDA lab](./Keda101/keda-lab.md)
 
+## Terraform EKS
+- [What is Terraform](./Terraform101/what-is-terraform.md)
+- [Terraform EKS Lab](./Terraform101/terraform-eks-lab.md)
+
 ## For Node Developers
 - [Kubernetes for Node Developers](./nodejs.md)
 

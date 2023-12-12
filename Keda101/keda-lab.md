@@ -120,22 +120,61 @@ serviceAccount:
 
 The part that needs to be modified is the `annotations` section. So if you want to scale an EKS cluster based on SQS messages, then you first need an IAM role that has access to SQS, and you need to add this role arn as an annotation.
 
-```
-annotations: 
-    eks.amazonaws.com/role-arn: arn:aws:iam::<account-id>:role/<role-name>
+If you added the arn, then setting up authentication is a simple matter. While Keda provides resources specifically geared towards authentication, you won't need to use any of that. In the Keda authentication types, there exists a type called `operator`. This type allows the keda service account to directly acquire the role of the IAM arn you provided. As long as the arn has the permissions necessary, keda can function. The triggers will look like the following:
+
+```yaml
+  triggers:
+  - type: aws-sqs-queue
+    authenticationRef:
+      name: keda-trigger-auth-aws-credentials-activity-distributor
+    metadata:
+      queueURL: <your_queue_url>
+      queueLength: "1"
+      awsRegion: "us-east-1"
+      identityOwner: operator  # This is where the identityOwner needs to be set
 ```
 
-Next, you need to change the ScaleObject resource. The mysql-hpa.yaml has the trigger specified as the mysql db. However, it does not have an option called `identityOwner`. This is becase we are not using authentication here, and therefore do not need such a thing. In order to add authentication, this key should be added and the value set to `operator`:
+If you set the `identityOwner` to something else, such as `pod`, you could set up Keda to authenticate by assuming a role that has the necessary permissions instead of acquiring the IAM role itself. You could also completely scrap this part and choose to provide access keys. In this case, you would use several additional resources. For starters, you need to include your access keys in a secret. So start by defining a resource of kind `secret`:
 
-```
+```yaml
+apiVersion: v1
+kind: Secret
 metadata:
-    ...
-    identityOwner: operator
+  name: keda-secret
+  namespace: keda
+data:
+  AWS_ACCESS_KEY_ID: <AWS ACCESS KEY>
+  AWS_SECRET_ACCESS_KEY: <AWS SECRET KEY>
 ```
 
-And that's it! You only needed to modify two lines and you have full authorization among the cluster.
+You should then assign this resource to a Keda-specific custom resource called "TriggerAuthentication":
 
-While this is the easiest way to provide authentication, it is not the only way to do it. You could also change the `identityOwner` to `pod`, and create a `TriggerAuthentication` resource and feed in the AWS access keys (which isn't very secure), or have the keda service account assume a role that has access to the necessary resources (which is much more secure). There is a number of different ways to authorize, and these are covered in the [KEDA documentation](https://keda.sh/docs/1.4/concepts/authentication/).
+```yaml
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: keda-trigger-authentication
+  namespace: keda
+spec:
+  secretTargetRef:
+  - parameter: awsAccessKeyID
+    name: keda-secret
+    key: AWS_ACCESS_KEY_ID
+  - parameter: awsSecretAccessKey
+    name: keda-secret
+    key: AWS_SECRET_ACCESS_KEY
+```
+
+This `TriggerAuthentication` resource should then be referenced within the actual `ScaledJob` resource under the `triggered` section:
+
+```yaml
+authenticationRef:
+  name: keda-trigger-authentication
+```
+
+This will allow your `ScaledJob` resource to read the authentication keys that you added to your secret via the `TriggerAuthentication` resource. Of course, if you don't want to have your access keys even as a secret, you can use the operator authentication type described above. Additionally, Keda support [several different authentication types](https://keda.sh/docs/2.11/concepts/authentication/) out of the box.
+
+With the above configuration, a new Keda job will start every time a message is sent to the SQS queue. The job should have the necessary configurations to read the content of the message sent to the queue, and the message in SQS should get consumed by the job that starts. Once the job succeeds, it will terminate. If there is a failure, the job will exit and a new job will get created. It will then attempt to consume the message.
 
 If you added the arn, then setting up authentication is a simple matter. While Keda provides resources specifically geared towards authentication, you won't need to use any of that. In the Keda authentication types, there exists a type called `operator`. This type allows the keda service account to directly acquire the role of the IAM arn you provided. As long as the arn has the permissions necessary, keda can function. The triggers will look like the following:
 
