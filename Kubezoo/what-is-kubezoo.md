@@ -1,0 +1,3 @@
+# Kubezoo
+
+If you have a large number of small clients that all rely on various services you provide, it makes little sense to have a separate Kubernetes cluster for each of them. An individual cluster will incur costs for control planes and each cluster needs to have supporting resources enabled which will result in resource usage. Multi-tenancy is the solution for this problem, where we only have a single cluster which we split into multiple namespaces, which are each assigned to a client or a "tenant".
