@@ -23,6 +23,13 @@ A Curated List of Kubernetes Labs and Tutorials
 # Featured Articles
 
 - [Kubernetes CrashLoopBackOff Error: What It Is and How to Fix It?](https://collabnix.com/kubernetes-crashloopbackoff-error-what-it-is-and-how-to-fix-it/)
+- [Top 5 Kubernetes Backup and Storage Solutions: Velero and More](https://collabnix.com/top-5-kubernetes-backup-tools-you-should-be-aware-of/)
+- [Top 5 Storage Provider Tools for Kubernetes](https://collabnix.com/top-5-storage-provider-tools-for-kubernetes/)
+- [Top 5 Alert and Monitoring Tools for Kubernetes](https://collabnix.com/top-5-alert-and-monitoring-tools-for-kubernetes/)
+- [Top 5 Machine Learning Tools For Kubernetes](https://collabnix.com/top-5-machine-learning-tools-for-kubernetes/)
+- [Top 5 Cluster Management Tools for Kubernetes in 2023](https://collabnix.com/top-5-cluster-management-tools-for-kubernetes-in-2023/)
+- [10 Tips for Right Sizing Your Kubernetes Cluster](https://collabnix.com/10-tips-for-right-sizing-your-kubernetes-cluster/)
+- [Step-by-Step Guide to Deploying and Managing Redis on Kubernetes](https://collabnix.com/deploying-and-managing-redis-on-kubernetes/)
 - [Update Your Kubernetes App Configuration Dynamically using ConfigMap](https://collabnix.com/update-your-kubernetes-app-configuration-dynamically-using-configmap/)
 - [Streamline Your Deployment Workflow: Utilizing Docker Desktop for Local Development and OpenShift for Production Deployment](https://collabnix.com/streamline-your-deployment-workflow-utilizing-docker-desktop-for-local-development-and-openshift-for-production-deployment/)
 - [The Impact of Kube-proxy Downtime on Kubernetes Clusters](https://collabnix.com/the-impact-of-kube-proxy-downtime-on-kubernetes-clusters/)
