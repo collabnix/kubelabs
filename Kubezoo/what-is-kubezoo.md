@@ -7,17 +7,3 @@ However, this solution comes with its own host of problems. The biggest issue is
 Now take a different situation. Instead of having 3 large clients, you have hundreds of small users. Each user needs to quickly run workloads in their own private "cluster", and it needs to be quick and efficient. This would be a pretty much impossible-to-manage situation without the proper tools. If we are talking about an average-sized team, it becomes infeasible from a manpower perspective to be able to handle these kinds of quick changes.
 
 This is where Kubezoo comes in. The solution they provide is Kubernetes API as a Service (KAaaS). Kubezoo allows you to easily share your cluster among hundreds of tenants, and allows sharing both the control plane and the data plane. This makes the resource efficiency as high as simply having a namespace for each tenant. However, unlike a namespace isolation method, this also has increased API compatibility as well as resource isolation. So while there are several different multi-tenancy options to choose from, Kubezoo is one of the best when it comes to handling a large number of small tenants.
-
-# Lab
-
-Now that we have covered what Kubezoo is, let's take a look at how we can set it up in a standard cluster. You could go ahead and use [Minikube](https://minikube.sigs.k8s.io/docs/start/), or you could create a cluster using [Kind](https://kind.sigs.k8s.io/docs/user/quick-start/#installation). You can also use any Kubernetes cluster you have at the ready. Let's start by cloning the [KubeZoo repo](https://github.com/kubewharf/kubezoo.git):
-
-```
-git clone https://github.com/kubewharf/kubezoo.git
-```
-
-Now, go to the root of the repo you just cloned, and run the `make` command:
-
-```
-make local-up
-```
