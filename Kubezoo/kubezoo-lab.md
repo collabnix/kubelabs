@@ -17,3 +17,15 @@ This will get Kubezoo up and running on port 6443 as long as the port is free. C
 ```
 kubectl api-resources --context zoo
 ```
+
+Now, let's create a sample tenant. For this, we will be using the config/setup/sample_tenant.yamlsample_tenant.yaml provided in the repo. If you take a look at the tenant yaml file, you will notice that this is a custom resource of type "tenant", and contains just a few lines specifying the type of resources this tenant requires. The name of the tenant is "111111". Since this is a regular Kubernetes resource, let's go ahead and deploy this tenant as we would a normal yaml:
+
+```
+kubectl apply -f config/setup/sample_tenant.yaml --context zoo
+```
+
+Check that the tenant is has been setup:
+
+```
+kubectl get tenant 111111 --context zoo
+```
