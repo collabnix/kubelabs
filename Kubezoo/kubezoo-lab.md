@@ -29,3 +29,15 @@ Check that the tenant is has been setup:
 ```
 kubectl get tenant 111111 --context zoo
 ```
+
+Since this tenant is basically a "cluster" in itself, it has it's own kubeconfig that gets created for it. You can extract it using:
+
+```
+kubectl get tenant 111111 --context zoo -o jsonpath='{.metadata.annotations.kubezoo\.io\/tenant\.kubeconfig\.base64}' | base64 --decode > 111111.kubeconfig
+```
+
+You should now be able to deploy all sorts of resources to the tenant by specifying the kubeconfig. For example, if you were to deploy a file called "application.yaml" into the tenant, you would use:
+
+```
+kubectl apply -f application.yaml --kubeconfig 111111.kubeconfig
+```
