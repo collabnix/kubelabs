@@ -41,3 +41,13 @@ You should now be able to deploy all sorts of resources to the tenant by specify
 ```
 kubectl apply -f application.yaml --kubeconfig 111111.kubeconfig
 ```
+
+You can check the pod as the tenant by specifying the kubeconfig as before:
+
+```
+kubectl get po --kubeconfig 111111.kubeconfig
+```
+
+The pod would have been created in the namespace that you assigned to the tenant. If you were to have multiple tenants, you would not be able to see the pods of the other tenants as long as you only have the kubeconfig of the tenant that you are dealing with, which allows for better isolation. Using your regular kubeconfig as a cluster admin, if you were to list all pods with `kubectl get po -A`, you would be able to see all the pods of all the tenants separated by namespace.
+
+# Conclusion
