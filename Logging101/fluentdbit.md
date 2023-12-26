@@ -79,3 +79,7 @@ And finishes with information regarding the volume mounts for the DaemonSet.
 To sum up, Fluent Bit is basically fluentd, but with a much smaller footprint and file size. It runs in a more lightweight manner and consumes resources which makes it an ideal log processor for systems that have few resources. There are also a few unique features that Fluent Bit has that fluentd doesn't, and vice versa.
 
 If you haven't had enough about logging with Kuberetnes, jump into the [Kafka section](../Strimzi101/kafka.md) of this course, which provides a basic introduction to Kafka and details how to use [Strizmi](https://strimzi.io) to get a Kafka cluster running within your Kubernetes cluster.
+
+Now, let's take things a step further and look at how we can set up the entire ELK stack on a Kubernetes cluster.
+
+[Next: ELK on Kubernetes](./elk-on-kubernetes.md)
