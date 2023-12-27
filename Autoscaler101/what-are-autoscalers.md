@@ -1,0 +1,3 @@
+# Autoscalers
+
+You likely already know about scalers and what they do, since they are a core part of the Kubernetes architecture. Primary to these scalers are two scaling methods: vertical scaling, and horizontal scaling. In this section, we will dive deep into each of these types of scaling and have a hands-on look at the way that each functions. We will also see the benefits each method has, as well as the drawbacks.
