@@ -15,3 +15,7 @@ Scaling down happens in the same way, where the VPA dynamically updates the reso
 A horizontal pod autoscaler works in the same way as a VPA for the most part. It continuously monitors specified metrics, such as CPU utilization or custom metrics, for the pods it is scaling. You define a target value for the chosen metric. For example, you might set a target CPU utilization percentage. Based on the observed metrics and the defined target value, HPA makes a scaling decision to either increase or decrease the number of pod replicas. The amount of resources allocated to each pod remains the same. The number of pods will increase to accommodate this influx. If there is a service associated with the pod, the service will automatically start load balancing across the pod replicas without any intervention from your side.
 
 Scaling down is handled in roughly the same way. When scaling down, HPA reduces the number of pod replicas. It terminates existing pods to bring the number of replicas in line with the configured target metric. The scaling decision is based on the comparison of the observed metric with the target value. HPA does not modify the resource specifications (CPU and memory requests/limits) of individual pods. Instead, it adjusts the number of replicas to match the desired metric target.
+
+Now that we have thoroughly explored both types of autoscalers, let's go on to a lab where we will look at the scalers in more detail.
+
+[Next: Autoscaler lab](../Autoscaler101/autoscaler-lab.md)
