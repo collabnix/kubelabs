@@ -57,12 +57,12 @@ Now, when the application reaches the CPU or memory limit, it will affect applic
 apiVersion: autoscaling.k8s.io/v1
 kind: VerticalPodAutoscaler
 metadata:
-  name: example-vpa
+  name: nginx-vpa
 spec:
   targetRef:
     apiVersion: "apps/v1"
     kind: Deployment
-    name: example-deployment
+    name: nginx-deployment
   updatePolicy:
     updateMode: "Auto"
   resourcePolicy:
@@ -76,47 +76,18 @@ spec:
         memory: 512Mi
 ```
 
-The resource itself is fairly self-explanatory. A vpa with name "example-vpa" will get created.
+The resource itself is fairly self-explanatory. The spec section contains the specifications for the VPA. The targetRef section specifies the workload that the VPA is targeting for autoscaling. In this example, it's targeting a Deployment named "nginx-deployment." The updatePolicy section configures the update mode. In "Auto" mode, VPA automatically applies the recommended changes to the pod resources without manual intervention. The resourcePolicy section specifies the resource policies for individual containers within the pod. Within it, you have the containerPolicies section which defines policies for containers. In this case, it uses a wildcard ("*") to apply policies to all containers in the pod. It also has the minAllowed section which specifies the minimum allowed resources. VPA won't recommend going below these values. For example, the minimum allowed CPU is 50 milliCPU (50m), and the minimum allowed memory is 64 megabytes (64Mi). The maxAllowed section specifies the maximum allowed resources. VPA won't recommend going above these values. For example, the maximum allowed CPU is 500 milliCPU (500m), and the maximum allowed memory is 512 megabytes (512Mi).
 
+Now deploy this into the Kubernetes cluster:
 
 ```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: nginx-deployment
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: nginx
-  template:
-    metadata:
-      labels:
-        app: nginx
-    spec:
-      containers:
-      - name: nginx-container
-        image: nginx:1.21.5
-        resources:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-          limits:
-            cpu: 200m
-            memory: 256Mi
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: nginx-service
-spec:
-  selector:
-    app: nginx
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
----
+kubectl apply -f nginx-vpa.yaml
+```
+
+Once the deployment is complete, we need to load-test the deployment to see the VPA in action. An important thing to note here is that if you placed the VPA memory/CPU limit too low, this will result in the pod starting up replicas immediately upon pod creation since the limit will be reached as soon as the pod comes up. This is why it is important to be aware of your average and peak loads before you begin implementing the VPA.
+
+To load test the deployment, we will be using Apache Benchmark. Install it with `apt` or `yum`. You can do the installation on the Kubernetes node that has started. Next, note down the URL you want to load test.
+
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
