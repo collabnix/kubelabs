@@ -1,6 +1,10 @@
 # Lab
 
-You will need a Kubernetes cluster. A single node [Minikube cluster](https://minikube.sigs.k8s.io/docs/start/) will do just fine. Once the cluster is setup, we can go ahead and jump right into the lab since all other requirements to get an autoscaler up and running is already present within Kubernetes itself.
+You will need a Kubernetes cluster. A single node [Minikube cluster](https://minikube.sigs.k8s.io/docs/start/) will do just fine. Once the cluster is setup, you will have to install the metrics server, since the autoscalers use this to read the resource usage metrics. To do this, run:
+
+```
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+```
 
 We will start with a base application that will have the scaling performed in it. In this case, we will use a sample nginx deployment. Create a file `nginx-deployment.yaml` and paste the below contents to it:
 
@@ -28,9 +32,6 @@ spec:
           requests:
             cpu: 100m
             memory: 128Mi
-          limits:
-            cpu: 200m
-            memory: 256Mi
 ---
 apiVersion: v1
 kind: Service
@@ -86,7 +87,36 @@ kubectl apply -f nginx-vpa.yaml
 
 Once the deployment is complete, we need to load-test the deployment to see the VPA in action. An important thing to note here is that if you placed the VPA memory/CPU limit too low, this will result in the pod starting up replicas immediately upon pod creation since the limit will be reached as soon as the pod comes up. This is why it is important to be aware of your average and peak loads before you begin implementing the VPA.
 
-To load test the deployment, we will be using Apache Benchmark. Install it with `apt` or `yum`. You can do the installation on the Kubernetes node that has started. Next, note down the URL you want to load test.
+To load test the deployment, we will be using Apache Benchmark. Install it with `apt` or `yum`. You can do the installation on the Kubernetes node that has started. Next, note down the URL you want to load-test. To get this, use:
+
+```
+kubectl get svc
+```
+
+This will list all the services. Pick the nginx service from this list, copy its IP, and use Benchmark as below:
+
+```
+ab -n 1000 -c 50 http://<nginx-service-ip>/
+```
+
+This command will send 1000 requests with a concurrency of 50 to the NGINX service. You can adjust the -n (total requests) and -c (concurrency) parameters based on your specific load testing requirements. You can then analyze the results. Apache Benchmark will provide detailed output, including request per second (RPS), connection times, and more. For example:
+
+```
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    1   2.8      0      10
+Processing:   104  271 144.3    217    1184
+Waiting:      104  270 144.2    217    1184
+Total:        104  272 144.5    217    1185
+```
+
+Now it's time to check if autoscaling has started:
+
+```
+kubectl get po -n default
+```
+
+Watch the pods, and you will see that the resource limits are reached, after which a new pod with more resources is created. Keep an eye on the resource usage and you will notice that the new resources have higher limits.
 
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
