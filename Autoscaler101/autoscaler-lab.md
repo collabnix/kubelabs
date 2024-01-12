@@ -116,7 +116,9 @@ Now it's time to check if autoscaling has started:
 kubectl get po -n default
 ```
 
-Watch the pods, and you will see that the resource limits are reached, after which a new pod with more resources is created. Keep an eye on the resource usage and you will notice that the new resources have higher limits.
+Watch the pods, and you will see that the resource limits are reached, after which a new pod with more resources is created. Keep an eye on the resource usage and you will notice that the new resources have higher limits. Once the requests have been handled, the pod will immediately reduce the resource consumption. However, a new pod with lower resource requirements will not show up to replace the old pod. In fact, if you were to push a new version of the deployment into the cluster, it would still have space for a large amount of requests. However, this will reduce eventually if the amount of resources consumed continues to be low.
+
+Now that we have gotten a complete look at the vertical pod autoscaler, let's take a look at the HPA.
 
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
