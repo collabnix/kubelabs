@@ -140,7 +140,15 @@ spec:
         averageUtilization: 80
 ```
 
-TODO: ADD HPA description
+The above HPA definition has a lot of similarities to the VPA definition. The differences lie in the minReplicas and maxReplicas sections which define the minimum and maximum number of pod replicas that the HPA should maintain. In this case, it's set to have a minimum of 2 replicas and a maximum of 5 replicas. The VPA didn't have a metrics section that the HPA has, but its resourcePolicy section is pretty similar to this, where the metrics configure the metric used for autoscaling. In this example, it's using the CPU utilization metric.`type: Resource:` Specifies that the metric is a resource metric (in this case, CPU). The `resource` section specifies the resource metric details. `name: cpu` Indicates that the metric is CPU utilization.
+
+target section:
+
+Specifies the target value for the metric.
+
+type: Utilization: Indicates that the target is based on resource utilization.
+
+averageUtilization: 80: Sets the target average CPU utilization to 80%.
 
 Before you deploy this file into your cluster, make sure to remove the VPA since having two types of autoscalers running for the same pod can cause some obvious problems. So first run:
 
