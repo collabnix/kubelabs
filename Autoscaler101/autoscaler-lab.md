@@ -140,15 +140,7 @@ spec:
         averageUtilization: 80
 ```
 
-The above HPA definition has a lot of similarities to the VPA definition. The differences lie in the minReplicas and maxReplicas sections which define the minimum and maximum number of pod replicas that the HPA should maintain. In this case, it's set to have a minimum of 2 replicas and a maximum of 5 replicas. The VPA didn't have a metrics section that the HPA has, but its resourcePolicy section is pretty similar to this, where the metrics configure the metric used for autoscaling. In this example, it's using the CPU utilization metric.`type: Resource:` Specifies that the metric is a resource metric (in this case, CPU). The `resource` section specifies the resource metric details. `name: cpu` Indicates that the metric is CPU utilization.
-
-target section:
-
-Specifies the target value for the metric.
-
-type: Utilization: Indicates that the target is based on resource utilization.
-
-averageUtilization: 80: Sets the target average CPU utilization to 80%.
+The above HPA definition has a lot of similarities to the VPA definition. The differences lie in the minReplicas and maxReplicas sections which define the minimum and maximum number of pod replicas that the HPA should maintain. In this case, it's set to have a minimum of 2 replicas and a maximum of 5 replicas. The VPA didn't have a metrics section that the HPA has, but its resourcePolicy section is pretty similar to this, where the metrics configure the metric used for autoscaling. In this example, it's using the CPU utilization metric.`type: Resource:` Specifies that the metric is a resource metric (in this case, CPU). The `resource` section specifies the resource metric details. `name: cpu` Indicates that the metric is CPU utilization. The target section specifies the target value for the metric and `type: Utilization` indicates that the target is based on resource utilization. `averageUtilization` sets the target average CPU utilization to 80%.
 
 Before you deploy this file into your cluster, make sure to remove the VPA since having two types of autoscalers running for the same pod can cause some obvious problems. So first run:
 
@@ -168,4 +160,8 @@ You can see the status of the HPA as it starts up using `describe`:
 kubectl describe hpa nginx-hpa
 ```
 
-You might see some errors about the HPA being unable to retrieve metrics, however, these can be ignored since this is an issue that occurs only when the HPA starts up for the first time.
+You might see some errors about the HPA being unable to retrieve metrics, however, these can be ignored since this is an issue that occurs only when the HPA starts up for the first time. Now, let's go back to the apache benchmark and add load to the nginx service so that we can see the HPA in action. Let's start it up in the same manner as before:
+
+```
+ab -n 1000 -c 50 http://<nginx-service-ip>/
+```
