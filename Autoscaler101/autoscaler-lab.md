@@ -129,7 +129,7 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: nginx-deployment
-  minReplicas: 2
+  minReplicas: 1
   maxReplicas: 5
   metrics:
   - type: Resource
@@ -165,3 +165,11 @@ You might see some errors about the HPA being unable to retrieve metrics, howeve
 ```
 ab -n 1000 -c 50 http://<nginx-service-ip>/
 ```
+
+A thousand requests should start being sent to the service. Start watching the nginx pod to see if replicas are being created:
+
+```
+kubectl get po -n default --watch
+```
+
+You should be able to see the memory limit getting reached, after which the number of pods will increase. This will keep happening until the number of pods reaches the maximum specified value (5) or the memory requests are satisfied.
