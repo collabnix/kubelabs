@@ -173,3 +173,8 @@ kubectl get po -n default --watch
 ```
 
 You should be able to see the memory limit getting reached, after which the number of pods will increase. This will keep happening until the number of pods reaches the maximum specified value (5) or the memory requests are satisfied.
+
+
+## Conclusion
+
+That sums up the lab on autoscalers. In here, we discussed the two most commonly used in-built autoscalers: HPA and VPA. We also took a hands-on look at how the autoscalers worked. This is just the tip of the iceberg when it comes to scaling, however, and the subject of custom scalers that can scale based on metrics other than memory and CPU is vast. If you are interested in looking at more complicated scaling techniques, you could take a look at the [KEDA section](../Keda101/what-is-keda.md) to get some idea of the keda autoscaler.
