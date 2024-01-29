@@ -4,4 +4,46 @@ Kubernetes has a highly distributed nature, where each pod runs a separate appli
 
 In this section, we will be discussing how we can launch filebeat as a sidecar container, and the various pitfalls to look out for when doing this. But first, you need to know what a sidecar container is. The concept is explained in detail in the [Pods101 section](../pods101/deploy-your-first-nginx-pod.md), but in summary, it is simply a case where you run two containers inside a single pod. Generally, this will consist of 1 main container that runs your application, and 1 support container that runs another application designed to support the first application. In this case, this support application will be the filebeat container that pushes the logs created by the main container to elasticsearch. Note that while we term the containers as "main" and "sidecar", Kubernetes itself does not make this distinction. This is not an issue if you were running a regular application in a pod that runs forever since you want both the application as well as the filebeat sidecar to run continuously. However, if you were running a job instead of a pod, you want the job to terminate and disappear after the job finishes. This would be a problem since filebeat would continue to run after the job finishes, meaning that the job will hang around forever. We will be looking at a workaround to mitigate this.
 
-Let's start off by defining a Kubernetes job. If you want a deep dive into Kubernetes jobs, take a look at the [Jobs101 section](../Jobs101/README.md). We will be using the same example used there and adding the filebeat sidecar onto it.
+Let's start off by defining a Kubernetes job. If you want a deep dive into Kubernetes jobs, take a look at the [Jobs101 section](../Jobs101/README.md). We will be using the same example used there and adding the filebeat sidecar onto it. To keep things simple, we will use the [non-parallel-job.yml](../Jobs101/non-parallel-job.yml). Deploying this file to your cluster will create a job that starts, sleeps for 20 seconds, then succeeds and leaves. We will be editing the yaml to add the filebeat sidecar:
+
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: wait
+spec:
+  template:
+    metadata:
+      name: wait
+    spec:
+      containers:
+      - name: wait
+        image: ubuntu
+        command: ["sleep",  "20"]
+      - name: filebeat-sidecar
+            image: elastic/filebeat:5.6.16
+            volumeMounts:
+            - name: filebeat-config
+              mountPath: /usr/share/filebeat/filebeat.yml
+              subPath: filebeat.yml
+            - name: shared-data
+              mountPath: /data/
+            command: ["/bin/sh", "-c"]
+            args: ["/usr/share/filebeat/filebeat -e -c /usr/share/filebeat/filebeat.yml & while [ ! -f /data/completion-flag ]; do sleep 1; done && exit 0"]
+      restartPolicy: Never
+```
+
+This is the chunk that was added:
+
+```yaml
+- name: filebeat-sidecar
+    image: elastic/filebeat:5.6.16
+    volumeMounts:
+    - name: filebeat-config
+      mountPath: /usr/share/filebeat/filebeat.yml
+      subPath: filebeat.yml
+    - name: shared-data
+      mountPath: /opt/SINGLELOG/
+    command: ["/bin/sh", "-c"]
+    args: ["/usr/share/filebeat/filebeat -e -c /usr/share/filebeat/filebeat.yml & while [ ! -f /opt/SINGLELOG/completion-flag ]; do sleep 1; done && exit 0"]
+```
