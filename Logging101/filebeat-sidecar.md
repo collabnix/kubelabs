@@ -39,11 +39,22 @@ This is the chunk that was added:
 - name: filebeat-sidecar
     image: elastic/filebeat:5.6.16
     volumeMounts:
-    - name: filebeat-config
-      mountPath: /usr/share/filebeat/filebeat.yml
-      subPath: filebeat.yml
     - name: shared-data
       mountPath: /opt/SINGLELOG/
     command: ["/bin/sh", "-c"]
     args: ["/usr/share/filebeat/filebeat -e -c /usr/share/filebeat/filebeat.yml & while [ ! -f /opt/SINGLELOG/completion-flag ]; do sleep 1; done && exit 0"]
+```
+
+Let's take a closer look at this chunk. We define a container called "filebeat-sidecar" and specify that the image is filebeat version 5.6.16. We also mount a few volumes, which we will get to later, and finally run the filebeat command. This command may look a little complicated, so let's break it down. First, we have:
+
+```
+/usr/share/filebeat/filebeat -e -c /usr/share/filebeat/filebeat.yml
+```
+
+This is the actual filebeat command. By default, filebeat is found in `/usr/share/filebeat/`, which has both the filebeat executable as well as the filebeat.yml which specifies the filebeat properties that filebeat should work based on. Since we will be using the default filebeat.yml, we will not be overriding this. However, keep in mind that to override it. you only have to specify a volume mount:
+
+```
+- name: filebeat-config
+  mountPath: /usr/share/filebeat/filebeat.yml
+  subPath: filebeat.yml
 ```
