@@ -19,17 +19,17 @@ spec:
       containers:
       - name: wait
         image: ubuntu
+        volumeMounts:
+        - name: data
+          mountPath: /data/
         command: ["sleep",  "20"]
       - name: filebeat-sidecar
-            image: elastic/filebeat:5.6.16
-            volumeMounts:
-            - name: filebeat-config
-              mountPath: /usr/share/filebeat/filebeat.yml
-              subPath: filebeat.yml
-            - name: shared-data
-              mountPath: /data/
-            command: ["/bin/sh", "-c"]
-            args: ["/usr/share/filebeat/filebeat -e -c /usr/share/filebeat/filebeat.yml & while [ ! -f /data/completion-flag ]; do sleep 1; done && exit 0"]
+        image: elastic/filebeat:5.6.16
+        volumeMounts:
+        - name: data
+          mountPath: /data/
+        command: ["/bin/sh", "-c"]
+        args: ["/usr/share/filebeat/filebeat -e -c /usr/share/filebeat/filebeat.yml & while [ ! -f /data/completion-flag ]; do sleep 1; done && exit 0"]
       restartPolicy: Never
 ```
 
@@ -39,8 +39,8 @@ This is the chunk that was added:
 - name: filebeat-sidecar
     image: elastic/filebeat:5.6.16
     volumeMounts:
-    - name: shared-data
-      mountPath: /opt/SINGLELOG/
+    - name: data
+      mountPath: /data/
     command: ["/bin/sh", "-c"]
     args: ["/usr/share/filebeat/filebeat -e -c /usr/share/filebeat/filebeat.yml & while [ ! -f /opt/SINGLELOG/completion-flag ]; do sleep 1; done && exit 0"]
 ```
@@ -58,3 +58,15 @@ This is the actual filebeat command. By default, filebeat is found in `/usr/shar
   mountPath: /usr/share/filebeat/filebeat.yml
   subPath: filebeat.yml
 ```
+
+Next to the command to run filebeat, you will see a while loop. Let's get into this.
+
+As mentioned before, a job does not run infinitely. However, filebeat does. Since there is no way to distinguish between a main and sidecar container, filebeat may run forever and hold up the pod even after the main job has finished running. This is where we use a slightly unconventional means of detecting whether the main container has finished. We start by mounting a volume called "data":
+
+```
+volumeMounts:
+  - name: data
+    mountPath: /data/
+```
+
+Notice that we mount this same path on both the main and sidecar containers. Now we have established a single mount that both containers can read/write to.
