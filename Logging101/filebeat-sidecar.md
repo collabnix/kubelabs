@@ -42,7 +42,7 @@ This is the chunk that was added:
     - name: data
       mountPath: /data/
     command: ["/bin/sh", "-c"]
-    args: ["/usr/share/filebeat/filebeat -e -c /usr/share/filebeat/filebeat.yml & while [ ! -f /opt/SINGLELOG/completion-flag ]; do sleep 1; done && exit 0"]
+    args: ["/usr/share/filebeat/filebeat -e -c /usr/share/filebeat/filebeat.yml & while [ ! -f /data/completion-flag ]; do sleep 1; done && exit 0"]
 ```
 
 Let's take a closer look at this chunk. We define a container called "filebeat-sidecar" and specify that the image is filebeat version 5.6.16. We also mount a few volumes, which we will get to later, and finally run the filebeat command. This command may look a little complicated, so let's break it down. First, we have:
@@ -69,4 +69,16 @@ volumeMounts:
     mountPath: /data/
 ```
 
-Notice that we mount this same path on both the main and sidecar containers. Now we have established a single mount that both containers can read/write to.
+Notice that we mount this same path on both the main and sidecar containers. Now we have established a single mount that both containers can read/write to. Now, we will be adding steps to the yaml so that when the main container finishes running, a file called "completion-flag" will be created in the shared "data" directory. Meanwhile, from the point where the filebeat container starts, it will be checking for this file. The moment the file appears, the exit 0 command will run and the filebeat container will stop. Thereby both containers will stop simultaneously and the job will finish.
+
+The sleep command will be modified like so:
+
+```
+command: ["sleep 20; touch /data/completion-flag"]
+```
+
+We use `;` instead of `&&` so that even if the command fails, the file will be created. From the filebeat side, this is the command that runs the filebeat container:
+
+```
+args: ["/usr/share/filebeat/filebeat -e -c /usr/share/filebeat/filebeat.yml & while [ ! -f /data/completion-flag ]; do sleep 1; done && exit 0"]
+```
