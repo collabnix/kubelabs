@@ -82,3 +82,19 @@ We use `;` instead of `&&` so that even if the command fails, the file will be c
 ```
 args: ["/usr/share/filebeat/filebeat -e -c /usr/share/filebeat/filebeat.yml & while [ ! -f /data/completion-flag ]; do sleep 1; done && exit 0"]
 ```
+
+From here, we've already looked at the filebeat command, so let's take a look at the second half of this command:
+
+```
+while [ ! -f /data/completion-flag ]; do sleep 1; done && exit 0
+```
+
+This is a while loop that runs as long as there is no file called "completion-flag" present. Once the flag does show up, `exit 0` will be called and the filebeat container will stop running.
+
+Now that we have fully explored these files, let's go ahead and perform the deployment. If you have filebeat/fluentd deployed to your cluster from the previous sections, make sure to remove it since filebeat will now come bundled with the job yaml. Then go ahead and deploy:
+
+```
+kubectl apply -f non-parallel-job.yml
+```
+
+Now let's observe each container.
