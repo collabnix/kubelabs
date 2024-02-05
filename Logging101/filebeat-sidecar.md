@@ -97,4 +97,16 @@ Now that we have fully explored these files, let's go ahead and perform the depl
 kubectl apply -f non-parallel-job.yml
 ```
 
-Now let's observe each container.
+Now let's observe each container. Since we need to watch both pods, let's use the `kubectl describe` command:
+
+```
+kubectl get po
+```
+
+Note the name of the pod, and use it in the below command:
+
+```
+kubectl describe pod <POD_NAME> --watch
+```
+
+You should see two containers being described by this command under the `Containers` section. Watch as the state of both containers goes from `pending` to `running`.  When the container running the sleep command goes to a `successful` state, the container running filebeat should immediately. Both pods will then go into a `Terminating` state before the pod itself terminates and leaves.
