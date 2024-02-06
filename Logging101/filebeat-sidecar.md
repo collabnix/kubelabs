@@ -110,3 +110,5 @@ kubectl describe pod <POD_NAME> --watch
 ```
 
 You should see two containers being described by this command under the `Containers` section. Watch as the state of both containers goes from `pending` to `running`.  When the container running the sleep command goes to a `successful` state, the container running filebeat should immediately. Both pods will then go into a `Terminating` state before the pod itself terminates and leaves.
+
+This brings us to the end of this section on logging with filebeat sidecars. You can use the same concept with similar tools such as fluentd if you plan to scale up your jobs/logs massively. Just make sure that there are no bottlenecks in any other points such as logstash and elasticsearch.
