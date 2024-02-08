@@ -112,3 +112,7 @@ kubectl describe pod <POD_NAME> --watch
 You should see two containers being described by this command under the `Containers` section. Watch as the state of both containers goes from `pending` to `running`.  When the container running the sleep command goes to a `successful` state, the container running filebeat should immediately. Both pods will then go into a `Terminating` state before the pod itself terminates and leaves.
 
 This brings us to the end of this section on logging with filebeat sidecars. You can use the same concept with similar tools such as fluentd if you plan to scale up your jobs/logs massively. Just make sure that there are no bottlenecks in any other points such as logstash and elasticsearch.
+
+We have already covered fluent bit, so you know that it is way more lightweight than either filebeat or fluentd. In fact, according to [benchmarks by AWS](https://aws.amazon.com/blogs/opensource/centralized-container-logging-fluent-bit/), fluent bit uses 5 times less memory compared to fluentd, and 2 times less than filebeat. So in the case where we run hundreds of jobs at the same time, it makes a lot of sense to use a logger that pushes all your log lines with as little resource consumption as possible since we will be creating a logger instance per each pod.
+
+In the next section, let's take a look at how we can use fluentbit as a sidecar container to push logs.
