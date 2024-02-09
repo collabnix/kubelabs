@@ -116,3 +116,5 @@ This brings us to the end of this section on logging with filebeat sidecars. You
 We have already covered fluent bit, so you know that it is way more lightweight than either filebeat or fluentd. In fact, according to [benchmarks by AWS](https://aws.amazon.com/blogs/opensource/centralized-container-logging-fluent-bit/), fluent bit uses 5 times less memory compared to fluentd, and 2 times less than filebeat. So in the case where we run hundreds of jobs at the same time, it makes a lot of sense to use a logger that pushes all your log lines with as little resource consumption as possible since we will be creating a logger instance per each pod.
 
 In the next section, let's take a look at how we can use fluentbit as a sidecar container to push logs.
+
+[Next: fluentbit as a sidecar container](./fluentbit-sidecar.md)
