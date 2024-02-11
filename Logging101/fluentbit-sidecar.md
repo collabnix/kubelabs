@@ -26,7 +26,7 @@ data:
         Port         5044
 ```
 
-A
+The first five lines are already familiar to you. We then start the fluentbit config. We first have some information on the service, followed by the definition of the input. As with before, we use the tail plugin to get all the log files found in /data/ and tag them with the tag "mixlog". We then match these tagged items in the output plugin and stream the logs into the logstash service. You will notice that while filebeat natively had an input source to logstash called "beats", fluent bit does not. However, we can use "http" to do this instead. From the logstash side, you will have to change the input to point to use "http" instead of "beats", but apart from that, everything should work just fine.
 
 ```
 - name: fluent-bit-sidecar
