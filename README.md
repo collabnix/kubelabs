@@ -321,6 +321,10 @@ A Curated List of Kubernetes Labs and Tutorials
 - [What is Terraform](./Terraform101/what-is-terraform.md)
 - [Terraform EKS Lab](./Terraform101/terraform-eks-lab.md)
 
+## Disaster Recover
+- [What is Disaster Recovery](./DisasterRecovery101/what-is-dr.md)
+- [DR Lab](./DisasterRecovery101/dr-lab.md)
+
 ## For Node Developers
 - [Kubernetes for Node Developers](./nodejs.md)
 

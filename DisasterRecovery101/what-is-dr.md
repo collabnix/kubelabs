@@ -1,0 +1,15 @@
+# Disaster Recovery
+
+When you create a production-grade application, you assure your clients a certain amount of uptime. However, during a disaster situation, this uptime stops being guaranteed. For example, if you host your applications on the us-east-1 region of AWS, and that region goes down, you need to be able to get your application up and running on a different region, such as us-west-2, so that your customers get as little downtime as possible.  In this section, we will explore the different ways we can set up a full disaster recovery solution for a Kubernetes cluster using tools we are already used to such as Terraform and ArgoCD. Since we will be using files from these two projects, please make sure you have completed the [Terraform](../Terraform101/what-is-terraform.md) and [ArgoCD](../GitOps101/argocd-eks.md) sections before starting this lesson.
+
+## Overview
+
+We will start by defining an overview of how our DR system will kick into place. There are two major components of our cluster: the cluster itself, and the applications that run on the cluster. We also have to think about the load balancers and how DNS traffic would get routed to the new cluster ingresses instead of the old ones. There are two ways to set up a Kubernetes cluster. The first is to create it manually, which is going to take a lot of time. Unfortunately, in a DR situation where we are trying to set up a new cluster as fast as possible, this isn't ideal. A much better option is to have your entire infrastructure written as code using a tool such as Terraform, and simply run a command that will automatically create all your infrastructure in the DR region for you. We have already covered the topic of how to use Terraform scripts to set up an EKS cluster [on our Terraform section](../Terraform101/terraform-eks-lab.md). This is what we will be using here.
+
+The second main part is the applications that run on the cluster. For this, we will be using ArgoCD. One thing to note is that ArgoCD isn't exactly a DR tool, but since it allows you to control deployments entirely using CLI commands, so we can have the commands ready to be deployed when a DR situation arises. So once the Terraform cluster is up, we can deploy our Kubernetes resources using ArgoCD. This can be done using either the ArgoCD interface or the  CLI. Once that is done, we will be creating a Python script that generates a shell file. This file will have all the commands needed to take all the deployed ArgoCD applications and immediately point them toward a different cluster.
+
+So essentially, we would have an ArgoCD project with all the applications released and pointed at your regular cluster. Later, during a DR situation, a bunch of `argocd set` commands would run. These commands would have information about the new cluster endpoint that loops across all the applications in the project and change the cluster endpoint. Then the sync command would be run which gets ArgoCD to deploy all the modules to the new cluster.
+
+Now that we have a complete overview of the full DR process, let's get started with the lab.
+
+[Next: DR Lab](./dr-lab.md)
