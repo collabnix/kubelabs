@@ -28,6 +28,8 @@ data:
 
 The first five lines are already familiar to you. We then start the fluentbit config. We first have some information on the service, followed by the definition of the input. As with before, we use the tail plugin to get all the log files found in /data/ and tag them with the tag "mixlog". We then match these tagged items in the output plugin and stream the logs into the logstash service. You will notice that while filebeat natively had an input source to logstash called "beats", fluent bit does not. However, we can use "http" to do this instead. From the logstash side, you will have to change the input to point to use "http" instead of "beats", but apart from that, everything should work just fine.
 
+Now let's look at what should be done from the Kubernetes manifest side. It will be basically the same thing as what we had with filebeat, except we will use the fluent bit image. We will also be pointing the overriding config to fluent-bit.conf which will be mounted in a shared volume, the same as the filebeat yaml. Apart from that, everything will be the same.
+
 ```
 - name: fluent-bit-sidecar
   image: cr.fluentbit.io/fluent/fluent-bit:2.2.2
@@ -40,3 +42,15 @@ The first five lines are already familiar to you. We then start the fluentbit co
   command: ["/fluent-bit/bin/fluent-bit"]
   args: ["-c", "/fluent-bit/etc/fluent-bit.conf"]
   ```
+
+Now that we have covered both areas that need to be changed, let's go ahead and give this a test run. First off, deploy the ConfigMap:
+
+```
+kubectl apply -f fluentbit-configmap.yaml
+```
+
+Next, apply the deployment.yaml:
+
+```
+kubectl apply -f non-parallel-job.yml
+```
