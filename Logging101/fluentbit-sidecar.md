@@ -40,7 +40,7 @@ Now let's look at what should be done from the Kubernetes manifest side. It will
     - name: shared-data
       mountPath: /data/
   command: ["/fluent-bit/bin/fluent-bit"]
-  args: ["-c", "/fluent-bit/etc/fluent-bit.conf"]
+  args: ["-c", "/fluent-bit/etc/fluent-bit.conf & while [ ! -f /data/completion-flag ]; do sleep 1; done && exit 0"]
   ```
 
 Now that we have covered both areas that need to be changed, let's go ahead and give this a test run. First off, deploy the ConfigMap:
@@ -54,3 +54,17 @@ Next, apply the deployment.yaml:
 ```
 kubectl apply -f non-parallel-job.yml
 ```
+
+Now let's observe the containers in the same way we did with the filebeat sidecars.
+
+```
+kubectl get po
+```
+
+Note the name of the pod, and use it in the below command:
+
+```
+kubectl describe pod <POD_NAME> --watch
+```
+
+You should see two containers being described by this command under the `Containers` section. Watch as the state of both containers goes from `pending` to `running`.  When the container running the sleep command goes to a `successful` state, the container running fluentbit should immediately stop. Both pods will then go into a `Terminating` state before the pod itself terminates and leaves.
