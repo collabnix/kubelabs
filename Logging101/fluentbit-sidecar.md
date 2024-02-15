@@ -68,3 +68,9 @@ kubectl describe pod <POD_NAME> --watch
 ```
 
 You should see two containers being described by this command under the `Containers` section. Watch as the state of both containers goes from `pending` to `running`.  When the container running the sleep command goes to a `successful` state, the container running fluentbit should immediately stop. Both pods will then go into a `Terminating` state before the pod itself terminates and leaves.
+
+## Conclusion
+
+This brings us to the end of the section on running fluent bit as a sidecar container. Now, you may be asking the question: if fluentbit does the same things as filebeat with a much smaller resource footprint, why use filebeat at all? The answer to this is features. For example, logstash supports the Beats protocol natively. However, it does not do this for fluentbit. Instead, you will have to use HTTP, which might mess up the output that is presented in Kibana. Larger loggers such as fluentd support in-built grok parsing which fluentbit doesn't. Instead, you will have to push logs from fluent bit to fluentd (or logstash as we do here), which adds another resource that acts as a mediator. Since logstash also handles buffering so that elasticsearch doesn't get overwhelmed, this isn't a particularly terrible idea. Additionally, you might notice that fluent bit does not have tools like bash or sh, which means that if you want to look inside the fluent bit container for some reason, you won't be able to do so.
+
+So there is a trade-off and you will have to consider what is best for your use case.
