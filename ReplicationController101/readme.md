@@ -79,4 +79,6 @@ Let’s examine the file that was used to create our ReplicationController:
 	- The selection criteria by which the Replicationcontroller will choose its pods. Be careful not to use a label that is already in use by another controller. Otherwise, another Controller may acquire the pod(s) first. Also notice that the labels defined in the pod template (spec.template.metadata.label) cannot be different than those defined in the matchLabels part (spec.selector).
 	- The pod template is used to create (or recreate) new pods. It has its own metadata, and spec where the containers are specified. You can refer to our article for more information about pods.
 
-
+## Labels and Selector in Replication Controller
+- If you don't mention labels(.metadata.labels) then by default it take from pod labels(.spec.template.metadata.labels).
+- If you don't mention selector(.spec.selector) then by default it take from pod labels(.spec.template.metadata.labels).
