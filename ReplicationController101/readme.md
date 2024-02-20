@@ -89,5 +89,36 @@ git clone https://github.com/collabnix/kubelabs.git
 cd kubelabs/ReplicationController101/
 ```
 ```
-kubectl apply -f replicationcontrollerreplicaset.yaml
+kubectl apply -f replicationcontrollerselector.yaml
+```
+```
+kubectl describe rc nginxrc
+```
+Output :-
+```
+Name:         nginxrc
+Namespace:    default
+Selector:     team=dev
+Labels:       team=dev
+Annotations:  <none>
+Replicas:     2 current / 2 desired
+Pods Status:  2 Running / 0 Waiting / 0 Succeeded / 0 Failed
+Pod Template:
+  Labels:  team=dev
+  Containers:
+   nginxcont:
+    Image:        nginx
+    Port:         80/TCP
+    Host Port:    0/TCP
+    Environment:  <none>
+    Mounts:       <none>
+  Volumes:        <none>
+Events:
+  Type    Reason            Age   From                    Message
+  ----    ------            ----  ----                    -------
+  Normal  SuccessfulCreate  3s    replication-controller  Created pod: nginxrc-r49jg
+  Normal  SuccessfulCreate  3s    replication-controller  Created pod: nginxrc-wkjbf
+```
+
+It takes labels & Selctor both from Pod template labels (.spec.template.metadata.labels).
 
