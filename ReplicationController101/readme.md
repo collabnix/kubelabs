@@ -82,3 +82,12 @@ Let’s examine the file that was used to create our ReplicationController:
 ## Labels and Selector in Replication Controller
 - If you don't mention labels(.metadata.labels) then by default it take from pod labels(.spec.template.metadata.labels).
 - If you don't mention selector(.spec.selector) then by default it take from pod labels(.spec.template.metadata.labels).
+
+### Let Create One Replication Controller without Lables(.metadata.labels) and Selector
+```
+git clone https://github.com/collabnix/kubelabs.git
+cd kubelabs/ReplicationController101/
+```
+```
+kubectl apply -f replicationcontrollerreplicaset.yaml
+
