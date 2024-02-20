@@ -47,9 +47,84 @@ spec:
       port: 80
       targetPort: 80
   type: ClusterIP
-
 ```
 
+The above is a rather basic implementaion of an nginx server with 3 replicas, and allows connections on port 80. For starters, let's create a Helm chart from this nginx application.
+
+Create a Helm Chart: Run the command helm create nginx-chart to create a new Helm chart named nginx-chart.
+
+Modify Chart.yaml: Update the Chart.yaml file to include relevant metadata for your chart.
+
+Modify values.yaml: Add any configurable values that you want to expose to users. In this case, you might want to allow users to specify the number of replicas for the Deployment.
+
+Create Templates:
+
+deployment.yaml: Convert the Deployment YAML into a Helm template file, deployment.yaml. Use Helm templating to substitute values from values.yaml.
+service.yaml: Convert the Service YAML into a Helm template file, service.yaml. Again, use Helm templating where necessary.
+Here's how the directory structure might look:
+
+nginx-chart/
+├── Chart.yaml
+├── templates
+│   ├── deployment.yaml
+│   └── service.yaml
+└── values.yaml
+
+```
+apiVersion: v2
+name: nginx-chart
+description: A Helm chart for deploying Nginx service and deployment
+version: 0.1.0
+```
+
+```
+replicaCount: 3
+image:
+  repository: nginx
+  tag: latest
+  pullPolicy: IfNotPresent
+```
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "nginx-chart.fullname" . }}
+  labels:
+    app: nginx
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        ports:
+        - containerPort: 80
+```
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "nginx-chart.fullname" . }}
+spec:
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+```
+
+With this structure, users can now install your Helm chart, and they'll be able to customize the number of replicas and the Nginx image tag through the values.yaml file.
 
 Now, let's move on to Chart hooks.
 
