@@ -122,3 +122,17 @@ Events:
 
 It takes labels & Selctor both from Pod template labels (.spec.template.metadata.labels).
 
+## Selector is Mutable  in Replication Controller.
+When you update the selector and Pod template labels(.spec.template.metadata.labels), pods that no longer match the new criteria will be orphaned. These pods will continue running but won't be managed by the ReplicationController anymore. The controller won't scale them up or down, and if they crash, they won't be replaced.
+
+## Replication Controller vs Replica Set
+- Selector Matching:
+    - Replication Controller: Uses only the equality-based selector. It does not support more advanced matching criteria.
+    - ReplicaSet: Introduces the use of set-based selectors, allowing for more expressive and flexible pod selection.
+
+- Selectors Immunity:
+    - Replication Controller: The selector is mutable; you can update it after creation.
+    - ReplicaSet: The selector is immutable after creation. If you need to change the selector, you create a new ReplicaSet.
+
+
+
