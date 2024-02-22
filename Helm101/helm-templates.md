@@ -51,9 +51,24 @@ spec:
 
 The above is a rather basic implementaion of an nginx server with 3 replicas, and allows connections on port 80. For starters, let's create a Helm chart from this nginx application.
 
-Create a Helm Chart: Run the command helm create nginx-chart to create a new Helm chart named nginx-chart.
+For starters, let's create the Helm chart. Go into a folder you plan to run this from and type:
 
-Modify Chart.yaml: Update the Chart.yaml file to include relevant metadata for your chart.
+```
+helm create nginx-chart
+```
+
+This will create a chart with the basic needed files. The directory structure should look like this:
+
+```
+nginx-chart/
+├── Chart.yaml
+├── templates
+│   ├── deployment.yaml
+│   └── service.yaml
+└── values.yaml
+```
+
+By looking at the above structure, you should be able to see where the deployment and service yamls fit in. You will see that there are sample yamls created here. However, you will also notice that these yamls are go templates which have placeholders instead of hardcoded values. We will be converting our existing yamls into this format. But first, update the Chart.yaml file to include relevant metadata for nginx if you require so. Generally, the default Chart.yaml is fine.
 
 Modify values.yaml: Add any configurable values that you want to expose to users. In this case, you might want to allow users to specify the number of replicas for the Deployment.
 
