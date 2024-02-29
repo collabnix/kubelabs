@@ -70,7 +70,7 @@ nginx-chart/
 
 By looking at the above structure, you should be able to see where the deployment and service yamls fit in. You will see that there are sample yamls created here. However, you will also notice that these yamls are go templates which have placeholders instead of hardcoded values. We will be converting our existing yamls into this format. But first, update the Chart.yaml file to include relevant metadata for nginx if you require so. Generally, the default Chart.yaml is fine. You can also optionally modify values.yaml. Things such as the number of replicas can be managed here.
 
-Next, we get to the templating part. We will have to convert our existing deployment yaml into a Helm template file. This is what the yalm would look like after it is converted:
+Next, we get to the templating part. We will have to convert our existing deployment yaml into a Helm template file. This is what the yaml would look like after it is converted:
 
 ```
 # templates/deployment.yaml
@@ -120,65 +120,32 @@ spec:
 
 Similar to the deployment template, the service name has been replaced with {{ .Release.Name }}- to ensure uniqueness when installed via Helm. For the service port, the hardcoded service port 80 has been changed to {{ .Values.nginx.servicePort }}. This allows you to specify the service port in the values.yaml file. We also replaced the hardcoded target port 80 with {{ .Values.nginx.containerPort }}, allowing you to specify the target port in the values.yaml file. This should match the container port defined in the deployment template. For the service type we replaced the hardcoded service type ClusterIP with {{ .Values.nginx.serviceType }}, allowing users to specify the service type in the values.yaml file. This provides flexibility in choosing the appropriate service type based on the environment or requirements.
 
-deployment.yaml: Convert the Deployment YAML into a Helm template file, deployment.yaml. Use Helm templating to substitute values from values.yaml.
-service.yaml: Convert the Service YAML into a Helm template file, service.yaml. Again, use Helm templating where necessary.
-Here's how the directory structure might look:
+Now that we have defined both the deployment and the service in a template format, let's take a look at what the overriding values file would look like:
 
 ```
-apiVersion: v2
-name: nginx-chart
-description: A Helm chart for deploying Nginx service and deployment
-version: 0.1.0
+nginx:
+  replicaCount: 3
+  image:
+    repository: nginx
+    tag: latest
+  containerPort: 80
+  servicePort: 80
+  serviceType: ClusterIP
 ```
 
-```
-replicaCount: 3
-image:
-  repository: nginx
-  tag: latest
-  pullPolicy: IfNotPresent
-```
+n this values.yaml file:
 
-```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: {{ include "nginx-chart.fullname" . }}
-  labels:
-    app: nginx
-spec:
-  replicas: {{ .Values.replicaCount }}
-  selector:
-    matchLabels:
-      app: nginx
-  template:
-    metadata:
-      labels:
-        app: nginx
-    spec:
-      containers:
-      - name: nginx
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        ports:
-        - containerPort: 80
-```
-
-```
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ include "nginx-chart.fullname" . }}
-spec:
-  selector:
-    app: nginx
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
-  type: ClusterIP
-```
+replicaCount: Specifies the number of replicas for the nginx deployment.
+image.repository and image.tag: Specify the Docker image repository and tag for the nginx container.
+containerPort: Specifies the port on which the nginx container listens.
+servicePort: Specifies the port exposed by the nginx service.
+serviceType: Specifies the type of Kubernetes service to create for nginx.
 
 With this structure, users can now install your Helm chart, and they'll be able to customize the number of replicas and the Nginx image tag through the values.yaml file.
+
+```
+helm install my-nginx-release ./my-nginx-chart --values values.yaml
+```
 
 Now, let's move on to Chart hooks.
 
