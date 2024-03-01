@@ -133,15 +133,9 @@ nginx:
   serviceType: ClusterIP
 ```
 
-n this values.yaml file:
+In this values.yaml file, the replicaCount specifies the number of replicas for the nginx deployment image.repository and image.tag specify the Docker image repository and tag for the nginx container. The containerPort specifies the port on which the nginx container listens and servicePort specifies the port exposed by the nginx service. Finally, the serviceType specifies the type of Kubernetes service to create for nginx. You might want to change this to NodePort or LoadBalancer if you plan to provide external access (or use kubectl port forwarding).
 
-replicaCount: Specifies the number of replicas for the nginx deployment.
-image.repository and image.tag: Specify the Docker image repository and tag for the nginx container.
-containerPort: Specifies the port on which the nginx container listens.
-servicePort: Specifies the port exposed by the nginx service.
-serviceType: Specifies the type of Kubernetes service to create for nginx.
-
-With this structure, users can now install your Helm chart, and they'll be able to customize the number of replicas and the Nginx image tag through the values.yaml file.
+With this structure, users can now install your Helm chart, and they'll be able to customize the number of replicas and the Nginx image tag through the values.yaml file. Let's go ahead and do the install using the below command:
 
 ```
 helm install my-nginx-release ./my-nginx-chart --values values.yaml
