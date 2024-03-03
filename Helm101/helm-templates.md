@@ -141,6 +141,10 @@ With this structure, users can now install your Helm chart, and they'll be able 
 helm install my-nginx-release ./my-nginx-chart --values values.yaml
 ```
 
+Make sure you run the above command in the same directory as the values.yaml. This will create a release called "my-nginx-release" based on the chart overriding the values.yaml in your Kubernetes cluster. You should be able to run and test the Nginx server that comes up as a result. However, you will notice that we have gone out of our way to define templates and overriding files for something that a simple yaml file could have accomplished. There is more code now than before. So what is the advantage?
+
+For starters, you get all the perks that come with using Helm charts. But now you also have a template you can use to generate additional helm releases. For example, if you want to run another nginx server with different arguments (different number of replicas, a different image version, different port, etc...), you can use this template.
+
 Now, let's move on to Chart hooks.
 
 [Next: Chart Hooks](chart-hooks.md)
