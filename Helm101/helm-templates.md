@@ -145,6 +145,27 @@ Make sure you run the above command in the same directory as the values.yaml. Th
 
 For starters, you get all the perks that come with using Helm charts. But now you also have a template you can use to generate additional helm releases. For example, if you want to run another Nginx server with different arguments (different number of replicas, a different image version, different port, etc...), you can use this template. This is especially true if you are working in an organization that has multiple services that require different Nginx setups. You could even consider a situation where your organization has 10+ microservices where the pods you spin up for each microservice are largely boilerplate. The only things that would likely change are the names of the microservice and the image that would spin up in the container. In a situation like this, you could easily create a values file that has a handful of lines that override the Helm template.
 
+Let's try this. Create a new values-new.yaml and set the below values:
+
+```
+nginx:
+  replicaCount: 2
+  image:
+    repository: nginx
+    tag: alpine3.18-perl
+  containerPort: 80
+  servicePort: 8080
+  serviceType: ClusterIP
+```
+
+The new yaml has a changed replica count, gets a different image tag, and serves on port 8080 instead of 80. In order to deploy this, you can use the same 
+
+```
+helm install my-nginx-release-alpine ./my-nginx-chart --values values-new.yaml
+```
+
+The release name and the yaml that gets picked up need to be changed here.
+
 Now, let's move on to Chart hooks.
 
 [Next: Chart Hooks](chart-hooks.md)
