@@ -164,8 +164,8 @@ The new yaml has a changed replica count, gets a different image tag, and serves
 helm install my-nginx-release-alpine ./my-nginx-chart --values values-new.yaml
 ```
 
-The release name and the yaml that gets picked up need to be changed here.
+The release name and the yaml that gets picked up need to be changed here. In this same way, you could create different values.yaml with different overriding properties and end up with an infinite number of nginx servers, each with different values.
 
-Now, let's move on to Chart hooks.
+This brings us to the end of the section on the powerful use of Helm templates. Now, let's move on to Chart hooks.
 
 [Next: Chart Hooks](chart-hooks.md)
