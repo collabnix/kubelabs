@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: greenpod
+    labels: 
+        app: green
+spec:
+    containers:
+    - name: webpage
+      image: docker.io/httpd 
