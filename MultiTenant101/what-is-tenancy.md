@@ -16,8 +16,6 @@ First off, if your project is specifically designed for a single customer, then 
 
 Now that we've got the introduction out of the way, let's take a look at the design we will be following for this application.
 
-Designing a multi-tenant Kubernetes-based application where tenants are divided by namespace involves careful consideration of security, resource isolation, scalability, and ease of management. Here's a high-level design for such an application:
-
 ### 1. Namespace Isolation:
 Each tenant will have its dedicated namespace in Kubernetes. This allows for resource isolation and management at the namespace level.
 
@@ -31,13 +29,13 @@ Use network policies to control network traffic between namespaces. Define polic
 Set resource quotas and limits for each namespace to prevent one tenant from monopolizing resources and affecting others. This ensures fair resource allocation and prevents noisy neighbors.
 
 ### 5. Custom Resource Definitions (CRDs):
-Consider using CRDs to define custom resources specific to each tenant. This allows tenants to define their own resource types and controllers within their namespaces.
+This is something that we will not be touching on in this section, but if your tenants require custom resources, CRDs are the way to go. This allows tenants to define their resource types and controllers within their namespaces.
 
 ### 6. Monitoring and Logging:
-Implement monitoring and logging at both the cluster and namespace levels. Use tools like Prometheus and Grafana for cluster-wide monitoring, and configure logging solutions like Elasticsearch, Fluentd, and Kibana (EFK stack) or Loki for namespace-level logging.
+There are a large number of tools that can help with monitoring and logging, and most of them such as Prometheus, Grafana, Elasticsearch, Fluentd, and Kibana (EFK stack) have been covered in other sections. Since we will be separating tenants by namespace, a tool we haven't looked at so far that could be useful here is [Loki](https://grafana.com/docs/loki/latest/) for namespace-level logging.
 
 ### 7. Tenant Onboarding and Offboarding Automation:
-Develop automation scripts or tools for efficient tenant onboarding and offboarding. This includes provisioning/deprovisioning namespaces, setting up RBAC rules, configuring network policies, and applying resource quotas.
+This step is something that is generally overlooked and is important even if you aren't developing a multi-tenant system. You have to consider how you will handle things when you onboard a new customer. What type of scaling will you use? How much will you scale? If you don't have this, you might end up either over-provisioning or under-provisioning and thereby affect your clients. So you have to develop automation scripts or tools for efficient tenant onboarding and offboarding. This includes provisioning/de-provisioning namespaces, setting up RBAC rules, configuring network policies, and applying resource quotas.
 
 ### 8. Tenant Customization:
 Allow tenants to customize their namespaces within defined limits. Provide options for configuring ingress/egress rules, setting up persistent storage, deploying custom services, etc.
