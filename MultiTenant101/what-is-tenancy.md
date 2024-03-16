@@ -38,10 +38,10 @@ There are a large number of tools that can help with monitoring and logging, and
 This step is something that is generally overlooked and is important even if you aren't developing a multi-tenant system. You have to consider how you will handle things when you onboard a new customer. What type of scaling will you use? How much will you scale? If you don't have this, you might end up either over-provisioning or under-provisioning and thereby affect your clients. So you have to develop automation scripts or tools for efficient tenant onboarding and offboarding. This includes provisioning/de-provisioning namespaces, setting up RBAC rules, configuring network policies, and applying resource quotas.
 
 ### 8. Tenant Customization:
-Allow tenants to customize their namespaces within defined limits. Provide options for configuring ingress/egress rules, setting up persistent storage, deploying custom services, etc.
+We spoke earlier about how it was easy to have customized versions of applications per customer when you are running a multi-tenant application. However, you can take this a step further and allow the tenant to customize their namespaces within defined limits. Provide options for configuring ingress/egress rules, setting up persistent storage, deploying custom services, etc. This allows your tenant to control not only the application but also their infrastructure to a certain level.
 
 ### 9. High Availability and Disaster Recovery:
-Implement redundancy and failover mechanisms at both the cluster and application levels to ensure high availability. Regularly backup tenant data and configuration to facilitate disaster recovery.
+A disaster recovery solution is pretty important when you have multiple customers using a single infrastructure. If you had each tenant using a different Kubernetes cluster, for example, one cluster going down is only going to affect that customer. However, if you make all the tenants use the same cluster with namespace separation, the cluster going down could mean all your tenants are affected. So as part of the architecture, you have to always think about redundancy and failover mechanisms at both the cluster and application levels to ensure high availability. You also have to regularly backup tenant data and configuration to facilitate disaster recovery.
 
 ### 10. Scalability:
 Design the application to be horizontally scalable to accommodate varying tenant loads. Utilize Kubernetes features like Horizontal Pod Autoscaler (HPA) and Cluster Autoscaler to automatically scale resources based on demand.
