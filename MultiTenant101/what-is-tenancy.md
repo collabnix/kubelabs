@@ -46,15 +46,18 @@ A disaster recovery solution is pretty important when you have multiple customer
 ### 10. Scalability:
 This is something that you really need to focus on when running your application on Kubernetes. With other infrastructure like static instances, you would find it pretty difficult to finely scale your infrastructure to match the needs of your workloads, but this is easily doable with Kubernetes. Make sure that you are running the correct nodes with the most efficient amount of resources that your tenants and workloads need. Design the application to be horizontally scalable to accommodate varying tenant loads. Utilize Kubernetes features like Horizontal Pod Autoscaler (HPA) and Cluster Autoscaler to automatically scale resources based on demand. You could also use tools such as [KEDA](../Keda101/what-is-keda.md) to scale based on all sorts of metrics, or tools like Karpenter to scale your infrastructure itself so that the nodes come in sizes that match your workloads.
 
+Now that we have looked at everything we need to consider before we implement our multi-tenant architecture, let's look at something we need to consider after the architecture has been set up: an example workflow. Getting some idea about the workflow before you start implementing your system is crucial so you don't end up going back repeatedly because you missed something. A rough example workflow would be like this:
+
 ### Example Workflow:
 1. Tenant requests a new environment.
 2. Automation scripts provision a new namespace for the tenant.
 3. RBAC rules, network policies, and resource quotas are applied.
 4. Tenant deploys their application within the designated namespace.
-5. Monitoring and logging capture relevant metrics and events.
+5. Monitoring and logging capture of relevant metrics and events.
 6. Regular audits ensure compliance and security.
 7. Tenant scales resources as needed using Kubernetes APIs.
-8. Upon tenant offboarding, automation scripts handle namespace cleanup and resource deallocation.
+
+In addition to the above seven steps, it's also good to consider what you need to do when offboarding a tenant. Upon tenant offboarding, automation scripts will have to handle namespace cleanup and resource deallocation. 
 
 This design ensures efficient resource utilization, strong isolation between tenants, and streamlined management of a multi-tenant Kubernetes environment.
 
