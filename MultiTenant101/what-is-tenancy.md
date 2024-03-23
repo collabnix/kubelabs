@@ -61,15 +61,16 @@ In addition to the above seven steps, it's also good to consider what you need t
 
 This design ensures efficient resource utilization, strong isolation between tenants, and streamlined management of a multi-tenant Kubernetes environment.
 
-Certainly! Let's create a simple Kubernetes application using NGINX as the sample application. We'll deploy NGINX within a Kubernetes cluster, ensuring that each tenant gets their isolated namespace.
+## Implementation
 
-### Prerequisites:
-- Kubernetes cluster (minikube, Docker Desktop with Kubernetes enabled, or any cloud provider)
-- kubectl installed and configured to connect to your Kubernetes cluster
+Now that we have gone through the design of our multi-tenant application, let's create a simple Kubernetes application using NGINX as the sample application. We'll deploy NGINX within a Kubernetes cluster, ensuring that each tenant gets their isolated namespace.
+
+### Requirements:
+You will need a Kubernetes cluster. As always, we recommend [minikube](https://minikube.sigs.k8s.io/docs/start/). You also need to have kubectl installed.
 
 ### Steps:
+Since we are going to be dividing tenants based on namespaces, let's begin by creating the namespaces:
 
-#### 1. Create Namespace for Tenants:
 ```bash
 kubectl create namespace tenant1
 kubectl create namespace tenant2
