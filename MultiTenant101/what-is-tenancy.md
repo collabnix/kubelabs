@@ -76,7 +76,8 @@ kubectl create namespace tenant1
 kubectl create namespace tenant2
 ```
 
-#### 2. Deploy NGINX in Each Namespace:
+Next, let's deploy our application. In this case, we will use a basic nginx image and assume that we are setting up two separate nginx services for the two tenants. We could use a deployment file, but for the sake of simplicity, we will use a single-line command. We will have to run the command for both namespaces:
+
 ```bash
 # Deployment for tenant1
 kubectl create deployment nginx --image=nginx -n tenant1
@@ -85,7 +86,8 @@ kubectl create deployment nginx --image=nginx -n tenant1
 kubectl create deployment nginx --image=nginx -n tenant2
 ```
 
-#### 3. Expose NGINX Service:
+We will now expose the services on port 80 for both tenants using the [kubectl expose](https://kubernetes.io/docs/reference/kubectl/generated/kubectl_expose/) command:
+
 ```bash
 # Expose NGINX service for tenant1
 kubectl expose deployment nginx --port=80 --target-port=80 -n tenant1
