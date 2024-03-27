@@ -96,16 +96,18 @@ kubectl expose deployment nginx --port=80 --target-port=80 -n tenant1
 kubectl expose deployment nginx --port=80 --target-port=80 -n tenant2
 ```
 
-#### 4. Verify Deployments:
+Next, let's get the deployments and pods to make sure that everything was deployed correctly in both namespaces:
+
 ```bash
 # Check tenant1 deployment
-kubectl get deployment,svc,pods -n tenant1
+kubectl get deployment,pods -n tenant1
 
 # Check tenant2 deployment
-kubectl get deployment,svc,pods -n tenant2
+kubectl get deployment,pods -n tenant2
 ```
 
-#### 5. Access NGINX Services:
+Now get the svc from both namespaces. In a production environment, you would be attaching a load balancer to each of the services, and then routing a DNS entry into each load balancer. This way, tenant 1 would access their part of the system using the tenant 1 DNS while tenant 2 would do the same with the tenant 2 DNS. 
+
 ```bash
 # Get tenant1 service URL
 kubectl get svc -n tenant1
