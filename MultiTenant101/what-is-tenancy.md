@@ -106,7 +106,9 @@ kubectl get deployment,pods -n tenant1
 kubectl get deployment,pods -n tenant2
 ```
 
-Now get the svc from both namespaces. In a production environment, you would be attaching a load balancer to each of the services, and then routing a DNS entry into each load balancer. This way, tenant 1 would access their part of the system using the tenant 1 DNS while tenant 2 would do the same with the tenant 2 DNS. 
+Now get the svc from both namespaces. In a production environment, you would be attaching a load balancer to each of the services, and then routing a DNS entry into each load balancer. This way, tenant 1 would access their part of the system using the tenant 1 DNS while tenant 2 would do the same with the tenant 2 DNS. Any supporting microservices would then be deployed into their relevant namespaces and would not interact with the namespaces or modules of other tenants. However, tenants will be sharing resources. If you have a very important tenant, you could specify a nodegroup just for them and have all their microservices exclusively get scheduled on that nodegroup. If there is no such case, you could just use a single nodegroup where all your tenants use the same infrastructure. This will be the most cost-efficient method since you not only use the same cluster but also the same underlying resources. However, this brings up the problem of a noisy neighbor. So let's discuss that.
+
+## Noisy neighbour
 
 ```bash
 # Get tenant1 service URL
