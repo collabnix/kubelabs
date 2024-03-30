@@ -110,11 +110,11 @@ Now get the svc from both namespaces. In a production environment, you would be 
 
 ## Noisy neighbour
 
-In a multi-tenant environment like Kubernetes, where multiple users or teams share the same cluster, the concept of a "noisy neighbor" refers to a situation where one tenant's workload consumes an excessive amount of shared cluster resources, adversely impacting the performance and stability of other tenants' workloads. This can happen due to various reasons such as poorly optimized applications, resource-intensive tasks, or misconfigurations.
+The concept of a "noisy neighbor" refers to a situation where one tenant's workload consumes an excessive amount of shared cluster resources, adversely impacting the performance and stability of other tenants' workloads. This can happen due to various reasons such as poorly optimized applications, resource-intensive tasks, or misconfigurations.
 
-In Kubernetes, namespaces are used to logically divide cluster resources among multiple users or teams. Each namespace provides a segregated environment where tenants can deploy their applications and manage resources independently. However, without proper resource management, a noisy neighbor within a namespace can still affect the overall performance of the cluster.
+Since in this case, we are segregating tenants based on namespace, each namespace provides a segregated environment where tenants can deploy their applications and manage resources independently. However, without proper resource management, a noisy neighbor within a namespace can still affect the overall performance of the cluster.
 
-Here are some strategies to overcome the noisy neighbor problem in a Kubernetes multi-tenant environment:
+Now that we've looked at what the problem is, let's consider some solutions:
 
 1. **Resource Quotas**: Kubernetes allows you to define resource quotas at the namespace level, limiting the amount of CPU, memory, and other resources that can be consumed by the workloads within that namespace. By setting appropriate quotas, you can prevent any single tenant from monopolizing the cluster resources.
 
@@ -124,7 +124,7 @@ Here are some strategies to overcome the noisy neighbor problem in a Kubernetes 
 
 4. **Quality of Service (QoS)**: Kubernetes offers three QoS classes for pods: Guaranteed, Burstable, and BestEffort. By categorizing pods based on their resource requirements and behavior, you can prioritize critical workloads over less important ones, mitigating the effects of noisy neighbors.
 
-5. **Isolation**: Consider using dedicated nodes or node pools for certain tenants or critical workloads to isolate them from potential noisy neighbors sharing the same nodes.
+5. **Isolation**: This is the option we discussed during the implementation section. You can isolate your tenants on to their own nodegroups and have their resources largely isolated from each other.
 
 6. **Monitoring and Alerting**: Implement comprehensive monitoring and alerting mechanisms to detect abnormal resource usage patterns and identify potential noisy neighbors early on. Tools like Prometheus, Grafana, and Kubernetes-native monitoring solutions can help in this regard.
 
