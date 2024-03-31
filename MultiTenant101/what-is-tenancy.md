@@ -116,11 +116,11 @@ Since in this case, we are segregating tenants based on namespace, each namespac
 
 Now that we've looked at what the problem is, let's consider some solutions:
 
-1. **Resource Quotas**: Kubernetes allows you to define resource quotas at the namespace level, limiting the amount of CPU, memory, and other resources that can be consumed by the workloads within that namespace. By setting appropriate quotas, you can prevent any single tenant from monopolizing the cluster resources.
+1. **Resource Quotas**: Since the tenants are split by namespaces, the easiest method to distribute processing power is to define resource quotas at the namespace level, limiting the amount of CPU, memory, and other resources that can be consumed by the workloads within that namespace. By setting appropriate quotas, you can prevent any single tenant from monopolizing the cluster resources. However, if one of your tenants who is not a generally noisy tenant ends up having a spike in traffic, your limitations might result in the tenants' application slowing down. Additionally, you will likely not have all the tenants coming in with the same amount of traffic, which means you will have to get an idea of what type of resource quotas each tenant needs.
 
-2. **Resource Limits**: In addition to quotas, you can set resource limits at the pod or container level. This ensures that individual workloads cannot exceed a certain threshold of resource usage, preventing them from becoming noisy neighbors.
+2. **Resource Limits**: In addition to quotas, you can set resource limits at the pod or container level. This ensures that individual workloads cannot exceed a certain threshold of resource usage, preventing them from becoming noisy neighbors. This has the same implications and drawbacks as the previously mentioned point.
 
-3. **Horizontal Pod Autoscaling (HPA)**: Implementing HPA allows Kubernetes to automatically scale the number of pod replicas based on resource usage metrics such as CPU or memory consumption. This helps in distributing the workload more evenly across the cluster, reducing the impact of noisy neighbors.
+3. **Horizontal Pod Autoscaling (HPA)**: Implementing HPA allows Kubernetes to automatically scale the number of pod replicas based on resource usage metrics such as CPU or memory consumption. This helps in distributing the workload more evenly across the cluster, reducing the impact of noisy neighbors. This will mean that you spread out your workloads across multiple nodes in a nodegroup, or even across several nodegroups.
 
 4. **Quality of Service (QoS)**: Kubernetes offers three QoS classes for pods: Guaranteed, Burstable, and BestEffort. By categorizing pods based on their resource requirements and behavior, you can prioritize critical workloads over less important ones, mitigating the effects of noisy neighbors.
 
