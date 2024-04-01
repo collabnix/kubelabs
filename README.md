@@ -368,7 +368,7 @@ Add the following entry for local access
 url: http://127.0.0.1:4000
 ```
 
-## Step 2. Run the container
+## Step 3. Run the container
 
 
 ```
