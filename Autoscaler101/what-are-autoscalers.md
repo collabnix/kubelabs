@@ -16,6 +16,28 @@ A horizontal pod autoscaler works in the same way as a VPA for the most part. It
 
 Scaling down is handled in roughly the same way. When scaling down, HPA reduces the number of pod replicas. It terminates existing pods to bring the number of replicas in line with the configured target metric. The scaling decision is based on the comparison of the observed metric with the target value. HPA does not modify the resource specifications (CPU and memory requests/limits) of individual pods. Instead, it adjusts the number of replicas to match the desired metric target.
 
+Before we go into the lab, since we are talking about metrics, let's take a breif look at the quality of service classes for pod metrics:
+
+## Quality of Service classes
+
+In Kubernetes, Guaranteed, Burstable, and BestEffort are Quality of Service (QoS) classes that define how pods (the smallest deployable units in Kubernetes) are treated in terms of resource allocation and management. These classes help Kubernetes prioritize and manage workload resources effectively. Here's what each term means:
+
+Guaranteed:
+
+Pods with Guaranteed QoS are allocated the amount of CPU and memory resources they request, and these resources are guaranteed to be available when needed.
+Kubernetes reserves resources for pods with Guaranteed QoS, ensuring that they will not be throttled or terminated due to resource shortages.
+Pods in this class are expected to consume all the resources they request, so they must be careful with their resource requests to avoid wasting resources.
+Burstable:
+
+Pods with Burstable QoS may use more resources than they request, but only up to a certain limit.
+Kubernetes allows pods in this class to use additional CPU and memory resources if they're available, but there's no guarantee that these resources will always be available.
+Pods in this class may be throttled or terminated if they exceed their resource limits and there's contention for resources with other pods.
+BestEffort:
+
+Pods with BestEffort QoS have the lowest priority for resource allocation.
+These pods are not guaranteed any specific amount of CPU or memory resources, and they are the first to be evicted if the node runs out of resources.
+BestEffort pods are typically used for non-critical workloads or background tasks that can tolerate resource contention or occasional interruptions.
+
 Now that we have thoroughly explored both types of autoscalers, let's go on to a lab where we will look at the scalers in more detail.
 
 [Next: Autoscaler lab](../Autoscaler101/autoscaler-lab.md)
