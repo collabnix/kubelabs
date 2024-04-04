@@ -122,11 +122,11 @@ Now that we've looked at what the problem is, let's consider some solutions:
 
 3. **Horizontal Pod Autoscaling (HPA)**: Implementing HPA allows Kubernetes to automatically scale the number of pod replicas based on resource usage metrics such as CPU or memory consumption. This helps in distributing the workload more evenly across the cluster, reducing the impact of noisy neighbors. This will mean that you spread out your workloads across multiple nodes in a nodegroup, or even across several nodegroups.
 
-4. **Quality of Service (QoS)**: Kubernetes offers three QoS classes for pods: Guaranteed, Burstable, and BestEffort. By categorizing pods based on their resource requirements and behavior, you can prioritize critical workloads over less important ones, mitigating the effects of noisy neighbors.
+4. **Quality of Service (QoS)**: Kubernetes offers three QoS classes for pods: Guaranteed, Burstable, and BestEffort. By categorizing pods based on their resource requirements and behavior, you can prioritize critical workloads over less important ones, mitigating the effects of noisy neighbors. To read more about QoS, check the [Autoscaler101 section](../Autoscaler101/autoscaler-lab.md).
 
-5. **Isolation**: This is the option we discussed during the implementation section. You can isolate your tenants on to their own nodegroups and have their resources largely isolated from each other.
+5. **Isolation**: This is the option we discussed during the implementation section. You can isolate your tenants onto their own nodegroups and have their resources largely isolated from each other.
 
-6. **Monitoring and Alerting**: Implement comprehensive monitoring and alerting mechanisms to detect abnormal resource usage patterns and identify potential noisy neighbors early on. Tools like Prometheus, Grafana, and Kubernetes-native monitoring solutions can help in this regard.
+6. **Monitoring and Alerting**: Sometimes, the reason why a client's load is suddenly spiking may not be intentional, or the client might have no idea that there is a spike in traffic during that time. For cases like this, and as a practice in general, it is best to have monitoring enabled across the entire system. Tools like Prometheus and Grafana are the go-to solutions for things like this since they are open-source and well-documented. If you have implemented a service mesh such as Linkerd into your system, you could use the mesh dashboard to get an idea of the amount of traffic going into each of the pods. Depending on your organization's budget and the importance of monitoring, you could go for more advanced tools such as New Relic which can give you an hour-by-hour overview of your entire system.
 
 7. **Education and Communication**: Educate tenants about resource management best practices and encourage communication among them to ensure mutual understanding and cooperation in maintaining a healthy multi-tenant environment.
 
