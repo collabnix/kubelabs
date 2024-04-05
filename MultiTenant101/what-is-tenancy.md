@@ -128,19 +128,9 @@ Now that we've looked at what the problem is, let's consider some solutions:
 
 6. **Monitoring and Alerting**: Sometimes, the reason why a client's load is suddenly spiking may not be intentional, or the client might have no idea that there is a spike in traffic during that time. For cases like this, and as a practice in general, it is best to have monitoring enabled across the entire system. Tools like Prometheus and Grafana are the go-to solutions for things like this since they are open-source and well-documented. If you have implemented a service mesh such as Linkerd into your system, you could use the mesh dashboard to get an idea of the amount of traffic going into each of the pods. Depending on your organization's budget and the importance of monitoring, you could go for more advanced tools such as New Relic which can give you an hour-by-hour overview of your entire system.
 
-7. **Education and Communication**: Educate tenants about resource management best practices and encourage communication among them to ensure mutual understanding and cooperation in maintaining a healthy multi-tenant environment.
-
 By implementing these strategies and continuously optimizing resource allocation and utilization, you can effectively mitigate the impact of noisy neighbors in a Kubernetes multi-tenant environment, ensuring fair resource sharing and optimal cluster performance for all tenants.
 
-```bash
-# Get tenant1 service URL
-kubectl get svc -n tenant1
-
-# Get tenant2 service URL
-kubectl get svc -n tenant2
-```
-
-### Explanation:
+## Summary
 
 - **Step 1**: We create separate namespaces for each tenant (`tenant1` and `tenant2`).
 - **Step 2**: NGINX is deployed within each tenant's namespace using a Kubernetes Deployment.
@@ -149,3 +139,5 @@ kubectl get svc -n tenant2
 - **Step 5**: Accessing NGINX services via their respective service URLs.
 
 This example demonstrates how to deploy a simple application (NGINX) within a multi-tenant Kubernetes environment, ensuring isolation between tenants using namespaces. Each tenant has its NGINX instance running independently within its namespace.
+
+We have now covered the theory as well as a very basic example of how a muti-tenant architecture works in a Kubernetes environment. Naturally, when this extends to large organizations dealing with hundreds of clients, the system becomes much more complicated but this is just a peek.
