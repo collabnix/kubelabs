@@ -10,10 +10,27 @@ Now, let's move on to the lab. Setting up Karpenter involves several steps, as y
 
 Before we begin, it's worth noting that Karpenter has a [Terraform module](https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest/submodules/karpenter) that can be used if you plan on setting up Karpenter across multiple clusters. This way, you wouldn't need to set up Karpenter for each cluster manually. However, the use of Terraform to set up Karpenter is not covered in this section.
 
-To get started, let's set up variables that define your Kubernetes cluster and AWS environment.
+To get started, let's set up variables that define your Kubernetes cluster. Make sure to set the cluster name properly.
 
 ```
-export KARPENTER_NAMESPACE="kube-system"
-export KARPENTER_VERSION="0.36.0"
-export K8S_VERSION="1.29"
+KARPENTER_NAMESPACE="kube-system"
+KARPENTER_VERSION="0.36.0"
+K8S_VERSION="1.29"
+CLUSTER_NAME="<cluster-name>
 ```
+
+Now let's define your AWS environment:
+
+```
+AWS_PARTITION="aws"
+AWS_REGION="$(aws configure list | grep region | tr -s " " | cut -d" " -f3)"
+OIDC_ENDPOINT="$(aws eks describe-cluster --name "${CLUSTER_NAME}" \
+    --query "cluster.identity.oidc.issuer" --output text)"
+AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' \
+    --output text)
+ARM_AMI_ID="$(aws ssm get-parameter --name /aws/service/eks/optimized-ami/${K8S_VERSION}/amazon-linux-2-arm64/recommended/image_id --query Parameter.Value --output text)"
+AMD_AMI_ID="$(aws ssm get-parameter --name /aws/service/eks/optimized-ami/${K8S_VERSION}/amazon-linux-2/recommended/image_id --query Parameter.Value --output text)"
+GPU_AMI_ID="$(aws ssm get-parameter --name /aws/service/eks/optimized-ami/${K8S_VERSION}/amazon-linux-2-gpu/recommended/image_id --query Parameter.Value --output text)"
+```
+
+While there may be a lot of different properties defined up there, you likely don't need to change anything from the default values that you see above since all the necessary infromation is extracted from your AWS profile.
