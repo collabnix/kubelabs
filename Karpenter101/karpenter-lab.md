@@ -33,4 +33,50 @@ AMD_AMI_ID="$(aws ssm get-parameter --name /aws/service/eks/optimized-ami/${K8S_
 GPU_AMI_ID="$(aws ssm get-parameter --name /aws/service/eks/optimized-ami/${K8S_VERSION}/amazon-linux-2-gpu/recommended/image_id --query Parameter.Value --output text)"
 ```
 
-While there may be a lot of different properties defined up there, you likely don't need to change anything from the default values that you see above since all the necessary infromation is extracted from your AWS profile.
+While there may be a lot of different properties defined up there, you likely don't need to change anything from the default values that you see above since all the necessary information is extracted from your AWS profile.
+
+First, let's deal with the IAM role that is needed. Much like you already have your nodegroup IAM role that gives all the pods in your node the access it needs to perform their tasks, we will need to create an AWS role for Karpenter. Let's start by creating the trust policy:
+
+```
+echo '{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "ec2.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+}' > node-trust-policy.json
+```
+
+Next, let's create the role, pointing it to the trust policy we just created:
+
+```
+aws iam create-role --role-name "KarpenterNodeRole-${CLUSTER_NAME}" \
+    --assume-role-policy-document file://node-trust-policy.json
+```
+
+Now, we need the basic policies that every nodegroup role needs: 
+- AmazonEKSWorkerNodePolicy
+- AmazonEKS_CNI_Policy
+- AmazonEC2ContainerRegistryReadOnly
+- AmazonSSMManagedInstanceCore
+
+Let's go ahead and attach these policies to the nodegroup:
+
+```
+aws iam attach-role-policy --role-name "KarpenterNodeRole-${CLUSTER_NAME}" \
+    --policy-arn "arn:${AWS_PARTITION}:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+
+aws iam attach-role-policy --role-name "KarpenterNodeRole-${CLUSTER_NAME}" \
+    --policy-arn "arn:${AWS_PARTITION}:iam::aws:policy/AmazonEKS_CNI_Policy"
+
+aws iam attach-role-policy --role-name "KarpenterNodeRole-${CLUSTER_NAME}" \
+    --policy-arn "arn:${AWS_PARTITION}:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+
+aws iam attach-role-policy --role-name "KarpenterNodeRole-${CLUSTER_NAME}" \
+    --policy-arn "arn:${AWS_PARTITION}:iam::aws:policy/AmazonSSMManagedInstanceCore"
+```
