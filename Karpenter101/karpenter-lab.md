@@ -244,3 +244,21 @@ aws iam put-role-policy --role-name "KarpenterControllerRole-${CLUSTER_NAME}" \
 ```
 
 This takes care of all the permission-related changes needed for Karpenter.
+
+Next comes the process of tagging. When Karpenter starts to add nodes into your cluster, these nodes and nodegroups will have to obviously end up in a subnet. However, Karpenter has no way of knowing which subnets are to be used. This is why you need to tag the subnets you want Karpenter to use with:
+
+Key=karpenter.sh/discovery
+Value=${CLUSTER_NAME}
+
+If you want Karpenter to use the same subnets that your existing nodegroups use, you can use the following loop:
+
+```
+for NODEGROUP in $(aws eks list-nodegroups --cluster-name "${CLUSTER_NAME}" --query 'nodegroups' --output text); do
+  aws ec2 create-tags \
+    --tags "Key=karpenter.sh/discovery,Value=${CLUSTER_NAME}" \
+    --resources "$(aws eks describe-nodegroup --cluster-name "${CLUSTER_NAME}" \
+    --nodegroup-name "${NODEGROUP}" --query 'nodegroup.subnets' --output text )"
+done
+```
+
+This will automatically tag all the correct subnets. This same theory applies to security groups.
