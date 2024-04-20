@@ -261,4 +261,32 @@ for NODEGROUP in $(aws eks list-nodegroups --cluster-name "${CLUSTER_NAME}" --qu
 done
 ```
 
-This will automatically tag all the correct subnets. This same theory applies to security groups.
+This will automatically tag all the correct subnets. This same theory applies to security groups. Add the Key value pair to the tags in your cluster security group:
+
+Key=karpenter.sh/discovery
+Value=${CLUSTER_NAME}
+
+A final thing left to do from the Kubernetes cluster side is to allow the Karpenter role you just created to access the cluster in the same way your default nodegroup role has access to it. Open up your aws-auth ConfigMap:
+
+```
+kubectl edit configmap aws-auth -n kube-system
+```
+
+You can copy your Nodegroup role entry and change the role name:
+
+```
+- groups:
+ - system:bootstrappers
+ - system:nodes
+ rolearn: arn:aws:iam::<AWS_ACCOUNT_ID>:role/KarpenterNodeRole-${CLUSTER_NAME}
+ username: system:node:{{EC2PrivateDNSName}}
+```
+
+Make sure you change `<AWS_ACCOUNT_ID>`.
+
+This completes all the setup needed from the AWS side. So far we have:
+
+- Created IAM roles and policies to allow Karpenter to work
+- Created tags to show Karpenter which subnets and security groups it should work with
+
+Next up is to set up Karpenter on your Kubernetes cluster.
