@@ -289,4 +289,20 @@ This completes all the setup needed from the AWS side. So far we have:
 - Created IAM roles and policies to allow Karpenter to work
 - Created tags to show Karpenter which subnets and security groups it should work with
 
-Next up is to set up Karpenter on your Kubernetes cluster.
+Next up is to set up Karpenter on your Kubernetes cluster. First, let's export the Karpenter version you want to set up. At the time of writing, the latest version is v0.36, so it would be:
+
+```
+export KARPENTER_VERSION="0.36.0"
+```
+
+Now, let's fetch the chart from `public.ecr.aws/karpenter/karpenter`. You can take a look at the values.yaml [here](https://github.com/aws/karpenter-provider-aws/blob/main/charts/karpenter/values.yaml) and customize it however you want it. In particular, you need to change the `settings.clusterName` and `serviceAccount.annotations`. Since there isn't much to change, we will be setting the values in the helm command itself instead of separately getting the yaml:
+
+```
+helm template karpenter oci://public.ecr.aws/karpenter/karpenter --version "${KARPENTER_VERSION}" --namespace "${KARPENTER_NAMESPACE}" \
+    --set "settings.clusterName=${CLUSTER_NAME}" \
+    --set "serviceAccount.annotations.eks\.amazonaws\.com/role-arn=arn:${AWS_PARTITION}:iam::${AWS_ACCOUNT_ID}:role/KarpenterControllerRole-${CLUSTER_NAME}" \
+    --set controller.resources.requests.cpu=1 \
+    --set controller.resources.requests.memory=1Gi \
+    --set controller.resources.limits.cpu=1 \
+    --set controller.resources.limits.memory=1Gi > karpenter.yaml
+```
