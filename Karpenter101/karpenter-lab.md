@@ -306,3 +306,20 @@ helm template karpenter oci://public.ecr.aws/karpenter/karpenter --version "${KA
     --set controller.resources.limits.cpu=1 \
     --set controller.resources.limits.memory=1Gi > karpenter.yaml
 ```
+
+You will notice that we used `helm template` instead of `helm install`. This is because because we will be applying the Deployment.yaml as a kubectl apply after we have slightly modified it. The deployment yaml should have been created on your machine where you ran the above command. Open it and scroll down to the `nodeAffinity` section. Here, we will be setting the name of the nodegroup that you already have and telling Karpenter that it should only schedule its Karpenter pods inside this node group. This is necessary since Karpenter can't deploy its pods on nodes that it manages as the nodes are subject to deletion.
+
+```
+affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: karpenter.sh/nodepool
+                operator: DoesNotExist
+            - matchExpressions:
+              - key: karpenter.sh/nodegroup
+                operator: In
+                values:
+                - <your-ng-name>
+```
