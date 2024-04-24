@@ -311,15 +311,40 @@ You will notice that we used `helm template` instead of `helm install`. This is 
 
 ```
 affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: karpenter.sh/nodepool
-                operator: DoesNotExist
-            - matchExpressions:
-              - key: karpenter.sh/nodegroup
-                operator: In
-                values:
-                - <your-ng-name>
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: karpenter.sh/nodepool
+            operator: DoesNotExist
+        - matchExpressions:
+          - key: karpenter.sh/nodegroup
+            operator: In
+            values:
+            - <your-ng-name>
 ```
+
+With that out of the way, let's create the namespace where the Karpenter pods will live:
+
+```
+kubectl create namespace "${KARPENTER_NAMESPACE}" || true
+```
+
+Next, create the CRD's Karpenter will be using:
+
+```
+kubectl create -f \
+    "https://raw.githubusercontent.com/aws/karpenter-provider-aws/v${KARPENTER_VERSION}/pkg/apis/crds/karpenter.sh_nodepools.yaml"
+kubectl create -f \
+    "https://raw.githubusercontent.com/aws/karpenter-provider-aws/v${KARPENTER_VERSION}/pkg/apis/crds/karpenter.k8s.aws_ec2nodeclasses.yaml"
+kubectl create -f \
+    "https://raw.githubusercontent.com/aws/karpenter-provider-aws/v${KARPENTER_VERSION}/pkg/apis/crds/karpenter.sh_nodeclaims.yaml"
+```
+
+Before we go any further, let's take a look at the CRDs above. They are:
+
+- NodePools
+- NodeClasses
+- NodeClaims
+
+NodePools are basically a pool of nodes. You need to create at least 1 NodePool, or Karpenter won't work (since it doesn't know what instances to choose from). So let's start with that. As you might guess, the yaml needs to be kind `NodePool` which is a custom resource defined by the above CRD.
