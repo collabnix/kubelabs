@@ -348,3 +348,40 @@ Before we go any further, let's take a look at the CRDs above. They are:
 - NodeClaims
 
 NodePools are basically a pool of nodes. You need to create at least 1 NodePool, or Karpenter won't work (since it doesn't know what instances to choose from). So let's start with that. As you might guess, the yaml needs to be kind `NodePool` which is a custom resource defined by the above CRD.
+
+```
+apiVersion: karpenter.sh/v1beta1
+kind: NodePool
+metadata:
+  name: default
+spec:
+  template:
+    spec:
+      requirements:
+        - key: kubernetes.io/arch
+          operator: In
+          values: ["amd64"]
+        - key: kubernetes.io/os
+          operator: In
+          values: ["linux"]
+        - key: karpenter.sh/capacity-type
+          operator: In
+          values: ["on-demand"]
+        - key: karpenter.k8s.aws/instance-category
+          operator: In
+          values: ["c", "m", "r"]
+        - key: karpenter.k8s.aws/instance-generation
+          operator: Gt
+          values: ["2"]
+      nodeClassRef:
+        apiVersion: karpenter.k8s.aws/v1beta1
+        kind: EC2NodeClass
+        name: default
+  limits:
+    cpu: 1000
+  disruption:
+    consolidationPolicy: WhenUnderutilized
+    expireAfter: 720h # 30 * 24h = 720h
+```
+
+Let's break down what's happening in the above yaml. You first have the lines that are normal for Kubernetes deployments, with the name of the NodePool being defined as "default". You can change this to better suit the NodePool you want to set up. Afterward, come the requirements. This section details the filters that need to be applied for Karpenter to decide which instances to use. If you were to skip this section entirely, Karpenter would decide on what types of machines to spin up by looking at your workloads. But it's best to have some control over this. For example, the `kubernetes.io/arch` is used to determine the architecture of the machines that start up. Most applications will require a specific architecture to run on, so this section is generally included in any NodePool yaml as Karpenter can't figure that out by itself. The OS specification is the same, and unless your workloads are designed to run independently of the platform (which it usually isn't due to the way applications are started), it's best to specify this here. We also have the capacity types (spot, on-demand), and the instance category (c, m, r). You could also have an instance family to specify which specific machines (t2, t3, etc...) to use.
