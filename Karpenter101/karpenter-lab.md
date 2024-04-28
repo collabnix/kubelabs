@@ -396,4 +396,8 @@ We also have the capacity types (spot, on-demand), and the instance category (c,
 
 This will ensure that the machines that start will have at least 4GB of memory and, thereby should be able to handle any initial load your application receives.
 
-Next, the NodeClass this NodePool is going to use has been defined. This NodeClass will specify the AMIs of the EC2s that need to be used.
+Next, the NodeClass this NodePool is going to use has been defined. This NodeClass will specify the AMIs of the EC2s that need to be used. We will be defining this next. We have specified that the name of the NodeClass will be called "default".
+
+Next, we have defined `limits`. This limits the amount of a certain resource the NodePool will create. So in this case, if the number of instances in the NodePool that have been created has reached 1000 CPU units, the NodePool will not create any new nodes. Using these limits wisely will prevent many instances from spinning up unintentionally.
+
+The final part of this yaml is the `disruption` block. Here, we have only used 2 options, which is to say that when the node is being underutilized, remove it, and after 30 days, replace a node (even if it is being used). This ensures that nodes are kept updated with the latest AMIs and thereby have all their security vulnerabilities patched. However, this block can be used to do so much more. Take a look at the [example](https://karpenter.sh/docs/concepts/nodepools/) provided on the Karpenter doc to see the various ways Karpenters' disruption can be changed.
