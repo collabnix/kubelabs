@@ -401,3 +401,26 @@ Next, the NodeClass this NodePool is going to use has been defined. This NodeCla
 Next, we have defined `limits`. This limits the amount of a certain resource the NodePool will create. So in this case, if the number of instances in the NodePool that have been created has reached 1000 CPU units, the NodePool will not create any new nodes. Using these limits wisely will prevent many instances from spinning up unintentionally.
 
 The final part of this yaml is the `disruption` block. Here, we have only used 2 options, which is to say that when the node is being underutilized, remove it, and after 30 days, replace a node (even if it is being used). This ensures that nodes are kept updated with the latest AMIs and thereby have all their security vulnerabilities patched. However, this block can be used to do so much more. Take a look at the [example](https://karpenter.sh/docs/concepts/nodepools/) provided on the Karpenter doc to see the various ways Karpenters' disruption can be changed.
+
+Now that you have an idea of what the NodePool resource looks like and how it can be defined, let's take a look at the next resource: NodeClass. You already know what NodeClasses do, so look at how they have been defined:
+
+```
+apiVersion: karpenter.k8s.aws/v1beta1
+kind: EC2NodeClass
+metadata:
+ name: default
+spec:
+ amiFamily: AL2 # Amazon Linux 2
+ role: "KarpenterNodeRole-<cluster-name>" # replace with your cluster name
+ subnetSelectorTerms:
+  - tags:
+    karpenter.sh/discovery: "<cluster-name>" # replace with your cluster name
+ securityGroupSelectorTerms:
+  - tags:
+    karpenter.sh/discovery: "<cluster-name>" # replace with your cluster name
+ amiSelectorTerms:
+  - id: "ami-01af8560b504eb3db"
+  - id: "ami-01520c51b1b0e680b"
+```
+
+The resource is of kind `EC2NodeClass` and we are calling it `default`. It is an Amazon Linux 2 machine that uses the IAM role that you defined previously and uses the tags you defined to decide where the node classes can be formed. You also have the security tags picked here so that it knows which security groups to select. The final part of the yaml is where the AMIs are defined. Feel free to change the above AMI to whatever is latest when you are doing the implementation.
