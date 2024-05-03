@@ -426,3 +426,30 @@ spec:
 The resource is of kind `EC2NodeClass` and we are calling it `default`. It is an Amazon Linux 2 machine that uses the IAM role that you defined previously and uses the tags you defined to decide where the node classes can be formed. You also have the security tags picked here so that it knows which security groups to select. The final part of the yaml is where the AMIs are defined. Feel free to change the above AMI to whatever is latest when you are doing the implementation.
 
 Out of the 3 CRDs we deployed, the last remaining one is the NodeClaim. Unlike with the other two, there is no file that you need to create and deploy. This is because the NodeClaim is a resource that gets created automatically based on the NodePool & NodeClass. When you fully deploy Karpenter and remove cluster autoscaler, you will see the NodeClaims starting up. If you know about how Kubernetes volumes work, then you probably have heard of volume claims, where a certain amount of storage is claimed from a volume to supplement a pod. In the same way here, a NodeClaim claims an instance from the NodePool to run a pod. So in this case, since you have 1 NodePool, multiple nodes will be created from this NodePool after the NodeClaim claims them. We will see them in action later.
+
+Now that we have all the deployment files defined, go ahead and apply them. At this point, Karpenter is officially up and running, and there is no longer any need to keep the cluster autoscaler around. So go ahead and delete that:
+
+```
+kubectl scale deploy/cluster-autoscaler -n kube-system --replicas=0
+```
+
+Now ensure that the Karpenter pods are running. They need at least 1 node from your nodegroup to be able to run. 
+
+```
+kubectl get pods -n kube-system
+```
+
+If at least 1 of the 2 Karpenter replicas are running, node scaling should have started. To check this out, run:
+
+```
+kubectl get nodeclaims
+```
+
+You should see something like this:
+
+```
+NAME                      TYPE         ZONE         NODE                          READY   AGE
+nodepool-resource-p9g5h   c6a.xlarge   us-east-1b   ip-10-0-156-91.ec2.internal   True    2m20s
+```
+
+The type will change depending on the restrictions you placed in the NodePool.yml.
