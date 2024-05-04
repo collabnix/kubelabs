@@ -452,4 +452,6 @@ NAME                      TYPE         ZONE         NODE   �
 nodepool-resource-p9g5h   c6a.xlarge   us-east-1b   ip-10-0-156-91.ec2.internal   True    2m20s
 ```
 
-The type will change depending on the restrictions you placed in the NodePool.yml.
+The type will change depending on the restrictions you place in the NodePool.yml. From this point onwards, Karpenter will handle scaling according to the definition of the NodePool. When a node starts reaching its limit, Karpenter will start up the next most cost-efficient node (as long as the limits you defined aren't reached). If a node goes into a `MemoryPressure` state, Karpenter will remove and replace that node. You can also easily pair Karpenter with tools such as [KEDA](../Keda101/what-is-keda.md) or HPAs and have both pod and node scaling handled for your cluster.
+
+Let's next take a brief look at taints and tolerations for Karpenter at a NodePool level.
