@@ -457,3 +457,49 @@ The type will change depending on the restrictions you place in the NodePool.yml
 Let's next take a brief look at taints and tolerations for Karpenter at a NodePool level.
 
 If you need a refresher about taints and tolerations, take a look at the [scheduler section](../Scheduler101/Nodes_taints_and_tolerations.md). Let's imagine that your application has multiple microservices. Let's call the main endpoint that acts as an entryway to your system "api-microservice". Since this is the entry point to your system, all of your customers will be going through this endpoint. If this microservice goes down, your whole system experiences downtime. It also means that this microservice likely deserves its own node (or nodegroup) since you want it to have all the necessary resources and not be restricted. This ideology can also be transferred into NodePools. In this case, you might want to create a separate NodePool with the best resources for the job and hand over this NodePool exclusively to your api-microservice. This also means you don't want other microservices starting up on this NodePool.
+
+To do this, introduce labels and taints to your NodePool, like so:
+
+```
+apiVersion: karpenter.sh/v1beta1
+kind: NodePool
+metadata:
+  name: default
+spec:
+  template:
+    metadata:
+      labels:
+        module.schedule: api-microservice
+    spec:
+      taints:
+      - key: module.schedule
+        value: "api-microservice"
+        effect: "NoSchedule"
+      requirements:
+        - key: kubernetes.io/arch
+          operator: In
+          values: ["amd64"]
+        - key: kubernetes.io/os
+          operator: In
+          values: ["linux"]
+        - key: karpenter.sh/capacity-type
+          operator: In
+          values: ["on-demand"]
+        - key: karpenter.k8s.aws/instance-category
+          operator: In
+          values: ["c", "m", "r"]
+        - key: karpenter.k8s.aws/instance-generation
+          operator: Gt
+          values: ["2"]
+      nodeClassRef:
+        apiVersion: karpenter.k8s.aws/v1beta1
+        kind: EC2NodeClass
+        name: default
+  limits:
+    cpu: 1000
+  disruption:
+    consolidationPolicy: WhenUnderutilized
+    expireAfter: 720h # 30 * 24h = 720h
+```
+
+This says 2 things: this node is labeled as "api-microservice", and the node has a taint "api-microservice". The label doesn't do much right now and is only used as a selector when picking out a node, but the taint says that no pod can schedule in it unless they tolerate the taint. In short, taints make sure other pods apart from api-microservice schedule on that node, and selectors make sure that the api-microservice pod doesn't end up scheduled in a different node.
