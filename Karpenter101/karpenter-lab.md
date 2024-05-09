@@ -503,3 +503,17 @@ spec:
 ```
 
 This says 2 things: this node is labeled as "api-microservice", and the node has a taint "api-microservice". The label doesn't do much right now and is only used as a selector when picking out a node, but the taint says that no pod can schedule in it unless they tolerate the taint. In short, taints make sure other pods apart from api-microservice schedule on that node, and selectors make sure that the api-microservice pod doesn't end up scheduled in a different node.
+
+Now, you have to change the deployment yaml so that it does two things: tolerate the taint on the node, and only select nodes with the "api-microservice" label.
+
+```
+tolerations:
+  - key: "module.schedule"
+    operator: "Equal"
+    value: "api-microservice"
+    effect: "NoSchedule"
+nodeSelector:
+  module.schedule: api-microservice
+```
+
+Add this block inside the `spec` section of your deployment yaml. Now, any nodes created by the NodePool will not accept any pods other than the "api-microservice" pods. Isolating the most important workload like this will allow you to give specialized filters for that workload alone while keeping it isolated from any filters and fluctuations from other workloads.
