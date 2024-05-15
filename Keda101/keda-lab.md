@@ -120,11 +120,6 @@ serviceAccount:
 
 The part that needs to be modified is the `annotations` section. So if you want to scale an EKS cluster based on SQS messages, then you first need an IAM role that has access to SQS, and you need to add this role arn as an annotation.
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 862561a80f0cc61c79b3360b66436b6e72775f8c
 ```
 annotations: 
     eks.amazonaws.com/role-arn: arn:aws:iam::<account-id>:role/<role-name>
@@ -141,13 +136,7 @@ metadata:
 And that's it! You only needed to modify two lines and you have full authorization among the cluster.
 
 While this is the easiest way to provide authentication, it is not the only way to do it. You could also change the `identityOwner` to `pod`, and create a `TriggerAuthentication` resource and feed in the AWS access keys (which isn't very secure), or have the keda service account assume a role that has access to the necessary resources (which is much more secure). There is a number of different ways to authorize, and these are covered in the [KEDA documentation](https://keda.sh/docs/1.4/concepts/authentication/).
-<<<<<<< HEAD
-=======
-=======
 
->>>>>>> 862561a80f0cc61c79b3360b66436b6e72775f8c
-=======
->>>>>>> 6a954ab819affbda91e3f334a7f67d6cddea06a2
 If you added the arn, then setting up authentication is a simple matter. While Keda provides resources specifically geared towards authentication, you won't need to use any of that. In the Keda authentication types, there exists a type called `operator`. This type allows the keda service account to directly acquire the role of the IAM arn you provided. As long as the arn has the permissions necessary, keda can function. The triggers will look like the following:
 
 ```yaml
