@@ -243,6 +243,11 @@ A Curated List of Kubernetes Labs and Tutorials
  - [Fluent Bit](./Logging101/fluentdbit.md)
  - [ELK on Kubernetes](./Logging101/elk-on-kubernetes.md)
 
+## Autoscalers101
+
+ - [What are autoscalers](./Autoscaler101/what-are-autoscalers.md)
+ - [Autoscaler lab](./Autoscaler101/autoscaler-lab.md)
+
 ## Helm101
 
 - [What is Helm?](./Helm101/what-is-helm.md)
