@@ -10,4 +10,28 @@ When LinkerD is installed, it will deploy a sidecar proxy container to run along
 
 ## Requirements
 
-You will of course need a Kubernetes cluster. A cluster such as [Minikube](https://minikube.sigs.k8s.io/docs/start/) will do fine. You then need to set up LinkerD on the cluster, which is a pretty uncomplicated task. Just follow the [doc](https://linkerd.io/2.15/tasks/install/). Make sure you also install [linkerd-viz](https://linkerd.io/2.15/reference/cli/viz/) following the install instructions so that Prometheus gets set up and automatically configured.
+You will of course need a Kubernetes cluster. A cluster such as [Minikube](https://minikube.sigs.k8s.io/docs/start/) will do fine. You then need to set up LinkerD on the cluster, which is a pretty uncomplicated task. Just follow the [doc](https://linkerd.io/2.15/tasks/install/). Make sure you also install [linkerd-viz](https://linkerd.io/2.15/reference/cli/viz/) following the install instructions so that Prometheus gets set up and automatically configured. Once all this is done, start up a simple application like a nginx server:
+
+```
+kubectl run nginx-pod --image=nginx --restart=Never --port=80
+```
+
+Expose the port:
+
+```
+kubectl expose pod nginx-pod --type=NodePort --port=80 --name=nginx-service
+```
+
+Check the services from the below command and use the IP of the server to access the nginx server:
+
+```
+kubectl get svc
+```
+
+Now that nginx is up, let's inject LinkerD to act as a proxy to this server:
+
+```
+kubectl get deploy -o yaml | linkerd inject - | kubectl apply -f -
+```
+
+The above command will add Linkerd to all pods in the default namespace. If you run a `kubectl describe` you should be able to see there is a Linkerd proxy container in addition to the Nginx container running in your proxy pod.
