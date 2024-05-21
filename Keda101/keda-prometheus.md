@@ -34,4 +34,22 @@ Now that nginx is up, let's inject LinkerD to act as a proxy to this server:
 kubectl get deploy -o yaml | linkerd inject - | kubectl apply -f -
 ```
 
-The above command will add Linkerd to all pods in the default namespace. If you run a `kubectl describe` you should be able to see there is a Linkerd proxy container in addition to the Nginx container running in your proxy pod.
+The above command will add Linkerd to all pods in the default namespace. If you run a `kubectl describe` you should be able to see there is a Linkerd proxy container in addition to the Nginx container running in your proxy pod. If there isn't restart the pod and it should start up with the linkerd proxy pod injected. Before we add keda into the mix, let's take a look at how we will be polling prometheus. For starters, let's take a look at the Prometheus dashboard. To get access to this, run:
+
+```
+kubectl get po -n linkerd-viz
+```
+
+Take the full name of the prometheus pod, then port forward it:
+
+```
+kubectl port-forward <prometheus-pod-name> 9090:9090
+```
+
+You should now be able to open up localhost:9090 in your browser and get access to your pod. Let's run a PromQL query to check the request count. Linkerd sends a custom metric called `request_total` which can be used here. For a complete list of all custom metrics linkerd makes available, check the [official documentation](https://linkerd.io/2.15/reference/proxy-metrics/). This is the promQL we will use:
+
+```
+sum(rate(request_total{app="nginx",job="linkerd-proxy"}[3m])) by (app)
+```
+
+Let's break down this query. First, we use `request_total`, which is the total sum of all requests the nginx pod receives.
