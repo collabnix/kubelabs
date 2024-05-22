@@ -52,4 +52,4 @@ You should now be able to open up localhost:9090 in your browser and get access 
 sum(rate(request_total{app="nginx",job="linkerd-proxy"}[3m])) by (app)
 ```
 
-Let's break down this query. First, we use `request_total`, which is the total sum of all requests the nginx pod receives.
+Let's break down this query. First, we use `request_total`, which is the total sum of all requests the nginx pod receives. This is a number that keeps increasing forever. Every request that comes into your pod gets appended to this count. So if you have 100 requests coming in this hour and another 100 in the next, if you were to check this metric in the next hour, it would show 200. This metric has specifications such as `app` and `job` which are supposed to filter down the number of requests so that you only count the requests in the pods you want. Next to that is `rate` which is essentially used to calculate the difference in the metric (rate of change). This rate shows how the number of requests varies in the specific period (3 minutes).
