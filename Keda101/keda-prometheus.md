@@ -56,4 +56,27 @@ Let's break down this query. First, we use `request_total`, which is the total s
 
 If you head over to the Prometheus dashboard, you should be able to use the above query. Switch to the graph tab to get a better visualization of the requests and try manually reloading the nginx page. The graph should show an increase in the request counts.
 
-Now that everything is set up from the linkerd/Prometheus side, let's take a look at the KEDA side of things. We will be using the in-built [prometheus scaler](https://keda.sh/docs/2.14/scalers/prometheus/).
+Now that everything is set up from the linkerd/Prometheus side, let's take a look at the KEDA side of things. We will be using the in-built [prometheus scaler](https://keda.sh/docs/2.14/scalers/prometheus/) for the scaling, and this is the yaml of the scaled object:
+
+```
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: nginx-request-scaler
+spec:
+  scaleTargetRef:
+    name: nginx 
+  pollingInterval: 10 # Seconds
+  cooldownPeriod: 60 
+  minReplicaCount: 1
+  maxReplicaCount: 10
+  triggers:
+  - type: prometheus
+    metadata:
+      serverAddress: http://prometheus.linkerd-viz.svc.cluster.local:9090
+      metricName: request_total
+      threshold: "5.0"
+      query: sum(rate(request_total{app="nginx",job="linkerd-proxy"}[3m])) by (app)
+```
+
+Let's take a closer look at the yaml above. The resource is of kind ScaledObject, which is named `nginx-request-scaler`, and it scales the deployment called `nginx`. If you have named your nginx deployment something else, change the `scaleTargetRef` to that. Below that comes the threshold for polling and cooling. In this case, we ask keda to poll Prometheus every 10 seconds and start scaling immediately if the request rate is over the threshold. We also tell it to start scaling down 60 seconds after the request rate has dropped below the threshold. Note that keda won't immediately start terminating replicas just because the cooldown period has been reached. This is because, in a real production environment, loads can fluctuate, so having replicas scale down quickly is not ideal.
