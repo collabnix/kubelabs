@@ -85,4 +85,10 @@ The next block defines the triggers. In this case, we have specified the use of 
 
 Assuming you already have keda installed in your cluster, all you have left to do is to deploy this scaler into your cluster like you would any other manifest file. Make sure to deploy it in the same namespace as your nginx pod.
 
-Once that is done, you are ready to see the scaling in action. To generate a minor load so we can test the scaling, we will be using a simple tool like 
+Once that is done, you are ready to see the scaling in action. To generate a minor load so we can test the scaling, we will be using a simple tool like [Apache Bench](https://httpd.apache.org/docs/2.4/programs/ab.html) which is included in the ```apache2-utils``` package. Use this to ping your nginx server:
+
+```
+ab -n 100 -c 10 http://localhost/
+```
+
+This should send 100 requests to your Nginx application. Once you have run this command, go to the Prometheus dashboard, adjust the time, and you should be able to see the request count going up. Within 30 seconds, your replicaset should have started scaling, so running `kubectl get po` should reveal multiple replicas of the nginx pod starting up. Since you have linkerd-viz installed, you can also see how the requests are getting load balanced across the pods using the linkerd dashboard.
