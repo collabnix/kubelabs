@@ -56,6 +56,8 @@ Let's break down this query. First, we use `request_total`, which is the total s
 
 If you head over to the Prometheus dashboard, you should be able to use the above query. Switch to the graph tab to get a better visualization of the requests and try manually reloading the nginx page. The graph should show an increase in the request counts.
 
+## Setting up KEDA
+
 Now that everything is set up from the linkerd/Prometheus side, let's take a look at the KEDA side of things. We will be using the in-built [prometheus scaler](https://keda.sh/docs/2.14/scalers/prometheus/) for the scaling, and this is the yaml of the scaled object:
 
 ```
@@ -85,10 +87,16 @@ The next block defines the triggers. In this case, we have specified the use of 
 
 Assuming you already have keda installed in your cluster, all you have left to do is to deploy this scaler into your cluster like you would any other manifest file. Make sure to deploy it in the same namespace as your nginx pod.
 
-Once that is done, you are ready to see the scaling in action. To generate a minor load so we can test the scaling, we will be using a simple tool like [Apache Bench](https://httpd.apache.org/docs/2.4/programs/ab.html) which is included in the ```apache2-utils``` package. Use this to ping your nginx server:
+## Testing
+
+You are now ready to see the scaling in action. To generate a minor load so we can test the scaling, we will be using a simple tool like [Apache Bench](https://httpd.apache.org/docs/2.4/programs/ab.html) which is included in the ```apache2-utils``` package. Use this to ping your nginx server:
 
 ```
 ab -n 100 -c 10 http://localhost/
 ```
 
 This should send 100 requests to your Nginx application. Once you have run this command, go to the Prometheus dashboard, adjust the time, and you should be able to see the request count going up. Within 30 seconds, your replicaset should have started scaling, so running `kubectl get po` should reveal multiple replicas of the nginx pod starting up. Since you have linkerd-viz installed, you can also see how the requests are getting load balanced across the pods using the linkerd dashboard.
+
+## Considerations
+
+Now that you have seen how KEDA and Prometheus work together with linkerd to scale your application workloads, you might have already noticed a few considerations you need to take into account. Both Linkerd and KEDA are well-used tools that are generally used in production workloads, so there is little reason to be worried about them breaking. While the same holds true for Prometheus, you might notice here that Prometheus runs in a single pod. For starters, this Prometheus instance is introduced by Linkerd but is not supposed to be an official Prometheus instance that is supposed to cater to your entire cluster. If you need something like that, you will have to set up Prometheus yourself and bring the linkerd metrics to your Prometheus instance. [This document](https://linkerd.io/2.15/tasks/external-prometheus/) should be able to help you with that.
