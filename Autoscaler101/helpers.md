@@ -35,3 +35,12 @@ Now let's take a look at graceful shutdowns. If you were running a website that 
 Depending on the type of web application you are running, you may not need to configure graceful shutdowns from the Kubernetes configuration. Instead, the application framework itself might be able to intercept the shutdown signal Kubernetes sends and automatically prevent the application from receiving any new traffic. For example, in SpringBoot, you can enable graceful shutdowns simply by adding the config `server.shutdown=graceful` into your application config. However, if your application framework doesn't support something like this, or you prefer to keep your Kubernetes and application configurations separate, you might consider creating a `shutdown` endpoint. We will do this during the lab.
 
 While microservices generally take in traffic through their endpoints, your application might differ. Your application might do batch processing by reading messages off RabbitMQ, or it might occasionally read a database and transform the data within it. In cases like this, having the pod or job terminated for scaling considerations might leave your database table in an unstable state, or it might mean that the message your pod was processing never ends up finishing. In any of these cases, graceful shutdowns can keep the pod from terminating long enough for your pod to either finish what it started or ensure a different pod can pick up where it left off.
+
+If the jobs you are running are mission-critical, and each of your jobs must run to completion, then even graceful shutdowns might not be enough. In this case, you can turn to annotations to help you out.
+
+## Annotations
+
+Annotations are a very powerful tool that you can use in your Kubernetes environments to fine-tune various aspects of how Kubernetes works. If, as mentioned above, you need to make sure that your critical job  runs to completion regardless of the node cost, then you might want to make sure that the node that is running your job does not de-provision while the job is still running on it. You can do this by adding the below annotation:
+
+annotations:
+          "cluster-autoscaler.kubernetes.io/safe-to-evict": "false"
