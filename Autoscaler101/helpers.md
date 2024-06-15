@@ -42,5 +42,21 @@ If the jobs you are running are mission-critical, and each of your jobs must run
 
 Annotations are a very powerful tool that you can use in your Kubernetes environments to fine-tune various aspects of how Kubernetes works. If, as mentioned above, you need to make sure that your critical job  runs to completion regardless of the node cost, then you might want to make sure that the node that is running your job does not de-provision while the job is still running on it. You can do this by adding the below annotation:
 
+```
 annotations:
-          "cluster-autoscaler.kubernetes.io/safe-to-evict": "false"
+ "cluster-autoscaler.kubernetes.io/safe-to-evict": "false"
+```
+
+This will ensure that your node stays up even if there is only 1 job running on it. This will certainly increase the cost of your infrastructure since normally, Kubernetes would relocate jobs and de-provision nodes to increase resource efficiency. It will only shut down the node once no jobs are running that have this annotation left. However, if you don't want the nodes to shut at all, you can add a different annotation that ensures that your nodes never scale down:
+
+```
+cluster-autoscaler.kubernetes.io/scale-down-disabled
+```
+
+This annotation should be applied directly to a node like so:
+
+```
+kubectl annotate node my-node cluster-autoscaler.kubernetes.io/scale-down-disabled=true
+```
+
+Obviously, this is not a recommended option unless you have no other choice regarding the severity of your application. Ideally, your jobs should be able to handle shutdowns gracefully, and any jobs that start in place of the old ones should be able to complete what the previous job was doing.
