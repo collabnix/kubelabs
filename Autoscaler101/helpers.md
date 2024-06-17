@@ -60,3 +60,142 @@ kubectl annotate node my-node cluster-autoscaler.kubernetes.io/scale-down-disabl
 ```
 
 Obviously, this is not a recommended option unless you have no other choice regarding the severity of your application. Ideally, your jobs should be able to handle shutdowns gracefully, and any jobs that start in place of the old ones should be able to complete what the previous job was doing.
+
+Kubernetes annotations are key-value pairs that can be added to Kubernetes resources for various purposes, including influencing autoscaling behavior. Here are some commonly used annotations related to autoscaling:
+
+### Horizontal Pod Autoscaler (HPA)
+
+1. **Resource Limits and Requests**:
+   - Ensure that your Pods have resource requests and limits set, which the HPA can use to scale based on CPU and memory usage.
+     ```yaml
+     spec:
+       containers:
+       - name: myapp
+         image: myapp:latest
+         resources:
+           requests:
+             cpu: "100m"
+             memory: "200Mi"
+           limits:
+             cpu: "500m"
+             memory: "500Mi"
+     ```
+
+2. **Custom Metrics**:
+   - When using custom metrics for autoscaling, you might need to annotate your deployment to specify which metrics to use.
+     ```yaml
+     metadata:
+       annotations:
+         autoscaling.alpha.kubernetes.io/metrics: '[{"type": "Resource", "resource": {"name": "cpu", "targetAverageUtilization": 80}}]'
+     ```
+
+### Cluster Autoscaler
+
+1. **Pod Priority**:
+   - Influence the Cluster Autoscaler by specifying pod priority, ensuring critical pods get scheduled first.
+     ```yaml
+     spec:
+       priorityClassName: high-priority
+     ```
+
+2. **Pod Disruption Budget (PDB)**:
+   - Define a PDB to control the number of pods that can be disrupted during scaling activities.
+     ```yaml
+     apiVersion: policy/v1
+     kind: PodDisruptionBudget
+     metadata:
+       name: myapp-pdb
+     spec:
+       minAvailable: 80%
+       selector:
+         matchLabels:
+           app: myapp
+     ```
+
+3. **Autoscaler Behavior**:
+   - Use annotations to modify the behavior of the Cluster Autoscaler for specific node groups.
+     ```yaml
+     metadata:
+       annotations:
+         cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
+     ```
+
+4. **Scale-down Disabled**:
+   - Prevent the Cluster Autoscaler from scaling down specific nodes or node groups.
+     ```yaml
+     metadata:
+       annotations:
+         cluster-autoscaler.kubernetes.io/scale-down-disabled: "true"
+     ```
+
+### Node Autoscaling
+
+1. **Taints and Tolerations**:
+   - Use taints and tolerations to influence scheduling and scaling behaviors, ensuring only appropriate pods are scheduled on specific nodes.
+     ```yaml
+     spec:
+       taints:
+       - key: dedicated
+         value: myapp
+         effect: NoSchedule
+     ```
+
+2. **Node Affinity**:
+   - Define node affinity rules to influence where pods are scheduled, which indirectly affects autoscaling decisions.
+     ```yaml
+     spec:
+       affinity:
+         nodeAffinity:
+           requiredDuringSchedulingIgnoredDuringExecution:
+             nodeSelectorTerms:
+             - matchExpressions:
+               - key: kubernetes.io/e2e-az-name
+                 operator: In
+                 values:
+                 - e2e-az1
+                 - e2e-az2
+     ```
+
+3. **Karpenter Specific Annotations**:
+   - For users of Karpenter, specific annotations can control aspects of autoscaling behavior.
+     ```yaml
+     metadata:
+       annotations:
+         karpenter.sh/capacity-type: "spot"
+         karpenter.sh/instance-profile: "my-instance-profile"
+     ```
+
+### Example of a Deployment with Autoscaling Annotations
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+  annotations:
+    cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+      annotations:
+        autoscaling.alpha.kubernetes.io/metrics: '[{"type": "Resource", "resource": {"name": "cpu", "targetAverageUtilization": 80}}]'
+    spec:
+      containers:
+      - name: myapp
+        image: myapp:latest
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "200Mi"
+          limits:
+            cpu: "500m"
+            memory: "500Mi"
+```
+
+These annotations and configurations can significantly impact the autoscaling behavior of your Kubernetes cluster, allowing for more fine-grained control over resource allocation and scaling policies.
