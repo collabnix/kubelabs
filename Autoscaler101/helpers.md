@@ -61,33 +61,13 @@ kubectl annotate node my-node cluster-autoscaler.kubernetes.io/scale-down-disabl
 
 Obviously, this is not a recommended option unless you have no other choice regarding the severity of your application. Ideally, your jobs should be able to handle shutdowns gracefully, and any jobs that start in place of the old ones should be able to complete what the previous job was doing.
 
-Kubernetes annotations are key-value pairs that can be added to Kubernetes resources for various purposes, including influencing autoscaling behavior. Here are some commonly used annotations related to autoscaling:
+Another annotation that help with autoscaling is the `autoscaling.alpha.kubernetes.io/metrics` annotation which allows you to specify custom metrics for autoscaling, like so:
 
-### Horizontal Pod Autoscaler (HPA)
-
-1. **Resource Limits and Requests**:
-   - Ensure that your Pods have resource requests and limits set, which the HPA can use to scale based on CPU and memory usage.
-     ```yaml
-     spec:
-       containers:
-       - name: myapp
-         image: myapp:latest
-         resources:
-           requests:
-             cpu: "100m"
-             memory: "200Mi"
-           limits:
-             cpu: "500m"
-             memory: "500Mi"
-     ```
-
-2. **Custom Metrics**:
-   - When using custom metrics for autoscaling, you might need to annotate your deployment to specify which metrics to use.
-     ```yaml
-     metadata:
-       annotations:
-         autoscaling.alpha.kubernetes.io/metrics: '[{"type": "Resource", "resource": {"name": "cpu", "targetAverageUtilization": 80}}]'
-     ```
+```yaml
+metadata:
+  annotations:
+    autoscaling.alpha.kubernetes.io/metrics: '[{"type": "Resource", "resource": {"name": "cpu", "targetAverageUtilization": 80}}]'
+```
 
 ### Cluster Autoscaler
 
@@ -164,38 +144,5 @@ Kubernetes annotations are key-value pairs that can be added to Kubernetes resou
          karpenter.sh/capacity-type: "spot"
          karpenter.sh/instance-profile: "my-instance-profile"
      ```
-
-### Example of a Deployment with Autoscaling Annotations
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: myapp
-  annotations:
-    cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: myapp
-  template:
-    metadata:
-      labels:
-        app: myapp
-      annotations:
-        autoscaling.alpha.kubernetes.io/metrics: '[{"type": "Resource", "resource": {"name": "cpu", "targetAverageUtilization": 80}}]'
-    spec:
-      containers:
-      - name: myapp
-        image: myapp:latest
-        resources:
-          requests:
-            cpu: "100m"
-            memory: "200Mi"
-          limits:
-            cpu: "500m"
-            memory: "500Mi"
-```
 
 These annotations and configurations can significantly impact the autoscaling behavior of your Kubernetes cluster, allowing for more fine-grained control over resource allocation and scaling policies.
