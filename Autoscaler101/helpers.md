@@ -5,6 +5,7 @@ We have now discussed HPA's, VPA's, and you might have even read the section on 
 - Readiness/liveness/startup probes
 - Graceful shutdowns
 - Annotations that help with scaling.
+- Pod priority/disruption
 
 You may have already come across these concepts before, and just about every Kubernetes-based tool uses them to ensure stability. We will discuss each of the above points and follow up with a lab where we test out the above concepts using a simple Nginx server.
 
@@ -61,13 +62,15 @@ kubectl annotate node my-node cluster-autoscaler.kubernetes.io/scale-down-disabl
 
 Obviously, this is not a recommended option unless you have no other choice regarding the severity of your application. Ideally, your jobs should be able to handle shutdowns gracefully, and any jobs that start in place of the old ones should be able to complete what the previous job was doing.
 
-Another annotation that help with autoscaling is the `autoscaling.alpha.kubernetes.io/metrics` annotation which allows you to specify custom metrics for autoscaling, like so:
+Another annotation that helps with autoscaling is the `autoscaling.alpha.kubernetes.io/metrics` annotation which allows you to specify custom metrics for autoscaling, like so:
 
 ```yaml
 metadata:
   annotations:
     autoscaling.alpha.kubernetes.io/metrics: '[{"type": "Resource", "resource": {"name": "cpu", "targetAverageUtilization": 80}}]'
 ```
+
+Now that we have looked at annotations, let's look at how pod priority and disruptions budgets can help you with scaling.
 
 ### Cluster Autoscaler
 
@@ -92,33 +95,7 @@ metadata:
            app: myapp
      ```
 
-3. **Autoscaler Behavior**:
-   - Use annotations to modify the behavior of the Cluster Autoscaler for specific node groups.
-     ```yaml
-     metadata:
-       annotations:
-         cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
-     ```
-
-4. **Scale-down Disabled**:
-   - Prevent the Cluster Autoscaler from scaling down specific nodes or node groups.
-     ```yaml
-     metadata:
-       annotations:
-         cluster-autoscaler.kubernetes.io/scale-down-disabled: "true"
-     ```
-
 ### Node Autoscaling
-
-1. **Taints and Tolerations**:
-   - Use taints and tolerations to influence scheduling and scaling behaviors, ensuring only appropriate pods are scheduled on specific nodes.
-     ```yaml
-     spec:
-       taints:
-       - key: dedicated
-         value: myapp
-         effect: NoSchedule
-     ```
 
 2. **Node Affinity**:
    - Define node affinity rules to influence where pods are scheduled, which indirectly affects autoscaling decisions.
