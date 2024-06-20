@@ -72,28 +72,34 @@ metadata:
 
 Now that we have looked at annotations, let's look at how pod priority and disruptions budgets can help you with scaling.
 
-### Cluster Autoscaler
+**Pod Priority**:
 
-1. **Pod Priority**:
-   - Influence the Cluster Autoscaler by specifying pod priority, ensuring critical pods get scheduled first.
-     ```yaml
-     spec:
-       priorityClassName: high-priority
-     ```
+You can influence the Cluster Autoscaler by specifying pod priority, and ensuring critical pods get scheduled first.
 
-2. **Pod Disruption Budget (PDB)**:
-   - Define a PDB to control the number of pods that can be disrupted during scaling activities.
-     ```yaml
-     apiVersion: policy/v1
-     kind: PodDisruptionBudget
-     metadata:
-       name: myapp-pdb
-     spec:
-       minAvailable: 80%
-       selector:
-         matchLabels:
-           app: myapp
-     ```
+ ```yaml
+  spec:
+    priorityClassName: high-priority
+ ```
+
+If you have an application that handles all incoming traffic and then routes it to a second application, you would want the pods of the external-facing application that handles traffic to have more priority when scheduling. If you have jobs that run batch workloads, they might take lesser priority compared to pods that handle your active users.
+
+Earlier, we discussed using annotations to prevent disruptions due to scaling. However, those methods were somewhat extreme, making the node stay up even if 1 pod was running or making sure the node never went down at all. What if we wanted to allow scaling but also wanted to maintain some control over how much this scaling was allowed to disrupt our workloads? This is where pod disruption budgets come into play.
+
+**Pod Disruption Budget (PDB)**:
+
+PDBs define the number of pods that can be disrupted during scaling activities.
+
+```yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: myapp-pdb
+spec:
+  minAvailable: 80%
+  selector:
+    matchLabels:
+      app: myapp
+```
 
 ### Node Autoscaling
 
