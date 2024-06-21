@@ -87,19 +87,69 @@ Earlier, we discussed using annotations to prevent disruptions due to scaling. H
 
 **Pod Disruption Budget (PDB)**:
 
-PDBs define the number of pods that can be disrupted during scaling activities.
+A Pod Disruption Budget (PDB) is a Kubernetes resource that ensures a minimum number of pods are always available during voluntary disruptions, such as maintenance or cluster upgrades. It prevents too many pods of a critical application from being taken down simultaneously, thus maintaining the application's availability and reliability.
+
+### Key Components of a PDB
+
+1. **Min Available**: Specifies the minimum number of pods that must be available after an eviction.
+2. **Max Unavailable**: Specifies the maximum number of pods that can be unavailable during a disruption.
+
+### Example Scenario
+
+Let's say you have a Kubernetes Deployment with 5 replicas of a critical web service. You want to ensure that at least 3 replicas are always available during maintenance activities.
+
+#### PDB Configuration
+
+You can create a PDB with the following YAML configuration:
 
 ```yaml
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: myapp-pdb
+  name: web-service-pdb
 spec:
-  minAvailable: 80%
+  minAvailable: 3
   selector:
     matchLabels:
-      app: myapp
+      app: web-service
 ```
+
+### Steps Explained
+
+1. **Define the API Version and Kind**:
+   - `apiVersion: policy/v1`: Specifies the API version.
+   - `kind: PodDisruptionBudget`: Indicates that this resource is a PDB.
+
+2. **Metadata**:
+   - `name: web-service-pdb`: The name of the PDB.
+
+3. **Spec**:
+   - `minAvailable: 3`: Specifies that at least 3 pods must be available at all times.
+   - `selector`: Defines the set of pods the PDB applies to. In this case, it matches pods with the label `app: web-service`.
+
+### How it Works
+
+1. **Normal Operation**:
+   - Under normal conditions, all 5 replicas of the web service are running.
+
+2. **During Disruption**:
+   - When a voluntary disruption occurs (e.g., node maintenance or a manual pod eviction), the PDB ensures that at least 3 out of the 5 pods remain running.
+   - If an attempt is made to evict more than 2 pods at the same time, the eviction will be blocked until the number of available pods is at least 3.
+
+### Example in Action
+
+Imagine a scenario where a node running 2 of the 5 replicas of the web service is scheduled for maintenance:
+
+- **Before Maintenance**: All 5 pods are running.
+- **Eviction Begins**: The node is cordoned, and the 2 pods on it are scheduled for eviction.
+- **PDB Check**: Kubernetes checks the PDB, which requires at least 3 pods to be available.
+- **Allowed Eviction**: Since evicting 2 pods will leave 3 pods running, the eviction is allowed.
+- **Maintenance Completed**: The node is maintained, and the evicted pods are rescheduled on available nodes.
+- **After Maintenance**: All 5 pods are running again, meeting the PDB requirement.
+
+### Summary
+
+Pod Disruption Budgets are crucial for maintaining high availability of applications during planned maintenance or other voluntary disruptions. By setting appropriate values for `minAvailable` or `maxUnavailable`, you can ensure that critical services remain operational and meet your desired availability targets.
 
 ### Node Autoscaling
 
