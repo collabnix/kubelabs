@@ -120,34 +120,25 @@ This is not very different to how other Kubernetes resources work where the exte
    - When a voluntary disruption occurs (e.g., node maintenance or a manual pod eviction), the PDB ensures that at least 3 out of the 5 pods remain running.
    - If an attempt is made to evict more than 2 pods at the same time, the eviction will be blocked until the number of available pods is at least 3.
 
-### Example in Action
+Now that we're clear on disruption budgets, let's look at node affinities.
 
-Imagine a scenario where a node running 2 of the 5 replicas of the web service is scheduled for maintenance:
+**Node Affinity**:
 
-- **Before Maintenance**: All 5 pods are running.
-- **Eviction Begins**: The node is cordoned, and the 2 pods on it are scheduled for eviction.
-- **PDB Check**: Kubernetes checks the PDB, which requires at least 3 pods to be available.
-- **Allowed Eviction**: Since evicting 2 pods will leave 3 pods running, the eviction is allowed.
-- **Maintenance Completed**: The node is maintained, and the evicted pods are rescheduled on available nodes.
-- **After Maintenance**: All 5 pods are running again, meeting the PDB requirement.
+Node affinity rules influence where pods are scheduled, indirectly affecting autoscaling decisions.
 
-### Node Autoscaling
-
-2. **Node Affinity**:
-   - Define node affinity rules to influence where pods are scheduled, which indirectly affects autoscaling decisions.
-     ```yaml
-     spec:
-       affinity:
-         nodeAffinity:
-           requiredDuringSchedulingIgnoredDuringExecution:
-             nodeSelectorTerms:
-             - matchExpressions:
-               - key: kubernetes.io/e2e-az-name
-                 operator: In
-                 values:
-                 - e2e-az1
-                 - e2e-az2
-     ```
+```yaml
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/e2e-az-name
+            operator: In
+            values:
+            - e2e-az1
+            - e2e-az2
+```
 
 3. **Karpenter Specific Annotations**:
    - For users of Karpenter, specific annotations can control aspects of autoscaling behavior.
