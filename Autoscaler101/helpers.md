@@ -139,14 +139,3 @@ spec:
             - e2e-az1
             - e2e-az2
 ```
-
-3. **Karpenter Specific Annotations**:
-   - For users of Karpenter, specific annotations can control aspects of autoscaling behavior.
-     ```yaml
-     metadata:
-       annotations:
-         karpenter.sh/capacity-type: "spot"
-         karpenter.sh/instance-profile: "my-instance-profile"
-     ```
-
-These annotations and configurations can significantly impact the autoscaling behavior of your Kubernetes cluster, allowing for more fine-grained control over resource allocation and scaling policies.
