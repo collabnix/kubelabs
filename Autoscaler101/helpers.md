@@ -139,3 +139,5 @@ spec:
             - e2e-az1
             - e2e-az2
 ```
+
+Ensuring that nodes & pods are started in different zones will ensure high availability when a zone goes down. This also brings us to an important point if you run a large application with many microservices. Each replica of each microservice requires its own IP, and in a normal subnet, you only have 250 of them. Considering that each node you bring up has several daemonsets running on them that reserve their own IPs, coupled with each microservice replica needing its own IP, you might quickly find yourself in a position where you have run out of IPs and the pod is unable to start because the CNI doesn't have any IPs left to assign. In this case, having several subnets spread evenly across several availability zones is the answer. But even then, it is possible that the cluster autoscaler (or Karpenter if you use that instead), will end up provisioning nodes in a subnet that is about to run out of IPs. So having zonal topology constraints at a pod level will ensure that the pods are spread out and demand that nodes be spread out across the subnets, thereby reducing the change of IP address exhaustion.
