@@ -151,3 +151,193 @@ You also have to consider that the tool used to perform scaling might run into i
 ## Lab
 
 Now, let's get started on the lab and take a practical look at all the things we discussed above. For this, it's best to use a cloud provider for your Kubernetes cluster as opposed to Minikube, since we need to have multiple nodes so we can take a look at node scaling. Even a multi-node cluster that you run on your local machine is fine. For this, we will be using the Nginx image as the application and come up with our own Nginx deployment yaml that incorporates most of the attributes discussed above.
+
+Certainly! Here’s a detailed example of how to configure readiness, liveness, and startup probes for an NGINX deployment in Kubernetes.
+
+### Step 1: Create a Kubernetes Deployment Manifest
+
+Create a deployment manifest file named `nginx-deployment.yaml` with the following content:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /readiness
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        startupProbe:
+          httpGet:
+            path: /startup
+            port: 80
+          initialDelaySeconds: 0
+          periodSeconds: 10
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "echo 'nginx started'"]
+          preStop:
+            exec:
+              command: ["/bin/sh", "-c", "nginx -s quit"]
+```
+
+### Step 2: Create a ConfigMap for Custom NGINX Configuration
+
+Create a ConfigMap file named `nginx-configmap.yaml` with the following content to define custom health check endpoints:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  default.conf: |
+    server {
+        listen 80;
+        
+        location /healthz {
+            access_log off;
+            return 200 'OK';
+            add_header Content-Type text/plain;
+        }
+
+        location /readiness {
+            access_log off;
+            return 200 'OK';
+            add_header Content-Type text/plain;
+        }
+
+        location /startup {
+            access_log off;
+            return 200 'OK';
+            add_header Content-Type text/plain;
+        }
+
+        location / {
+            root   /usr/share/nginx/html;
+            index  index.html index.htm;
+        }
+    }
+```
+
+### Step 3: Apply the ConfigMap
+
+```sh
+kubectl apply -f nginx-configmap.yaml
+```
+
+### Step 4: Create a Kubernetes ConfigMap Volume Mount in Deployment
+
+Update the `nginx-deployment.yaml` to mount the ConfigMap as a volume:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: nginx-config-volume
+          mountPath: /etc/nginx/conf.d
+          subPath: default.conf
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /readiness
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        startupProbe:
+          httpGet:
+            path: /startup
+            port: 80
+          initialDelaySeconds: 0
+          periodSeconds: 10
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "echo 'nginx started'"]
+          preStop:
+            exec:
+              command: ["/bin/sh", "-c", "nginx -s quit"]
+      volumes:
+      - name: nginx-config-volume
+        configMap:
+          name: nginx-config
+```
+
+### Step 5: Apply the Updated Deployment Manifest
+
+```sh
+kubectl apply -f nginx-deployment.yaml
+```
+
+### Step 6: Verify the Deployment
+
+To check the status of your deployment and the probes, you can use the following commands:
+
+```sh
+# Check the status of the deployment
+kubectl get deployments
+
+# Check the status of the pods
+kubectl get pods
+
+# Describe a pod to see probe details
+kubectl describe pod <pod-name>
+```
+
+This setup ensures that:
+
+- **Liveness Probe:** Checks if the NGINX container is alive. If it fails, Kubernetes will restart the container.
+- **Readiness Probe:** Checks if the NGINX container is ready to serve traffic. If it fails, the pod will be removed from the service endpoints.
+- **Startup Probe:** Ensures that the NGINX container has started up properly before any liveness or readiness probes are executed.
+
+With this configuration, you should have a robust deployment of NGINX with proper health checks using readiness, liveness, and startup probes.
