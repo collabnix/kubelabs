@@ -341,3 +341,108 @@ This setup ensures that:
 - **Startup Probe:** Ensures that the NGINX container has started up properly before any liveness or readiness probes are executed.
 
 With this configuration, you should have a robust deployment of NGINX with proper health checks using readiness, liveness, and startup probes.
+
+
+Implementing a graceful shutdown for your NGINX deployment involves ensuring that your application can handle termination signals properly, finish any ongoing requests, and clean up resources before the container is terminated. Here’s how you can achieve this in Kubernetes:
+
+### Step 1: Define a PreStop Hook in Your Deployment Manifest
+
+Update the deployment manifest (`nginx-deployment.yaml`) to include a `preStop` hook that will handle the graceful shutdown:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: nginx-config-volume
+          mountPath: /etc/nginx/conf.d
+          subPath: default.conf
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /readiness
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        startupProbe:
+          httpGet:
+            path: /startup
+            port: 80
+          initialDelaySeconds: 0
+          periodSeconds: 10
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "echo 'nginx started'"]
+          preStop:
+            exec:
+              command: ["/bin/sh", "-c", "nginx -s quit && sleep 30"]
+      volumes:
+      - name: nginx-config-volume
+        configMap:
+          name: nginx-config
+```
+
+### Step 2: Apply the Updated Deployment Manifest
+
+Apply the updated deployment manifest to your Kubernetes cluster:
+
+```sh
+kubectl apply -f nginx-deployment.yaml
+```
+
+### Explanation of Configuration
+
+1. **terminationGracePeriodSeconds:** This sets the period (in seconds) that Kubernetes will wait after sending a SIGTERM signal to the container before forcefully terminating it with a SIGKILL signal. The default value is 30 seconds, but it can be adjusted based on your application's requirements. In this example, it is set to 60 seconds.
+
+2. **preStop Hook:** This lifecycle hook executes a command just before the container is terminated. In this case, the command is `nginx -s quit && sleep 30`.
+    - `nginx -s quit`: This command gracefully stops the NGINX process, allowing it to finish serving ongoing requests.
+    - `sleep 30`: This ensures that the container waits for 30 seconds before fully shutting down. This additional sleep period provides extra time for ongoing requests to complete and for NGINX to shut down cleanly.
+
+### Step 3: Verify the Graceful Shutdown
+
+To verify that the graceful shutdown is working correctly, you can simulate a termination of one of the NGINX pods and observe the logs and behavior:
+
+1. **Delete an NGINX Pod:**
+
+    ```sh
+    kubectl delete pod <nginx-pod-name>
+    ```
+
+2. **Observe Logs and Behavior:**
+
+    Use the following command to check the logs of the NGINX pod:
+
+    ```sh
+    kubectl logs <nginx-pod-name> --previous
+    ```
+
+    Look for logs indicating that NGINX received the shutdown signal and that it stopped gracefully.
+
+### Summary
+
+By implementing the `preStop` hook and setting an appropriate `terminationGracePeriodSeconds`, you ensure that NGINX can handle ongoing requests and cleanly shut down before the container is terminated. This approach provides a smooth user experience and avoids abrupt disconnections or data loss during shutdowns.
