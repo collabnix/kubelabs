@@ -152,8 +152,6 @@ You also have to consider that the tool used to perform scaling might run into i
 
 Now, let's get started on the lab and take a practical look at all the things we discussed above. For this, it's best to use a cloud provider for your Kubernetes cluster as opposed to Minikube, since we need to have multiple nodes so we can take a look at node scaling. Even a multi-node cluster that you run on your local machine is fine. For this, we will be using the Nginx image as the application and come up with our own Nginx deployment yaml that incorporates most of the attributes discussed above.
 
-Certainly! Here’s a detailed example of how to configure readiness, liveness, and startup probes for an NGINX deployment in Kubernetes.
-
 ### Step 1: Create a Kubernetes Deployment Manifest
 
 Create a deployment manifest file named `nginx-deployment.yaml` with the following content:
@@ -206,6 +204,8 @@ spec:
             exec:
               command: ["/bin/sh", "-c", "nginx -s quit"]
 ```
+
+Here we see all the different types of probes we previously discussed. We first have a `livenessProbe` that checks whether our pod is alive every 10 seconds, a `readinessProbe` that checks if the pod is ready to serve traffic every 5 seconds, and a startup probe that checks to see if the pod has started up properly. This also has a `postStart` and a `preStop` hook. The `preStart` hook just echos out a line while the `preStop` hook runs `nginx -s quit` which finishes service open connections before shutting down (graceful shutdown).
 
 ### Step 2: Create a ConfigMap for Custom NGINX Configuration
 
@@ -334,14 +334,7 @@ kubectl get pods
 kubectl describe pod <pod-name>
 ```
 
-This setup ensures that:
-
-- **Liveness Probe:** Checks if the NGINX container is alive. If it fails, Kubernetes will restart the container.
-- **Readiness Probe:** Checks if the NGINX container is ready to serve traffic. If it fails, the pod will be removed from the service endpoints.
-- **Startup Probe:** Ensures that the NGINX container has started up properly before any liveness or readiness probes are executed.
-
 With this configuration, you should have a robust deployment of NGINX with proper health checks using readiness, liveness, and startup probes.
-
 
 Implementing a graceful shutdown for your NGINX deployment involves ensuring that your application can handle termination signals properly, finish any ongoing requests, and clean up resources before the container is terminated. Here’s how you can achieve this in Kubernetes:
 
