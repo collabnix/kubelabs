@@ -196,16 +196,9 @@ spec:
             port: 80
           initialDelaySeconds: 0
           periodSeconds: 10
-        lifecycle:
-          postStart:
-            exec:
-              command: ["/bin/sh", "-c", "echo 'nginx started'"]
-          preStop:
-            exec:
-              command: ["/bin/sh", "-c", "nginx -s quit"]
 ```
 
-Here we see all the different types of probes we previously discussed. We first have a `livenessProbe` that checks whether our pod is alive every 10 seconds, a `readinessProbe` that checks if the pod is ready to serve traffic every 5 seconds, and a startup probe that checks to see if the pod has started up properly. This also has a `postStart` and a `preStop` hook. The `preStart` hook just echos out a line while the `preStop` hook runs `nginx -s quit` which finishes service open connections before shutting down (graceful shutdown).
+Here we see all the different types of probes we previously discussed. We first have a `livenessProbe` that checks whether our pod is alive every 10 seconds, a `readinessProbe` that checks if the pod is ready to serve traffic every 5 seconds, and a startup probe that checks to see if the pod has started up properly.Now that we have defined the various probes, we need to define the actual endpoints. Otherwise, the probes will ping these missing endpoints and our application will never start.
 
 ### Step 2: Create a ConfigMap for Custom NGINX Configuration
 
@@ -300,13 +293,6 @@ spec:
             port: 80
           initialDelaySeconds: 0
           periodSeconds: 10
-        lifecycle:
-          postStart:
-            exec:
-              command: ["/bin/sh", "-c", "echo 'nginx started'"]
-          preStop:
-            exec:
-              command: ["/bin/sh", "-c", "nginx -s quit"]
       volumes:
       - name: nginx-config-volume
         configMap:
@@ -336,7 +322,7 @@ kubectl describe pod <pod-name>
 
 With this configuration, you should have a robust deployment of NGINX with proper health checks using readiness, liveness, and startup probes.
 
-Implementing a graceful shutdown for your NGINX deployment involves ensuring that your application can handle termination signals properly, finish any ongoing requests, and clean up resources before the container is terminated. Here’s how you can achieve this in Kubernetes:
+Now, let's move on to graceful shutdowns.
 
 ### Step 1: Define a PreStop Hook in Your Deployment Manifest
 
@@ -408,7 +394,7 @@ Apply the updated deployment manifest to your Kubernetes cluster:
 kubectl apply -f nginx-deployment.yaml
 ```
 
-### Explanation of Configuration
+This introduces two new attributes:
 
 1. **terminationGracePeriodSeconds:** This sets the period (in seconds) that Kubernetes will wait after sending a SIGTERM signal to the container before forcefully terminating it with a SIGKILL signal. The default value is 30 seconds, but it can be adjusted based on your application's requirements. In this example, it is set to 60 seconds.
 
