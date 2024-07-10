@@ -420,8 +420,6 @@ To verify that the graceful shutdown is working correctly, you can simulate a te
     kubectl logs <nginx-pod-name> --previous
     ```
 
-    Look for logs indicating that NGINX received the shutdown signal and that it stopped gracefully.
+    When observing the logs from the nginx pods, you should be able to see that a graceful shutdown is being performed.
 
-### Summary
-
-By implementing the `preStop` hook and setting an appropriate `terminationGracePeriodSeconds`, you ensure that NGINX can handle ongoing requests and cleanly shut down before the container is terminated. This approach provides a smooth user experience and avoids abrupt disconnections or data loss during shutdowns.
+Now that we've covered graceful shutdowns, let's take a look at a few annotations in action.
