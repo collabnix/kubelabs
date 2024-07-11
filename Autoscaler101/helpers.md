@@ -422,4 +422,96 @@ To verify that the graceful shutdown is working correctly, you can simulate a te
 
     When observing the logs from the nginx pods, you should be able to see that a graceful shutdown is being performed.
 
-Now that we've covered graceful shutdowns, let's take a look at a few annotations in action.
+With that, we cover graceful shutdowns. We will be skipping annotations for this lab since the annotations themselves are uncomplicated and applying them to your deployments or nodes is very straightforward. So let's jump right ahead to pod priority.
+
+To introduce Pod Priority to your Deployment, you need to define a `PriorityClass` and then reference it in your Deployment's Pod spec. Pod Priority is used to influence the scheduling and eviction policies for Pods. Here’s how you can add a `PriorityClass` and incorporate it into your existing Deployment:
+
+### Step 1: Define a PriorityClass
+
+First, you need to create a `PriorityClass` resource. This resource defines a priority value and an optional description.
+
+```yaml
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: high-priority
+value: 100000
+globalDefault: false
+description: "This priority class is used for high priority pods."
+```
+
+### Step 2: Reference the PriorityClass in the Deployment
+
+Next, update your Deployment to use the newly defined `PriorityClass`.
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      priorityClassName: high-priority
+      terminationGracePeriodSeconds: 60
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: nginx-config-volume
+          mountPath: /etc/nginx/conf.d
+          subPath: default.conf
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /readiness
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        startupProbe:
+          httpGet:
+            path: /startup
+            port: 80
+          initialDelaySeconds: 0
+          periodSeconds: 10
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "echo 'nginx started'"]
+          preStop:
+            exec:
+              command: ["/bin/sh", "-c", "nginx -s quit && sleep 30"]
+      volumes:
+      - name: nginx-config-volume
+        configMap:
+          name: nginx-config
+```
+
+### Explanation
+
+1. **PriorityClass Resource**:
+    - `name`: The name of the priority class (`high-priority` in this example).
+    - `value`: The priority value assigned to this class. Higher values indicate higher priority.
+    - `globalDefault`: Indicates if this should be the default priority class for Pods that do not specify any priority class.
+    - `description`: A human-readable description of the priority class.
+
+2. **Deployment Update**:
+    - `priorityClassName`: Added to the Pod spec to assign the priority class to the Pods created by this Deployment.
+
+By adding the `PriorityClass` and referencing it in your Deployment, you ensure that the Pods in this Deployment are given a higher priority during scheduling and eviction processes compared to other Pods with lower priority or no specified priority class.
