@@ -424,7 +424,7 @@ To verify that the graceful shutdown is working correctly, you can simulate a te
 
 With that, we cover graceful shutdowns. We will be skipping annotations for this lab since the annotations themselves are uncomplicated and applying them to your deployments or nodes is very straightforward. So let's jump right ahead to pod priority.
 
-To introduce Pod Priority to your Deployment, you need to define a `PriorityClass` and then reference it in your Deployment's Pod spec. Pod Priority is used to influence the scheduling and eviction policies for Pods. Here’s how you can add a `PriorityClass` and incorporate it into your existing Deployment:
+To introduce Pod Priority to our Nginx Deployment, we need to define a `PriorityClass` and then reference it in our Deployment's Pod spec.
 
 ### Step 1: Define a PriorityClass
 
@@ -442,7 +442,7 @@ description: "This priority class is used for high priority pods."
 
 ### Step 2: Reference the PriorityClass in the Deployment
 
-Next, update your Deployment to use the newly defined `PriorityClass`.
+Next, update the Deployment to use the newly defined `PriorityClass`.
 
 ```yaml
 apiVersion: apps/v1
@@ -514,4 +514,4 @@ spec:
 2. **Deployment Update**:
     - `priorityClassName`: Added to the Pod spec to assign the priority class to the Pods created by this Deployment.
 
-By adding the `PriorityClass` and referencing it in your Deployment, you ensure that the Pods in this Deployment are given a higher priority during scheduling and eviction processes compared to other Pods with lower priority or no specified priority class.
+By adding the `PriorityClass` and referencing it in your Deployment, you ensure that the Pods in this Deployment are given a higher priority during scheduling and eviction processes compared to other Pods with lower priority or no specified priority class. Lower priority in this case would be a priority less that 10000 (which is what we have defined as high).
