@@ -516,7 +516,7 @@ spec:
 
 By adding the `PriorityClass` and referencing it in your Deployment, you ensure that the Pods in this Deployment are given a higher priority during scheduling and eviction processes compared to other Pods with lower priority or no specified priority class. Lower priority in this case would be a priority less that 10000 (which is what we have defined as high).
 
-Finally, let's get to PodDisruptionBudgets. To add a Pod Disruption Budget (PDB) to your deployment, you need to create a PDB resource. A PDB ensures that a certain number of pods in a deployment are available even during voluntary disruptions (such as draining a node for maintenance). Below is your updated configuration with a PDB added:
+Finally, let's get to PodDisruptionBudgets. To add a Pod Disruption Budget (PDB) to your deployment, you need to create a PDB resource. A PDB ensures that a certain number of pods in a deployment are available even during voluntary disruptions (such as draining a node for maintenance). Below is our updated configuration with a PDB added. The deployment file remains essentially the same. The disruption budget comes from a new manifest of kind `PodDisruptionBudget`:
 
 ### Deployment YAML
 
@@ -599,13 +599,10 @@ spec:
 - **minAvailable: 2**: This specifies that at least 2 pods must be available at all times.
 - **selector**: Ensures that the PDB applies to the pods matching the specified labels (`app: nginx`).
 
-### Applying the Configuration:
-1. Save the deployment YAML to a file, e.g., `nginx-deployment.yaml`.
-2. Save the PDB YAML to another file, e.g., `nginx-pdb.yaml`.
-3. Apply both configurations using `kubectl`:
-   ```sh
-   kubectl apply -f nginx-deployment.yaml
-   kubectl apply -f nginx-pdb.yaml
-   ```
+Apply the configuration:
 
-This ensures your deployment has a disruption budget to maintain availability during node maintenance or other voluntary disruptions.
+```sh
+kubectl apply -f nginx-pdb.yaml
+```
+
+This should ensure that the nginx pod has a proper disruption budget at all times.
