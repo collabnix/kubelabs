@@ -606,3 +606,7 @@ kubectl apply -f nginx-pdb.yaml
 ```
 
 Now your number of pods won't go below the minimum available pod count meaning that if pods are evicted due to autoscaling, if a new version is deployed, or if your pods are supposed to restart for any reason, at least 2 pods will always be up. This, however, will not consider a case where your pod or node goes out of memory, becomes unreachable, or unschedulable. If your node doesn't have enough resources to give, even a PDB insisting that the pod needs to stay up doesn't work. The same applies if the node suddenly were to get removed. To minimize the change of this happening, you will properly have to set pod requests and limits so that the resource requirements of a pod never exceed what the node can provide.
+
+# Conclusion
+
+This brings us to the end of this section, where we discuss how to use various tools provided both natively and as add-ons to improve the stability of scaling, which is an essential aspect of running high availability production applications. There are a large number of other tools within the CNCF collective that help improve this stability, so don't hesitate to research the various options to get the best fit for your production workload. For more about scaling, don't forget to check out our [KEDA](../Keda101/what-is-keda.md) and [Karpenter](../Karpenter101/what-is-karpenter.md) sections.
