@@ -247,6 +247,7 @@ A Curated List of Kubernetes Labs and Tutorials
 
  - [What are autoscalers](./Autoscaler101/what-are-autoscalers.md)
  - [Autoscaler lab](./Autoscaler101/autoscaler-lab.md)
+ - [Autoscaler helpers](./Autoscaler101/helpers.md)
 
 ## Helm101
 
