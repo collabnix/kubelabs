@@ -4,4 +4,8 @@ In this section, we will look at several tools that can help improve your cluste
 
 ## Lens
 
-Let's start with one of the most popular cluster observability tools out there: Kube Lens. This is a desktop tool that can be used to perform pretty much anything you would do with the kubectl command line and is very stable and feature-rich. If you are a DevOps engineer working with Kubernetes clusters, Lens is a must.
+Let's start with one of the most popular cluster observability tools: Kube Lens. This is a desktop tool that can be used to perform pretty much anything you would do with the kubectl command line and is very stable and feature-rich. If you are a DevOps engineer working with Kubernetes clusters, Lens is a must. There are two versions of Lens: the one maintained by Mirantis (https://k8slens.dev) and the Open Lens maintained by the community. They both largely have the same features and provide an excellent way to access your cluster without using a host of kubectl commands.
+
+### Setup
+
+Since Lens is a desktop tool, the setup is fairly simple - assuming you already have the cluster accessible via kubectl. If this is the case, all you have to do is install the desktop application, and your cluster should be there in the catalog section of Lens. Once you connect to the cluster, you will be shown a list of resources, all relating to your Kubernetes cluster. This will include workloads (such as pods, and jobs), resources such as nodes, networking objects such as services and ingresses, etc...
