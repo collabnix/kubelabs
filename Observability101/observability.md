@@ -20,8 +20,36 @@ It's also great for developers and QA who aren't necessarily familiar with kubec
 
 If you are running as a production cluster, then you need to limit the number of people that can access this cluster. Since the Headlamp dashboard can allow you to do admin-level stuff with your Kubernetes cluster, you must enable authentication. To support this, Headlamp allows all sorts of authentication for your cluster such as Dex, Keycloak, and AWS Cognito. Essentially every type of OIDC authentication is supported. You can get more information on this on their [authentication page](https://headlamp.dev/docs/latest/installation/in-cluster/dex/). We shall discuss using tools like Keycloak with Kubernetes to secure your in-cluster services in a different section. Headlamp is fully open source and does not have an enterprise edition, but its very easy to get support from the great community of Headlamp users.
 
+To install a headlamp on your cluster, all you have to do is:
+
+```
+helm repo add headlamp https://headlamp-k8s.github.io/headlamp/
+helm install my-headlamp headlamp/headlamp --namespace kube-system
+```
+
+You can change the default installation using custom values.yaml.
+
+```
+helm install my-headlamp headlamp/headlamp --namespace kube-system -f values.yaml
+helm install my-headlamp headlamp/headlamp --namespace kube-system --set replicaCount=2
+```
+
+Or you could install everything with a kubectl deployment:
+
+```
+kubectl apply -f https://raw.githubusercontent.com/kinvolk/headlamp/main/kubernetes-headlamp.yaml
+```
+
+After that, you can expose Headlamp in a couple of ways. If you are on a cloud provider, then edit the headlamp service and change the service type to `LoadBalancer`. This will create an internet-facing LB that you can access. If you already have a VPN setup for your cloud VPC, you could add the annotation `service.beta.kubernetes.io/aws-load-balancer-internal: 'true'` which will make the LB internal (assuming you're on AWS, other providers will have different annotations).
+
+You could also expose it with port forwarding.
+
 While Headlamp is a great, lightweight web-based dashboard, it only allows you to observe and perform basic functions on your cluster. If you need a much more heavy-hitting application that gives you observability, but also allows you to cram the entire build & deploy pipeline into a single tool, you can consider a tool like Devtron.
 
 ## Devtron
 
-Devtron has all the features of Headlamp & Lens, such as viewing, editing, and logging, but it also includes its own build and deploy stack. You can create a Devtron application that reads off a repo and builds the application based on your specifications. The image gets pushed to your image repo of choice, and you can then have additional CI/CD pipelines that deploy this image into your cluster. The image can be deployed with regular Kubernetes manifest files, or with Helm charts. This is part of the Build & Deploy integration.
+Devtron has all the features of Headlamp & Lens, such as viewing, editing, and logging, but it also includes its own build and deploy stack. If you wanted to have headlamp level of functionality without any of the added stuff, Devtron allows you to easily install just thhe core dashboard without any integrations:
+
+
+
+You can create a Devtron application that reads off a repo and builds the application based on your specifications. The image gets pushed to your image repo of choice, and you can then have additional CI/CD pipelines that deploy this image into your cluster. The image can be deployed with regular Kubernetes manifest files, or with Helm charts. This is part of the Build & Deploy integration.
