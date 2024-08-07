@@ -44,6 +44,22 @@ After that, you can expose Headlamp in a couple of ways. If you are on a cloud p
 
 You could also expose it with port forwarding.
 
+```
+kubectl port-forward -n kube-system service/headlamp 8080:80
+```
+
+This is the easiest option of you are running on something like Minikube. Or, you could [expose Headlamp with an ingress server](https://headlamp.dev/docs/latest/installation/in-cluster/#exposing-headlamp-with-an-ingress-server).
+
+Once that is done, head over to the dashboard, and you will be presented with a login screen. To login, create a service account and get service token:
+
+```
+kubectl -n kube-system create serviceaccount headlamp-admin
+kubectl create clusterrolebinding headlamp-admin --serviceaccount=kube-system:headlamp-admin --clusterrole=cluster-admin
+kubectl create token headlamp-admin -n kube-system
+```
+
+Note that this service token is temporary and shouldn't be used as a login mechanism anyway. It's best to setup login properly with OIDC.
+
 While Headlamp is a great, lightweight web-based dashboard, it only allows you to observe and perform basic functions on your cluster. If you need a much more heavy-hitting application that gives you observability, but also allows you to cram the entire build & deploy pipeline into a single tool, you can consider a tool like Devtron.
 
 ## Devtron
