@@ -58,7 +58,7 @@ kubectl create clusterrolebinding headlamp-admin --serviceaccount=kube-system:he
 kubectl create token headlamp-admin -n kube-system
 ```
 
-Note that this service token is temporary and shouldn't be used as a login mechanism anyway. It's best to setup login properly with OIDC.
+Note that this service token is temporary and shouldn't be used as a login mechanism anyway. It's best to setup login properly with OIDC. Once OIDC is setup, you can use the native Kubernetes RBAC roles to decide who gets what access.
 
 While Headlamp is a great, lightweight web-based dashboard, it only allows you to observe and perform basic functions on your cluster. If you need a much more heavy-hitting application that gives you observability, but also allows you to cram the entire build & deploy pipeline into a single tool, you can consider a tool like Devtron.
 
@@ -66,6 +66,19 @@ While Headlamp is a great, lightweight web-based dashboard, it only allows you t
 
 Devtron has all the features of Headlamp & Lens, such as viewing, editing, and logging, but it also includes its own build and deploy stack. If you wanted to have headlamp level of functionality without any of the added stuff, Devtron allows you to easily install just thhe core dashboard without any integrations:
 
+```
+helm repo add devtron https://helm.devtron.ai
+helm repo update devtron
+helm install devtron devtron/devtron-operator \
+--create-namespace --namespace devtroncd
+```
 
+Exposing this is similar to exposing Headlamp. You could use:
+
+```
+kubectl get svc -n devtroncd devtron-service -o jsonpath='{.status.loadBalancer.ingress}'
+```
+
+To get the load balancer path. Similar to Headlamp, Devtron provides easy integration with OIDC providers like Keycloak and Dex. They additionally also provide you with SSO integration for major SSO providers such as Google and Microsoft, as well as support for LDAP. In comparison to Headlamp, Devtron has it's own UI that allows you to specify access to resources, users, and roles.
 
 You can create a Devtron application that reads off a repo and builds the application based on your specifications. The image gets pushed to your image repo of choice, and you can then have additional CI/CD pipelines that deploy this image into your cluster. The image can be deployed with regular Kubernetes manifest files, or with Helm charts. This is part of the Build & Deploy integration.
