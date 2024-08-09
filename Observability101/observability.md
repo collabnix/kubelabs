@@ -79,6 +79,8 @@ Exposing this is similar to exposing Headlamp. You could use:
 kubectl get svc -n devtroncd devtron-service -o jsonpath='{.status.loadBalancer.ingress}'
 ```
 
-To get the load balancer path. Similar to Headlamp, Devtron provides easy integration with OIDC providers like Keycloak and Dex. They additionally also provide you with SSO integration for major SSO providers such as Google and Microsoft, as well as support for LDAP. In comparison to Headlamp, Devtron has it's own UI that allows you to specify access to resources, users, and roles.
+To get the load balancer path. Like Headlamp, Devtron provides easy integration with OIDC providers like Keycloak and Dex. They additionally also provide you with SSO integration for major SSO providers such as Google and Microsoft, as well as support for LDAP. Compared to Headlamp, Devtron has its own UI that allows you to specify access to resources, users, and roles. You can define permission groups, create new users, and then assign those permission groups to users. You can also assign multiple permission groups to a single user, meaning that you can have increasingly permissive groups for each user.
+
+Now that we have covered all the areas that Devtron and Headlamp have in common, let's move to the areas that are different: which is the application stack.
 
 You can create a Devtron application that reads off a repo and builds the application based on your specifications. The image gets pushed to your image repo of choice, and you can then have additional CI/CD pipelines that deploy this image into your cluster. The image can be deployed with regular Kubernetes manifest files, or with Helm charts. This is part of the Build & Deploy integration.
