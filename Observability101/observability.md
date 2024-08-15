@@ -92,3 +92,5 @@ An essential feature Devtron provides is vulnerability scanning using [Clair](ht
 Another feature Devtron has is alerting. Any events that occur on your build or deployment pipelines can be alerted via email or Slack. This is a fairly basic configuration that you will find in most CI/CD systems such as Jenkins.
 
 The final feature that Devtron has is monitoring with Grafana. Once you have finished deploying your application to your Kubernetes cluster, you can check the application metrics like CPU, Memory utilization, Status 4xx/ 5xx/ 2xx, Throughput, and Latency. This skips all the steps involved in setting up Grafana yourself and installs the full stack for you.
+
+So all in all, Devtron provides much more than just a resource browser that can be used to control the Kubernetes cluster. It also allows you to build images, check them for vulnerabilities, then deploy them. Once the deployment is complete, you also get to monitor the health of these deployments and alert if something goes wrong.
