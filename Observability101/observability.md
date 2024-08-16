@@ -93,4 +93,8 @@ Another feature Devtron has is alerting. Any events that occur on your build or 
 
 The final feature that Devtron has is monitoring with Grafana. Once you have finished deploying your application to your Kubernetes cluster, you can check the application metrics like CPU, Memory utilization, Status 4xx/ 5xx/ 2xx, Throughput, and Latency. This skips all the steps involved in setting up Grafana yourself and installs the full stack for you.
 
-So all in all, Devtron provides much more than just a resource browser that can be used to control the Kubernetes cluster. It also allows you to build images, check them for vulnerabilities, then deploy them. Once the deployment is complete, you also get to monitor the health of these deployments and alert if something goes wrong.
+So all in all, Devtron provides much more than just a resource browser that can be used to control the Kubernetes cluster. It also allows you to build images, check them for vulnerabilities, then deploy them. Once the deployment is complete, you also get to monitor the health of these deployments and alert if something goes wrong. So it's the full end-to-end package.
+
+Now, let's move on to [portainer](https://www.portainer.io), which provides most features of Devtron, but also gives some additional options your organization might find useful.
+
+## Portainer
