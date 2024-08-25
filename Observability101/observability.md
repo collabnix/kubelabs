@@ -60,6 +60,8 @@ kubectl create token headlamp-admin -n kube-system
 
 Note that this service token is temporary and shouldn't be used as a login mechanism anyway. It's best to setup login properly with OIDC. Once OIDC is setup, you can use the native Kubernetes RBAC roles to decide who gets what access.
 
+Sidenote: Headlamp desktop allows managing multiple clusters but the web version does not.
+
 While Headlamp is a great, lightweight web-based dashboard, it only allows you to observe and perform basic functions on your cluster. If you need a much more heavy-hitting application that gives you observability, but also allows you to cram the entire build & deploy pipeline into a single tool, you can consider a tool like Devtron.
 
 ## Devtron
@@ -95,6 +97,16 @@ The final feature that Devtron has is monitoring with Grafana. Once you have fin
 
 So all in all, Devtron provides much more than just a resource browser that can be used to control the Kubernetes cluster. It also allows you to build images, check them for vulnerabilities, then deploy them. Once the deployment is complete, you also get to monitor the health of these deployments and alert if something goes wrong. So it's the full end-to-end package.
 
+One additional feature Devtron has is multi-cluster management. If your organization has several clusters, you can get access to all of them within the same dashboard. There are two ways to do this, and the easiest is to create a service account in your second cluster that allows Devtron to perform operations on it. To do this, Devtron has provided a straightforward bash script that can be run which does the job for you. First, make sure you are in your second clusters' contexts, then run:
+
+```
+curl -O https://raw.githubusercontent.com/devtron-labs/utilities/main/kubeconfig-exporter/kubernetes_export_sa.sh && bash kubernetes_export_sa.sh cd-user  devtroncd
+```
+
+Add the server URL and token you get from this command to the Devtron UI and your cluster should start showing up in the resource browser. Full instructions can be found [in the official docs](https://docs.devtron.ai/global-configurations/cluster-and-environments#add-cluster). Another way to add a cluster is using the kubeconfig. Instructions to do this can be found [here](https://docs.devtron.ai/global-configurations/cluster-and-environments#add-clusters-using-kubeconfig). Note that if your cluster is hosted on a cloud provider, you can't just copy and paste the kubeconfig and expect it to work.
+
 Now, let's move on to [portainer](https://www.portainer.io), which provides most features of Devtron, but also gives some additional options your organization might find useful.
 
 ## Portainer
+
+Portainer is a container management platform, which means that it dips into the realm of Docker/Docker swarms as well as Kubernetes. It works with basically every containerization platform, cloud service, and even your self hosted platforms.
