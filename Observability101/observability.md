@@ -110,3 +110,67 @@ Now, let's move on to [portainer](https://www.portainer.io), which provides most
 ## Portainer
 
 Portainer is a container management platform, which means that it dips into the realm of Docker/Docker swarms as well as Kubernetes. It works with basically every containerization platform, cloud service, and even your self hosted platforms.
+
+Portainer is a lightweight and user-friendly management UI for Docker, Kubernetes, and other container orchestration platforms. It simplifies the process of managing containers, images, volumes, networks, and more through an intuitive web interface. Here’s an overview of its key features and capabilities:
+
+### Key Features
+1. **Container Management:**
+   - Allows users to create, manage, and monitor Docker containers.
+   - Supports starting, stopping, pausing, and restarting containers.
+   - Provides detailed information about container logs, resource usage, and network configurations.
+
+2. **Image Management:**
+   - Facilitates pulling, pushing, and managing Docker images.
+   - Supports creating new containers from images or building images directly from Dockerfiles.
+
+3. **Volume Management:**
+   - Enables easy management of Docker volumes, including creation, inspection, and deletion.
+   - Allows users to manage data persistence for their containers.
+
+4. **Network Management:**
+   - Provides tools for managing Docker networks, including the ability to create custom networks and attach/detach containers from them.
+
+5. **Kubernetes Support:**
+   - Portainer can manage Kubernetes clusters, making it easier for users to deploy and monitor workloads, services, and configurations within Kubernetes.
+   - Supports both standard Kubernetes and Docker Swarm environments.
+
+6. **User Management:**
+   - Portainer offers role-based access control (RBAC), allowing administrators to define user roles and permissions.
+   - Supports multi-user environments with authentication mechanisms like LDAP, OAuth, and more.
+
+7. **Stacks and Templates:**
+   - Users can deploy multi-container applications using stacks, which are defined using Docker Compose files.
+   - Provides a catalog of templates for commonly used applications, simplifying the deployment process.
+
+8. **Advanced Features:**
+   - Integrates with CI/CD pipelines, enabling automated deployment and management.
+   - Supports the management of secrets, environments, and custom registries.
+
+9. **Monitoring and Logs:**
+   - Offers real-time monitoring of container performance, including CPU, memory, and network usage.
+   - Provides access to container logs for debugging and auditing purposes.
+
+### Deployment and Usage
+- **Deployment:** Portainer is deployed as a container itself, making it easy to set up. It can be installed on any system running Docker or Kubernetes.
+- **Web Interface:** Once deployed, users can access Portainer via a web browser, where they interact with the system through a clean and straightforward UI.
+
+### Use Cases
+- **Small to Medium-Sized Deployments:** Ideal for small to medium-sized deployments where ease of management and visibility is crucial.
+- **Learning and Development:** Often used in learning environments to help new users understand Docker and Kubernetes concepts through a visual interface.
+- **Multi-Cluster Management:** Useful in environments with multiple clusters or nodes, as it allows centralized management and monitoring.
+
+### Limitations
+- **Scalability:** While Portainer is excellent for managing small to medium-sized environments, it may not scale as well for very large or complex enterprise environments with thousands of nodes.
+- **Advanced Kubernetes Features:** It provides a simplified view of Kubernetes, which may not expose all the advanced features available through native Kubernetes tools.
+
+Overall, Portainer is a powerful tool for simplifying container and cluster management, making it accessible to a broader audience, including developers, sysadmins, and DevOps teams.
+
+## Octant
+
+Next, let's look at Octant by VMware. Octant toes the line between being a desktop application and a web interface, in that you install it locally on your desktop, and it launches a server that gives you access to your cluster using your web browser. It uses your local kubeconfig to provide access to your clusters. Hence, there is no additional configuration required, and you can set up the kubeconfig in a server and have Octant installed on it, then serve it using a simple Nginx server. However, it is impossible to restrict access based on roles since the application was not designed for it. Specifically, Octant is designed to manage Tanzu Kubernetes Clusters, which are preconfigured enterprise-grade clusters provided by VMware.
+
+Octant provides all the features of tools such as Headlamp & Lens, except this has a high focus on development. While the other tools are mainly designed to be used by DevOps teams, Octant comes with inbuilt support for debugging and plug-ins over gRPC which are designed to be used by development teams testing out their software in Kubernetes clusters. So it makes sense that the tool would be run locally on your machine similar to an IDE used to debug application code instead of a web interface shared by many people. So depending on your use case, this might not fit your needs.
+
+## ArgoCD
+
+ArgoCD is not a cluster observability/operations tool, but rather a GitOps tool used to automate CI/CD processes. However, it deserves an honorable mention since it gives observability/operations access to all parts of a Kubernetes cluster other than the nodes. ArgoCD allows you to deploy new application revisions and then lays out a resource map of all the resources that come up when the deployment is performed. You can then edit/delete these resources from the same dashboard and it will get updated in real-time. ArgoCD also allows you to view the logs & events of a pod, and with a little configuration, you should be able to shell into a pod from within ArgoCD as well.
