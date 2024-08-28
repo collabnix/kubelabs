@@ -113,20 +113,7 @@ Portainer is a container management platform, which means that it dips into the 
 
 For starters, it allows users to create, manage, and monitor Docker containers. It also allows operational functions such as starting, stopping, pausing, and restarting containers. You can also view container logs, resource usage, network configurations, and other metrics related to these containers. You also have an in-built image repo that facilitates pulling, pushing, and managing Docker images. This means you can create new containers from images or build images directly from Dockerfiles.
 
-3. **Volume Management:**
-   - Enables easy management of Docker volumes, including creation, inspection, and deletion.
-   - Allows users to manage data persistence for their containers.
-
-4. **Network Management:**
-   - Provides tools for managing Docker networks, including the ability to create custom networks and attach/detach containers from them.
-
-5. **Kubernetes Support:**
-   - Portainer can manage Kubernetes clusters, making it easier for users to deploy and monitor workloads, services, and configurations within Kubernetes.
-   - Supports both standard Kubernetes and Docker Swarm environments.
-
-6. **User Management:**
-   - Portainer offers role-based access control (RBAC), allowing administrators to define user roles and permissions.
-   - Supports multi-user environments with authentication mechanisms like LDAP, OAuth, and more.
+Managing the volumes used in both your Docker containers as well as PVCs used in Kubernetes is another feature available in Portainer, as well as the ability to create custom networks and attach/detach containers from them. When it comes to Kubernetes support, Portainer can manage Kubernetes clusters, making it easier for users to deploy and monitor workloads, services, and configurations within Kubernetes. It also supports Docker Swarm environments. You also have RBAC allowing administrators to define user roles and permissions. It also supports multi-user environments with authentication mechanisms like LDAP, OAuth, and more. Note that most of these features are enterprise grade.
 
 7. **Stacks and Templates:**
    - Users can deploy multi-container applications using stacks, which are defined using Docker Compose files.
