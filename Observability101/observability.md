@@ -115,13 +115,7 @@ For starters, it allows users to create, manage, and monitor Docker containers. 
 
 Managing the volumes used in both your Docker containers as well as PVCs used in Kubernetes is another feature available in Portainer, as well as the ability to create custom networks and attach/detach containers from them. When it comes to Kubernetes support, Portainer can manage Kubernetes clusters, making it easier for users to deploy and monitor workloads, services, and configurations within Kubernetes. It also supports Docker Swarm environments. You also have RBAC allowing administrators to define user roles and permissions. It also supports multi-user environments with authentication mechanisms like LDAP, OAuth, and more. Note that most of these features are enterprise grade.
 
-7. **Stacks and Templates:**
-   - Users can deploy multi-container applications using stacks, which are defined using Docker Compose files.
-   - Provides a catalog of templates for commonly used applications, simplifying the deployment process.
-
-8. **Advanced Features:**
-   - Integrates with CI/CD pipelines, enabling automated deployment and management.
-   - Supports the management of secrets, environments, and custom registries.
+Portainer also has a catalog of templates for commonly used applications, simplifying the deployment process. Users can also deploy multi-container applications using stacks, which are defined using Docker Compose files. Similar to Devtron, you also get CI/CD support, enabling automated deployment and management. portainer also has the added management functionality of secrets, environments, and custom registries.
 
 9. **Monitoring and Logs:**
    - Offers real-time monitoring of container performance, including CPU, memory, and network usage.
