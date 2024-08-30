@@ -115,15 +115,25 @@ For starters, it allows users to create, manage, and monitor Docker containers. 
 
 Managing the volumes used in both your Docker containers as well as PVCs used in Kubernetes is another feature available in Portainer, as well as the ability to create custom networks and attach/detach containers from them. When it comes to Kubernetes support, Portainer can manage Kubernetes clusters, making it easier for users to deploy and monitor workloads, services, and configurations within Kubernetes. It also supports Docker Swarm environments. You also have RBAC allowing administrators to define user roles and permissions. It also supports multi-user environments with authentication mechanisms like LDAP, OAuth, and more. Note that most of these features are enterprise grade.
 
-Portainer also has a catalog of templates for commonly used applications, simplifying the deployment process. Users can also deploy multi-container applications using stacks, which are defined using Docker Compose files. Similar to Devtron, you also get CI/CD support, enabling automated deployment and management. portainer also has the added management functionality of secrets, environments, and custom registries.
+Portainer also has a catalog of templates for commonly used applications, simplifying the deployment process. Users can also deploy multi-container applications using stacks, which are defined using Docker Compose files. Similar to Devtron, you also get CI/CD support, enabling automated deployment and management. Portainer also has the added management functionality of secrets, environments, and custom registries.
 
-9. **Monitoring and Logs:**
-   - Offers real-time monitoring of container performance, including CPU, memory, and network usage.
-   - Provides access to container logs for debugging and auditing purposes.
+You also get real-time monitoring of container performance, including CPU, memory, and network usage simliar to what you would get out of Grafana and Prometheus. You also have logging capabilities similar to the other tools on this list which provides access to container logs for debugging and auditing purposes.
 
-### Deployment and Usage
-- **Deployment:** Portainer is deployed as a container itself, making it easy to set up. It can be installed on any system running Docker or Kubernetes.
-- **Web Interface:** Once deployed, users can access Portainer via a web browser, where they interact with the system through a clean and straightforward UI.
+When it comes to deployments, there are several ways to do it depending on which environment you are using. It is containerized so it can run on your Docker environments just fine (both Docker standalone & Docker swarm). On Kubernetes, you use Helm like so:
+
+```
+helm repo add portainer https://portainer.github.io/k8s/
+helm repo update
+helm upgrade --install --create-namespace -n portainer portainer portainer/portainer \
+    --set tls.force=true \
+    --set image.tag=2.21.0
+```
+
+Or you could use plain kubectl:
+
+```
+kubectl apply -n portainer -f https://downloads.portainer.io/ce2-21/portainer.yaml
+```
 
 ### Use Cases
 - **Small to Medium-Sized Deployments:** Ideal for small to medium-sized deployments where ease of management and visibility is crucial.
