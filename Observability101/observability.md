@@ -135,14 +135,13 @@ Or you could use plain kubectl:
 kubectl apply -n portainer -f https://downloads.portainer.io/ce2-21/portainer.yaml
 ```
 
-### Use Cases
-- **Small to Medium-Sized Deployments:** Ideal for small to medium-sized deployments where ease of management and visibility is crucial.
-- **Learning and Development:** Often used in learning environments to help new users understand Docker and Kubernetes concepts through a visual interface.
-- **Multi-Cluster Management:** Useful in environments with multiple clusters or nodes, as it allows centralized management and monitoring.
+If you want to expose the service via LoadBalancer instead of NodePort:
 
-### Limitations
-- **Scalability:** While Portainer is excellent for managing small to medium-sized environments, it may not scale as well for very large or complex enterprise environments with thousands of nodes.
-- **Advanced Kubernetes Features:** It provides a simplified view of Kubernetes, which may not expose all the advanced features available through native Kubernetes tools.
+```
+kubectl apply -n portainer -f https://downloads.portainer.io/ce2-21/portainer-lb.yaml
+```
+
+Once you do this, you should be able to access the Portainer UI via localhost or the load balancer URL. From here on, all you need to do is create an initial admin user, then connect Portainer to your environments.
 
 Overall, Portainer is a powerful tool for simplifying container and cluster management, making it accessible to a broader audience, including developers, sysadmins, and DevOps teams.
 
