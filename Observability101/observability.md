@@ -157,4 +157,4 @@ ArgoCD is not a cluster observability/operations tool, but rather a GitOps tool 
 
 ## Conclusion
 
-This brings us to the end of the section on the various observability tools available for developers/DevOps that will help you observe your Kubernetes workloads. As a next step, let's take a look at enabling proper authentication for these tools.
+This brings us to the end of the section on the various observability tools available for developers/DevOps that will help you observe your Kubernetes workloads.
