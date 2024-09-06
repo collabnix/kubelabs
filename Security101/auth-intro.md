@@ -1,3 +1,5 @@
 # Authentication
 
-This section will cover running authentication tools inside your cluster.
+This section will cover running authentication tools inside your cluster. In particular, we will be focusing on the use of Keycloak to act as an OIDC provider. This provider can then be used to authenticate your internal tools running within Kubernetes as well as outside Kubernetes (as long as it is inside the same VPC).
+
+Most organization have their own VPN which can be used to access resources within their private VPC. This is standard practice when managing your internal resources since you want to minimize your attack surface as much as possible. This means severely reducing the amount of internet-facing services you have that can be susceptible to vulnerabilities. So while well-established providers such as Google SSO exist, your services need to be internet-facing for those providers to work. This is where running your OIDC provider within your VPC comes in handy. If both your provider and the tools that use the provider are in the same VPC, there is no issue.
