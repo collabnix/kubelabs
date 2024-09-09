@@ -8,4 +8,24 @@ For this example, we will be setting up Keycloak, and then using it to authentic
 
 ## Keycloak installation
 
-Bitnami has an official Keycloak chart present, but this chart has some unresolved issues around its database configuration, so we will be using a different Keycloak chart instead.
+Bitnami has an official Keycloak chart present, but this chart has some unresolved issues around its database configuration, so we will be using a different Keycloak chart from codecentric instead. We will be using all the default values since they work fine for our use case, so install the chart with the following:
+
+```
+helm install keycloak codecentric/keycloak
+```
+
+Once the pods are ready, you can use port forwarding to access the Keycloak dashboard:
+
+```
+kubectl port-forward svc/keycloak-http 80:80 -n keycloak
+```
+
+You could also use a load balancer to access the resource by editing the service and setting the type to load balancer. Make sure you also set the annotation:
+
+```
+service.beta.kubernetes.io/aws-load-balancer-internal: true
+```
+
+This will make sure your LB is internal instead of internet-facing.
+
+Now that Keycloak is up, let's focus on setting up Devtron.
