@@ -28,4 +28,13 @@ service.beta.kubernetes.io/aws-load-balancer-internal: true
 
 This will make sure your LB is internal instead of internet-facing.
 
-Now that Keycloak is up, let's focus on setting up Devtron.
+Now that Keycloak is up, let's focus on setting up Devtron. We will set it up without any additional integrations:
+
+```
+helm repo add devtron https://helm.devtron.ai
+helm repo update devtron
+helm install devtron devtron/devtron-operator \
+--create-namespace --namespace devtroncd
+```
+
+Exposing this is similar to exposing Keycloak. Either use port forwarding or edit the `devtron-service` that is inside `devtroncd` namespace same way as before.
