@@ -28,6 +28,8 @@ service.beta.kubernetes.io/aws-load-balancer-internal: true
 
 This will make sure your LB is internal instead of internet-facing.
 
+## Devtron installation
+
 Now that Keycloak is up, let's focus on setting up Devtron. We will set it up without any additional integrations:
 
 ```
@@ -37,4 +39,8 @@ helm install devtron devtron/devtron-operator \
 --create-namespace --namespace devtroncd
 ```
 
-Exposing this is similar to exposing Keycloak. Either use port forwarding or edit the `devtron-service` that is inside `devtroncd` namespace same way as before.
+Exposing this is similar to exposing Keycloak. Either use port forwarding or edit the `devtron-service` inside the `devtroncd` namespace the same way as before. Once you have done that, log in to the Keycloak dashboard.
+
+## Creating the Devtron client
+
+Since Keycloak is the provider, Devtron will be the client that requests the authentication service. In the same way, if you had a different service that required authentication with Keycloak, that would be another client. For this exercise, you can use the default realm used by Keycloak, or you could create your own realm to put the clients under.
