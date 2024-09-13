@@ -41,6 +41,14 @@ helm install devtron devtron/devtron-operator \
 
 Exposing this is similar to exposing Keycloak. Either use port forwarding or edit the `devtron-service` inside the `devtroncd` namespace the same way as before. Once you have done that, log in to the Keycloak dashboard.
 
+## Managing the realm
+
+Keycloak allows you to separate your clients into various realms. For this exercise, you can use the default master realm used by Keycloak, or you could create your own realm to put the clients under. In any case, all you need to do here is to go to Realm settings > General, and click on "OpenID Endpoint Configuration". This will open up a JSON page. Take note of the first item in the block `issuer`. You will need this for the next part.
+
 ## Creating the Devtron client
 
-Since Keycloak is the provider, Devtron will be the client that requests the authentication service. In the same way, if you had a different service that required authentication with Keycloak, that would be another client. For this exercise, you can use the default realm used by Keycloak, or you could create your own realm to put the clients under.
+Since Keycloak is the provider, Devtron will be the client that requests the authentication service. In the same way, if you had a different service that required authentication with Keycloak, that would be another client. 
+
+From the left pane, go to clients > Create.
+
+Here, set the client ID to `devtron`, and the name to `Devtron`. Make sure the client protocol is openid-connect and the access type is confidential. Under "Valid Redirect URIs", set the redirect URL you got from Devtron.
