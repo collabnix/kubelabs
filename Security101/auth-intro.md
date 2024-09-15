@@ -61,3 +61,10 @@ Set `issuer` to the issuer URL you got from the previous step.
 Set `clientID` to `devtron`.
 Set `clientSecret` to the client secret from the previous step.
 Set `redirectURL` to the callback URL.
+
+With that, you are done setting up auth from both the Devtron and Keycloak side. Now, it's time to create users.
+
+## Creating users
+### Keycloak
+
+First, you will create users from Keycloak and assign them to the Devtron client. These are SSO users which you can use for other clients as well. For example, if you were also setting up SSO for ArgoCD, the users you create here would be able to log in to both Devtron & ArgoCD using the same account (provided you have given them those permissions). Creating a user is very simple, just head over to the user's section from the left pane, add a Username, email, and Name, and create the user. Next, go to the credentials tab and assign a user a new password, then select the `change password` option. This will make sure that the user has to use the password you give to log in for the first time, after which they are forced to change their password before they can go any further. You can also create user groups and assign users to them, which is useful if you are controlling users at an RBAC level. But since Devtron provides its own role-based auth, you can skip that.
