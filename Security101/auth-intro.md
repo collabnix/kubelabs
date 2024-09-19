@@ -71,6 +71,12 @@ First, you will create users from Keycloak and assign them to the Devtron client
 
 ### Devtron
 
-Once the user is created from Keycloak, take the user's email and head over to Devtron. Go to the user management section and create a user from the Devtron UI. Here, make sure to set the email to exactly the same one you took from Keycloak. There is no additional configuration needed from the users' end here since Devtron will match the user using the email and get the rest of the required information. Now, set the user roles and permissions. In Devtron, you can create permission groups and specify what kind of access each user has to each Kubernetes resource in a granular fashion. Once you have assigned all the permissions your user will need, assign the permission group to the user. You can assign multiple permission groups to each user increasing their level of access with each one, or you could directly give super admin privileges.
+Once the user is created from Keycloak, take the user's email and head over to Devtron. Go to the user management section and create a user from the Devtron UI. Here, make sure to set the email to exactly the same one you took from Keycloak. There is no additional configuration needed from the users' end here since Devtron will match the user using the email and get the rest of the required information.
 
-This is all you need to do to set up OIDC auth with Keycloak. Now, when users come to your Devtron page, they will see an option to "log in with OIDC." Selecting this option will redirect them to the Keycloak login page, which allows them to log in.
+## Creating roles
+
+Now, set the user roles and permissions. In Devtron, you can create permission groups and specify granularly what kind of access each user has to each Kubernetes resource. Once you have assigned all the permissions your user will need, assign the permission group to the user. You can assign multiple permission groups to each user, increasing their level of access with each one, or you could directly give super admin privileges.
+  
+In tools like [ArgoCD](../GitOps101/argocd.md), you must create Kubernetes roles, assign permission to these roles, and then assign these roles to individual users. Or you could create a user group in Keycloak, add Keycloak users to these user groups, and then assign roles to these user groups instead of individual users. You can read more about cluster roles and role bindings in the [RBAC section](../RBAC101/README.md)
+
+This is all you need to do to set up OIDC auth with Keycloak. Now, when users come to your Devtron page, they will see an option to "log in with OIDC." Selecting this option will redirect them to the Keycloak login page, which allows them to log in. Any other tools configured with Keycloak will have the same auth flow.
