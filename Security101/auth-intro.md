@@ -80,3 +80,7 @@ Now, set the user roles and permissions. In Devtron, you can create permission g
 In tools like [ArgoCD](../GitOps101/argocd.md), you must create Kubernetes roles, assign permission to these roles, and then assign these roles to individual users. Or you could create a user group in Keycloak, add Keycloak users to these user groups, and then assign roles to these user groups instead of individual users. You can read more about cluster roles and role bindings in the [RBAC section](../RBAC101/README.md)
 
 This is all you need to do to set up OIDC auth with Keycloak. Now, when users come to your Devtron page, they will see an option to "log in with OIDC." Selecting this option will redirect them to the Keycloak login page, which allows them to log in. Any other tools configured with Keycloak will have the same auth flow.
+
+## Conclusion
+
+There are a lot more features available in Keycloak besides just creating users and user groups. Consult their official documentation if you need these features. Here, we just used the basic set of the properties required to set up OIDC with Keycloak for Devtron in the simplest manner possible, all without exposing a single service outside your VPC of added security and compliance measures.
