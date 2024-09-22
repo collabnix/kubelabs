@@ -99,6 +99,6 @@ This template can then be used within all helm charts:
 .dockerconfigjson: {{ template "imagePullSecret" . }}
 ```
 
-This covers the basics of Helm charts, should you need to create one. However, only narrowly covers the full breadth of what Helm has to offer. For more tips and tricks, visit Helm [official docs](https://helm.sh/docs/howto/charts_tips_and_tricks/). Now, let's move on to Chart hooks.
+This covers the basics of Helm charts, should you need to create one. However, only narrowly covers the full breadth of what Helm has to offer. For more tips and tricks, visit Helm [official docs](https://helm.sh/docs/howto/charts_tips_and_tricks/). In this section, we briefly touched up on Helm templates as a means to start off the creation of your new Helm chart. However, templates can be a really powerful tool if you want to reduce repetition in your deployment manifests. Therefore, in the next section, we will be diving deep into creating your own helm templates.
 
-[Next: Chart Hooks](chart-hooks.md)
+[Next: Helm templates](./helm-templates.md)
