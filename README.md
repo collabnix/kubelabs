@@ -269,6 +269,7 @@ A Curated List of Kubernetes Labs and Tutorials
 ## Security101
 - [What is DevSecOps?](./Security101/devsecops.md)
 - [Securing your cluster](./Security101/kubernetes-security.md)
+- [OIDC auth with Keycloak](./Security101/auth-intro.md)
 
 ## GitOps101
 - [What is GitOps](./GitOps101/what-is-gitops.md)
