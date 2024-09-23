@@ -346,6 +346,10 @@ A Curated List of Kubernetes Labs and Tutorials
 ## Observability & Operations
 - [Observability tools](./Observability101/observability.md)
 
+## Chaos testing
+- [What is Chaos testing](./Chaos101/what-is-chaos-testing.md)
+- [Chaos lab with Chaos Mesh](./Chaos101/chaos-lab.md)
+
 ## For Node Developers
 - [Kubernetes for Node Developers](./nodejs.md)
 
