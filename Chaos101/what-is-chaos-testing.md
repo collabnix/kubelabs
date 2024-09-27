@@ -7,3 +7,7 @@ Chaos testing is a strategy for testing the resiliency of a system by intentiona
 At first, its best to start small simulating a single service failure, or delay, before moving to more complex multi-service or system-wide failures. A good example would be to kill pods, introduce network latency, stress test CPU/memory, etc... The idea is that chaos testing should replicate real-world scenarios like network disruptions, service crashes, or hardware failures. On the other hand, spending time simulating exceptional cases such as etcd having issues might not be a good idea since its' pretty unlikely to happen.
 
 Finally, ensure you log all chaos test activities, system metrics, and response times. Review logs and performance metrics to identify failures. Perform a detailed analysis of any unexpected outcomes. Was the hypothesis correct? Did the system recover as expected? What can be improved? Then based on the results, refine your hypotheses and test scenarios. Add new failure scenarios based on what you’ve learned. A final thing is to continue this process to ensure the system remains resilient as new changes are deployed or new features are added. You can also integrate these tests with CI/CD piplines so that it gets tested everytime you do a change.
+
+Now that you know all about chaos testing, it's purpose, and what your objectives are, let's jump into a Chaos Lab with Chaos Mesh.
+
+[Next: Chaos Mesh Lab](./chaos-lab.md)
