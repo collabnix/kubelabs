@@ -20,19 +20,38 @@ kubectl create ns chaos-mesh
 helm install chaos-mesh chaos-mesh/chaos-mesh
 ```
 
-Next, let's define a basic pod kill chaos:
+Now, let's startup a basic nginx server
+
+
+Start the pod running nginx
+
+```
+kubectl run --image=nginx nginx-app --port=80
+```
+
+Accessing the app on browser
+
+```
+kubectl port-forward nginx-app 80:80
+```
+
+Now that we have a target to test chaos on, let's define a basic pod kill chaos in a file called "pod-kill.yaml":
 
 ```
 apiVersion: chaos-mesh.org/v1alpha1
 kind: PodChaos
 metadata:
-  name: $CHAOS_NAME
-  namespace: $CHAOS_NAMESPACE
+  name: pod-kill
 spec:
   action: pod-kill
   mode: one
   selector:
     labelSelectors:
-      app: $DEPLOYMENT_NAME
+      app: nginx
   duration: 30s
+```
+Now deploy this to Kubernetes:
+
+```
+kubectl apply -f podkill.yaml
 ```
