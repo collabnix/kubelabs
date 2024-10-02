@@ -26,7 +26,7 @@ Now, let's startup a basic nginx server
 Start the pod running nginx
 
 ```
-kubectl run --image=nginx nginx-app --port=80
+kubectl run --image=nginx nginx-app --port=80 --replicas=2
 ```
 
 Accessing the app on browser
@@ -50,8 +50,11 @@ spec:
       app: nginx
   duration: 30s
 ```
+
 Now deploy this to Kubernetes:
 
 ```
 kubectl apply -f podkill.yaml
 ```
+
+Immediately upon deployment, you should see one of the two replicas get killed. You can use `kubectl get po --watch` to see this happen in real-time. You can then continue to observe as the pod recovers from this incident and determine whether it recovered within the appropriate time. The next step is to automate all this so that you can handle the deployment and observability part on your behalf. For this, we will use a script stored in a ConfigMap and a CronJob that periodically triggers this script.
