@@ -57,4 +57,7 @@ Now deploy this to Kubernetes:
 kubectl apply -f podkill.yaml
 ```
 
-Immediately upon deployment, you should see one of the two replicas get killed. You can use `kubectl get po --watch` to see this happen in real-time. You can then continue to observe as the pod recovers from this incident and determine whether it recovered within the appropriate time. The next step is to automate all this so that you can handle the deployment and observability part on your behalf. For this, we will use a script stored in a ConfigMap and a CronJob that periodically triggers this script.
+Immediately upon deployment, you should see one of the two replicas get killed. You can use `kubectl get po --watch` to see this happen in real time. You can then continue to observe as the pod recovers from this incident and determine whether it recovered within the appropriate time. The next step is to automate all this so that you can handle the deployment and observability part on your behalf. For this, we will use a script stored in a ConfigMap and a CronJob that periodically triggers this script. You must also create a new service account attached to the CronJob with permissions to run Chaos tests, scale deployments, and check pod statuses and information. In our case, we will be editing the default service map and running the Chaos tests in the default namespace to keep things simple. Let's start by defining the CronJob:
+
+```
+```
