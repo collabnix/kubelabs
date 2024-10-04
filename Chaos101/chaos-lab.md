@@ -57,7 +57,116 @@ Now deploy this to Kubernetes:
 kubectl apply -f podkill.yaml
 ```
 
-Immediately upon deployment, you should see one of the two replicas get killed. You can use `kubectl get po --watch` to see this happen in real time. You can then continue to observe as the pod recovers from this incident and determine whether it recovered within the appropriate time. The next step is to automate all this so that you can handle the deployment and observability part on your behalf. For this, we will use a script stored in a ConfigMap and a CronJob that periodically triggers this script. You must also create a new service account attached to the CronJob with permissions to run Chaos tests, scale deployments, and check pod statuses and information. In our case, we will be editing the default service map and running the Chaos tests in the default namespace to keep things simple. Let's start by defining the CronJob:
+Immediately upon deployment, you should see one of the two replicas get killed. You can use `kubectl get po --watch` to see this happen in real-time. You can then continue to observe as the pod recovers from this incident and determine whether it recovered within the appropriate time. The next step is to automate all this so that you can handle the deployment and observability part on your behalf. For this, we will use a script stored in a ConfigMap and a CronJob that periodically triggers this script.
 
 ```
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: pod-chaos-test
+  namespace: default
+spec:
+  schedule: "5 5 * * 2" # At 5:05 AM on Tuesday
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: chaos-test
+            image: 
+            command:
+            - /bin/sh
+            - -c
+            - |
+              cp /scripts/chaos.sh /tmp/chaos.sh
+              chmod +x /tmp/chaos.sh
+              /tmp/chaos.sh -request-scaler deployment namespace namespace pod-kill $SLACK_WEBHOOK_URL
+            volumeMounts:
+            - name: chaos-script
+              mountPath: /scripts
+            env:
+            - name: SLACK_WEBHOOK_URL
+              valueFrom:
+                secretKeyRef:
+                  name: slack-webhook-secret
+                  key: SLACK_WEBHOOK_URL
+          restartPolicy: Never
+          volumes:
+          - name: chaos-script
+            configMap:
+              name: chaos-script
+```
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: chaos-script
+  namespace: default
+data:
+  chaos.sh: |
+    #!/bin/bash
+
+    # Define variables from arguments
+    SCALED_OBJECT_NAME=$1
+    DEPLOYMENT_NAME=$2
+    NAMESPACE=$3
+    CHAOS_NAMESPACE=$4
+    CHAOS_NAME=$5
+    SLACK_WEBHOOK_URL=$6
+
+    # Get current replica count
+    current_replicas=$(kubectl get deployment $DEPLOYMENT_NAME -n $NAMESPACE -o jsonpath='{.spec.replicas}')
+
+    echo "Current replicas = $current_replicas"
+
+    # Increase replica count by 1
+    new_replicas=$((current_replicas + 1))
+    kubectl patch scaledobject.keda.sh $SCALED_OBJECT_NAME -n $NAMESPACE \
+      --type='json' \
+      -p='[{"op": "replace", "path": "/spec/minReplicaCount", "value": '$new_replicas'}]'
+
+    # Wait for the new pod to be created and the container to be ready
+    start_time=$(date +%s)
+
+    kubectl wait --for=condition=available --timeout=300s deployment/$DEPLOYMENT_NAME -n $NAMESPACE
+
+    echo "Delete chaos"
+
+    kubectl delete PodChaos $CHAOS_NAME -n $CHAOS_NAMESPACE | true
+
+    echo "Applying chaos"
+
+    # Apply chaos mesh job
+    kubectl apply -f - <<EOF
+    apiVersion: chaos-mesh.org/v1alpha1
+    kind: PodChaos
+    metadata:
+      name: $CHAOS_NAME
+      namespace: $CHAOS_NAMESPACE
+    spec:
+      action: pod-kill
+      mode: one
+      selector:
+        labelSelectors:
+          app: $DEPLOYMENT_NAME
+      duration: 30s
+    EOF
+
+    # Wait for chaos to complete and check if the deployment recovers
+    echo "Waiting until pod recovers"
+
+    if kubectl wait --for=condition=available --timeout=300s deployment/$DEPLOYMENT_NAME -n $NAMESPACE; then
+        curl -X POST -H 'Content-type: application/json' --data '{"text":"$DEPLOYMENT_NAME Pod recovery successful within 2.5 mins."}' $SLACK_WEBHOOK_URL
+    else
+        curl -X POST -H 'Content-type: application/json' --data '{"text":"$DEPLOYMENT_NAME Pod recovery failed"}' $SLACK_WEBHOOK_URL
+    fi
+
+    kubectl patch scaledobject.keda.sh $SCALED_OBJECT_NAME -n $NAMESPACE \
+      --type='json' \
+      -p='[{"op": "replace", "path": "/spec/minReplicaCount", "value": '$current_replicas'}]'
+
+    echo "Delete chaos"
+
+    kubectl delete PodChaos $CHAOS_NAME -n $CHAOS_NAMESPACE
 ```
