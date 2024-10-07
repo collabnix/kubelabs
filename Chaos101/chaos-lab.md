@@ -61,7 +61,7 @@ Immediately upon deployment, you should see one of the two replicas get killed. 
 
 First, we will need an image that has both curl & kubectl. In an enterprise environment, you should create this image yourself by building a Docker image with the necessary tools, and then pushing it into your organization's private repo. This is because publicly available images could get vulnerabilities, get deleted without your knowledge, or exceed your repo pull count which will lead to new images not being pulled. In a testing situation, however, feel free to use an image on Docker Hub with both tools involved. We will be using `tranceh2/bash-curl-kubectl`.
 
-Next, will be creating the script that performs the Chaos test with re-usability in mind. This means using arguments to pass information such as deployment name, namespace, and chaos type. Since we will be alerting the status of the report to a Slack channel, we should also pass the Slack webhook URL in this manner. It is best to use a secret to store the webhook URL, and then reference the secret as an env variable. The script itself will be created inside a ConfigMap that will then be mounted to the pod created by the CronJob as a volume.
+Next, will be creating the script that performs the Chaos test with re-usability in mind. This means using arguments to pass information such as deployment name, namespace, and chaos type. Since we will be alerting the status of the report to a Slack channel, we should also pass the Slack webhook URL in this manner. It is best to use a secret to store the webhook URL, and then reference the secret as an env variable. The script itself will be created inside a ConfigMap that will then be mounted to the pod created by the CronJob as a volume. As a final touch, we set the restart policy to `Never` since we don't want a job the introduces chaos restarting indefinitely and accidently firing during peak times. Below is the finalized script.
 
 ```
 apiVersion: batch/v1
@@ -100,6 +100,8 @@ spec:
             configMap:
               name: chaos-script
 ```
+
+The above job should call the template that is responsible for runing the chaos deployment. Now, let's look at the script itself.
 
 ```
 apiVersion: v1
