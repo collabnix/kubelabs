@@ -101,7 +101,7 @@ spec:
               name: chaos-script
 ```
 
-The above job should call the template that is responsible for runing the chaos deployment. Now, let's look at the script itself.
+The above job should call the template responsible for running the chaos deployment. Now, let's look at the script itself. For the script, we will use `kubectl patch` to temporarily increase the replica count, followed by `kubectl apply` to apply the chaos. Finally, we will use `kubectl wait` to see if the pod returns and the required replica count is maintained. The result will then be sent to Slack with a curl command. Finally, we will use a `kubectl patch` command to restore the number of replicas to their initial count.  
 
 ```
 apiVersion: v1
