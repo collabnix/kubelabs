@@ -84,7 +84,7 @@ spec:
             - |
               cp /scripts/chaos.sh /tmp/chaos.sh
               chmod +x /tmp/chaos.sh
-              /tmp/chaos.sh -request-scaler deployment namespace namespace pod-kill $SLACK_WEBHOOK_URL
+              /tmp/chaos.sh deployment namespace namespace pod-kill $SLACK_WEBHOOK_URL
             volumeMounts:
             - name: chaos-script
               mountPath: /scripts
@@ -101,7 +101,7 @@ spec:
               name: chaos-script
 ```
 
-The above job should call the template responsible for running the chaos deployment. Now, let's look at the script itself. For the script, we will use `kubectl patch` to temporarily increase the replica count, followed by `kubectl apply` to apply the chaos. Finally, we will use `kubectl wait` to see if the pod returns and the required replica count is maintained. The result will then be sent to Slack with a curl command. Finally, we will use a `kubectl patch` command to restore the number of replicas to their initial count.  
+The above job should call the template responsible for running the chaos deployment. Now, let's look at the script itself. For the script, we will use `kubectl patch` to temporarily increase the replica count, followed by `kubectl apply` to apply the chaos. Finally, we will use `kubectl wait` to see if the pod returns and the required replica count is maintained. The result will then be sent to Slack with a curl command. Finally, we will use a `kubectl patch` command to restore the number of replicas to their initial count and delete the chaos object that gets created. Below is the scrcipt will all the mentioned items: 
 
 ```
 apiVersion: v1
@@ -114,7 +114,6 @@ data:
     #!/bin/bash
 
     # Define variables from arguments
-    SCALED_OBJECT_NAME=$1
     DEPLOYMENT_NAME=$2
     NAMESPACE=$3
     CHAOS_NAMESPACE=$4
@@ -128,9 +127,8 @@ data:
 
     # Increase replica count by 1
     new_replicas=$((current_replicas + 1))
-    kubectl patch scaledobject.keda.sh $SCALED_OBJECT_NAME -n $NAMESPACE \
-      --type='json' \
-      -p='[{"op": "replace", "path": "/spec/minReplicaCount", "value": '$new_replicas'}]'
+
+    kubectl patch deployment $DEPLOYMENT_NAME --type='json' -p='[{"op": "replace", "path": "/spec/replicas", "value": $new_replicas}]'
 
     # Wait for the new pod to be created and the container to be ready
     start_time=$(date +%s)
@@ -168,9 +166,7 @@ data:
         curl -X POST -H 'Content-type: application/json' --data '{"text":"$DEPLOYMENT_NAME Pod recovery failed"}' $SLACK_WEBHOOK_URL
     fi
 
-    kubectl patch scaledobject.keda.sh $SCALED_OBJECT_NAME -n $NAMESPACE \
-      --type='json' \
-      -p='[{"op": "replace", "path": "/spec/minReplicaCount", "value": '$current_replicas'}]'
+    kubectl patch deployment $DEPLOYMENT_NAME --type='json' -p='[{"op": "replace", "path": "/spec/replicas", "value": $current_replicas}]'
 
     echo "Delete chaos"
 
