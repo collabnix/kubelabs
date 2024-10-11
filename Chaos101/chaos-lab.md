@@ -174,3 +174,23 @@ data:
 ```
 
 Let's go step by step. This script increases the number of replicas by 1 and waits for it to fully start. Once it is ready, it deletes any hanging chaos objects and applies the chaos yaml to kill 1 pod, then waits again for the pod to recover. If the pod hasn't recovered in 300 seconds, it informs that to Slack and exits. Else it sends a success message and reduces the deployment count back to the original number. Finally, it deletes the pod chaos.
+
+Apply the above files to your Kubernetes cluster using `kubectl apply`, then manually trigger the Cron job. You can see the job that runs with:
+
+```
+kubectl get jobs
+```
+
+Find the name of the job that is running the chaos test and use:
+
+```
+kubectl logs <job-name>
+```
+
+To see the chaos test as it happens. Also use:
+
+```
+kubectl get pods -A --watch
+```
+
+To keep an eye on the pods as they get killed and they auto recover.
