@@ -17,7 +17,7 @@ First, install Chaos mesh into your cluster with Helm:
 ```
 helm repo add chaos-mesh https://charts.chaos-mesh.org
 kubectl create ns chaos-mesh
-helm install chaos-mesh chaos-mesh/chaos-mesh
+helm install chaos-mesh chaos-mesh/chaos-mesh -n chaos-mesh --version 2.6.3 --set chaosDaemon.runtime=containerd
 ```
 
 Now, let's startup a basic nginx server
@@ -193,4 +193,10 @@ To see the chaos test as it happens. Also use:
 kubectl get pods -A --watch
 ```
 
-To keep an eye on the pods as they get killed and they auto recover.
+Keep an eye on the pods as they get killed and auto-recover. Once the test is done, it will send a message with the status to Slack.
+
+This covers pod kill chaos and how we can automate it end to end. Now, let's take a look at two other types of Chaos: memory chaos and CPU chaos.
+
+## Resource chaos
+
+Killing a pod was the most basic type of chaos out there. When it comes to resource-based chaos, Chaos Mesh injects processes into a running container to give it Chaos, so it requires several new permissions and configurations. First off, when we installed Choas Mesh, we used `chaosDaemon.runtime=containerd`. This is needed since by default, this value is set to `docker`.
