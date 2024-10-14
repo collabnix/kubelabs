@@ -199,4 +199,6 @@ This covers pod kill chaos and how we can automate it end to end. Now, let's tak
 
 ## Resource chaos
 
-Killing a pod was the most basic type of chaos out there. When it comes to resource-based chaos, Chaos Mesh injects processes into a running container to give it Chaos, so it requires several new permissions and configurations. First off, when we installed Choas Mesh, we used `chaosDaemon.runtime=containerd`. This is needed since by default, this value is set to `docker`.
+Killing a pod was the most basic type of chaos out there. When it comes to resource-based chaos, Chaos Mesh injects processes into a running container to give it Chaos, requiring several new permissions and configurations. First, when we installed Chaos Mesh, we used `chaosDaemon.runtime=containerd`. This is needed since by default, this value is set to `docker`. Next, we need to watch the chaos deployments as they happen since it is likely that all the requirements required by the chaos are not available in your cluster.
+
+Now that we have a general idea of what to look out for, let's start with CPU chaos. Unlike pod chaos where there is a recovery after the chaos ends, there is no such recovery event for CPU chaos. Since CPU is very flexible, Kubernetes will allow the CPU requirements to go until the node has no more CPU left. At this point, your application will get CPU throttled. So instead in this section, we will create a system with a CPU-based HPA. To get an in-depth idea of HPAs, go to the [scaling section](../Autoscaler101/what-are-autoscalers.md).
