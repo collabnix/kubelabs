@@ -120,6 +120,7 @@ Watch the pods, and you will see that the resource limits are reached, after whi
 
 Now that we have gotten a complete look at the vertical pod autoscaler, let's take a look at the HPA. Create a file nginx-hpa.yml and paste the below contents into it.
 
+```
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
