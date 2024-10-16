@@ -226,4 +226,93 @@ spec:
         averageUtilization: 80
 ```
 
-This will start scaling your resources once your pods' CPU hits 80%. Now let's take a look at the CPU chaos.
+This will start scaling your resources once your pods' CPU hits 80%. Now let's take a look at the CPU chaos yaml.
+
+```yaml
+apiVersion: chaos-mesh.org/v1alpha1
+kind: StressChaos
+metadata:
+  name: $CHAOS_NAME
+  namespace: $CHAOS_NAMESPACE
+spec:
+  mode: one
+  stressors:
+    cpu:
+      workers: 10
+  selector:
+    labelSelectors:
+      app: $DEPLOYMENT_NAME
+```
+
+This will add 10 workers that will rapidly increase CPU usage of your pod. The ConfigMap that holds the yaml looks similar to the pod kill chaos:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cpu-stress-chaos-script
+  namespace: default
+data:
+  cpu-chaos.sh: |
+    #!/bin/bash
+
+    # Define variables from arguments
+    DEPLOYMENT_NAME=$2
+    NAMESPACE=$3
+    CHAOS_NAMESPACE=$4
+    CHAOS_NAME=$5
+    SLACK_WEBHOOK_URL=$6
+
+    # Get current replica count
+    current_replicas=$(kubectl get deployment $DEPLOYMENT_NAME -n $NAMESPACE -o jsonpath='{.spec.replicas}')
+
+    echo "Current replicas = $current_replicas"
+
+    # Increase replica count by 1
+    new_replicas=$((current_replicas + 1))
+    kubectl patch scaledobject.keda.sh $SCALED_OBJECT_NAME -n $NAMESPACE \
+      --type='json' \
+      -p='[{"op": "replace", "path": "/spec/minReplicaCount", "value": '$new_replicas'}]'
+
+    # Wait for the new pod to be created and ready
+    kubectl wait --for=condition=available --timeout=300s deployment/$DEPLOYMENT_NAME -n $NAMESPACE
+
+    echo "Delete chaos"
+    kubectl delete StressChaos $CHAOS_NAME -n $CHAOS_NAMESPACE | true
+
+    echo "Applying CPU stress chaos"
+
+    # Apply CPU stress
+    kubectl apply -f - <<EOF
+    apiVersion: chaos-mesh.org/v1alpha1
+    kind: StressChaos
+    metadata:
+      name: $CHAOS_NAME
+      namespace: $CHAOS_NAMESPACE
+    spec:
+      mode: one
+      stressors:
+        cpu:
+          workers: 10
+      selector:
+        labelSelectors:
+          app: $DEPLOYMENT_NAME
+    EOF
+
+    sleep 60
+
+    # Wait for recovery
+    if kubectl wait --for=condition=available --timeout=300s deployment/$DEPLOYMENT_NAME -n $NAMESPACE; then
+        curl -X POST -H 'Content-type: application/json' --data '{"text":"CPU stress test recovery successful."}' $SLACK_WEBHOOK_URL
+    else
+        curl -X POST -H 'Content-type: application/json' --data '{"text":"CPU stress test recovery failed"}' $SLACK_WEBHOOK_URL
+    fi
+
+    # Scale back to the original replica count
+    kubectl patch scaledobject.keda.sh $SCALED_OBJECT_NAME -n $NAMESPACE \
+      --type='json' \
+      -p='[{"op": "replace", "path": "/spec/minReplicaCount", "value": '$current_replicas'}]'
+
+    echo "Delete chaos"
+    kubectl delete StressChaos $CHAOS_NAME -n $CHAOS_NAMESPACE
+```
