@@ -63,7 +63,7 @@ First, we will need an image that has both curl & kubectl. In an enterprise envi
 
 Next, will be creating the script that performs the Chaos test with re-usability in mind. This means using arguments to pass information such as deployment name, namespace, and chaos type. Since we will be alerting the status of the report to a Slack channel, we should also pass the Slack webhook URL in this manner. It is best to use a secret to store the webhook URL, and then reference the secret as an env variable. The script itself will be created inside a ConfigMap that will then be mounted to the pod created by the CronJob as a volume. As a final touch, we set the restart policy to `Never` since we don't want a job the introduces chaos restarting indefinitely and accidently firing during peak times. Below is the finalized script.
 
-```
+```yaml
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -103,7 +103,7 @@ spec:
 
 The above job should call the template responsible for running the chaos deployment. Now, let's look at the script itself. For the script, we will use `kubectl patch` to temporarily increase the replica count, followed by `kubectl apply` to apply the chaos. Next, we will use `kubectl wait` to see if the pod returns and the required replica count is maintained. The result will then be sent to Slack with a curl command. Finally, we will use a `kubectl patch` command to restore the number of replicas to their initial count and delete the chaos object that gets created. Below is the scrcipt will all the mentioned items: 
 
-```
+```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -205,7 +205,7 @@ Now that we have a general idea of what to look out for, let's start with CPU ch
 
 First, add a CPU based HPA to the nginx deployment. The HPA would look something like this:
 
-```
+```yaml
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -257,25 +257,11 @@ data:
     #!/bin/bash
 
     # Define variables from arguments
-    DEPLOYMENT_NAME=$2
-    NAMESPACE=$3
-    CHAOS_NAMESPACE=$4
-    CHAOS_NAME=$5
-    SLACK_WEBHOOK_URL=$6
-
-    # Get current replica count
-    current_replicas=$(kubectl get deployment $DEPLOYMENT_NAME -n $NAMESPACE -o jsonpath='{.spec.replicas}')
-
-    echo "Current replicas = $current_replicas"
-
-    # Increase replica count by 1
-    new_replicas=$((current_replicas + 1))
-    kubectl patch scaledobject.keda.sh $SCALED_OBJECT_NAME -n $NAMESPACE \
-      --type='json' \
-      -p='[{"op": "replace", "path": "/spec/minReplicaCount", "value": '$new_replicas'}]'
-
-    # Wait for the new pod to be created and ready
-    kubectl wait --for=condition=available --timeout=300s deployment/$DEPLOYMENT_NAME -n $NAMESPACE
+    DEPLOYMENT_NAME=$1
+    NAMESPACE=$2
+    CHAOS_NAMESPACE=$3
+    CHAOS_NAME=$4
+    SLACK_WEBHOOK_URL=$5
 
     echo "Delete chaos"
     kubectl delete StressChaos $CHAOS_NAME -n $CHAOS_NAMESPACE | true
@@ -308,11 +294,8 @@ data:
         curl -X POST -H 'Content-type: application/json' --data '{"text":"CPU stress test recovery failed"}' $SLACK_WEBHOOK_URL
     fi
 
-    # Scale back to the original replica count
-    kubectl patch scaledobject.keda.sh $SCALED_OBJECT_NAME -n $NAMESPACE \
-      --type='json' \
-      -p='[{"op": "replace", "path": "/spec/minReplicaCount", "value": '$current_replicas'}]'
-
     echo "Delete chaos"
     kubectl delete StressChaos $CHAOS_NAME -n $CHAOS_NAMESPACE
 ```
+
+Some notable differences: we no longer increase the replica count before running the chaos since it is the job of the CPU scaler to increase the count when a threshold is reachhed. We also use a different method to check if the chaos test was successfull.
