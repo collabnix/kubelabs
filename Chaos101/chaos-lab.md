@@ -263,6 +263,11 @@ data:
     CHAOS_NAME=$4
     SLACK_WEBHOOK_URL=$5
 
+    # Get current replica count
+    current_replicas=$(kubectl get deployment $DEPLOYMENT_NAME -n $NAMESPACE -o jsonpath='{.spec.replicas}')
+
+    echo "Current replicas = $current_replicas"
+
     echo "Delete chaos"
     kubectl delete StressChaos $CHAOS_NAME -n $CHAOS_NAMESPACE | true
 
@@ -287,15 +292,18 @@ data:
 
     sleep 60
 
-    # Wait for recovery
-    if kubectl wait --for=condition=available --timeout=300s deployment/$DEPLOYMENT_NAME -n $NAMESPACE; then
-        curl -X POST -H 'Content-type: application/json' --data '{"text":"CPU stress test recovery successful."}' $SLACK_WEBHOOK_URL
-    else
-        curl -X POST -H 'Content-type: application/json' --data '{"text":"CPU stress test recovery failed"}' $SLACK_WEBHOOK_URL
-    fi
+    # Get current replica count
+    new_replicas=$(kubectl get deployment $DEPLOYMENT_NAME -n $NAMESPACE -o jsonpath='{.spec.replicas}')
 
     echo "Delete chaos"
     kubectl delete StressChaos $CHAOS_NAME -n $CHAOS_NAMESPACE
 ```
 
-Some notable differences: we no longer increase the replica count before running the chaos since it is the job of the CPU scaler to increase the count when a threshold is reachhed. We also use a different method to check if the chaos test was successfull.
+Some notable differences: we no longer increase the replica count before running the chaos since it is the job of the CPU scaler to increase the count when a threshold is reached. We also used a different method to check if the chaos test was successful. What we do is:
+
+- Take note of the number of replicas before chaos starts
+- Run chaos
+- Wait a while
+- Check to see if the scaler has kicked in and started scaling up the resources
+- If yes, then successful
+- If no, then send a failure message to Slack
