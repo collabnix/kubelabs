@@ -312,3 +312,28 @@ Some notable differences: we no longer increase the replica count before running
 We also don't perform any manual recovery steps here. Once the chaos is deleted the CPU requirements of the pods should go down, which should result in the pod count scaling back down to previous levels. Now that we have gone through all the steps, apply the files into your cluster with `kubectl apply` and run the cronjob manually to see if it works as intended. You might have to watch the chaos object to ensure it runs as expected.
 
 The final type of chaos we will be looking at is memory stress. Unlike CPU, memory is a bit tricky, especially in a Kubernetes context. Unless your pod is equipped with Kubernetes-specific garbage collection algorithms, memory that is introduced into the pods will never be released. As a result, you are using memory-based scaling not a good idea since the application will continue to scale continuously until the max replicas are reached. However, if you have a critical application and want to prevent it from running out of memory due to a sudden spike in requests, you might want to use it anyway.
+
+We will use roughly the same HPA:
+
+```yaml
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nginx-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nginx-deployment
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+```
+
+The memory stressor will also be largely similar to the CPU stress test.
