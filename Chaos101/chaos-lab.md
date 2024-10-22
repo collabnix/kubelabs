@@ -281,7 +281,7 @@ data:
       name: $CHAOS_NAME
       namespace: $CHAOS_NAMESPACE
     spec:
-      mode: one
+      mode: all
       stressors:
         cpu:
           workers: 10
@@ -337,3 +337,58 @@ spec:
 ```
 
 The memory stressor will also be largely similar to the CPU stress test.
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: memory-stress-chaos-script
+  namespace: default
+data:
+  cpu-chaos.sh: |
+    #!/bin/bash
+
+    # Define variables from arguments
+    DEPLOYMENT_NAME=$1
+    NAMESPACE=$2
+    CHAOS_NAMESPACE=$3
+    CHAOS_NAME=$4
+    SLACK_WEBHOOK_URL=$5
+
+    # Get current replica count
+    current_replicas=$(kubectl get deployment $DEPLOYMENT_NAME -n $NAMESPACE -o jsonpath='{.spec.replicas}')
+
+    echo "Current replicas = $current_replicas"
+
+    echo "Delete chaos"
+    kubectl delete StressChaos $CHAOS_NAME -n $CHAOS_NAMESPACE | true
+
+    echo "Applying CPU stress chaos"
+
+    # Apply memory stress
+    kubectl apply -f - <<EOF
+    apiVersion: chaos-mesh.org/v1alpha1
+    kind: StressChaos
+    metadata:
+      name: $CHAOS_NAME
+      namespace: $CHAOS_NAMESPACE
+    spec:
+      mode: all
+      stressors:
+        memory:
+          workers: 4
+          size: 50MiB
+          options: ['']
+      selector:
+        labelSelectors:
+          app: $DEPLOYMENT_NAME
+    EOF
+
+    sleep 60
+
+    # Get current replica count
+    new_replicas=$(kubectl get deployment $DEPLOYMENT_NAME -n $NAMESPACE -o jsonpath='{.spec.replicas}')
+
+    echo "Delete chaos"
+    kubectl delete StressChaos $CHAOS_NAME -n $CHAOS_NAMESPACE
+```
