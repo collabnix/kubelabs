@@ -392,3 +392,9 @@ data:
     echo "Delete chaos"
     kubectl delete StressChaos $CHAOS_NAME -n $CHAOS_NAMESPACE
 ```
+
+Apply all the above files with `kubectl apply`. This is the same as the CPU stressor, but when running this stress test, keep note of whether the memory that is consumed gets eventually released. If it doesn't you might have to manually handle the extra pods created if your application doesn't handle garbage collection properly.
+
+And that covers 3 different types of chaos.
+
+## Conclusion
