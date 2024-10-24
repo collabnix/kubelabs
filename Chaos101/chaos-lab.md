@@ -398,3 +398,5 @@ Apply all the above files with `kubectl apply`. This is the same as the CPU stre
 And that covers 3 different types of chaos.
 
 ## Conclusion
+
+In this section we covered Chaos mesh along with 3 different types of chaos that can applied to your Kubernetes cluster. There are many other types of Chaos listed in the [official docs](https://chaos-mesh.org/docs/simulate-pod-chaos-on-kubernetes/) and it's recommended that you read through them to find the ones that best fit your requirements. Also, the best-recommended practice is to always try out chaos testing in a test environment before moving it into a production environment. Some chaos tests should not be in a production environment, and there are a few tests that Chaos Mesh specifically warns against using. So make sure you don't overdo it.
