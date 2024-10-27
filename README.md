@@ -332,6 +332,14 @@ A Curated List of Kubernetes Labs and Tutorials
 - [What is Disaster Recovery](./DisasterRecovery101/what-is-dr.md)
 - [DR Lab](./DisasterRecovery101/dr-lab.md)
 
+## Kubezoo
+- [What is Kubezoo](./Kubezoo/what-is-kubezoo.md)
+- [Kubezoo lab](./Kubezoo/kubezoo-lab.md)
+
+## Karpenter
+- [What is Karpenter](./Karpenter101/what-is-karpenter.md)
+- [Karpenter Lab](./Karpenter101/karpenter-lab.md)
+
 ## For Node Developers
 - [Kubernetes for Node Developers](./nodejs.md)
 
