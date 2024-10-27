@@ -6,6 +6,7 @@ We have now discussed HPA's, VPA's, and you might have even read the section on 
 - Graceful shutdowns
 - Annotations that help with scaling.
 - Pod priority/disruption
+- Pod requests/limits
 
 You may have already come across these concepts before, and just about every Kubernetes-based tool uses them to ensure stability. We will discuss each of the above points and follow up with a lab where we test out the above concepts using a simple Nginx server.
 
@@ -605,7 +606,15 @@ Apply the configuration:
 kubectl apply -f nginx-pdb.yaml
 ```
 
-Now your number of pods won't go below the minimum available pod count meaning that if pods are evicted due to autoscaling, if a new version is deployed, or if your pods are supposed to restart for any reason, at least 2 pods will always be up. This, however, will not consider a case where your pod or node goes out of memory, becomes unreachable, or unschedulable. If your node doesn't have enough resources to give, even a PDB insisting that the pod needs to stay up doesn't work. The same applies if the node suddenly were to get removed. To minimize the change of this happening, you will properly have to set pod requests and limits so that the resource requirements of a pod never exceed what the node can provide.
+Now your number of pods won't go below the minimum available pod count meaning that if pods are evicted due to autoscaling, if a new version is deployed, or if your pods are supposed to restart for any reason, at least 2 pods will always be up. This, however, will not consider a case where your pod or node goes out of memory, becomes unreachable, or unschedulable. If your node doesn't have enough resources to give, even a PDB insisting that the pod needs to stay up doesn't work. The same applies if the node suddenly were to get removed. To minimize the change of this happening, you will properly have to set pod requests and limits so that the resource requirements of a pod never exceed what the node can provide. On that note, let's take a look at pod requests and limits.
+
+## Pod requests/limits
+
+You have undoubtedly seen pod requests and limitss and likely even used them at some point. Requests/limits define the minimum and maximum CPU & memory a pod is allowed to take. To break it down:
+
+- Requests: A pod will not schedule on a node unless the pods' memory and CPU requets are fulfilled. If there are no nodes that can fulfill a pods requested resources, a new node will have to be added. If you use cluster autoscaler or Karpenter, this resource requirement will be noted and machines will be automatically provisioned.
+
+- Limits: This is the maximum memory a pod can consume. Once it reaches this memory limit, the pod will be terminated to prevent breaching this memory limit.
 
 # Conclusion
 
