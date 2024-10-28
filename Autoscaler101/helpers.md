@@ -616,6 +616,8 @@ You have undoubtedly seen pod requests and limitss and likely even used them at 
 
 - Limits: This is the maximum memory a pod can consume. Once it reaches this memory limit, the pod will be terminated to prevent breaching this memory limit.
 
+With this in mind, it might commonly make sense to put requests to a lower value and limits to a higher value. This works fine for development workflows and is called a burstable workload. However, this method has one major downside: node OOM issues. If you have set a pod to have requests of 500MB and limits of 1GB, your pod may get scheduled on a node with 700MB remaining. However, since your pod can grow in memory up to 1GB, it will continue to do so until it hits 700 MB. At this point, the node will go into a memory pressure state since it has no more memory to give. This will cause issues for all pods inside the node. The best case here is that the node evicts a pod at random so that the node goes out of the memory pressure state. The worst case is that the node itself crashes.
+
 # Conclusion
 
 This brings us to the end of this section, where we discuss how to use various tools provided both natively and as add-ons to improve the stability of scaling, which is an essential aspect of running high availability production applications. There are a large number of other tools within the CNCF collective that help improve this stability, so don't hesitate to research the various options to get the best fit for your production workload. For more about scaling, don't forget to check out our [KEDA](../Keda101/what-is-keda.md) and [Karpenter](../Karpenter101/what-is-karpenter.md) sections.
