@@ -620,7 +620,9 @@ With this in mind, it might commonly make sense to put requests to a lower value
 
 This is where guaranteed resource allocation comes into play. In this scenario, you would set the resources equal to the limits. So now, when a pod is looking to schedule, the scheduler will pick a machine that has the requested amount of resources in it. However, that pod will now not go over the resource limit, meaning that the node itself will never run out of memory. This means no change in node failures or random pods getting forcibly evicted.
 
-If a pod itself reaches its memory limit, then the pod will be rescheduled. If you have properly set graceful shutdown and termination grace periods, these will be honored.
+If a pod itself reaches its memory limit, then the pod will be rescheduled. If you have properly set graceful shutdown and termination grace periods, these will be honored. This way, none of your pods will shut down without warning and cause any ongoing transactions to fail.
+
+Note that this only applies to memory limits. When it comes to CPU limits, a general recommendation is that you don't keep any such limits in place. The CPU  is elastic and can be acquired and released as needed. Even if the pod takes the full CPU of the machine, the machine itself won't crash, and once the CPU usage drops, the available CPU will be reallocated. On the other hand, if you have a stringent CPU limit in place and the pod reaches that CPU limit, the application will slow down. This is especially true when the application is starting. During the startup, the application can consume up to 10 times the normal amount of CPU. If there is a limit in place, the application startup can end up slowing down. Due to these reasons, even for production workloads, it's advisable to not have a CPU limit.
 
 # Conclusion
 
