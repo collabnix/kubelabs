@@ -7,6 +7,7 @@ We have now discussed HPA's, VPA's, and you might have even read the section on 
 - Annotations that help with scaling.
 - Pod priority/disruption
 - Pod requests/limits
+- Rollover strategy
 
 You may have already come across these concepts before, and just about every Kubernetes-based tool uses them to ensure stability. We will discuss each of the above points and follow up with a lab where we test out the above concepts using a simple Nginx server.
 
@@ -622,7 +623,19 @@ This is where guaranteed resource allocation comes into play. In this scenario, 
 
 If a pod itself reaches its memory limit, then the pod will be rescheduled. If you have properly set graceful shutdown and termination grace periods, these will be honored. This way, none of your pods will shut down without warning and cause any ongoing transactions to fail.
 
-Note that this only applies to memory limits. When it comes to CPU limits, a general recommendation is that you don't keep any such limits in place. The CPU  is elastic and can be acquired and released as needed. Even if the pod takes the full CPU of the machine, the machine itself won't crash, and once the CPU usage drops, the available CPU will be reallocated. On the other hand, if you have a stringent CPU limit in place and the pod reaches that CPU limit, the application will slow down. This is especially true when the application is starting. During the startup, the application can consume up to 10 times the normal amount of CPU. If there is a limit in place, the application startup can end up slowing down. Due to these reasons, even for production workloads, it's advisable to not have a CPU limit.
+Note that this only applies to memory limits. When it comes to CPU limits, a general recommendation is that you don't keep any such limits in place. The CPU is elastic and can be acquired and released as needed. Even if the pod takes the full CPU of the machine, the machine itself won't crash, and once the CPU usage drops, the available CPU will be reallocated. On the other hand, if you have a stringent CPU limit in place and the pod reaches that CPU limit, the application will slow down. This is especially true when the application is starting. During the startup, the application can consume up to 10 times the normal amount of CPU. If there is a limit in place, the application startup can end up slowing down. Due to these reasons, even for production workloads, it's advisable to not have a CPU limit.
+
+## Rollover strategy
+
+Now, let's talk about rollover strategies. When you perform deployments, likely because you want to deploy a new version of an application, you might have to do it in the middle of peak hours. However, you don't want your application going down or even having a performance hit, which means your deployment strategy should first create new pods that will replace the existing ones before the old pods are destroyed. Kubernetes already does this by default to a certain degree by allowing 25% of the max replicas to be created and 25% to be destroyed. However, if you only run about 2 replicas or if you want to strictly specify these values yourself, you can do so:
+
+```yaml
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 0
+```
 
 # Conclusion
 
