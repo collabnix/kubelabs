@@ -627,7 +627,7 @@ Note that this only applies to memory limits. When it comes to CPU limits, a gen
 
 ## Rollover strategy
 
-Now, let's talk about rollover strategies. When you perform deployments, likely because you want to deploy a new version of an application, you might have to do it in the middle of peak hours. However, you don't want your application going down or even having a performance hit, which means your deployment strategy should first create new pods that will replace the existing ones before the old pods are destroyed. Kubernetes already does this by default to a certain degree by allowing 25% of the max replicas to be created and 25% to be destroyed. However, if you only run about 2 replicas or if you want to strictly specify these values yourself, you can do so:
+Now, let's talk about rollover strategies. When you perform deployments, likely because you want to deploy a new version of an application, you might have to do it in the middle of peak hours. However, you don't want your application going down or even having a performance hit, which means your deployment strategy should first create new pods that will replace the existing ones before the old pods are destroyed. Kubernetes already does this by default to a certain degree by allowing 25% of the max replicas to be created and 25% to be destroyed. However, if you only run about 2 replicas that means one of them will go down before the new one comes up, resulting in a performance degredation. So you might want to strictly specify these values yourself. You can do so with:
 
 ```yaml
 strategy:
@@ -636,6 +636,8 @@ strategy:
     maxSurge: 1
     maxUnavailable: 0
 ```
+
+The above block will specify that 1 new pod is allowed to come up in addition to the existing pods during deployment and determines that the maximum number of unavailable pods is 0. If you are using around 6 pods and you want the deployments to happen faster, you can set `maxSurge` to 3 or more, which means 3 pods will come up, 3 old ones will go down, then another 3 will come up before the last old 3 pods finally shut down. However, the downside is that the additional pods might require extra resources to run on. If this happens Kubernetes will upscale and then downscale the number of nodes as needed. But if you have node disruption budgets to prevent nodes from going down during business hours and if the budget has been reached, the extra nodes will remain.
 
 # Conclusion
 
