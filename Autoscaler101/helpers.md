@@ -8,6 +8,7 @@ We have now discussed HPA's, VPA's, and you might have even read the section on 
 - Pod priority/disruption
 - Pod requests/limits
 - Rollover strategy
+- Pod topology skews
 
 You may have already come across these concepts before, and just about every Kubernetes-based tool uses them to ensure stability. We will discuss each of the above points and follow up with a lab where we test out the above concepts using a simple Nginx server.
 
@@ -638,6 +639,12 @@ strategy:
 ```
 
 The above block will specify that 1 new pod is allowed to come up in addition to the existing pods during deployment and determines that the maximum number of unavailable pods is 0. If you are using around 6 pods and you want the deployments to happen faster, you can set `maxSurge` to 3 or more, which means 3 pods will come up, 3 old ones will go down, then another 3 will come up before the last old 3 pods finally shut down. However, the downside is that the additional pods might require extra resources to run on. If this happens Kubernetes will upscale and then downscale the number of nodes as needed. But if you have node disruption budgets to prevent nodes from going down during business hours and if the budget has been reached, the extra nodes will remain.
+
+## Pod topology skews
+
+Next, let's look at topology skews. One of the major advantages of having a microservice architecture is high availability. To reinforce this, most cloud providers give four or more availability zones per region. Each of these availability zones operates separately from one another, meaning that if one az were to go down, the other azs would be unaffected. To use these zones effectively, you should always use 2 or more azs when scheduling your Kubernetes resources. While it is true that major cloud providers don't generally have az wide outages, this is an extra step that you can put in place to keep your business availability at a maximum.
+
+When we talk about replicas, the idea is that if one replica were to go down, the other would serve traffic, and therefore there would not be a service outage. However, if all your replicas are in a single az and the az were to go down, you would still get a service outage. So when scheduling your pods, you want each replica to be in a separate machine, and for each machine to be in a separate az. However, note that this might not be practical from a cost perspective if you only have a few small applications. Having to use separate network gateways for each az as well as having separate machines is eventually going to cost you.
 
 # Conclusion
 
