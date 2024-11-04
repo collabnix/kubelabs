@@ -646,6 +646,20 @@ Next, let's look at topology skews. One of the major advantages of having a micr
 
 When we talk about replicas, the idea is that if one replica were to go down, the other would serve traffic, and therefore there would not be a service outage. However, if all your replicas are in a single az and the az were to go down, you would still get a service outage. So when scheduling your pods, you want each replica to be in a separate machine, and for each machine to be in a separate az. However, note that this might not be practical from a cost perspective if you only have a few small applications. Having to use separate network gateways for each az as well as having separate machines is eventually going to cost you.
 
+As such, a compromise between the two would be to schedule pods in a different zone if a node is available there. However, if there is no other machine, schedule on the same machine or in the same availability zone. The yaml for this would be:
+
+```yaml
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: topology.kubernetes.io/zone
+    whenUnsatisfiable: ScheduleAnyway
+    labelSelector:
+      matchLabels:
+        app: nginx
+```
+
+This will skew the deployments based on the zone, but if there are no machines available to schedule in a skewed manner, it will ignore the skew.
+
 # Conclusion
 
 This brings us to the end of this section, where we discuss how to use various tools provided both natively and as add-ons to improve the stability of scaling, which is an essential aspect of running high availability production applications. There are a large number of other tools within the CNCF collective that help improve this stability, so don't hesitate to research the various options to get the best fit for your production workload. For more about scaling, don't forget to check out our [KEDA](../Keda101/what-is-keda.md) and [Karpenter](../Karpenter101/what-is-karpenter.md) sections.
