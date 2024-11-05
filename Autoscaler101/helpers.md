@@ -658,7 +658,7 @@ topologySpreadConstraints:
         app: nginx
 ```
 
-This will skew the deployments based on the zone, but if there are no machines available to schedule in a skewed manner, it will ignore the skew.
+This will skew the deployments based on the zone, but if no machines are available to schedule in a skewed manner, the skew will be ignored. However, if you have several applications that can share resources in multiple machines, you can force the pods to be scheduled in separate zones by replacing `ScheduleAnyway` with `DoNotSchedule`. If no machines are available in separate zones, the pod will refuse to schedule. Once that happens, your node scaler will kick in to satisfy the requirement.
 
 # Conclusion
 
