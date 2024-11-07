@@ -40,6 +40,14 @@ Depending on the type of web application you are running, you may not need to co
 
 While microservices generally take in traffic through their endpoints, your application might differ. Your application might do batch processing by reading messages off RabbitMQ, or it might occasionally read a database and transform the data within it. In cases like this, having the pod or job terminated for scaling considerations might leave your database table in an unstable state, or it might mean that the message your pod was processing never ends up finishing. In any of these cases, graceful shutdowns can keep the pod from terminating long enough for your pod to either finish what it started or ensure a different pod can pick up where it left off.
 
+One major problem you might encounter if you are using a command string to start your application is if Kubernetes doesn't recognize your command string as a primary process and fails to propagate the sigterm command to your application. This can happen if you have multiple commands chained together before your main command runs, meaning Kubernetes is unable to determine which command is the main one. To explicitly define a command as a main command, use `exec`. For example:
+
+```
+cp somefile . && rm -rf somefolder && exec java -jar yourapplication.jar
+```
+
+Without the `exec`, the sigterm will be sent to the first `cp` command and will not affect your actual `java` command.
+
 If the jobs you are running are mission-critical, and each of your jobs must run to completion, then even graceful shutdowns might not be enough. In this case, you can turn to annotations to help you out.
 
 ## Annotations
