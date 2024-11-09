@@ -95,6 +95,10 @@ spec:
 
 Once again, the source and the destination sections are the most important, and you will notice that a single source repo is now pointing to multiple clusters (which can be set by changing the ```{{url}}``` part of the yaml).
 
+## PreSync/PostSync hooks
+
+When you deploy a production cluster, you normally want a few additional things happening alongside it. For example, you might want to keep other team members aware that a new version of the application has gone out, meaning that an automated message every time a new deployment happens would be required. It is also common for any health checks and alarms to go off falsely when a new deployment is done and since its best practice to only send an alert when an actual issue happens, you might want to mute the alert for the duration of the deployment. Additionally, if you use tools like New Relic, you might want to take advantage of their deployment markers which require calling their API after each deployment.
+
 ## ArgoCD with multiple clusters
 
 If you were to have the same cluster hosted multiple times (for instance, across multiple regions), then you probably want to update all those clusters at once. ArgoCD allows you to configure multiple destination clusters so that with a single push of your Git repository, the configuration changes get applied to all the clusters at once.
@@ -102,3 +106,9 @@ If you were to have the same cluster hosted multiple times (for instance, across
 Another place where this might be useful is when you have multiple clusters in your release process which you use for testing before your release. For example, you might have a dev environment where you first apply the cluster, after which testing is performed. If the testing passes, then the cluster should be applied to a prod env, and so on. You are applying the same configuration to different clusters, but not all at once, and this is also something that ArgoCD supports without you having to use separate branches for each cluster. For this, you should use Kustomize overlays.
 
 Kustomize is a CLI tool that is integrated with kubectl which helps you create overlays from source control for different situations. As you can imagine, this is great for handling different clusters that are similar in nature but serve different purposes. You could have on Kustomization for dev, another for prod, and have them applied so that the configuration changes are applied only when you need them to be.
+
+## Conclusion
+
+So far, we have discussed what GitOps is and what ArgoCD is, as well as a general introduction to ArgoCD. Now, let's dive deeper and set up ArgoCD on an EKS cluster in the next section.
+
+[Next: ArgoCD on EKS](./argocd-eks.md)
