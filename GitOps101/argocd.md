@@ -97,7 +97,28 @@ Once again, the source and the destination sections are the most important, and 
 
 ## PreSync/PostSync hooks
 
-When you deploy a production cluster, you normally want a few additional things happening alongside it. For example, you might want to keep other team members aware that a new version of the application has gone out, meaning that an automated message every time a new deployment happens would be required. It is also common for any health checks and alarms to go off falsely when a new deployment is done and since its best practice to only send an alert when an actual issue happens, you might want to mute the alert for the duration of the deployment. Additionally, if you use tools like New Relic, you might want to take advantage of their deployment markers which require calling their API after each deployment.
+When you deploy a production cluster, you normally want a few additional things happening alongside it. For example, you might want to keep other team members aware that a new version of the application has gone out, meaning that an automated message every time a new deployment happens would be required. It is also common for any health checks and alarms to go off falsely when a new deployment is done and since its best practice to only send an alert when an actual issue happens, you might want to mute the alert for the duration of the deployment. Additionally, if you use tools like New Relic, you might want to take advantage of their deployment markers which require calling their API after each deployment. For all these, you want scripts to run either before or after your deployment happens, which is where PreSync and PostSync hooks come in. Let's start by looking at a PreSync hook:
+
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: turn-off-alerts
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+spec:
+  template:
+    spec:
+      containers:
+      - name: turn-off-alerts
+        image: alpine
+        command: ["/bin/sh"]
+        args: ["-c", "apk --update add curl && curl -s <ALERT_URL>"]
+      restartPolicy: Never
+  backoffLimit: 4
+```
+
+Let's break down the above sample pre-sync hook. As you can see, it is an ordinary Kubernetes job, not a custom CRD. Since it is an ordinary job, we can run commands and containers as always here which allows for added flexibility. The main part which makes this an argocd presync hook is the annotation `argocd.argoproj.io/hook: PreSync`.
 
 ## ArgoCD with multiple clusters
 
