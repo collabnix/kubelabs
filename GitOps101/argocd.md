@@ -118,7 +118,9 @@ spec:
   backoffLimit: 4
 ```
 
-Let's break down the above sample pre-sync hook. As you can see, it is an ordinary Kubernetes job, not a custom CRD. Since it is an ordinary job, we can run commands and containers as always here which allows for added flexibility. The main part which makes this an argocd presync hook is the annotation `argocd.argoproj.io/hook: PreSync`.
+Let's break down the above sample pre-sync hook. As you can see, it is an ordinary Kubernetes job, not a custom CRD. Since it is an ordinary job, we can run commands and containers as always here which allows for added flexibility. The main part which makes this an argocd presync hook is the annotation `argocd.argoproj.io/hook: PreSync`. When ArgoCD is about to perform the deployment, it goes through the files set for deployment and checks for the `PreSync` annotation in any of them. If this annotation is found, it runs the job as a normal Kubernetes job. In this case, it will add `curl` to the container, then use an HTTP request to shut down the alert which would otherwise go off once the deployment started. Once the job has been run, the rest of the files get deployed and synced with the new commit. 
+
+Next, let's take a look at a PostSync hook:
 
 ## ArgoCD with multiple clusters
 
