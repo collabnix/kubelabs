@@ -122,6 +122,28 @@ Let's break down the above sample pre-sync hook. As you can see, it is an ordina
 
 Next, let's take a look at a PostSync hook:
 
+```
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: send-notification
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: disabled
+    spec:
+      containers:
+      - name: send-notification
+        image: alpine
+        command: ["/bin/sh"]
+        args: ["-c", "apk --update add curl && sleep 120 && curl -s <SLACK_WEBHOOK_URL>"]
+      restartPolicy: Never
+  backoffLimit: 4
+```
+
 ## ArgoCD with multiple clusters
 
 If you were to have the same cluster hosted multiple times (for instance, across multiple regions), then you probably want to update all those clusters at once. ArgoCD allows you to configure multiple destination clusters so that with a single push of your Git repository, the configuration changes get applied to all the clusters at once.
