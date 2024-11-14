@@ -122,7 +122,7 @@ Let's break down the above sample pre-sync hook. As you can see, it is an ordina
 
 Next, let's take a look at a PostSync hook:
 
-```
+```yaml
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -131,15 +131,36 @@ metadata:
     argocd.argoproj.io/hook: PostSync
 spec:
   template:
-    metadata:
-      annotations:
-        linkerd.io/inject: disabled
     spec:
       containers:
       - name: send-notification
         image: alpine
         command: ["/bin/sh"]
         args: ["-c", "apk --update add curl && sleep 120 && curl -s <SLACK_WEBHOOK_URL>"]
+      restartPolicy: Never
+  backoffLimit: 4
+```
+
+This is similar to the pre-sync hook, with the difference being that the annotation value is `PostSync`, so ArgoCD runs the job after the deployment. In this case, we send a message to a Slack channel notifying its members that a new deployment was performed.
+
+Finally, let's take a look at a failure hook:
+
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: fail-hook
+  annotations:
+    argocd.argoproj.io/hook: SyncFail
+spec:
+  template:
+    spec:
+      containers:
+      - name: fail-hook
+        image: alpine
+        env:
+        command: ["/bin/sh"]
+        args: ["-c", "apk --update add curl && sleep 120 && curl -s <>"]
       restartPolicy: Never
   backoffLimit: 4
 ```
