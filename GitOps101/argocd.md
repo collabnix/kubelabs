@@ -136,12 +136,12 @@ spec:
       - name: send-notification
         image: alpine
         command: ["/bin/sh"]
-        args: ["-c", "apk --update add curl && sleep 120 && curl -s <SLACK_WEBHOOK_URL>"]
+        args: ["-c", "apk --update add curl && sleep 120 && curl -s <SLACK_WEBHOOK_URL> && curl -s <ALERT_URL>"]
       restartPolicy: Never
   backoffLimit: 4
 ```
 
-This is similar to the pre-sync hook, with the difference being that the annotation value is `PostSync`, so ArgoCD runs the job after the deployment. In this case, we send a message to a Slack channel notifying its members that a new deployment was performed.
+This is similar to the pre-sync hook, with the difference being that the annotation value is `PostSync`, so ArgoCD runs the job after the deployment. In this case, we send a message to a Slack channel notifying its members that a new deployment was performed. We can also send a call the re-enables the alerts.s
 
 Finally, let's take a look at a failure hook:
 
@@ -160,10 +160,12 @@ spec:
         image: alpine
         env:
         command: ["/bin/sh"]
-        args: ["-c", "apk --update add curl && sleep 120 && curl -s <>"]
+        args: ["-c", "apk --update add curl && sleep 120 && curl -s <SLACK_WEBHOOK_URL> && curl -s <ALERT_URL>"]
       restartPolicy: Never
   backoffLimit: 4
 ```
+
+This is a case where the deployment has failed due to some reason. Ideally if your application uses liveness/readiness probes correctly, this shouldn't cause an application outage, but it needs to be addressed immediately. If there are no probes present then a failed deployment can result in a full application outage. So whatever the case, it is ncessary to notify the relevant people that a deployment has failed. This can be done using a failure hook such as the one used above.
 
 ## ArgoCD with multiple clusters
 
