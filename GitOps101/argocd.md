@@ -165,7 +165,9 @@ spec:
   backoffLimit: 4
 ```
 
-This is a case where the deployment has failed due to some reason. Ideally if your application uses liveness/readiness probes correctly, this shouldn't cause an application outage, but it needs to be addressed immediately. If there are no probes present then a failed deployment can result in a full application outage. So whatever the case, it is ncessary to notify the relevant people that a deployment has failed. This can be done using a failure hook such as the one used above.
+This is a case where the deployment has failed due to some reason. Ideally if your application uses liveness/readiness probes correctly, this shouldn't cause an application outage, but it needs to be addressed immediately. If there are no probes present then a failed deployment can result in a full application outage. So whatever the case, it is ncessary to notify the relevant people that a deployment has failed. This can be done using a failure hook such as the one used above. Once again, this is similar to the hooks shown before, except this one has an annotation value of `SyncFail`.
+
+With this, we cover the main 3 hooks of ArgoCD along with a practical demonstration of what you can accomplish with them.
 
 ## ArgoCD with multiple clusters
 
