@@ -250,7 +250,7 @@ This will allow your `ScaledJob` resource to read the authentication keys that y
 With the above configuration, a new Keda job will start every time a message is sent to the SQS queue. The job should have the necessary configurations to read the content of the message sent to the queue, and the message in SQS should get consumed by the job that starts. Once the job succeeds, it will terminate. If there is a failure, the job will exit and a new job will get created. It will then attempt to consume the message.
 
 ## Conclusion
-
 This wraps up the lesson on KEDA. What we tried out was a simple demonstration of a MySQL scaler followed by a demonstration of using various authentication methods to connect and consume messages from AWS SQS. This is a good representation of what you can expect from other data sources. If you were considering using this with a different Kubernetes engine running on a different cloud provider, the concept would still work. Make sure you read through the authentication page, which contains different methods of authentication for different cloud providers. Next up, we will look at how you can use KEDA alongside Prometheus and Linkerd to scale your pods based on the number of requests reaching your endpoints.
+
 
 [Next: Scaling with KEDA and Prometheus](./keda-prometheus.md)
