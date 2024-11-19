@@ -120,6 +120,23 @@ serviceAccount:
 
 The part that needs to be modified is the `annotations` section. So if you want to scale an EKS cluster based on SQS messages, then you first need an IAM role that has access to SQS, and you need to add this role arn as an annotation.
 
+```
+annotations: 
+    eks.amazonaws.com/role-arn: arn:aws:iam::<account-id>:role/<role-name>
+```
+
+Next, you need to change the ScaleObject resource. The mysql-hpa.yaml has the trigger specified as the mysql db. However, it does not have an option called `identityOwner`. This is becase we are not using authentication here, and therefore do not need such a thing. In order to add authentication, this key should be added and the value set to `operator`:
+
+```
+metadata:
+    ...
+    identityOwner: operator
+```
+
+And that's it! You only needed to modify two lines and you have full authorization among the cluster.
+
+While this is the easiest way to provide authentication, it is not the only way to do it. You could also change the `identityOwner` to `pod`, and create a `TriggerAuthentication` resource and feed in the AWS access keys (which isn't very secure), or have the keda service account assume a role that has access to the necessary resources (which is much more secure). There is a number of different ways to authorize, and these are covered in the [KEDA documentation](https://keda.sh/docs/1.4/concepts/authentication/).
+
 If you added the arn, then setting up authentication is a simple matter. While Keda provides resources specifically geared towards authentication, you won't need to use any of that. In the Keda authentication types, there exists a type called `operator`. This type allows the keda service account to directly acquire the role of the IAM arn you provided. As long as the arn has the permissions necessary, keda can function. The triggers will look like the following:
 
 ```yaml
@@ -234,4 +251,6 @@ With the above configuration, a new Keda job will start every time a message is 
 
 ## Conclusion
 
-This wraps up the lesson on KEDA. What we tried out was a simple demonstration of a MySQL scaler followed by a demonstration of using various authentication methods to connect and consume messages from AWS SQS. This is a good representation of what you can expect from other data sources. If you were considering using this with a different Kubernetes engine running on a different cloud provider, the concept would still work. Make sure you read through the authentication page, which contains different methods of authentication for different cloud providers. If you want to try out other scalers, make sure you check out the [official samples page](https://github.com/kedacore/samples).
+This wraps up the lesson on KEDA. What we tried out was a simple demonstration of a MySQL scaler followed by a demonstration of using various authentication methods to connect and consume messages from AWS SQS. This is a good representation of what you can expect from other data sources. If you were considering using this with a different Kubernetes engine running on a different cloud provider, the concept would still work. Make sure you read through the authentication page, which contains different methods of authentication for different cloud providers. Next up, we will look at how you can use KEDA alongside Prometheus and Linkerd to scale your pods based on the number of requests reaching your endpoints.
+
+[Next: Scaling with KEDA and Prometheus](./keda-prometheus.md)
