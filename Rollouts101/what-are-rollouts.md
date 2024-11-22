@@ -19,6 +19,8 @@ Now let's take this a step further. What happens if you want to test out two dif
 - Traffic percentage splitting
 - Header-based routing
 
-## Traffic percentage splitting
+The first method is fairly simple: You take all the traffic that comes in and randomly send a certain percentage to the new application version. You will then slowly increase the traffic percentage sent to the new version (promote the deployment) until the only application receiving traffic is the new one. The best method to do this is with Argo Rollouts, which is what we will be using for the lab in the next section.
 
-The first method is fairly simple; you take all the traffic that comes in and randomly send a certain percentage of the traffic to the new application version. You will then slowly increase the traffic percentage that gets sent to the new version (promote the deployment) until the only application receiving traffic is the new one. The best method to do this is with Argo Rollouts.
+The second method can be simple or complicated depending on your exact setup. If you only want to route traffic based on the application within your cluster that communicates internally, you can use the Kubernetes gateway API for a quick canary solution. If you want more advanced features you could go for the gateway API provided by a service mesh such as Linkerd. On the other hand, if all your applications receive traffic from external sources and are routed via a load balancer connected to an ingress then the setup can be a little more complex. However, you likely want a combination of both, where traffic comes into your application from a load balancer and needs to be split there, and it then forwards the traffic to other applications within your cluster meaning that the traffic split has to be maintained here as well. In the following lab, we will be looking at both options as well as the more advanced Linkerd option.
+
+Now that you have a good idea of what canary rollouts are, the advantages they have, and the two main methods of splitting traffic, let's head over to the lab where we will start the practical portion.
