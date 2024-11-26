@@ -37,4 +37,31 @@ $ curl -sX POST localhost:9898/echo \
 PODINFO_UI_MESSAGE=A backend
 ```
 
-Since we haven't introduced any traffic splitting the message will always show the response as "A".
+Since we haven't introduced any traffic splitting the message will always show the response as "A backend" since the backend will always be pointed at backend A. In this case, assume that backend A is the "blue" deployment (the stable version that is currently running) while backend B is the "green" deployment (the new version). Now, let's look at linkerd's HTTP route which will be used to set up the traffic splitting.
+
+```yaml
+apiVersion: policy.linkerd.io/v1beta2
+kind: HTTPRoute
+metadata:
+  name: backend-router
+  namespace: test
+spec:
+  parentRefs:
+    - name: backend-a-podinfo
+      kind: Service
+      group: core
+      port: 9898
+  rules:
+    - matches:
+      - headers:
+        - name: "x-request-id"
+          value: "alternative"
+      backendRefs:
+        - name: "backend-b-podinfo"
+          port: 9898
+    - backendRefs:
+      - name: "backend-a-podinfo"
+        port: 9898
+```
+
+Let's dig deeper into this file. We can see that it is of `kind: HTTPRoute`. However the `apiVersion` specifies `policy.linkerd.io` which means this is Linkerd's modified HTTPRoute object and not the default HTTPRoute object from the gateway API. For the parentref, we place backend A (blue backend) so that all requests go to it by default.
