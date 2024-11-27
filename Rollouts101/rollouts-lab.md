@@ -54,8 +54,8 @@ spec:
   rules:
     - matches:
       - headers:
-        - name: "x-request-id"
-          value: "alternative"
+        - name: "client-id"
+          value: "abc123"
       backendRefs:
         - name: "backend-b-podinfo"
           port: 9898
@@ -64,4 +64,19 @@ spec:
         port: 9898
 ```
 
-Let's dig deeper into this file. We can see that it is of `kind: HTTPRoute`. However the `apiVersion` specifies `policy.linkerd.io` which means this is Linkerd's modified HTTPRoute object and not the default HTTPRoute object from the gateway API. For the parentref, we place backend A (blue backend) so that all requests go to it by default.
+Let's dig deeper into this file. We can see that it is of `kind: HTTPRoute`. However the `apiVersion` specifies `policy.linkerd.io` which means this is Linkerd's modified HTTPRoute object and not the default HTTPRoute object from the gateway API. For the parentref, we place backend A (blue backend) so that all requests go to it by default. Next, we specify the rules that need to match based on headers:
+
+```yaml
+- matches:
+ - headers:
+ - name: "client-id"
+        value: "abc123"
+    backendRefs:
+ - name: "backend-b-podinfo"
+        port: 9898
+ - backendRefs:
+ - name: "backend-a-podinfo"
+      port: 9898
+```
+
+We say that if `headers` match the key `client-id` and value `abc123`, then redirect the request to backend B. If not, go to backend A. So if this was a specific client, then all that client's requests would go to backend B while all the other clients would still have their requests route to the stable backend. Since it is normal practice to maintain several test clients for an application, you could add your test client ID for the green deployment and perform testing on it without affecting your actual clients.
