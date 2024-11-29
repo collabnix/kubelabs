@@ -84,3 +84,47 @@ We say that if `headers` match the key `client-id` and value `abc123`, then redi
 However, you might notice that this directly manipulates the `backend-a-podinfo` service. Any request that comes into the `backend-a-podinfo` will go through this traffic-splitting process as intended. However, if your pods were to be called in some other way, this splitting process would be overlooked and the request would go only to pod A. This would be the case if you are using, for example, AWS ALB. To understand why this happens, let's take a look at how ALBs connected to ingresses work.
 
 Before using an ALB, you need to install the ALB controller manager in your cluster. This controller manager keeps track of what pods are running, their health status, and IPs. When a pod gets rescheduled or the IP changes for any reason, the ALB controller notices this and swaps out the IP in the target group. To avoid the latency of going through the ALB to the service, and then the service to the pod, the pod IP is placed directly. This causes the splitting process to be ignored. In this case, you must add the route splitting on the ALB itself. Adding route splitting on the ALB is simple but since we are controlling the ALB through an ingress yaml, the configuration might look more complicated so let's break it down.
+
+```yaml
+# Annotations Reference:  https://kubernetes-sigs.github.io/aws-alb-ingress-controller/guide/ingress/annotation/
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-main
+  labels:
+#    app: usermgmt-restapp
+  annotations:
+    # Ingress Core Settings
+    kubernetes.io/ingress.class: "alb"
+    alb.ingress.kubernetes.io/scheme: internal
+    alb.ingress.kubernetes.io/subnets: subnet-123
+    alb.ingress.kubernetes.io/target-type: ip 
+    alb.ingress.kubernetes.io/forwarded-for-header: "X-Forwarded-Host"
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
+    alb.ingress.kubernetes.io/success-codes: '200'
+    alb.ingress.kubernetes.io/healthy-threshold-count: '2'
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
+    alb.ingress.kubernetes.io/actions.backend-b: >
+      {"type":"forward","forwardConfig":{"targetGroups":[{"serviceName":"backend-b","servicePort":"9095"}]}}
+    alb.ingress.kubernetes.io/conditions.backend-b: >
+      [{"field":"http-header","httpHeaderConfig":{"httpHeaderName": "example-header-2", "values":["value"]}}]
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /backend/
+        pathType: Prefix
+        backend:
+          service:
+            name: backend-b
+            port:
+              name: use-annotation
+      - path: /backend/
+        pathType: Prefix
+        backend:
+          service:
+            name: backend-a
+            port:
+              number: 9095
+```
