@@ -86,7 +86,6 @@ However, you might notice that this directly manipulates the `backend-a-podinfo`
 Before using an ALB, you need to install the ALB controller manager in your cluster. This controller manager keeps track of what pods are running, their health status, and IPs. When a pod gets rescheduled or the IP changes for any reason, the ALB controller notices this and swaps out the IP in the target group. To avoid the latency of going through the ALB to the service, and then the service to the pod, the pod IP is placed directly. This causes the splitting process to be ignored. In this case, you must add the route splitting on the ALB itself. Adding route splitting on the ALB is simple but since we are controlling the ALB through an ingress yaml, the configuration might look more complicated so let's break it down.
 
 ```yaml
-# Annotations Reference:  https://kubernetes-sigs.github.io/aws-alb-ingress-controller/guide/ingress/annotation/
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -128,3 +127,16 @@ spec:
             port:
               number: 9095
 ```
+
+Most of the ingress file is similar to what any normal ingress file would look like. The difference is in these annotations:
+
+```
+alb.ingress.kubernetes.io/actions.backend-b: >
+  {"type":"forward","forwardConfig":{"targetGroups":[{"serviceName":"backend-b","servicePort":"9095"}]}}
+alb.ingress.kubernetes.io/conditions.backend-b: >
+  [{"field":"http-header","httpHeaderConfig":{"httpHeaderName": "example-header-2", "values":["value"]}}]
+```
+
+These annotations are used to specify header-based splitting on an ALB level. To break down the JSON, backend B (the green backend) has its service name and port specified. Then, under conditions, the header to split based on is provided (example-header-2 in this case). The key could have multiple values.
+
+After we have defined this as part of the annotation, we use rule priority to split the traffic under `paths`. In this case, the path is `backend` in both cases. What differs is the service name.
