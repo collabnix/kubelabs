@@ -141,4 +141,14 @@ These annotations are used to specify header-based splitting on an ALB level. To
 
 After we have defined this as part of the annotation, we use rule priority to split the traffic under `paths`. In this case, the path is `backend` in both cases. What differs is the service name. The path on top gets higher priority so it is reached first when deciding where to route the traffic. It defers to the provided annotation and checks if the httpHeaderName condition is matched. If yes, the request is forwarded to backend-b. If not, the request then goes to the next priority path, matches with it, and gets redirected to backend-a. This will ensure that any requests from external load balancers will always be routed to the correct service depending on the blue-green configuration. However once the request comes inside the cluster, if it is again forwarded to a different application internally, that request will not be forwarded using the header-based paths which is where you need to use HTTPRoutes as described above.
 
-So by combining both HTTPRoutes and ingresses, you should be able to fully cover any request, wherever it comes from, and reroute it to the correct service.
+So by combining both HTTPRoutes and ingresses, you should be able to fully cover any request, wherever it comes from, and reroute it to the correct service. Since we have covered header based splitting, let's look at traffic percentage splits.
+
+## Traffic percentage splitting
+
+We can use the same setup as with route based splitting for traffic percentage splitting with the addition of Argo rollouts. Run the below commands to install rollouts:
+
+```bash
+kubectl create namespace argo-rollouts
+kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
+kubectl apply -k https://github.com/argoproj/argo-rollouts/manifests/crds\?ref\=stable
+```
