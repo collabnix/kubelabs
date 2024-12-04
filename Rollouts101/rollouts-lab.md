@@ -145,10 +145,59 @@ So by combining both HTTPRoutes and ingresses, you should be able to fully cover
 
 ## Traffic percentage splitting
 
-We can use the same setup as with route based splitting for traffic percentage splitting with the addition of Argo rollouts. Run the below commands to install rollouts:
+We will use a slightly different setup for traffic percentage splitting with the addition of Argo rollouts. Run the below commands to install rollouts:
 
 ```bash
 kubectl create namespace argo-rollouts
 kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
 kubectl apply -k https://github.com/argoproj/argo-rollouts/manifests/crds\?ref\=stable
+```
+
+Since the sample we used for  header based splitting used the same image, it would not be a good example here. So instead let's use a sample provided by Argo:
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-rollouts/master/docs/getting-started/basic/rollout.yaml
+kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-rollouts/master/docs/getting-started/basic/service.yaml
+```
+
+The first file is the rollout file that specifies the rollout resource. Let's take a look at it in more detail:
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: rollouts-demo
+spec:
+  replicas: 5
+  strategy:
+    canary:
+      steps:
+      - setWeight: 20
+      - pause: {}
+      - setWeight: 40
+      - pause: {duration: 10}
+      - setWeight: 60
+      - pause: {duration: 10}
+      - setWeight: 80
+      - pause: {duration: 10}
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: rollouts-demo
+  template:
+    metadata:
+      labels:
+        app: rollouts-demo
+    spec:
+      containers:
+      - name: rollouts-demo
+        image: argoproj/rollouts-demo:blue
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        resources:
+          requests:
+            memory: 32Mi
+            cpu: 5m
 ```
