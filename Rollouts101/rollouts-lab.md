@@ -205,3 +205,18 @@ spec:
 You can see that the object is of kind "Rollout." The important part is the strategy, which is set to "canary," and the steps. These steps have a weight to each of them, and in this case, the weight represents the traffic percentage. Here, we go in 5 steps: start with 20%, then increase 20% until we reach 100%. The rest of the deployment yaml is a regular deployment manifest.
 
 You will note that after the first step, you have `pause: {}`. This means that the deployment won't go beyond this point until it is manually promoted. From this point on, however, it will wait the mentioned number of seconds and automatically switch traffic over after the period mentioned inside the brackets. If you want to promote each step manually, you have to keep the brackets empty.
+
+Use this command on a terminal window so we can keep watch of the promotions happening:
+
+```
+kubectl argo rollouts get rollout rollouts-demo --watch
+```
+
+You will now notice that only the blue image is specified here. Since we are promoting a yellow image, let's define it using the kubectl CLI:
+
+```
+kubectl argo rollouts set image rollouts-demo \
+ rollouts-demo=argoproj/rollouts-demo:yellow
+```
+
+Since you have the watch command open, you should see the rollout beginning to progress.
