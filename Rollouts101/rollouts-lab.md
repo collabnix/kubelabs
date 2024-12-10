@@ -219,4 +219,16 @@ kubectl argo rollouts set image rollouts-demo \
  rollouts-demo=argoproj/rollouts-demo:yellow
 ```
 
-Since you have the watch command open, you should see the rollout beginning to progress.
+Since you have the watch command open, you should see the rollout beginning to progress. It will start by automatically opening 20% of traffic. To move it further, you can use the command line:
+
+```
+kubectl argo rollouts promote rollouts-demo
+```
+
+This is a good time to introduce the Argo Rollouts UI. The UI is installed automatically so you can start it up with:
+
+```
+kubectl argo rollouts dashboard
+```
+
+This allows you to perform the deployment promotions using the UI instead of the CLI. It also allows you to see a visualisation of this promotion.
