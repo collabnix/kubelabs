@@ -231,4 +231,11 @@ This is a good time to introduce the Argo Rollouts UI. The UI is installed autom
 kubectl argo rollouts dashboard
 ```
 
-This allows you to perform the deployment promotions using the UI instead of the CLI. It also allows you to see a visualisation of this promotion.
+This allows you to perform the deployment promotions using the UI instead of the CLI. It also allows you to visualize this promotion. You can also promote deployment from this UI instead of using the `kubectl` command. As you might have noticed, this UI is pretty basic and does not have the same level of detail and features as the ArgoCD dashboards. But this is still useful since you can expose this dashboard and allow developers to promote their deployments without giving them access to `kubectl`.
+
+Aborting the rollout can be done like so:
+
+```
+kubectl argo rollouts set image rollouts-demo \
+  rollouts-demo=argoproj/rollouts-demo:red
+```
