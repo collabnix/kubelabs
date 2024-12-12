@@ -236,6 +236,9 @@ This allows you to perform the deployment promotions using the UI instead of the
 Aborting the rollout can be done like so:
 
 ```
-kubectl argo rollouts set image rollouts-demo \
-  rollouts-demo=argoproj/rollouts-demo:red
+kubectl argo rollouts abort rollouts-demo
 ```
+
+This can also be done via the UI.
+
+This covers splitting traffic based on traffic percentage. There are a lot of extension to this topic, and a full list of possibilities can be found in the [official docs](https://argoproj.github.io/argo-rollouts/getting-started/#summary).
