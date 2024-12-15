@@ -242,3 +242,11 @@ kubectl argo rollouts abort rollouts-demo
 This can also be done via the UI.
 
 This covers splitting traffic based on traffic percentage. There are a lot of extension to this topic, and a full list of possibilities can be found in the [official docs](https://argoproj.github.io/argo-rollouts/getting-started/#summary).
+
+Next, let's look at a combination of both: header and traffic percentage splitting.
+
+## Combine splitting
+
+To allow a certain percentage of select clients to get your new application version, you must mix header-based and traffic-based routing. Since both methods use linkerd, that is the base requirement for this split. However, this is also the most complicated way to split traffic.
+
+In terms of the order, header-based splitting will come into effect before traffic-based splitting. This is because header-based splitting starts in the load balancer, which means that the splitting happens before the request reaches the cluster, whereas traffic splitting happens after the request reaches the cluster. Therefore, it is impossible to split based on traffic first.
