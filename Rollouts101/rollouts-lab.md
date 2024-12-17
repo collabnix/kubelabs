@@ -250,3 +250,11 @@ Next, let's look at a combination of both: header and traffic percentage splitti
 To allow a certain percentage of select clients to get your new application version, you must mix header-based and traffic-based routing. Since both methods use linkerd, that is the base requirement for this split. However, this is also the most complicated way to split traffic.
 
 Regarding the order, header-based splitting will come into effect before traffic-based splitting. This is because header-based splitting starts in the load balancer, which means splitting happens before the request reaches the cluster, whereas traffic splitting occurs after the request reaches the cluster. Therefore, it is impossible to split based on traffic first. So we will be following the header based splitting as usual where the load balancer will be splitting the traffic. After that split is complete we will be getting traffic as usual to the blue version while the green version will be only getting the traffic of a specific client. From this point, we need to get a certain percentage of traffic to continue to the green version while the rest gets re-routed to the blue version. So in this case, we will have 3 deployments instead of 2. 2 deployments will be the blue deployment, one for the HTTP-based routing and another for traffic-based. The other deployment will be the green deployment. To summarize, this is what the flow will look like:
+
+- Request comes from the load balancer
+- Load balancer splits traffic based on header
+- Split green traffic goes to the Rollout object
+- Rollout object redirects traffic to the TrafficSplit object
+- TrafficSplit object directs a percentage of traffic to green deployment
+- TrafficSplit object directs another percentage back to the blue deployment
+- If the request is redirected again from the application to another application with b/g configurations, it will follow the same traffic splitting as defined in the HTTPRoute configuration & Argo rollouts configurations.
