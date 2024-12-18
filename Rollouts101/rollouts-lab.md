@@ -258,3 +258,32 @@ Regarding the order, header-based splitting will come into effect before traffic
 - TrafficSplit object directs a percentage of traffic to green deployment
 - TrafficSplit object directs another percentage back to the blue deployment
 - If the request is redirected again from the application to another application with b/g configurations, it will follow the same traffic splitting as defined in the HTTPRoute configuration & Argo rollouts configurations.
+
+For this, we will go back to the example we used for header based routing. We will have the ALB + HTTPRoute configured so that the requests come to the correct pod. We will set up Argo Rollouts next using Rollout object:
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: rollouts-demo
+spec:
+  strategy:
+    canary:
+      steps:
+      - setWeight: 20
+      - pause: {}
+      - setWeight: 40
+      - pause: {duration: 10}
+      - setWeight: 60
+      - pause: {duration: 10}
+      - setWeight: 80
+      - pause: {duration: 10}
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: rollouts-demos
+```
+
+You will note that the `template` option has not been used here. In the previous example, we defined the deployment alongside the rollout. We will not be doing that here as the deployment is already created so we only need to use a `selector` to match the deployment.
+
+Note that currently, 100% of the traffic that comes into the Rollout object is aimed at the new green deployment. The job of the Rollout object is to divert a percentage of this traffic away from the green service back to the blue one.
