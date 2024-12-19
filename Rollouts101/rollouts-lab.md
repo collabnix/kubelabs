@@ -265,25 +265,34 @@ For this, we will go back to the example we used for header based routing. We wi
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: rollouts-demo
+  name: backend-rollout
 spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: backend
   strategy:
     canary:
       steps:
-      - setWeight: 20
-      - pause: {}
-      - setWeight: 40
-      - pause: {duration: 10}
-      - setWeight: 60
-      - pause: {duration: 10}
-      - setWeight: 80
-      - pause: {duration: 10}
-  revisionHistoryLimit: 2
-  selector:
-    matchLabels:
-      app: rollouts-demos
+      - setWeight: 50 # Sends 50% traffic to the canary (backend-a)
+      - pause:
+          duration: 60s
+      stableService: backend-a
+      canaryService: backend-b
 ```
 
 You will note that the `template` option has not been used here. In the previous example, we defined the deployment alongside the rollout. We will not be doing that here as the deployment is already created so we only need to use a `selector` to match the deployment.
 
-Note that currently, 100% of the traffic that comes into the Rollout object is aimed at the new green deployment. The job of the Rollout object is to divert a percentage of this traffic away from the green service back to the blue one.
+The next major difference is this part:
+
+```yaml
+strategy:
+  canary:
+    linkerd:
+      stableService: backend-a
+      canaryService: backend-b
+```
+
+We didn't have something like this before since, with the example provided by Argo, we used the **same service** with different images. In this case, we are using different images (since that is the whole point of canary deployments), but we are also using different services. In short, it's like we have 2 completely different applications. Therefore, we need to explicitly define which is the stable service and which is the canary one.
+
+Note that currently, 100% of the traffic that comes into the Rollout object is aimed at the new green deployment. The Rollout object's job is to divert a percentage of this traffic away from the green service back to the blue one.
