@@ -295,4 +295,10 @@ strategy:
 
 We didn't have something like this before since, with the example provided by Argo, we used the **same service** with different images. In this case, we are using different images (since that is the whole point of canary deployments), but we are also using different services. In short, it's like we have 2 completely different applications. Therefore, we need to explicitly define which is the stable service and which is the canary one.
 
-Note that currently, 100% of the traffic that comes into the Rollout object is aimed at the new green deployment. The Rollout object's job is to divert a percentage of this traffic away from the green service back to the blue one.
+Note that currently, 100% of the traffic that comes into the Rollout object is aimed at the new green deployment. The Rollout object's job is to divert a percentage of this traffic away from the green service back to the blue one. So the rollout object here links to a TrafficSplit and performs the redirection.
+
+Since we already have the HTTPRoute object and set everything up there, we only have to set up the Argo Rollout object. Deploy the above yaml and you should be all set.
+
+Of course, you can't control everything from the Argo Rollouts UI. Part of the splitting will have to be controlled by redeploying the HTTPRoute object. So, if you want to change the header-based routing, you can use the HTTPRoute object, while if you're going to do a traffic split, you can use the Argo Rollouts dashboard (or CLI).
+
+# Conclusion
