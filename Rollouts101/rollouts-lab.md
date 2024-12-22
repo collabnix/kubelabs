@@ -302,3 +302,7 @@ Since we already have the HTTPRoute object and set everything up there, we only 
 Of course, you can't control everything from the Argo Rollouts UI. Part of the splitting will have to be controlled by redeploying the HTTPRoute object. So, if you want to change the header-based routing, you can use the HTTPRoute object, while if you're going to do a traffic split, you can use the Argo Rollouts dashboard (or CLI).
 
 # Conclusion
+
+In this section, we examined canary rollouts and their various methods. We started by examining header-based routing with the HTTPRoute object and then moved on to traffic split-based routing with the Argo Rollouts object. Finally, we discussed how both could be implemented together so that the traffic was split.
+
+For more on the HTTPRoute object, check the [official docs](https://gateway-api.sigs.k8s.io/api-types/httproute/). Also, check the [Linkerd object](https://linkerd.io/2.15/features/httproute/) since that is what we use here. The Argo Rollouts object also has many different implementations. Check them out [here](https://argoproj.github.io/argo-rollouts/).
