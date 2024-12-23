@@ -350,6 +350,10 @@ A Curated List of Kubernetes Labs and Tutorials
 - [What is Chaos testing](./Chaos101/what-is-chaos-testing.md)
 - [Chaos lab with Chaos Mesh](./Chaos101/chaos-lab.md)
 
+## Rollouts
+- [What are rollouts](./Rollouts101/what-are-rollouts.md)
+- [Rollouts lab](./Rollouts101/rollouts-lab.md)
+
 ## For Node Developers
 - [Kubernetes for Node Developers](./nodejs.md)
 
