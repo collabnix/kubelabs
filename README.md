@@ -342,6 +342,9 @@ A Curated List of Kubernetes Labs and Tutorials
 - [What is Karpenter](./Karpenter101/what-is-karpenter.md)
 - [Karpenter Lab](./Karpenter101/karpenter-lab.md)
 
+## Observability & Operations
+- [Observability tools](./Observability101/observability.md)
+
 ## For Node Developers
 - [Kubernetes for Node Developers](./nodejs.md)
 
