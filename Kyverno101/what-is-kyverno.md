@@ -2,6 +2,8 @@
 
 Kyverno is a Kubernetes-native policy engine designed to manage and enforce configuration best practices, security policies, and operational compliance for Kubernetes clusters. Unlike other policy engines like Open Policy Agent (OPA), which uses a separate query language (Rego), Kyverno leverages Kubernetes' native YAML syntax to define policies, making it intuitive for Kubernetes users.
 
+Let's first take a look at the configuration part of Kyverno. Imagine a multi-tenant architecture with several applications running on several namespaces of your cluster. So each namespace  (namespace A, B, C) will have a separate copy of application A, B, C, etc...  However, you want to separate the resources for these applications by instructing everything in namespace A to separate on a node with label "A", everything in namespace B to schedule on a node with label "B', etc... One way you can do this is to have several copies of you Deployment manifest and specify the node selector per each namespace. However, this means you will be creating several copies of the same file which is a problem when it comes to maintenance and increases complexity. It would be much simpler if you could have a single manifest file that didn't specify a node selector at all, and the node selector would get automatically set per namespace as you deployed your applications. This is what Kyverno provides.
+
 ### Key Features of Kyverno:
 
 #### 1. **Policy Definition with YAML:**
