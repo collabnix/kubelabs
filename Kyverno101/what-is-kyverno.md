@@ -7,33 +7,25 @@ Let's first take a look at the configuration part of Kyverno. Imagine a multi-te
 ### Key Features of Kyverno:
 
 #### 1. **Policy Definition with YAML:**
-   Kyverno policies are defined as Kubernetes Custom Resources (CRs). This allows users to express policies in a Kubernetes-native way using YAML, without needing to learn a new language.
+ Kyverno policies are defined as Kubernetes Custom Resources (CRs). This means you can declare policies in regular YAML, similar to how you would declare any other resource.
 
 #### 2. **Policy Types:**
-   - **Validation Policies:** Ensure resources conform to specific requirements (e.g., require labels, restrict container images).
-   - **Mutation Policies:** Automatically modify or add specific configurations to resources (e.g., inject default labels, set resource limits).
-   - **Generation Policies:** Generate and manage additional resources based on existing ones (e.g., create ConfigMaps or Secrets dynamically).
+   - **Validation Policies:** Ensure resources conform to specific requirements (e.g., require labels, restrict container images).
+   - **Mutation Policies:** Automatically modify or add specific configurations to resources (e.g., inject default labels, set resource limits). This is what we discussed earlier, where you mutate the configuration so that namespace-specific configurations are applied at deployment time.
+   - **Generation Policies:** Generate and manage additional resources based on existing ones (e.g., create ConfigMaps or Secrets dynamically).
+
+We will look into each of these policy types at a later point.
 
 #### 3. **Admission Control:**
-   Kyverno integrates with Kubernetes admission controllers to enforce policies during resource creation or updates. It can block, allow, or mutate resources based on the defined policies.
+ Kyverno integrates with Kubernetes admission controllers to enforce policies during resource creation or updates. Based on the defined policies, it can block, allow, or mutate resources.
 
 #### 4. **Policy Violation Reporting:**
-   Kyverno creates Kubernetes events or custom status fields to report policy violations. This makes it easier to monitor compliance using existing Kubernetes tools like `kubectl`, dashboards, or monitoring solutions.
+ Kyverno creates Kubernetes events or custom status fields to report policy violations. This makes it easier to monitor compliance using existing Kubernetes tools like `kubectl`, dashboards, or monitoring solutions. This is useful if you have to maintain compliance such as ISO or SOC. Once the violation reporting is in place, you can assume your cluster is complicated as long as these reports don't reflect any violations.
 
 #### 5. **Policy as Code:**
    Since Kyverno uses YAML, it enables "Policy as Code," allowing teams to version-control their policies alongside application code, promoting a GitOps approach.
 
-#### 6. **Cluster-wide and Namespaced Policies:**
-   - **ClusterPolicy:** Applies policies cluster-wide.
-   - **Policy:** Applies policies to specific namespaces.
-
-#### 7. **Support for Dynamic Data:**
-   Kyverno can reference data from:
-   - The resource being validated.
-   - External ConfigMaps, Secrets, or the Kubernetes API.
-   - Admission request metadata.
-
-#### 8. **Validation Tests:**
+#### 5. **Validation Tests:**
    Kyverno supports testing policies using sample Kubernetes resources to ensure correctness before applying them in production.
 
 ---
