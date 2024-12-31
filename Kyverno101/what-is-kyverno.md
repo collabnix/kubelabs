@@ -10,8 +10,8 @@ Let's first take a look at the configuration part of Kyverno. Imagine a multi-te
  Kyverno policies are defined as Kubernetes Custom Resources (CRs). This means you can declare policies in regular YAML, similar to how you would declare any other resource.
 
 #### 2. **Policy Types:**
-   - **Validation Policies:** Ensure resources conform to specific requirements (e.g., require labels, restrict container images).
    - **Mutation Policies:** Automatically modify or add specific configurations to resources (e.g., inject default labels, set resource limits). This is what we discussed earlier, where you mutate the configuration so that namespace-specific configurations are applied at deployment time.
+   - **Validation Policies:** Ensure resources conform to specific requirements (e.g., require labels, restrict container images).
    - **Generation Policies:** Generate and manage additional resources based on existing ones (e.g., create ConfigMaps or Secrets dynamically).
 
 We will look into each of these policy types at a later point.
@@ -23,12 +23,16 @@ We will look into each of these policy types at a later point.
  Kyverno creates Kubernetes events or custom status fields to report policy violations. This makes it easier to monitor compliance using existing Kubernetes tools like `kubectl`, dashboards, or monitoring solutions. This is useful if you have to maintain compliance such as ISO or SOC. Once the violation reporting is in place, you can assume your cluster is complicated as long as these reports don't reflect any violations.
 
 #### 5. **Policy as Code:**
-   Since Kyverno uses YAML, it enables "Policy as Code," allowing teams to version-control their policies alongside application code, promoting a GitOps approach.
+ Since Kyverno uses YAML, it enables "Policy as Code," allowing teams to version-control their policies alongside application code, promoting a GitOps approach. This is a much better approach than manually applying policy constraints via `kubectl`, which would result in confusion on which policies were used at a later point. 
 
 #### 5. **Validation Tests:**
    Kyverno supports testing policies using sample Kubernetes resources to ensure correctness before applying them in production.
 
 ---
+
+### Mutation policy
+
+Let's start by looking at mutation policies. In this case, we will consider a solution to the problem we discussed at the beginning of this article. Let's consider a problem where we want all the pods in a specific namespace to schedule on nodes that have the label "dedicated". We also don't want any pods from other namespaces scheduling on these nodes so we should taint the nodes. This will ensure any pods without a toleration for this taint will not be scheduled on these nodes. Next, we need to mutate the pod configurations of the pods in the namespace so that they tolerate this taint. To perform these actions, this is the policy configuration that should be used.
 
 ### Common Use Cases for Kyverno:
 
