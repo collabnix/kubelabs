@@ -32,7 +32,48 @@ We will look into each of these policy types at a later point.
 
 ### Mutation policy
 
-Let's start by looking at mutation policies. In this case, we will consider a solution to the problem we discussed at the beginning of this article. Let's consider a problem where we want all the pods in a specific namespace to schedule on nodes that have the label "dedicated". We also don't want any pods from other namespaces scheduling on these nodes so we should taint the nodes. This will ensure any pods without a toleration for this taint will not be scheduled on these nodes. Next, we need to mutate the pod configurations of the pods in the namespace so that they tolerate this taint. To perform these actions, this is the policy configuration that should be used.
+Let's start by looking at mutation policies. In this case, we will consider a solution to the problem we discussed at the beginning of this article. Let's consider a problem where we want all the pods in a specific namespace to schedule on nodes that have the label "dedicated". We also don't want any pods from other namespaces scheduling on these nodes so we should taint the nodes. This will ensure any pods without a toleration for this taint will not be scheduled on these nodes. Next, we need to mutate the pod configurations of the pods in the namespace so that they tolerate this taint. To perform these actions, this is the policy configuration that should be used:
+
+```yaml
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: enforce-scheduling
+spec:
+  rules:
+  - name: ensure-tolerations-field
+    match:
+      resources:
+        kinds:
+        - Pod
+        namespaces:
+        - dedicated
+    mutate:
+      patchesJson6902: |-
+        - op: add
+          path: /spec/tolerations
+          value: []
+  - name: add-toleration-and-node-selector
+    match:
+      resources:
+        kinds:
+        - Pod
+        namespaces:
+        - dedicated
+    mutate:
+      patchesJson6902: |-
+        - op: add
+          path: /spec/tolerations/-
+          value:
+            key: "dedicated"
+            operator: "Equal"
+            value: "true"
+            effect: "NoSchedule"
+        - op: add
+          path: /spec/nodeSelector
+          value:
+            dedicated: "true"
+```
 
 ### Common Use Cases for Kyverno:
 
