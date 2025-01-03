@@ -41,18 +41,6 @@ metadata:
   name: enforce-scheduling
 spec:
   rules:
-  - name: ensure-tolerations-field
-    match:
-      resources:
-        kinds:
-        - Pod
-        namespaces:
-        - dedicated
-    mutate:
-      patchesJson6902: |-
-        - op: add
-          path: /spec/tolerations
-          value: []
   - name: add-toleration-and-node-selector
     match:
       resources:
@@ -74,6 +62,10 @@ spec:
           value:
             dedicated: "true"
 ```
+
+Here we define a `ClusterPolicy` (custom CRD) called "enforce-scheduling" and specify 1 rule. The rule matches all the pods in the namespace "dedicated" and its job is to mutate the pods it applies to. Inside the rules, 2 separate patches are happening. The first adds toleration to each pod to ensure it can be scheduled on tainted nodes. The second adds a node selector that explicitly forces the pod to schedule on select nodes that have the label `dedicated`.
+
+An important note when using these mutate hooks: always make sure the define them within a single resource. If you were to create 2 separate mutation hooks in 2 separate resources, then deploy both of them. 
 
 ### Common Use Cases for Kyverno:
 
