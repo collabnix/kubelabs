@@ -65,7 +65,24 @@ spec:
 
 Here we define a `ClusterPolicy` (custom CRD) called "enforce-scheduling" and specify 1 rule. The rule matches all the pods in the namespace "dedicated" and its job is to mutate the pods it applies to. Inside the rules, 2 separate patches are happening. The first adds toleration to each pod to ensure it can be scheduled on tainted nodes. The second adds a node selector that explicitly forces the pod to schedule on select nodes that have the label `dedicated`.
 
-An important note when using these mutate hooks: always make sure the define them within a single resource. If you were to create 2 separate mutation hooks in 2 separate resources, then deploy both of them. 
+An important note when using these mutate hooks: always define them within a single resource. If you were to create 2 separate mutation hooks in 2 separate resources, there could be concurrency issues. That is, when a pod starts, both resources try to mutate the pods at once which causes one or more mutations to fail. So having the mutations listed one after the other within a single resource is the best option here. Logically speaking, you should also group your rules separately even if they are all mutations. In this case, you have the mutation "add-toleration-and-node-selector" which fits the mutations that happen under it. However, if you have another mutation that removed something, such as toleration, then you shouldn't group it under the same name "add-toleration-and-node-selector". Instead, you can create a new rule with its name above or below the current rule and have the mutation defined there. For example:
+
+```yaml
+  rules:
+  - name: remove-toleration
+    match:
+      resources:
+        kinds:
+        - Pod
+        namespaces:
+        - dedicated
+    mutate:
+      ...
+  - name: add-toleration-and-node-selector
+    ...
+```
+
+There is no limit to the number of mututaions you can define separately.
 
 ### Common Use Cases for Kyverno:
 
