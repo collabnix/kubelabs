@@ -82,7 +82,120 @@ An important note when using these mutate hooks: always define them within a sin
     ...
 ```
 
-There is no limit to the number of mututaions you can define separately.
+There is no limit to the number of mutations you can define separately. Now let's look at a vaildation policy.
+
+### Validation policy
+
+**Kyverno validation policies** are rules designed to ensure that Kubernetes resources meet specific criteria before they are created or updated in a cluster. These policies act as a form of admission control, where Kyverno validates incoming resource configurations and either approves or rejects them based on the defined rules. Validation policies help enforce best practices, security standards, and compliance by defining what is allowed in a Kubernetes cluster. If a resource does not comply with the validation policy, it can be denied (in enforce mode) or simply reported (in audit mode).
+
+There are a few key features of validation policies:
+- Pattern-Based Validation
+- Custom Error Messages
+- Selective Targeting
+
+4. **Validation Modes:**
+   - **enforce:** Denies non-compliant resources from being created or updated.
+   - **audit:** Allows non-compliant resources but reports a warning.
+
+---
+
+### Example Use Case for a Validation Policy
+
+**Scenario:**
+Enforce that all pods in the cluster must have specific labels such as `app` and `environment`.
+
+---
+
+### Example Policy: Enforcing Required Labels
+
+```yaml
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-labels
+spec:
+  validationFailureAction: enforce  # "audit" can be used for warnings instead of rejection
+  rules:
+    - name: check-required-labels
+      match:
+        resources:
+          kinds:
+            - Pod
+      validate:
+        message: "Pods must have 'app' and 'environment' labels."
+        pattern:
+          metadata:
+            labels:
+              app: "?*"
+              environment: "?*"
+```
+
+---
+
+### Explanation of the Example:
+
+1. **`validationFailureAction`:**
+   - Set to `enforce`, meaning any pod that does not meet the policy will be denied at the admission controller level.
+
+2. **`match.resources.kinds`:**
+   - Specifies the policy applies to `Pod` resources.
+
+3. **`validate.message`:**
+   - Provides a clear error message when a resource fails validation.
+
+4. **`validate.pattern`:**
+   - Defines the required structure of the resource.
+   - The labels `app` and `environment` must exist with any value (`?*` is a wildcard for "any value").
+
+---
+
+### Behavior:
+
+1. **Compliant Pod:**
+   ```yaml
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: my-app
+     labels:
+       app: web
+       environment: production
+   spec:
+     containers:
+       - name: nginx
+         image: nginx:1.21
+   ```
+   - **Outcome:** Allowed because it meets the policy's requirements.
+
+2. **Non-Compliant Pod:**
+   ```yaml
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: my-app
+     labels:
+       app: web
+   spec:
+     containers:
+       - name: nginx
+         image: nginx:1.21
+   ```
+   - **Outcome:** Denied with the message: `Pods must have 'app' and 'environment' labels.`
+
+---
+
+### Advanced Validation Features:
+
+- **Dynamic Variables:**
+  Use placeholders like `{{request.operation}}` to dynamically validate based on runtime information.
+  
+- **Selective Matching:**
+  Apply the policy to resources in specific namespaces or with certain labels.
+
+- **Exclusion Rules:**
+  Exclude resources from validation by defining an `exclude` block.
+
+Validation policies in Kyverno provide an intuitive and powerful way to enforce rules and maintain cluster-wide consistency and compliance.
 
 ### Common Use Cases for Kyverno:
 
