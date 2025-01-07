@@ -93,20 +93,9 @@ There are a few key features of validation policies:
 - Custom Error Messages
 - Selective Targeting
 
-4. **Validation Modes:**
-   - **enforce:** Denies non-compliant resources from being created or updated.
-   - **audit:** Allows non-compliant resources but reports a warning.
+You can also enforce validations meaning that it denies non-compliant resources from being created or updated, or audit validations, which allows non-compliant resources but reports a warning.
 
----
-
-### Example Use Case for a Validation Policy
-
-**Scenario:**
-Enforce that all pods in the cluster must have specific labels such as `app` and `environment`.
-
----
-
-### Example Policy: Enforcing Required Labels
+Now we will look at an example of a validation policy. For this case, let's assume that all pods in the cluster must have specific labels such as `app` and `environment`. The policy for that will look something like this:
 
 ```yaml
 apiVersion: kyverno.io/v1
@@ -130,22 +119,9 @@ spec:
               environment: "?*"
 ```
 
----
+First we have `validationFailureAction: enforce` meaning any pod that does not meet the policy will be denied at the admission controller level. Next there is `match.resources.kinds: Pod` similar to the mutate hook which specifies the policy applies to `Pod` resources.
 
-### Explanation of the Example:
-
-1. **`validationFailureAction`:**
-   - Set to `enforce`, meaning any pod that does not meet the policy will be denied at the admission controller level.
-
-2. **`match.resources.kinds`:**
-   - Specifies the policy applies to `Pod` resources.
-
-3. **`validate.message`:**
-   - Provides a clear error message when a resource fails validation.
-
-4. **`validate.pattern`:**
-   - Defines the required structure of the resource.
-   - The labels `app` and `environment` must exist with any value (`?*` is a wildcard for "any value").
+`validate.message` provides a clear error message when a resource fails validation, and `validate.pattern` defines the required structure of the resource. In this case it says that the labels `app` and `environment` must exist with any value (`?*` is a wildcard for "any value").
 
 ---
 
