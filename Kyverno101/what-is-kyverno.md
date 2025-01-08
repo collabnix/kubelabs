@@ -123,11 +123,8 @@ First we have `validationFailureAction: enforce` meaning any pod that does not m
 
 `validate.message` provides a clear error message when a resource fails validation, and `validate.pattern` defines the required structure of the resource. In this case it says that the labels `app` and `environment` must exist with any value (`?*` is a wildcard for "any value").
 
----
+Based on these restrictions, this is the definition of a compliant pod:
 
-### Behavior:
-
-1. **Compliant Pod:**
    ```yaml
    apiVersion: v1
    kind: Pod
@@ -141,9 +138,9 @@ First we have `validationFailureAction: enforce` meaning any pod that does not m
        - name: nginx
          image: nginx:1.21
    ```
-   - **Outcome:** Allowed because it meets the policy's requirements.
 
-2. **Non-Compliant Pod:**
+Meanwhile, something like this can be considered "non-compliant" since it is missing the 'app' and 'environment' labels.:
+
    ```yaml
    apiVersion: v1
    kind: Pod
@@ -156,22 +153,8 @@ First we have `validationFailureAction: enforce` meaning any pod that does not m
        - name: nginx
          image: nginx:1.21
    ```
-   - **Outcome:** Denied with the message: `Pods must have 'app' and 'environment' labels.`
 
----
-
-### Advanced Validation Features:
-
-- **Dynamic Variables:**
-  Use placeholders like `{{request.operation}}` to dynamically validate based on runtime information.
-  
-- **Selective Matching:**
-  Apply the policy to resources in specific namespaces or with certain labels.
-
-- **Exclusion Rules:**
-  Exclude resources from validation by defining an `exclude` block.
-
-Validation policies in Kyverno provide an intuitive and powerful way to enforce rules and maintain cluster-wide consistency and compliance.
+You can also use placeholders like `{{request.operation}}` to dynamically validate based on runtime information. We can also specify namespaces (similar to the mutating policies) where the policy applies to any pods in specific namespaces. We can also use an `exclude` block that excludes specific resources from validation.
 
 ### Common Use Cases for Kyverno:
 
