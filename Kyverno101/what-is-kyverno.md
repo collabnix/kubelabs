@@ -156,6 +156,163 @@ Meanwhile, something like this can be considered "non-compliant" since it is mis
 
 You can also use placeholders like `{{request.operation}}` to dynamically validate based on runtime information. We can also specify namespaces (similar to the mutating policies) where the policy applies to any pods in specific namespaces. We can also use an `exclude` block that excludes specific resources from validation.
 
+### Generation policy
+
+### What Are Kyverno Generation Policies?
+
+**Kyverno generation policies** are rules designed to create, clone, or synchronize additional Kubernetes resources automatically. These policies allow for the dynamic management of resources by generating dependent resources based on existing ones. This can be particularly useful for enforcing consistency, managing configurations, or reducing manual effort.
+
+### Key Features of Generation Policies:
+
+1. **Automatic Resource Creation:**
+   - Generate resources like ConfigMaps, Secrets, or NetworkPolicies when a trigger resource is created.
+
+2. **Dynamic Content:**
+   - Use variables and placeholders to dynamically populate the generated resource with data from the source resource or cluster context.
+
+3. **Synchronization:**
+   - Keep the generated resource in sync with the source resource by automatically updating it when the source changes.
+
+4. **Selective Targeting:**
+   - Apply generation policies to specific resources based on their kind, labels, or namespaces.
+
+---
+
+### Common Use Cases for Generation Policies:
+
+1. Automatically create a default `ConfigMap` or `Secret` when a namespace is created.
+2. Generate `NetworkPolicy` objects for security purposes when a namespace is added.
+3. Create monitoring or logging configurations dynamically for specific workloads.
+4. Clone resources from one namespace to another.
+
+---
+
+### Example Policy: Generating a ConfigMap for New Namespaces
+
+**Scenario:**
+Automatically generate a default `ConfigMap` with predefined data whenever a new namespace is created.
+
+```yaml
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: generate-default-configmap
+spec:
+  rules:
+    - name: create-configmap
+      match:
+        resources:
+          kinds:
+            - Namespace
+      generate:
+        kind: ConfigMap
+        name: default-config
+        namespace: "{{request.object.metadata.name}}"
+        synchronize: true
+        data:
+          config:
+            default-key: default-value
+```
+
+---
+
+### Explanation of the Example:
+
+1. **`match.resources.kinds`:**
+   - Targets `Namespace` resources. The policy is triggered when a namespace is created.
+
+2. **`generate.kind`:**
+   - Specifies that the resource to be generated is a `ConfigMap`.
+
+3. **`generate.name` and `generate.namespace`:**
+   - Defines the name of the `ConfigMap` as `default-config`.
+   - The namespace of the `ConfigMap` is dynamically set to the name of the created namespace using the placeholder `{{request.object.metadata.name}}`.
+
+4. **`synchronize`:**
+   - Ensures the generated `ConfigMap` stays in sync with this policy. If the `ConfigMap` is manually modified, Kyverno will revert it to match the policy definition.
+
+5. **`data`:**
+   - Defines the key-value pairs (`default-key: default-value`) that will be included in the generated `ConfigMap`.
+
+---
+
+### Behavior:
+
+1. **Trigger:**
+   - A new namespace is created:
+     ```yaml
+     apiVersion: v1
+     kind: Namespace
+     metadata:
+       name: example-namespace
+     ```
+
+2. **Generated Resource:**
+   - A `ConfigMap` named `default-config` is automatically created in the `example-namespace`:
+     ```yaml
+     apiVersion: v1
+     kind: ConfigMap
+     metadata:
+       name: default-config
+       namespace: example-namespace
+     data:
+       default-key: default-value
+     ```
+
+3. **Sync:**
+   - If the `ConfigMap` is deleted or modified, Kyverno will recreate or update it to match the policy definition.
+
+---
+
+### Advanced Use Cases:
+
+1. **Generating Secrets:**
+   Create a `Secret` with sensitive data like API keys or tokens when a deployment is created:
+   ```yaml
+   generate:
+     kind: Secret
+     name: app-secret
+     namespace: "{{request.object.metadata.namespace}}"
+     data:
+       api-key: "YXNkZmFzZGZhc2Rm" # Base64 encoded value
+   ```
+
+2. **Cloning Resources:**
+   Clone a `ConfigMap` from a specific namespace:
+   ```yaml
+   generate:
+     kind: ConfigMap
+     name: "{{request.object.metadata.name}}-config"
+     namespace: "{{request.object.metadata.namespace}}"
+     clone:
+       name: base-config
+       namespace: base-namespace
+   ```
+
+3. **Creating Network Policies:**
+   Automatically enforce security by generating a `NetworkPolicy` for every namespace:
+   ```yaml
+   generate:
+     kind: NetworkPolicy
+     name: allow-dns
+     namespace: "{{request.object.metadata.name}}"
+     spec:
+       podSelector: {}
+       policyTypes:
+         - Egress
+       egress:
+         - to:
+             - ipBlock:
+                 cidr: 8.8.8.8/32
+           ports:
+             - protocol: UDP
+               port: 53
+   ```
+
+---
+
+Kyverno generation policies simplify the management of Kubernetes resources by automating their creation and synchronization, ensuring consistency and reducing manual effort.
+
 ### Common Use Cases for Kyverno:
 
 1. **Enforcing Security Standards:**
