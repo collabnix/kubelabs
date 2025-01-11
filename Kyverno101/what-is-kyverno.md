@@ -158,9 +158,7 @@ You can also use placeholders like `{{request.operation}}` to dynamically valida
 
 ### Generation policy
 
-### What Are Kyverno Generation Policies?
-
-**Kyverno generation policies** are rules designed to create, clone, or synchronize additional Kubernetes resources automatically. These policies allow for the dynamic management of resources by generating dependent resources based on existing ones. This can be particularly useful for enforcing consistency, managing configurations, or reducing manual effort.
+As the name suggests, generation policies allow you to generate Kubernetes resources automatically. It also allows you to clone, or synchronize additional Kubernetes resources. These policies allow for the dynamic management of resources by generating dependent resources based on existing ones. This can be particularly useful for enforcing consistency, managing configurations, or reducing manual effort.
 
 ### Key Features of Generation Policies:
 
