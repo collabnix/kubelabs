@@ -134,28 +134,9 @@ As the name suggests, generation policies allow you to generate Kubernetes resou
 
 Generation policies work based on triggers. This means that when a trigger is set off, a new resource will be created automatically. For example, ConfigMaps and secrets are bound to a single namespace. If you had a cluster with namespaces being made occasionally, it would be a hassle to manually create the secrets/ConfigMaps each time a new namespace is created. So a better alternative is to have a Kyverno generation policy that gets triggered when a new namespace is created that will automatically generate secrets and ConfigMaps for the new namespace. 
 
-1. **Automatic Resource Creation:**
-   - Generate resources like ConfigMaps, Secrets, or NetworkPolicies when a trigger resource is created.
+Since you likely need for certain variables to change while generating resources, Kyverno allows use of variables and placeholders to dynamically populate the generated resource with data from the source resource or cluster context. We will look at an example of using such variables. Once a resource is generated, you can also use Kyverno to maintain state by keeping the generated resource in sync with the source resource by automatically updating it when the source changes.
 
-2. **Dynamic Content:**
-   - Use variables and placeholders to dynamically populate the generated resource with data from the source resource or cluster context.
-
-3. **Synchronization:**
-   - Keep the generated resource in sync with the source resource by automatically updating it when the source changes.
-
-4. **Selective Targeting:**
-   - Apply generation policies to specific resources based on their kind, labels, or namespaces.
-
----
-
-### Common Use Cases for Generation Policies:
-
-1. Automatically create a default `ConfigMap` or `Secret` when a namespace is created.
-2. Generate `NetworkPolicy` objects for security purposes when a namespace is added.
-3. Create monitoring or logging configurations dynamically for specific workloads.
-4. Clone resources from one namespace to another.
-
----
+Finally, as with the other two policy types, you can apply generation policies to specific resources based on their kind, labels, or namespaces.
 
 ### Example Policy: Generating a ConfigMap for New Namespaces
 
