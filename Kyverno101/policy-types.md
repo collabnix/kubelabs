@@ -138,10 +138,9 @@ Since you likely need for certain variables to change while generating resources
 
 Finally, as with the other two policy types, you can apply generation policies to specific resources based on their kind, labels, or namespaces.
 
-### Example Policy: Generating a ConfigMap for New Namespaces
+#### Example Policy: Generating a ConfigMap for New Namespaces
 
-**Scenario:**
-Automatically generate a default `ConfigMap` with predefined data whenever a new namespace is created.
+In this example policy, we will automatically generate a default `ConfigMap` with predefined data whenever a new namespace is created.
 
 ```yaml
 apiVersion: kyverno.io/v1
@@ -165,25 +164,7 @@ spec:
             default-key: default-value
 ```
 
----
-
-### Explanation of the Example:
-
-1. **`match.resources.kinds`:**
-   - Targets `Namespace` resources. The policy is triggered when a namespace is created.
-
-2. **`generate.kind`:**
-   - Specifies that the resource to be generated is a `ConfigMap`.
-
-3. **`generate.name` and `generate.namespace`:**
-   - Defines the name of the `ConfigMap` as `default-config`.
-   - The namespace of the `ConfigMap` is dynamically set to the name of the created namespace using the placeholder `{{request.object.metadata.name}}`.
-
-4. **`synchronize`:**
-   - Ensures the generated `ConfigMap` stays in sync with this policy. If the `ConfigMap` is manually modified, Kyverno will revert it to match the policy definition.
-
-5. **`data`:**
-   - Defines the key-value pairs (`default-key: default-value`) that will be included in the generated `ConfigMap`.
+**`match.resources.kinds`** targets `Namespace` resources. The policy is triggered when a namespace is created. **`generate.kind`:** specifies that the resource to be generated is a `ConfigMap`. **`generate.name` and `generate.namespace`:** defines the name of the `ConfigMap` as `default-config` and the namespace of the `ConfigMap` is dynamically set to the name of the created namespace using the placeholder `{{request.object.metadata.name}}`. **`synchronize`:** ensures the generated `ConfigMap` stays in sync with this policy. If the `ConfigMap` is manually modified, Kyverno will revert it to match the policy definition. Finally we have **`data`:** defines the key-value pairs (`default-key: default-value`) that will be included in the generated `ConfigMap`.
 
 ---
 
