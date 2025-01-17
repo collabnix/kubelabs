@@ -166,37 +166,7 @@ spec:
 
 **`match.resources.kinds`** targets `Namespace` resources. The policy is triggered when a namespace is created. **`generate.kind`:** specifies that the resource to be generated is a `ConfigMap`. **`generate.name` and `generate.namespace`:** defines the name of the `ConfigMap` as `default-config` and the namespace of the `ConfigMap` is dynamically set to the name of the created namespace using the placeholder `{{request.object.metadata.name}}`. **`synchronize`:** ensures the generated `ConfigMap` stays in sync with this policy. If the `ConfigMap` is manually modified, Kyverno will revert it to match the policy definition. Finally we have **`data`:** defines the key-value pairs (`default-key: default-value`) that will be included in the generated `ConfigMap`.
 
----
-
-### Behavior:
-
-1. **Trigger:**
-   - A new namespace is created:
-     ```yaml
-     apiVersion: v1
-     kind: Namespace
-     metadata:
-       name: example-namespace
-     ```
-
-2. **Generated Resource:**
-   - A `ConfigMap` named `default-config` is automatically created in the `example-namespace`:
-     ```yaml
-     apiVersion: v1
-     kind: ConfigMap
-     metadata:
-       name: default-config
-       namespace: example-namespace
-     data:
-       default-key: default-value
-     ```
-
-3. **Sync:**
-   - If the `ConfigMap` is deleted or modified, Kyverno will recreate or update it to match the policy definition.
-
----
-
-### Advanced Use Cases:
+Here is an example of the generate block for a secret being created.  
 
 1. **Generating Secrets:**
    Create a `Secret` with sensitive data like API keys or tokens when a deployment is created:
@@ -208,6 +178,8 @@ spec:
      data:
        api-key: "YXNkZmFzZGZhc2Rm" # Base64 encoded value
    ```
+
+In this case, we use a placeholder variable `request.object.metadata.namespace` that will hold the namespace. The namespace will automatically be set to the ns of the object that is being referred. Instead of creating a new resource, if we were to clone a resource, it would look something like this:
 
 2. **Cloning Resources:**
    Clone a `ConfigMap` from a specific namespace:
@@ -221,8 +193,9 @@ spec:
        namespace: base-namespace
    ```
 
+In this case, the ConfigMap is cloned from `base-config` ConfigMap. Finally, here is an example of the generate block that creates a NetworkPolicy for every namespace:
+
 3. **Creating Network Policies:**
-   Automatically enforce security by generating a `NetworkPolicy` for every namespace:
    ```yaml
    generate:
      kind: NetworkPolicy
