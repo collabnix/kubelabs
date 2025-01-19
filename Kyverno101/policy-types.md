@@ -217,3 +217,5 @@ In this case, the ConfigMap is cloned from `base-config` ConfigMap. Finally, her
 ---
 
 Kyverno generation policies simplify the management of Kubernetes resources by automating their creation and synchronization, ensuring consistency and reducing manual effort.
+
+This brings us to the end of the three policy types that are used by Kyverno.

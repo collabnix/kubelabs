@@ -28,9 +28,7 @@ We will look into each of these policy types at a later point.
 #### 5. **Validation Tests:**
    Kyverno supports testing policies using sample Kubernetes resources to ensure correctness before applying them in production.
 
-Now that we have a broad understanding into what Kyverno is, let's take a deep  dive into the three main policy types that are used within Kyverno: mutation, validation, and generationb policies.
-
-[Next: Policy types](./policy-types.md)
+Now that we have a broad understanding into what Kyverno is, consider the following use cases where Kyverno will come in handy. 
 
 ### Common Use Cases for Kyverno:
 
@@ -51,7 +49,7 @@ Now that we have a broad understanding into what Kyverno is, let's take a deep  
    - Automatically generate network policies, ConfigMaps, or Secrets when a namespace is created.
    - Clean up resources when associated objects are deleted.
 
----
+To use Kyverno, a policy needs to be defined and applied. The Kyverno workflow is as follows.
 
 ### Kyverno Workflow:
 
@@ -70,7 +68,8 @@ Now that we have a broad understanding into what Kyverno is, let's take a deep  
 4. **Monitoring:**
    Use `kubectl`, Kyverno CLI, or observability tools to monitor policy compliance and violations.
 
----
+
+[Next: Policy types](./policy-types.md)
 
 ### Benefits of Kyverno:
 
