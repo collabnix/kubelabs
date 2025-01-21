@@ -1,3 +1,5 @@
+Before we get to the samples, let's take a look at installing  Kyverno on your cluster.
+
 ## Installing Kyverno:
 
 1. Add Kyverno to your Kubernetes cluster:
@@ -10,12 +12,9 @@
    kubectl get pods -n kyverno
    ```
 
-3. Apply your first policy:
-   ```bash
-   kubectl apply -f <policy-file>.yaml
-   ```
-
 ## Kyverno Samples
+
+First, let's take a look at a sample policy that enforces the "app" label on all pods. Note that the value of the label can be anything (hence the `?*`). This is an example of a validation policy.
 
 #### Enforce Labels:
 ```yaml
