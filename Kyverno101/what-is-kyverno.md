@@ -70,5 +70,3 @@ To use Kyverno, a policy needs to be defined and applied. The Kyverno workflow i
 
 
 [Next: Policy types](./policy-types.md)
-
-Kyverno empowers Kubernetes users to enforce best practices, security standards, and operational consistency in a seamless and Kubernetes-native manner. Its simplicity and powerful capabilities make it an excellent choice for policy management in Kubernetes environments.

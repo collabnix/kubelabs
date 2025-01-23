@@ -38,6 +38,8 @@ spec:
               app: "?*"
 ```
 
+Next is a policy that adds a default resource limit to all pods. This is an example of a mutation policy.
+
 #### Add Default Resource Limits:
 ```yaml
 apiVersion: kyverno.io/v1
@@ -62,6 +64,8 @@ spec:
                     cpu: "1"
 ```
 
+Finally we have a policy that creates a ConfigMap when a new namespace is created in the cluster. This is an example of generation policy.
+
 #### Generate ConfigMap:
 ```yaml
 apiVersion: kyverno.io/v1
@@ -82,3 +86,7 @@ spec:
         data:
           config: default
 ```
+
+## Conclusion
+
+This brings us to the end of the section on Kyverno. Kyverno empowers Kubernetes users to enforce best practices, security standards, and operational consistency in a seamless and Kubernetes-native manner. Its simplicity and powerful capabilities make it an excellent choice for policy management in Kubernetes environments. To learn more extensively about Kyverno, check out the [official docs](https://kyverno.io/docs/introduction/quick-start/).
