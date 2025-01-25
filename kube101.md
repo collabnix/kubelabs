@@ -1,7 +1,7 @@
 ## Preparing 5-Node Kubernetes Cluster
 
 > Updated: 26-Jan-2025
-> We recommend you to either use Minikube or Docker Desktop locally to test a single node Kubernetes cluster instead of Play with Kubernetes. PWK is > currently unstable and you might face resource insufficient issue. If you're looking out for multiple node, then use VM or bare metal or Cloud > instances. 
+> We recommend you to either use Minikube or Docker Desktop locally to test a single node Kubernetes cluster instead of Play with Kubernetes. PWK is currently unstable and you might face resource insufficient issue. If you're looking out for multiple node, then use VM or bare metal or Cloud > instances. 
 
 To get started with Kubernetes, follow the below steps:
 
