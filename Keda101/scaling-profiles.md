@@ -1,0 +1,3 @@
+# Auto-scaling profiles
+
+To get the best use of auto-scaling, proper scaling profiles need to be defined. This means that the scaling should only happen when the existing replicas cannot handle the load. This means that you need to know exactly when to start scaling up and when to scale down. There are several ways to get these metrics, but to be accurate, it's best to get the metric from the source that will be used for the actual scaling. In our case, since we will be querying prometheus we should use that to build our scaling profile.
