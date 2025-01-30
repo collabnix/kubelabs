@@ -25,3 +25,75 @@ sum(rate(request_total{app="your-application", job="linkerd-proxy", authority=~"
 ```
 
 To break down this query, this calculates the per-second rate of increase for the request_total time series over the last 5 minutes. `request_total` is a custom metric provided by Linkerd that gives the total request count. We look at this count and compare it against time to get the rate of increase with the timespan being a sliding window of 5 minutes. We then filter the requests by specifying only the requests coming from our application, and captured by the linkerd proxy. Regarding requests, the `request_total` metric captures all requests, including the requests that come from health checks. Since we don't want this metric to be used for scaling, we want to filter those out and only scale based on user requests. This means logs from the internet-facing domain (yourdomain.com) and other applications talking to the module via Kubernetes DNS (application.namespace.svc.cluster.local:8080).
+
+Once the query has run, we use `jq` to parse the result and get only the value (the request count) out of it. This value is then passed to the result variable which eventually gets written into a csv file.
+
+Now that you have an idea of what the process is, let's take a look at the full deployment file:
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: metrics-store-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: gp3
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: metrics-store-pv
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: gp3
+  csi:
+    driver: efs.csi.aws.com
+    volumeHandle: <file-system>::<access-point>
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: application-prometheus-query-pod
+spec:
+  containers:
+  - name: prometheus-query
+    image: curl-kubectl
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "10m"
+      limits:
+        memory: "64Mi"
+    command: 
+      - /bin/sh
+      - -c
+      - |
+        if [ ! -f /mnt/efs/metrics-application.csv ]; then echo "Timestamp,Value" > /mnt/efs/metrics-application.csv; fi; \
+        while true; do \
+          result=$(curl -G 'http://kube-prometheus-prometheus.monitoring.svc.cluster.local:9090/api/v1/query' \
+          --data-urlencode 'query=sum(rate(request_total{app="your-application", job="linkerd-proxy", authority=~"yourdomain.com|application.namespace.svc.cluster.local:8080"}[5m])) by (app)' | jq -r '.data.result[0].value[1]'); \
+          echo "$(date --iso-8601=seconds),$result" >> /mnt/efs/metrics-application.csv
+          sleep 300;  # Sleep for 5 minutes (300 seconds)
+        done
+    volumeMounts:
+    - name: efs-storage
+      mountPath: /mnt/efs  # Mount path for EFS where the CSV will be written
+  restartPolicy: Always  # Ensure that the pod will restart if it crashes or fails
+  volumes:
+  - name: efs-storage
+    persistentVolumeClaim:
+      claimName: metrics-store-pvc  # PVC for EFS storage
+```
