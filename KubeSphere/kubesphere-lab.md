@@ -244,7 +244,6 @@ servicemesh:
           enabled: false
 ```
 
-<<<<<<< Updated upstream
 The above code block will enable the Istio service mesh on your Kubernetes cluster. If you were to head to the monitoring section of your KuberSphere cluster, you would see that Istio has been added as an option in addition to the other monitoring services you have enabled.
 
 Next, let's move on to logging. You might be asking why there is another logging option if we have the ELK stack running. This is because while many different logging systems can run with KubeSphere, it might be a hassle to handle each and every one of them manually. Instead with this option, you could have all logs present in a single unified console. In addition to Elasticsearch, other log connectors can also be applied, as well as an inbuilt logging system.
@@ -302,6 +301,3 @@ You can enable a high availability option right from here and set the size of th
 ## Conclusion
 
 With that, we have now covered almost all the options KubeSphere provides to you. The only area that was not covered in this tutorial is [Edge Nodes](https://www.kubesphere.io/docs/v3.3/installing-on-linux/cluster-operation/add-edge-nodes/), which allows you to utilize the power of Edge computing with you Kubernetes nodes. Make sure you regularly check the KubeSphere page to see if there are any updates since it is regularly maintained.
-=======
-The above code block will enable the Istio service mesh on your Kubernetes cluster. If you were to head to the monitoring section of your KuberSphere cluster, you would see that Istio has been added as an option in addition to the other monitoring services you have enabled.
->>>>>>> Stashed changes

@@ -97,3 +97,5 @@ spec:
     persistentVolumeClaim:
       claimName: metrics-store-pvc  # PVC for EFS storage
 ```
+
+In this case, we use AWS EFS to maintain the CSV file. Note that if you use the local storage of your pod, all files will get deleted along with the pod so it's not a very reliable solution if you are gathering data over several days or weeks. Going from the top of the file, we have the PVC & PVC that are responsible for connecting the EFS access point to the pod. Next, we have the pod's manifest file. Note that we don't use a deployment file here since we only need 1 pod that has a tiny footprint. The pod mounts the volumes declared by the pv and runs the script that was mentioned earlier on the files inside the pv.
