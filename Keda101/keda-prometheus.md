@@ -87,9 +87,6 @@ The next block defines the triggers. In this case, we have specified the use of 
 
 Assuming you already have keda installed in your cluster, all you have left to do is to deploy this scaler into your cluster like you would any other manifest file. Make sure to deploy it in the same namespace as your nginx pod.
 
-## Setting up scaling profiles
-
-
 ## Testing
 
 You are now ready to see the scaling in action. To generate a minor load so we can test the scaling, we will be using a simple tool like [Apache Bench](https://httpd.apache.org/docs/2.4/programs/ab.html) which is included in the ```apache2-utils``` package. Use this to ping your nginx server:
