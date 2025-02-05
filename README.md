@@ -326,6 +326,7 @@ A Curated List of Kubernetes Labs and Tutorials
 - [What is KEDA](./Keda101/what-is-keda.md)
 - [KEDA lab](./Keda101/keda-lab.md)
 - [Scaling with KEDA and Prometheus](./Keda101/keda-prometheus.md)
+- [Scaling profiles](./Keda101/scaling-profiles.md)
 
 ## Terraform EKS
 - [What is Terraform](./Terraform101/what-is-terraform.md)

@@ -99,3 +99,7 @@ spec:
 ```
 
 In this case, we use AWS EFS to maintain the CSV file. Note that if you use the local storage of your pod, all files will get deleted along with the pod. Hence, it's not a very reliable solution if you are gathering data over several days or weeks. Going from the top of the file, we have the PVC & PVC that are responsible for connecting the EFS access point to the pod. Next, we have the pod's manifest file. Note that we don't use a deployment file here since we only need 1 pod that has a tiny footprint. The pod mounts the volumes declared by the pv and runs the script that was mentioned earlier on the files inside the pv. Once you have collected enough metrics, you just have to delete the pod and visualize the metrics to get an idea of how the request count changes during the day. From there, you can set the keda ScaledObject to the correct thresholds. The advantage of this technique is that you will always scale correctly since you scaled based on data that you already have which you got from the same metric store that the actual scaling will happen from.
+
+## Conclusion
+
+This brings us to the end of the scaling profiles section. Here, we discussed the best way to handle a situation where you have no existing metrics to make a scaling profile, and how you could get these metrics by using a custom workflow. We also discussed the accuracy of using a profile such as this, and how scaling can be applied effectively here. This only covers scaling with Prometheus, but the same logic applies to any metric that you use to scale.
