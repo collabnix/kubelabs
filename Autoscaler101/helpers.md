@@ -610,7 +610,7 @@ Now your number of pods won't go below the minimum available pod count meaning t
 
 ## Pod requests/limits
 
-You have undoubtedly seen pod requests and limitss and likely even used them at some point. Requests/limits define the minimum and maximum CPU & memory a pod is allowed to take. To break it down:
+You have undoubtedly seen pod requests and limits and likely even used them at some point. Requests/limits define the minimum and maximum CPU & memory a pod is allowed to take. To break it down:
 
 - Requests: A pod will not schedule on a node unless the pods' memory and CPU requets are fulfilled. If there are no nodes that can fulfill a pods requested resources, a new node will have to be added. If you use cluster autoscaler or Karpenter, this resource requirement will be noted and machines will be automatically provisioned.
 
