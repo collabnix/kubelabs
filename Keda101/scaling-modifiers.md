@@ -1,0 +1,5 @@
+# Advanced scaling modifiers
+
+Advanced Scaling Modifiers in KEDA allow you to combine multiple metrics for more complex scaling strategies. This feature gives you greater flexibility in defining how multiple triggers influence the scaling behavior simultaneously. Going to our previous example, let's say you want to scale based on request counts, but if there were a few requests that made the CPU usage jump, you would also like to cover that base and scale based on CPU as well. This is where advanced scaling modifiers come in.
+
+The most basic form of using multiple metrics to determine scaling would be having both scaling triggers running. When either scaler is triggered, scaling starts. The number of replicas you would scale up to would be whichever of the scalers determined to be higher or higher value. However, this is very basic and limited. KEDA allows you to scale in a much more complicated manner based on two or more metrics.

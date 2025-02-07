@@ -103,3 +103,7 @@ In this case, we use AWS EFS to maintain the CSV file. Note that if you use the 
 ## Conclusion
 
 This brings us to the end of the scaling profiles section. Here, we discussed the best way to handle a situation where you have no existing metrics to make a scaling profile, and how you could get these metrics by using a custom workflow. We also discussed the accuracy of using a profile such as this, and how scaling can be applied effectively here. This only covers scaling with Prometheus, but the same logic applies to any metric that you use to scale.
+
+Now that we have a good understanding of scaling, KEDA, metrics collections, and how scaling profiles work, let's look into advanced scaling modifiers.
+
+[Next: Advanced scaling modifiers with KEDA](./scaling-modifiers.md)
