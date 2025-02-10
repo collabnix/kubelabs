@@ -30,4 +30,17 @@ triggers:
     identityOwner: pod
 ```
 
-Both of these work on their own. Now, let's try putting them together.
+Both of these work on their own. Before we put these together, we need to understand how scaling modifiers work on scaled objects vs scaled jobs. For the first example, we will consider the application for a scaled job. In this case, we will use:
+
+```
+ scaling strategy:
+ multipleScalersCalculation : "sum"
+```
+
+This says that if multiple triggers exist, then scale up to the sum of both scalers. So here, the total number of messages in RMQ + SQS will be considered for scaling. The other options available are:
+
+- max
+- min
+- avg
+
+Limited modifiers.
