@@ -10,6 +10,7 @@ As an example, let's say you have an application that processes messages from tw
 triggers:
 - type: rabbitmq
   metadata:
+    name: rmq
     host: amqp://localhost:5672/vhost # Optional. If not specified, it must be done by using TriggerAuthentication.
     mode: QueueLength # QueueLength or MessageRate
     value: "1" # message backlog or publish/sec. target per instance
@@ -22,6 +23,7 @@ Next, let's take a look at the SQS trigger:
 triggers:
 - type: aws-sqs-queue
   metadata:
+    name: sqs
     # Required: queueURL or queueURLFromEnv. If both provided, uses queueURL
     queueURL: https://sqs.eu-west-1.amazonaws.com/account_id/QueueName
     queueLength: "1"  # Default: "5"
@@ -33,7 +35,7 @@ triggers:
 Both of these work on their own. Before we put these together, we need to understand how scaling modifiers work on scaled objects vs scaled jobs. For the first example, we will consider the application for a scaled job. In this case, we will use:
 
 ```
- scaling strategy:
+ scalingstrategy:
  multipleScalersCalculation : "sum"
 ```
 
@@ -43,4 +45,17 @@ This says that if multiple triggers exist, then scale up to the sum of both scal
 - min
 - avg
 
-Limited modifiers.
+Scaled jobs are somewhat limited in that only these options are available when it comes to scaling modifiers. While it still provides far broader options compared to the normal inbuilt Kubernetes scalers, it is quite small compared to the scaling options provided for ScaledObjects. So, let's look into those next.
+
+With ScaledObjects, you can create scaling modifiers that use the full range of functions available in the [expr](https://expr-lang.org/docs/language-definition) library. For example, taking into account the same two triggers as before, we can create a scaling modifier like this:
+
+```yaml
+advanced:
+  scalingModifiers:
+    formula: "(rmq + sqs)/2"
+    target: "2"
+    activationTarget: "2"
+    metricType: "AverageValue"
+```
+
+According to the above definition, you add together the queue lengths of RMQ and SQS, divide them by 2 to get a mean value, and see if that value is greater than 2. If it is, scaling happens. You can also use number functions such as max, min, abs, ceil, floor, round, etc... This gives way more options than the four functions available for scaled jobs.
