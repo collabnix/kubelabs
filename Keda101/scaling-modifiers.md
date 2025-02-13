@@ -58,4 +58,10 @@ advanced:
     metricType: "AverageValue"
 ```
 
-According to the above definition, you add together the queue lengths of RMQ and SQS, divide them by 2 to get a mean value, and see if that value is greater than 2. If it is, scaling happens. You can also use number functions such as max, min, abs, ceil, floor, round, etc... This gives way more options than the four functions available for scaled jobs.
+According to the above definition, you add the queue lengths of RMQ and SQS, divide them by 2 to get a mean value, and see if that value is greater than 2. If it is, scaling happens. You can also use number functions such as max, min, abs, ceil, floor, round, etc... This gives way more options than the four functions available for scaled jobs. The next interesting thing we can do here is use ternary operators to create if conditions within the scaler itself. So, for example, say we want this: if the rmq queue length is greater than the sqs queue length, return the rmq queue length/2. Else, return the sqs queue length. This can be handled by a function such as:
+
+```yaml
+formula: "rmq > sqs ? rmq/2 : sqs"
+```
+
+In this way, you can use expressions to return conditional values instead of static number or scaler options.
