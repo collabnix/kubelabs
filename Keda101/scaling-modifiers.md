@@ -64,4 +64,10 @@ According to the above definition, you add the queue lengths of RMQ and SQS, div
 formula: "rmq > sqs ? rmq/2 : sqs"
 ```
 
-In this way, you can use expressions to return conditional values instead of static number or scaler options.
+This way, you can use expressions to return conditional values instead of a static number or scaler options. You can also mix in other expressions provided in the library to make the calculations even more complex depending on your needs so that your pods scale exactly when you need them to. You also can chain expressions together like so:
+
+```yaml
+formula: "rmq < 2 ? rmq+sqs >= 2 ? 5 : 10 : 0"
+```
+
+The above means, if value of rmq is less than 2 AND rmq+sqs is at least 2 then return 5, if only the first is true return 10, if the first condition is false then return 0.
