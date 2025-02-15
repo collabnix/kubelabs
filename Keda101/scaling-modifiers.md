@@ -71,3 +71,7 @@ formula: "rmq < 2 ? rmq+sqs >= 2 ? 5 : 10 : 0"
 ```
 
 The above means, if value of rmq is less than 2 AND rmq+sqs is at least 2 then return 5, if only the first is true return 10, if the first condition is false then return 0.
+
+This brings us to the end of the topic of scaling modifiers. Before we wrap up, several KEDA options can help make scaling decisions, so we will take a brief look at them next.
+
+[Next: Scaling options](./scaling-options.md)
