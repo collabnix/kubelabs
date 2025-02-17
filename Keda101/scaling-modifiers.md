@@ -34,7 +34,7 @@ triggers:
 
 Both of these work on their own. Before we put these together, we need to understand how scaling modifiers work on scaled objects vs scaled jobs. For the first example, we will consider the application for a scaled job. In this case, we will use:
 
-```
+```yaml
  scalingstrategy:
  multipleScalersCalculation : "sum"
 ```
