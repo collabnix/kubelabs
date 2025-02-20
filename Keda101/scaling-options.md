@@ -27,3 +27,22 @@ Next, let's look at the options available for scaled ScaledObjects
 ## ScaledObjects options
 
 As before, let's skip the common options that we all use and look at the specialized ones. The first is `idleReplicaCount` which is the count used when scaling is not active. By default, the count will normally fall to the minimum replica count, but if you want the idle count to be higher, you can use this.
+
+Next, let's look at the `fallback` option. This is the number of replicas that must be active if the scaler is in an error state. For example, let's assume that due to a permission issue, our sample scaler can no longer reach SQS. Therefore it has no idea how many replicas it should scale up to. In this situation, it would go down to the minimum replica value, but that is not a good idea if you are in a high-traffic situation. In this case, you can define the fallback:
+
+```yaml
+  fallback:                                          
+    failureThreshold: 3                              
+    replicas: 6  
+```
+
+The threshold will be the number of times SQS is unreachable. In this case, if KEDA can't reach SQS, it will try 3 times after which the number of replicas will be scaled to 6. This is useful if you have a very important application that needs to handle scaler-level failures.
+
+Let's also look at the various annotations available for the KEDA-scaled objects:
+
+```yaml
+annotations:
+    scaledobject.keda.sh/transfer-hpa-ownership: "true"
+    validations.keda.sh/hpa-ownership: "true"          
+    autoscaling.keda.sh/paused: "true"                 
+```
