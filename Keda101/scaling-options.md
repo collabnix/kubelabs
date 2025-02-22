@@ -46,3 +46,21 @@ annotations:
     validations.keda.sh/hpa-ownership: "true"          
     autoscaling.keda.sh/paused: "true"                 
 ```
+
+`scaledobject.keda.sh/transfer-hpa-ownership`: If you already have an HPA at work, you can use this to transfer ownership of scaling to this scaled object. `validations.keda.sh/hpa-ownership` disables HPA ownership validation. The final annotation `autoscaling.keda.sh/paused` does the same jobs as it does for scaled jobs, where it pauses the autoscaling.
+
+Finally, look at the `advanced` section of the scaled job configuration. For example:
+
+```yaml
+  advanced:                                                 # Optional. Section to specify advanced options
+    restoreToOriginalReplicaCount: true/false               # Optional. Default: false
+    horizontalPodAutoscalerConfig:                          # Optional. Section to specify HPA related options
+      name: {name-of-hpa-resource}                          # Optional. Default: keda-hpa-{scaled-object-name}
+      behavior:                                             # Optional. Use to modify HPA's scaling behavior
+        scaleDown:
+          stabilizationWindowSeconds: 300
+          policies:
+          - type: Percent
+            value: 100
+            periodSeconds: 15
+```
