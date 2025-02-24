@@ -52,8 +52,8 @@ annotations:
 Finally, look at the `advanced` section of the scaled job configuration. For example:
 
 ```yaml
-  advanced:                                                 # Optional. Section to specify advanced options
-    restoreToOriginalReplicaCount: true/false               # Optional. Default: false
+  advanced:                                               
+    restoreToOriginalReplicaCount: true/false               
     horizontalPodAutoscalerConfig:                          # Optional. Section to specify HPA related options
       name: {name-of-hpa-resource}                          # Optional. Default: keda-hpa-{scaled-object-name}
       behavior:                                             # Optional. Use to modify HPA's scaling behavior
@@ -64,3 +64,7 @@ Finally, look at the `advanced` section of the scaled job configuration. For exa
             value: 100
             periodSeconds: 15
 ```
+
+Starting with `restoreToOriginalReplicaCount`, when a ScaledObject is deleted, the replica count has been maintained at whatever value it was at the time of deletion. If this is set to true, the replica count is decreased to the original replica count.
+
+`horizontalPodAutoscalerConfig`: Under the hood, KEDA uses HPAs to handle scaling, and with Kubernetes v1.18, the scaling behavior can be fine-tuned at a deeper level. KEDA allows us to do this from the Scaled Object definition itself.
