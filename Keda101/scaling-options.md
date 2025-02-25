@@ -54,9 +54,9 @@ Finally, look at the `advanced` section of the scaled job configuration. For exa
 ```yaml
   advanced:                                               
     restoreToOriginalReplicaCount: true/false               
-    horizontalPodAutoscalerConfig:                          # Optional. Section to specify HPA related options
-      name: {name-of-hpa-resource}                          # Optional. Default: keda-hpa-{scaled-object-name}
-      behavior:                                             # Optional. Use to modify HPA's scaling behavior
+    horizontalPodAutoscalerConfig:                          
+      name: {name-of-hpa-resource}                          
+      behavior:
         scaleDown:
           stabilizationWindowSeconds: 300
           policies:
@@ -67,4 +67,6 @@ Finally, look at the `advanced` section of the scaled job configuration. For exa
 
 Starting with `restoreToOriginalReplicaCount`, when a ScaledObject is deleted, the replica count has been maintained at whatever value it was at the time of deletion. If this is set to true, the replica count is decreased to the original replica count.
 
-`horizontalPodAutoscalerConfig`: Under the hood, KEDA uses HPAs to handle scaling, and with Kubernetes v1.18, the scaling behavior can be fine-tuned at a deeper level. KEDA allows us to do this from the Scaled Object definition itself.
+`horizontalPodAutoscalerConfig`: Under the hood, KEDA uses HPAs to handle scaling, and with Kubernetes v1.18, the scaling behavior can be fine-tuned at a deeper level. KEDA allows us to do this from the Scaled Object definition itself. Here, the `name` section is where you specify the name of the HPA created by keda. By default, it is `keda-hpa-{scaled-object-name}`. The `behavior` section is where the scaling behavior is defined and this is actually a direct copy of the configuration given by the [Kubernetes API](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#configurable-scaling-behavior). Not something that is provided by KEDA.
+
+`scaleDown` (or `scaleUp`) is where you define the policies for scaling up or down. You could also choose to use both options to control both the scaling up as well as the scaling down.
