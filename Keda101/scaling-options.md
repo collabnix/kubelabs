@@ -63,10 +63,30 @@ Finally, look at the `advanced` section of the scaled job configuration. For exa
           - type: Percent
             value: 100
             periodSeconds: 15
+          - type: Pods
+            value: 4
+            periodSeconds: 60
 ```
 
 Starting with `restoreToOriginalReplicaCount`, when a ScaledObject is deleted, the replica count has been maintained at whatever value it was at the time of deletion. If this is set to true, the replica count is decreased to the original replica count.
 
 `horizontalPodAutoscalerConfig`: Under the hood, KEDA uses HPAs to handle scaling, and with Kubernetes v1.18, the scaling behavior can be fine-tuned at a deeper level. KEDA allows us to do this from the Scaled Object definition itself. Here, the `name` section is where you specify the name of the HPA created by keda. By default, it is `keda-hpa-{scaled-object-name}`. The `behavior` section is where the scaling behavior is defined and this is actually a direct copy of the configuration given by the [Kubernetes API](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#configurable-scaling-behavior). Not something that is provided by KEDA.
 
-`scaleDown` (or `scaleUp`) is where you define the policies for scaling up or down. You could also choose to use both options to control both scaling up and scaling down. In the above example, we have `stabilizationWindowSeconds` which is somewhat similar to the cooldown period in KEDA, where the number of pods is maintained if the scaling metric fluctuates a lot to prevent unnecessary pod starts and stops. After this, we have the `policies` section where you describe the specifics of the scale-down policy. 100% here means that the application can be scaled down to the minimum replica count (not 0), for 15 seconds. This doesn't mean that the replicas will scale down within 15 seconds, just that the policy will be active for 15 seconds.
+`scaleDown` (or `scaleUp`) is where you define the policies for scaling up or down. You could also choose to use both options to control both scaling up and scaling down. In the above example, we have `stabilizationWindowSeconds` which is somewhat similar to the cooldown period in KEDA, where the number of pods is maintained if the scaling metric fluctuates a lot to prevent unnecessary pod starts and stops. After this, we have the `policies` section where you describe the specifics of the scale-down policy. We use percent here and 100% here means that the application can be scaled down to the minimum replica count (not 0), for 15 seconds. This doesn't mean that the replicas will scale down within 15 seconds, just that the policy will be active for 15 seconds.
+
+You could also use pods instead of percent to specify the type to scale down. This way it will scale down the exact number of pods instead of the percentage of pods. Useful if you have a fixed number of replicas in mind. Next, let's look at `scaleup`:
+
+```yaml
+  scaleUp:
+    stabilizationWindowSeconds: 0
+    policies:
+    - type: Percent
+      value: 100
+      periodSeconds: 15
+    - type: Pods
+      value: 4
+      periodSeconds: 15
+    selectPolicy: Max
+```
+
+As you can see it is not very different from `scaledown`.
