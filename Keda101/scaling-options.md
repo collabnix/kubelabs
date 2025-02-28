@@ -89,4 +89,6 @@ You could also use pods instead of percent to specify the type to scale down. Th
     selectPolicy: Max
 ```
 
-As you can see it is not very different from `scaledown`.
+As you can see, it is the same as `scaledown`. Let's take a look at a new attribute added here, `selectPolicy`. This can be either Min, Max, or disabled. Setting `selectPolicy` to Min means that the autoscaler chooses the policy that affects the smallest number of Pods, while Max does the opposite. Setting it to disabled turns off scaling in the given direction. So, in this case, if we set it to disabled, it will disable scaling up completely.
+
+This is the full range of options provided by the `advanced` section of the KEDA scaler.
