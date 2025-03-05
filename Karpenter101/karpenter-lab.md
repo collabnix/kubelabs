@@ -526,4 +526,8 @@ However, say you have a microservice that trains a machine-learning model. It's 
 
 ## Conclusion
 
-This covers the basics of Karpenter. In this section, we introduced Karpenter, how you can set it up in your cluster, and how you can use it to specify the correct nodes needed to run your workload. We also took a look at how you can taint your nodes, as well as some considerations you must take into account when using Karpenter. As always, make sure to check out the official [Karpenter docs](https://karpenter.sh/docs/) to learn more.
+This covers the basics of Karpenter. In this section, we introduced Karpenter, how you can set it up in your cluster, and how you can use it to specify the correct nodes needed to run your workload. We also took a look at how you can taint your nodes, as well as some considerations you must take into account when using Karpenter. Now that we have a good understanding of how Karpenter works, let's take a look at how we can fine tune Karpenter for better use,
+
+[Next: Fine tuning Karpenter](./fine-tuning.md)
+
+As always, make sure to check out the official [Karpenter docs](https://karpenter.sh/docs/) to learn more.
