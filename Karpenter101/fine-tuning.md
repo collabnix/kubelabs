@@ -1,20 +1,11 @@
 # Karpenter fine tuning
 
-Let's say you have a large number of microservices. About 20 - 30. Depending on the type of workload, you might have separate Karpenter node pools. Some of them might be CPU intensive, so you might use c class machines, while others are memory intensive leading you to use r class.
+Let's say you have a large number of microservices. About 20 - 30. Depending on the type of workload, you might have separate Karpenter node pools. Some of them might be CPU intensive, so you might use C class machines, while others are memory intensive leading you to use R class. So first let's look into Karpenter's node provisioning.
 
-# Fine-Tuning Karpenter for Different Workloads
+## Handling Compute-Intensive Workloads
 
-## Understanding Karpenter’s Node Provisioning
-Karpenter is an autoscaling solution for Kubernetes that provisions nodes dynamically based on workload demand. It offers flexibility in scheduling different workloads by optimizing instance types, node configurations, and cost efficiency.
+Fine-tuning Karpenter involves configuring `NodePool`, `NodeClaim`, and `EC2NodeClass` (for AWS) to handle different workload requirements. The key aspects to consider include performance, cost, and resilience. For a start, le's look at handling Compute-Intensive Workloads. Compute-intensive workloads, such as machine learning (ML) inference and video processing, require powerful CPU or GPU-based instances. An example configuration is as follows:
 
-Fine-tuning Karpenter involves configuring `NodePool`, `NodeClaim`, and `EC2NodeClass` (for AWS) to handle different workload requirements. The key aspects to consider include performance, cost, and resilience.
-
-## Strategies for Fine-Tuning Karpenter
-
-### 1. Handling Compute-Intensive Workloads
-Compute-intensive workloads, such as machine learning (ML) inference and video processing, require powerful CPU or GPU-based instances.
-
-#### **Configuration Example:**
 ```yaml
 apiVersion: karpenter.k8s.aws/v1beta1
 kind: NodePool
@@ -36,9 +27,8 @@ spec:
         - key: "compute-intensive"
           effect: "NoSchedule"
 ```
-**Explanation:**
-- Uses `c6i.large`, `c6i.xlarge`, and `g5.2xlarge` instances for high-performance computing.
-- Applies a taint (`compute-intensive`) to ensure only specific workloads run on these nodes.
+
+This NodePool uses `c6i.large`, `c6i.xlarge`, and `g5.2xlarge` instances for high-performance computing & applies a taint (`compute-intensive`) to ensure only specific workloads run on these nodes. Any applications that need these compute intensive nodes need to tolerate this taint in their pod definition.
 
 ### 2. Optimizing for Cost-Efficient Batch Jobs
 Batch jobs, such as ETL processes or analytics, can tolerate interruptions, making them ideal for spot instances.
