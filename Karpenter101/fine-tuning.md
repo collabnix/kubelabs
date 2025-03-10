@@ -30,10 +30,10 @@ spec:
 
 This NodePool uses `c6i.large`, `c6i.xlarge`, and `g5.2xlarge` instances for high-performance computing & applies a taint (`compute-intensive`) to ensure only specific workloads run on these nodes. Any applications that need these compute intensive nodes need to tolerate this taint in their pod definition.
 
-### 2. Optimizing for Cost-Efficient Batch Jobs
-Batch jobs, such as ETL processes or analytics, can tolerate interruptions, making them ideal for spot instances.
+## Handling Cost-Efficient Batch Jobs
 
-#### **Configuration Example:**
+Batch jobs, such as ETL processes or analytics, can tolerate interruptions, making them ideal for spot instances. In this case you can be a bit more lenient with the workloads since there are no end users that immediately get affected due to a small interruption:
+
 ```yaml
 apiVersion: karpenter.k8s.aws/v1beta1
 kind: NodePool
@@ -54,14 +54,13 @@ spec:
       labels:
         workload-type: "batch"
 ```
-**Explanation:**
-- Utilizes spot instances (`m5.large`, `m5.xlarge`) to reduce costs.
-- Labels nodes with `workload-type: batch` for targeted scheduling.
 
-### 3. Ensuring Low Latency for Web Applications
-Latency-sensitive workloads, such as real-time APIs or web applications, need stable on-demand instances with a balanced CPU-memory ratio.
+This NodePool uses spot instances (`m5.large`, `m5.xlarge`) to reduce costs and labels nodes with `workload-type: batch` for targeted scheduling. As with before, the workloads using these nodes need to have a toleration for these taints.
 
-#### **Configuration Example:**
+# Handling Low Latency for Web Applications
+
+Latency-sensitive workloads, such as real-time APIs or web applications, need stable on-demand instances with a balanced CPU-memory ratio. If there are any interruptions you could face 502 errors & thereby degrade the user experience as they have to retry their applications.
+
 ```yaml
 apiVersion: karpenter.k8s.aws/v1beta1
 kind: NodePool
