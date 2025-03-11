@@ -57,7 +57,7 @@ spec:
 
 This NodePool uses spot instances (`m5.large`, `m5.xlarge`) to reduce costs and labels nodes with `workload-type: batch` for targeted scheduling. As with before, the workloads using these nodes need to have a toleration for these taints.
 
-# Handling Low Latency for Web Applications
+## Handling Low Latency for Web Applications
 
 Latency-sensitive workloads, such as real-time APIs or web applications, need stable on-demand instances with a balanced CPU-memory ratio. If there are any interruptions you could face 502 errors & thereby degrade the user experience as they have to retry their applications.
 
@@ -83,9 +83,18 @@ spec:
       annotations:
         karpenter.sh/do-not-disrupt: "true"
 ```
-**Explanation:**
-- Uses `t3.medium`, `t3.large` on-demand instances to ensure stability.
-- `karpenter.sh/do-not-disrupt` prevents premature node termination.
+
+This NodePool uses `t3.medium`, `t3.large` on-demand instances to ensure stability. We also have `karpenter.sh/do-not-disrupt` prevents premature node termination. The annotation `karpenter.sh/do-not-disrupt` is a mechanism in Karpenter that prevents specific nodes from being disrupted, regardless of disruption budgets or consolidation policies. It essentially ignores any other configuration given in the `disruption` section of the nodepool and keeps the machines running. Using this is essentially like having static machines around at all times, so it would be better to dynamically add this annotation only when you need it and remove it later so that the nodepools can adjust. Adding this annotation dynamicall can be done via a script:
+
+```bash
+#!/bin/bash
+NODES=$(kubectl get nodes -l karpenter.sh/provisioner-name=default -o jsonpath='{.items[*].metadata.name}')
+for node in $NODES; do
+  kubectl annotate node $node karpenter.sh/do-not-disrupt="true" --overwrite
+done
+```
+
+So if you are in the middle of a DDoS attack and you want to keep your servers up while the attack is being handled, you could either run this script manually or have it automated by whatever tool you used as your application firewall.
 
 ### 4. Managing Data-Intensive Workloads
 Data-intensive workloads, such as databases or persistent storage workloads, require high memory and disk throughput.
