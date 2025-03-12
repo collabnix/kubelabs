@@ -84,7 +84,7 @@ spec:
         karpenter.sh/do-not-disrupt: "true"
 ```
 
-This NodePool uses `t3.medium`, `t3.large` on-demand instances to ensure stability. We also have `karpenter.sh/do-not-disrupt` prevents premature node termination. The annotation `karpenter.sh/do-not-disrupt` is a mechanism in Karpenter that prevents specific nodes from being disrupted, regardless of disruption budgets or consolidation policies. It essentially ignores any other configuration given in the `disruption` section of the nodepool and keeps the machines running. Using this is essentially like having static machines around at all times, so it would be better to dynamically add this annotation only when you need it and remove it later so that the nodepools can adjust. Adding this annotation dynamicall can be done via a script:
+This NodePool uses `t3.medium`, `t3.large` on-demand instances to ensure stability. We also have `karpenter.sh/do-not-disrupt` prevents premature node termination. The annotation `karpenter.sh/do-not-disrupt` is a mechanism in Karpenter that prevents specific nodes from being disrupted, regardless of disruption budgets or consolidation policies. It essentially ignores any other configuration given in the `disruption` section of the nodepool and keeps the machines running. Using this is essentially like having static machines around at all times, so it would be better to dynamically add this annotation only when you need it and remove it later so that the nodepools can adjust. Adding this annotation dynamically can be done via a script:
 
 ```bash
 #!/bin/bash
@@ -96,10 +96,10 @@ done
 
 So if you are in the middle of a DDoS attack and you want to keep your servers up while the attack is being handled, you could either run this script manually or have it automated by whatever tool you used as your application firewall.
 
-### 4. Managing Data-Intensive Workloads
-Data-intensive workloads, such as databases or persistent storage workloads, require high memory and disk throughput.
+## Handling Data-Intensive Workloads
 
-#### **Configuration Example:**
+Data-intensive workloads, such as databases or persistent storage workloads, require high memory and disk throughput. `r` class machines are generally the best option for memory, but note that they have very low CPU which might affect application start times. Also, the smallest available `r` machine has 16GB of memory so it might be too much considering that the best way to run an application is distributed with multiple machines in different availability zones. However, if your applications are memory intensive and you have a number of them, the `r` class is the way to go.
+
 ```yaml
 apiVersion: karpenter.k8s.aws/v1beta1
 kind: NodePool
@@ -123,9 +123,8 @@ spec:
         - key: "database"
           effect: "NoSchedule"
 ```
-**Explanation:**
-- Uses memory-optimized instances (`r5.large`, `r5.xlarge`).
-- Applies `database` taint to limit workloads.
+
+This NodePool uses memory-optimized instances (`r5.large`, `r5.xlarge`). Applies `database` taint to limit workloads.
 
 ## Conclusion
 Fine-tuning Karpenter for different workloads involves configuring NodePools and NodeClasses to match workload needs. By optimizing for performance, cost, and resilience, Karpenter can dynamically scale nodes efficiently, ensuring the best resource utilization for your Kubernetes cluster.
