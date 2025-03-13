@@ -126,6 +126,6 @@ spec:
 
 This NodePool uses memory-optimized instances (`r5.large`, `r5.xlarge`). Applies `database` taint to limit workloads.
 
-## Conclusion
-Fine-tuning Karpenter for different workloads involves configuring NodePools and NodeClasses to match workload needs. By optimizing for performance, cost, and resilience, Karpenter can dynamically scale nodes efficiently, ensuring the best resource utilization for your Kubernetes cluster.
+## Fine tuning node classes
 
+Now that we have looked at fine-tuning node pools, let's consider node classes. Node classes define the details of the machines that get spun up. For example, what subnet should it use, what security groups should be assigned to each machine, what tags should get added, which AMIs to use, etc... It might look like there is nothing to fine-tune here. While there certainly is nothing to change in terms of machine sizes and resources used, you should consider the way Karpenter operates when setting up resources. You might want to schedule different workloads on different subnets, or you might want to use separate cost allocation tags to measure the costs of your workloads separately. It is also very likely that you would want to assign different security groups to different workloads so that your applications don't have unnecessary ports exposed. When considering these things, it is necessary to start fine-tuning node classes.
