@@ -129,3 +129,47 @@ This NodePool uses memory-optimized instances (`r5.large`, `r5.xlarge`). Applies
 ## Fine tuning node classes
 
 Now that we have looked at fine-tuning node pools, let's consider node classes. Node classes define the details of the machines that get spun up. For example, what subnet should it use, what security groups should be assigned to each machine, what tags should get added, which AMIs to use, etc... It might look like there is nothing to fine-tune here. While there certainly is nothing to change in terms of machine sizes and resources used, you should consider the way Karpenter operates when setting up resources. You might want to schedule different workloads on different subnets, or you might want to use separate cost allocation tags to measure the costs of your workloads separately. It is also very likely that you would want to assign different security groups to different workloads so that your applications don't have unnecessary ports exposed. When considering these things, it is necessary to start fine-tuning node classes.
+
+Let's start by defining a node class:
+
+```yaml
+apiVersion: karpenter.k8s.aws/v1beta1
+kind: EC2NodeClass
+metadata:
+  name: default
+spec:
+  amiFamily: AL2
+  role: "KarpenterNodeRole-test-cluster"
+  subnetSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: "test-cluster"
+  securityGroupSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: "test-cluster"
+  tags:
+    inc-prod-eks: CostAllocation
+  amiSelectorTerms:
+    - id: "ami-03d24239f12d53c4a"
+    - id: "ami-09c00c2e93ce7bd23"
+```
+
+```yaml
+apiVersion: karpenter.k8s.aws/v1beta1
+kind: EC2NodeClass
+metadata:
+  name: nodeclass-high-resource
+spec:
+  amiFamily: AL2 
+  role: "KarpenterNodeRole-test-cluster" 
+  subnetSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: "test-cluster" 
+  securityGroupSelectorTerms:
+    - tags:
+        karpenter.sh/discovery-high-resource: "test-cluster"
+  tags:
+    inc-prod-eks: CostAllocation
+  amiSelectorTerms:
+    - id: "ami-03d24239f12d53c4a"
+    - id: "ami-09c00c2e93ce7bd23"
+```
