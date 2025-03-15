@@ -147,11 +147,15 @@ spec:
     - tags:
         karpenter.sh/discovery: "test-cluster"
   tags:
-    inc-prod-eks: CostAllocation
+    cost-tag: CostAllocation
   amiSelectorTerms:
     - id: "ami-03d24239f12d53c4a"
     - id: "ami-09c00c2e93ce7bd23"
 ```
+
+In the above node class, you instruct Karpenter to start nodes in subnets with the tag `karpenter.sh/discovery: "test-cluster"` in them. This means, for example, if you find your subnet running out of IPs, all you have to do is create a new subnet and add this tag and Karpenter will start using that subnet as well. In the same way, if you were to be doing some changes to a NAT gateway and you wanted a subnet cleared of all the machines using it, you could simply remove the tag from the subnet and Karpenter will perform a rolling update to remove any machines that it has on the subnet.
+
+Next, we have the security group defined in the same way. Any machines that come up need to have all security groups with the tag `karpenter.sh/discovery: "test-cluster"` assigned to them. Removing this tag will make Karpenter perform a rolling update of the machines to create new ones that don't have this security group attached, and adding the tag will make Karpenter perform an update that will add this tag to all the machines that use this node class. Another thing here is the tag `cost-tag: CostAllocation`. Any machines that come up from this node class will have this tag attached to it. So if this tag is a cost allocation tag, you would be able to find out exactly how much your EKS infrastructure costs using it.
 
 ```yaml
 apiVersion: karpenter.k8s.aws/v1beta1
@@ -168,7 +172,7 @@ spec:
     - tags:
         karpenter.sh/discovery-high-resource: "test-cluster"
   tags:
-    inc-prod-eks: CostAllocation
+    cost-tag: CostAllocation
   amiSelectorTerms:
     - id: "ami-03d24239f12d53c4a"
     - id: "ami-09c00c2e93ce7bd23"
