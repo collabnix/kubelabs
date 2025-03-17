@@ -177,3 +177,7 @@ spec:
     - id: "ami-03d24239f12d53c4a"
     - id: "ami-09c00c2e93ce7bd23"
 ```
+
+Next, let's look at a different node class. It looks about the same as the one before, except this one has the tag `karpenter.sh/discovery-high-resource: "test-cluster"` which means it will only attach any security groups that have the tag `karpenter.sh/discovery-high-resource: "test-cluster"` in them. Note that you have multiple tags in both the security group selector as well as subnet selector, meaning that you can have a base set of security groups that apply to all machines and a specific selection of security groups that only apply to a subset.
+
+And that's it for fine-tuning Karpenter node classes. Next, let's look at fine-tuning the node pool further with disruption budgets.
