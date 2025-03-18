@@ -181,3 +181,64 @@ spec:
 Next, let's look at a different node class. It looks about the same as the one before, except this one has the tag `karpenter.sh/discovery-high-resource: "test-cluster"` which means it will only attach any security groups that have the tag `karpenter.sh/discovery-high-resource: "test-cluster"` in them. Note that you have multiple tags in both the security group selector as well as subnet selector, meaning that you can have a base set of security groups that apply to all machines and a specific selection of security groups that only apply to a subset.
 
 And that's it for fine-tuning Karpenter node classes. Next, let's look at fine-tuning the node pool further with disruption budgets.
+
+## Fine tuning disruption budgets
+
+First off, the syntax we will be using here is only available for Karpenter v1.0 upwards, so you will need to upgrade if you are in v0.3xx or lower. You can follow the official [migration guide](https://karpenter.sh/v1.0/upgrading/v1-migration/) for this. Let's start by looking at a sample of a disruption budget:
+
+```yaml
+apiVersion: karpenter.k8s.aws/v1beta1
+kind: NodePool
+metadata:
+  name: data-intensive-pool
+spec:
+  template:
+    spec:
+      nodeClassRef:
+        name: high-memory-class
+      requirements:
+        - key: "karpenter.k8s.aws/instance-category"
+          operator: In
+          values: ["r"]
+        - key: "node.kubernetes.io/instance-type"
+          operator: In
+          values: ["r5.large", "r5.xlarge"]
+      labels:
+        workload-type: "database"
+      taints:
+        - key: "database"
+          effect: "NoSchedule"
+  disruption:
+    consolidationPolicy: WhenEmptyOrUnderutilized
+    expireAfter: 720h # 30 * 24h = 1h
+    budgets:
+    - nodes: "10%"
+      schedule: "0 14 * * *"
+      duration: 8h
+      reasons:
+      - "Empty"
+      - "Drifted"
+    - nodes: "50%"
+      reasons:
+      - "Empty"
+      - "Drifted"
+    - nodes: "5"
+```
+
+Take note of the last part of the NodePool where `disruption` is declared. Let's look at the options one by one.
+
+Explanation
+First Budget:
+
+nodes: "0" — This prevents any node disruptions (including consolidation) during your business hours (14:00 to 22:00).
+schedule: "14:00-22:00" — Ensures this restriction is only active during the specified period.
+reasons: ["Empty", "Drifted", "Underutilized"] — Covers all disruption types, ensuring no nodes are disrupted during business hours.
+Second Budget:
+
+nodes: "20%" — Allows 20% of nodes to be disrupted during non-business hours, giving Karpenter room to consolidate nodes efficiently.
+Third Budget:
+
+nodes: "5" — Acts as an upper limit for node disruptions in case the percentage-based budget results in a larger number than intended.
+Result
+During Business Hours (14:00 - 22:00): No nodes will be removed, ensuring stability during high-traffic times or DDOS scenarios.
+Outside Business Hours: Karpenter will efficiently consolidate nodes to minimize costs.
