@@ -225,20 +225,42 @@ spec:
     - nodes: "5"
 ```
 
-Take note of the last part of the NodePool where `disruption` is declared. Let's look at the options one by one.
+Take note of the last part of the NodePool where `disruption` is declared. There are 3 separate budgets, so let's look at them one by one.
 
-Explanation
-First Budget:
+1. **First Budget Rule:**
+   ```yaml
+   - nodes: "10%"
+     schedule: "0 14 * * *"
+     duration: 8h
+     reasons:
+     - "Empty"
+     - "Drifted"
+   ```
+   - Karpenter is allowed to delete up to **10% of the nodes** at a time.
+   - This rule is **only active** from **2 PM (14:00) onwards** each day and lasts for **8 hours** (until 10 PM).
+   - The deletions will only happen if the nodes are **Empty** (i.e., not running workloads) or **Drifted** (i.e., they no longer match the cluster requirements due to changes in constraints or instance types).
 
-nodes: "0" — This prevents any node disruptions (including consolidation) during your business hours (14:00 to 22:00).
-schedule: "14:00-22:00" — Ensures this restriction is only active during the specified period.
-reasons: ["Empty", "Drifted", "Underutilized"] — Covers all disruption types, ensuring no nodes are disrupted during business hours.
-Second Budget:
+2. **Second Budget Rule:**
+   ```yaml
+   - nodes: "50%"
+     reasons:
+     - "Empty"
+     - "Drifted"
+   ```
+   - Karpenter is allowed to delete **up to 50% of the nodes** at a time.
+   - This rule has **no specific schedule**, meaning it is always in effect.
+   - Again, deletions only happen if the nodes are **Empty** or **Drifted**.
 
-nodes: "20%" — Allows 20% of nodes to be disrupted during non-business hours, giving Karpenter room to consolidate nodes efficiently.
-Third Budget:
+3. **Third Budget Rule:**
+   ```yaml
+   - nodes: "5"
+   ```
+   - At any given time, Karpenter is allowed to delete **up to 5 nodes**.
+   - This rule does not specify any reasons or schedule, meaning it applies at all times.
 
-nodes: "5" — Acts as an upper limit for node disruptions in case the percentage-based budget results in a larger number than intended.
-Result
-During Business Hours (14:00 - 22:00): No nodes will be removed, ensuring stability during high-traffic times or DDOS scenarios.
-Outside Business Hours: Karpenter will efficiently consolidate nodes to minimize costs.
+### How These Rules Work Together:
+- During **2 PM to 10 PM**, Karpenter follows the **10% rule** for deletions due to `Empty` or `Drifted` nodes.
+- At other times, Karpenter follows the **50% rule** but only for `Empty` or `Drifted` nodes.
+- The **absolute limit of 5 nodes** applies at all times.
+
+This setup ensures **controlled, scheduled** deletions while allowing **larger-scale cleanups when necessary**, without over-deleting nodes too quickly.
