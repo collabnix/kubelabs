@@ -264,3 +264,9 @@ Take note of the last part of the NodePool where `disruption` is declared. There
 - The **absolute limit of 5 nodes** applies at all times.
 
 This setup ensures **controlled, scheduled** deletions while allowing **larger-scale cleanups when necessary**, without over-deleting nodes too quickly.
+
+## Conclusion
+
+That brings us to the end of the section on fine tuning Karpenter. Next, let's look at the Karpenter upgrade process.
+
+[Next: Upgrading Karpenter]

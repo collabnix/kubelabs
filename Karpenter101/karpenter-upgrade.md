@@ -1,0 +1,5 @@
+# Upgrading Karpenter
+
+Keeping Karpenter up to date is pretty helpful since a whole bunch of new features gets added in with every major release. Additionally, Karpenter is the tool used to decide which machines your applications would run on, so any cost-efficiency improvements that get added in with every release would help reduce infrastructure expenses. Finally, if you are on a managed Kubernetes service such as AWS EKS, you are required to update the version of EKS to the latest supported version once every 3 months. Older versions of Karpenter can end up getting unsupported during such an upgrade, so it's best to keep the two in sync.
+
+So to start, the first thing you should do is look at the [compatibilty matrix](https://karpenter.sh/v1.0/upgrading/compatibility/). Once you have confirmed that your cluster version and the new version of Karpenter are compatible, let's look at upgrading.
