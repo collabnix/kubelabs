@@ -269,4 +269,4 @@ This setup ensures **controlled, scheduled** deletions while allowing **larger-s
 
 That brings us to the end of the section on fine tuning Karpenter. Next, let's look at the Karpenter upgrade process.
 
-[Next: Upgrading Karpenter]
+[Next: Upgrading Karpenter](./karpenter-upgrade.md)
