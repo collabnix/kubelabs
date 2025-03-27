@@ -6,7 +6,16 @@ So to start, the first thing you should do is look at the [compatibilty matrix](
 
 The Karpenter docs already provide detailed instructions on upgrading, including a full [upgrade guide](https://karpenter.sh/docs/upgrading/upgrade-guide/) for every version. Since the switch to version 1.0 has major breaking changes, there is an [additional guide](https://karpenter.sh/v1.0/upgrading/v1-migration/) for that. However, all these guides assume you have installed Karpenter and its CRDs with Helm. This might not be the case if instead of directly installing Karpenter, you first ran cluster autoscaler and then decided to follow the migration guide to switch to Karpenter.
 
-We will be focusing on this scenario. In this case, let's say you had an old 0.3x version of Karpenter installed with Helm. This guide will cover the process of upgrading to the latest (v1.3.3 at the time of writing) version without getting any downtime. For starters, you need to define the correct variables:
+We will be focusing on this scenario. In this case, let's say you had an old 0.3x version of Karpenter installed with Helm. This guide will cover the process of upgrading to the latest version (v1.3.3 at the time of writing) without getting any downtime. The process will be as follows:
+
+- Remove the current Karpenter version not installed by Helm
+- Install the same Karpenter version but with Helm this time
+- Upgrade to the latest minor version with Helm
+- Upgrade to v1.0
+- Switch resources to be compatible with the latest supported Karpenter version
+- Upgrade to v1.3
+
+For starters, you need to define the correct variables:
 
 ```bash
 export KARPENTER_NAMESPACE=kube-system
@@ -32,4 +41,12 @@ For the Karpenter version, get your current version with:
 kubectl get deployment -A -l app.kubernetes.io/name=karpenter -ojsonpath="{.items[0].metadata.labels['app\.kubernetes\.io/version']}{'\n'}"
 ```
 
-Then set that exact version. Also make sure to set the cluster name, region, and k8s version. Now that the variables are set, let's delete the old Karpenter before we can install the new one.
+Then set that exact version. Also make sure to set the cluster name, region, and k8s version. Now that the variables are set, let's delete the old Karpenter before installing the new one. Since the only other way to install Karpenter is by generating the `Karpenter.yaml`, you need to simply run the delete command:
+
+```bash
+kubectl delete -f karpenter.yaml
+```
+
+This will delete most resources related to Karpenter, but won't result in your running node pools and node classes being deleted. This is because the CRDs used for these custom resources are installed separately, and not as part of the `karpenter.yaml`. These CRDs should **never be deleted** and only updated, since their removal also means the removal of your nodes and thereby downtime. However, it is fine (and required) to update them.
+
+Since Karpenter is gone, we need to quickly re-install it since node scaling won't be happening during this period.
