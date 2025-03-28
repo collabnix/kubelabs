@@ -49,4 +49,30 @@ kubectl delete -f karpenter.yaml
 
 This will delete most resources related to Karpenter, but won't result in your running node pools and node classes being deleted. This is because the CRDs used for these custom resources are installed separately, and not as part of the `karpenter.yaml`. These CRDs should **never be deleted** and only updated, since their removal also means the removal of your nodes and thereby downtime. However, it is fine (and required) to update them.
 
-Since Karpenter is gone, we need to quickly re-install it since node scaling won't be happening during this period.
+Since Karpenter is gone, the first step is done and we need to quickly re-install it since node scaling won't be happening during this period. As the variables are already defined:
+
+```bash
+# Logout of helm registry to perform an unauthenticated pull against the public ECR
+helm registry logout public.ecr.aws
+
+helm upgrade --install karpenter oci://public.ecr.aws/karpenter/karpenter --version "${KARPENTER_VERSION}" --namespace "${KARPENTER_NAMESPACE}" --create-namespace \
+  --set "serviceAccount.annotations.eks\.amazonaws\.com/role-arn=${KARPENTER_IAM_ROLE_ARN}" \
+  --set "settings.clusterName=${CLUSTER_NAME}" \
+  --set controller.resources.requests.cpu=1 \
+  --set controller.resources.requests.memory=1Gi \
+  --set controller.resources.limits.cpu=1 \
+  --set controller.resources.limits.memory=1Gi \
+  --set webhook.enabled=true \
+  --set webhook.port=8443 \
+  --wait
+```
+
+Re-check the Karpenter version now:
+
+```bash
+kubectl get deployment -A -l app.kubernetes.io/name=karpenter -ojsonpath="{.items[0].metadata.labels['app\.kubernetes\.io/version']}{'\n'}"
+```
+
+Also, check the Karpenter pods and ensure that they are working as expected. If you are on a production cluster, you can run a test app on a separate node pool to double-verify that node scaling is active.
+
+Now that we've switched to Helm, we can move on to the next steps.
