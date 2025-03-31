@@ -75,4 +75,31 @@ kubectl get deployment -A -l app.kubernetes.io/name=karpenter -ojsonpath="{.item
 
 Also, check the Karpenter pods and ensure that they are working as expected. If you are on a production cluster, you can run a test app on a separate node pool to double-verify that node scaling is active.
 
-Now that we've switched to Helm, we can move on to the next steps.
+Now that we've switched to Helm, we can move on to the next steps. We start by moving to the latest minor version of the current Karpenter version. If you are using 0.37.0, the latest minor version would be 0.37.7:
+
+```bash
+export KARPENTER_VERSION="0.37.7" # Replace with your minor version
+
+# Service account annotation can be dropped when using pod identity
+helm upgrade --install karpenter oci://public.ecr.aws/karpenter/karpenter --version ${KARPENTER_VERSION} --namespace "${KARPENTER_NAMESPACE}" --create-namespace \
+  --set serviceAccount.annotations."eks\.amazonaws\.com/role-arn"=${KARPENTER_IAM_ROLE_ARN} \
+  --set settings.clusterName=${CLUSTER_NAME} \
+  --set controller.resources.requests.cpu=1 \
+  --set controller.resources.requests.memory=1Gi \
+  --set controller.resources.limits.cpu=1 \
+  --set controller.resources.limits.memory=1Gi \
+  --set webhook.enabled=true \
+  --set webhook.port=8443 \
+  --wait
+  ```
+
+If you look at the official doc, you would see that you need to also update the CRDs with Helm. If you had installed Karpenter with Helm in the first place this would be correct, but since you didn't, you can't use Helm. One option would be to delete the resources and re-create them but that would result in downtime. So instead, simply update them with `kubectl`:
+
+```bash
+kubectl apply -f \
+    "https://raw.githubusercontent.com/aws/karpenter-provider-aws/v${KARPENTER_VERSION}/pkg/apis/crds/karpenter.sh_nodepools.yaml"
+kubectl apply -f \
+    "https://raw.githubusercontent.com/aws/karpenter-provider-aws/v${KARPENTER_VERSION}/pkg/apis/crds/karpenter.k8s.aws_ec2nodeclasses.yaml"
+kubectl apply -f \
+    "https://raw.githubusercontent.com/aws/karpenter-provider-aws/v${KARPENTER_VERSION}/pkg/apis/crds/karpenter.sh_nodeclaims.yaml"
+```
