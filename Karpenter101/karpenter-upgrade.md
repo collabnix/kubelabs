@@ -128,4 +128,46 @@ kubectl apply -f \
     "https://raw.githubusercontent.com/aws/karpenter-provider-aws/v${KARPENTER_VERSION}/pkg/apis/crds/karpenter.sh_nodeclaims.yaml"
 ```
 
-You'll notice these were the exact steps we took for the previous version upgrade. This will in fact be the same steps that you need to take to upgrade to any version going forward. Now that we are on version 1.0, there are a few very important steps that we need to complete.
+You'll notice these were the steps we took for the previous version upgrade. This will in fact be the same steps that you need to take to upgrade to any version going forward. Now that we are on version 1.0, there are a few important steps that we need to complete.
+
+Version 1.0 is the only version that supports both the old and the new specification at the same time. So if you are using 1.0 and still using the old specification, Karpenter will continue to work as intended. However, if you were to switch to any version above 1.0, Karpenter would start failing since versions above 1.0 don't support the old specification. Now, start by opening up your NodeClass files and ensure that the specifications are up to date. For example:
+
+```yaml
+apiVersion: karpenter.k8s.aws/v1beta1
+kind: EC2NodeClass
+metadata:
+  name: default
+spec:
+  amiFamily: AL2
+  role: "KarpenterNodeRole-test"
+  subnetSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: "test"
+  securityGroupSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: "test"
+  amiSelectorTerms:
+    - id: "ami-03d24239f12d53c4a"
+    - id: "ami-09c00c2e93ce7bd23"
+```
+
+This would turn to:
+
+```yaml
+apiVersion: karpenter.k8s.aws/v1
+kind: EC2NodeClass
+metadata:
+  name: default
+spec:
+  amiFamily: AL2
+  role: "KarpenterNodeRole-test"
+  subnetSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: "test"
+  securityGroupSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: "test"
+  amiSelectorTerms:
+    - id: "ami-03d24239f12d53c4a"
+    - id: "ami-09c00c2e93ce7bd23"
+```
