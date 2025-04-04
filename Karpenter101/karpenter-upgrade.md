@@ -171,3 +171,34 @@ spec:
     - id: "ami-03d24239f12d53c4a"
     - id: "ami-09c00c2e93ce7bd23"
 ```
+
+Note that `karpenter.k8s.aws/v1beta1` becomes `karpenter.k8s.aws/v1` since the `v1beta1` is no longer supported. Apart from this, there are no other changes for this NodeClass. Check the [node class docs](https://karpenter.sh/docs/concepts/nodeclasses/) and go through your nodeclass defintion.
+
+```bash
+export KARPENTER_VERSION="1.3.3"
+
+
+export AWS_PARTITION="aws" # if you are not using standard partitions, you may need to configure to aws-cn / aws-us-gov
+export AWS_DEFAULT_REGION="us-east-1"
+export AWS_ACCOUNT_ID="$(aws sts get-caller-identity --query Account --output text)"
+export TEMPOUT="$(mktemp)"
+
+# Logout of helm registry to perform an unauthenticated pull against the public ECR
+helm registry logout public.ecr.aws
+
+helm upgrade --install karpenter oci://public.ecr.aws/karpenter/karpenter --version "${KARPENTER_VERSION}" --namespace "${KARPENTER_NAMESPACE}" --create-namespace \
+  --set serviceAccount.annotations."eks\.amazonaws\.com/role-arn"=${KARPENTER_IAM_ROLE_ARN} \
+  --set "settings.clusterName=${CLUSTER_NAME}" \
+  --set controller.resources.requests.cpu=1 \
+  --set controller.resources.requests.memory=1Gi \
+  --set controller.resources.limits.cpu=1 \
+  --set controller.resources.limits.memory=1Gi \
+  --wait
+
+kubectl apply -f \
+    "https://raw.githubusercontent.com/aws/karpenter-provider-aws/v${KARPENTER_VERSION}/pkg/apis/crds/karpenter.sh_nodepools.yaml"
+kubectl apply -f \
+    "https://raw.githubusercontent.com/aws/karpenter-provider-aws/v${KARPENTER_VERSION}/pkg/apis/crds/karpenter.k8s.aws_ec2nodeclasses.yaml"
+kubectl apply -f \
+    "https://raw.githubusercontent.com/aws/karpenter-provider-aws/v${KARPENTER_VERSION}/pkg/apis/crds/karpenter.sh_nodeclaims.yaml"
+```
