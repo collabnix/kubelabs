@@ -172,7 +172,45 @@ spec:
     - id: "ami-09c00c2e93ce7bd23"
 ```
 
-Note that `karpenter.k8s.aws/v1beta1` becomes `karpenter.k8s.aws/v1` since the `v1beta1` is no longer supported. Apart from this, there are no other changes for this NodeClass. Check the [node class docs](https://karpenter.sh/docs/concepts/nodeclasses/) and go through your nodeclass defintion.
+Note that `karpenter.k8s.aws/v1beta1` becomes `karpenter.k8s.aws/v1` since the `v1beta1` is no longer supported. Apart from this, there are no other changes for this NodeClass. Check the [node class docs](https://karpenter.sh/docs/concepts/nodeclasses/) and go through your nodeclass defintion. Next, let's look at NodePools. There are much more changes in NodePools than node classes. For example, let's take:
+
+```yaml
+apiVersion: karpenter.sh/v1beta1
+kind: NodePool
+metadata:
+  name: nodepool-test
+spec:
+  template:
+    spec:
+      requirements:
+        - key: kubernetes.io/arch
+          operator: In
+          values: ["amd64"]
+        - key: kubernetes.io/os
+          operator: In
+          values: ["linux"]
+        - key: karpenter.sh/capacity-type
+          operator: In
+          values: ["on-demand"]
+        - key: karpenter.k8s.aws/instance-category
+          operator: In
+          values: ["c", "m", "r", "t", "g"]
+        - key: karpenter.k8s.aws/instance-generation
+          operator: Gt
+          values: ["2"]
+        - key: karpenter.k8s.aws/instance-memory
+          operator: Gt
+          values: ["4000"]
+      nodeClassRef:
+        apiVersion: karpenter.k8s.aws/v1beta1
+        kind: EC2NodeClass
+        name: nodeclass-mobile
+  disruption:
+    consolidationPolicy: WhenUnderutilized
+    expireAfter: 720h
+```
+
+Now let's look at the Nodepool after the necessary changes are done.
 
 ```bash
 export KARPENTER_VERSION="1.3.3"
@@ -202,3 +240,4 @@ kubectl apply -f \
 kubectl apply -f \
     "https://raw.githubusercontent.com/aws/karpenter-provider-aws/v${KARPENTER_VERSION}/pkg/apis/crds/karpenter.sh_nodeclaims.yaml"
 ```
+
