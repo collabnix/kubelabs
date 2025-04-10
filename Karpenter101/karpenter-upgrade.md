@@ -249,6 +249,10 @@ spec:
     consolidateAfter: 1m
 ```
 
+As with the NodeClass the `apiVersion` has been switched to `karpenter.sh/v1`. The keys for the requirements such as `karpenter.k8s.aws/instance-category` and `kubernetes.io/os` are primarily untouched so you don't need to look into them too much. The next part has some important changes. First off, `apiVersion` is no longer around, and `group: karpenter.k8s.aws` is now required. `expireAfter` has been moved out of the `disruption` section up to the `spec` section. `consolidationPolicy: WhenUnderutilized` no longer exists and has been replaced with `WhenEmptyOrUnderutilized` and `consolidateAfter` is also mandatory now.
+
+Additionally, node disruption budgets have been introduced.
+
 ```bash
 export KARPENTER_VERSION="1.3.3"
 
