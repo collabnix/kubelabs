@@ -249,9 +249,11 @@ spec:
     consolidateAfter: 1m
 ```
 
-As with the NodeClass the `apiVersion` has been switched to `karpenter.sh/v1`. The keys for the requirements such as `karpenter.k8s.aws/instance-category` and `kubernetes.io/os` are primarily untouched so you don't need to look into them too much. The next part has some important changes. First off, `apiVersion` is no longer around, and `group: karpenter.k8s.aws` is now required. `expireAfter` has been moved out of the `disruption` section up to the `spec` section. `consolidationPolicy: WhenUnderutilized` no longer exists and has been replaced with `WhenEmptyOrUnderutilized` and `consolidateAfter` is also mandatory now.
+As with the NodeClass the `apiVersion` has been switched to `karpenter.sh/v1`. The keys for the requirements such as `karpenter.k8s.aws/instance-category` and `kubernetes.io/os` are primarily untouched so you don't need to look into them too much. The next part has some critical changes. First off, `apiVersion` is no longer around, and `group: karpenter.k8s.aws` is now required. `expireAfter` has been moved out of the `disruption` section up to the `spec` section. `consolidationPolicy: WhenUnderutilized` no longer exists and has been replaced with `WhenEmptyOrUnderutilized` and `consolidateAfter` is also mandatory now. Look at the [official NodePool definition](https://karpenter.sh/v1.3/concepts/nodepools/) for other changed factors not covered above.
 
-Additionally, node disruption budgets have been introduced.
+Additionally, node disruption budgets have been introduced for the Karpenter node pools which allow you to specify how your node pools behave at different times of the day and week. To learn more about this, look into [fine tuning disruption budgets](./fine-tuning.md#fine-tuning-disruption-budgets).
+
+Once the changes are finished, we are finally ready to take the final step into the latest version of Karpenter.
 
 ```bash
 export KARPENTER_VERSION="1.3.3"
