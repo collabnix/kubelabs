@@ -253,7 +253,7 @@ As with the NodeClass the `apiVersion` has been switched to `karpenter.sh/v1`. T
 
 Additionally, node disruption budgets have been introduced for the Karpenter node pools which allow you to specify how your node pools behave at different times of the day and week. To learn more about this, look into [fine tuning disruption budgets](./fine-tuning.md#fine-tuning-disruption-budgets).
 
-Once the changes are finished, we are finally ready to take the final step into the latest version of Karpenter.
+Once the changes are finished, we are finally ready to take the final step into the latest version of Karpenter. At the time of writing, it is v1.3.3:
 
 ```bash
 export KARPENTER_VERSION="1.3.3"
@@ -284,3 +284,12 @@ kubectl apply -f \
     "https://raw.githubusercontent.com/aws/karpenter-provider-aws/v${KARPENTER_VERSION}/pkg/apis/crds/karpenter.sh_nodeclaims.yaml"
 ```
 
+As with before, you follow the same steps. Set the version to the correct one, then run `helm upgrade`. Once the Kubernetes resources are done upgrading, upgrade the CRDs.
+
+**Important**: Check the logs and status of the Karpenter pods that start up. If you have deprecated resources, the new Karpenter pods will fail to start. If this is the case you should go back to V1.0 and recheck your resources.
+
+With that, your Karpenter upgrades are complete. From this point forward, any upgrade you need to do can be done using a simple `helma upgrade` since you are already on Helm. The one additional thing you have to do is to apply the new versions of the CRDs.
+
+## Conclusion
+
+This brings us to the end of the section on Karpenter upgrades.
