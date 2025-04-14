@@ -292,4 +292,4 @@ With that, your Karpenter upgrades are complete. From this point forward, any up
 
 ## Conclusion
 
-This brings us to the end of the section on Karpenter upgrades.
+This brings us to the end of the section on Karpenter upgrades. Remember that once you have completed this upgrade, the [official upgrade guide](https://karpenter.sh/preview/upgrading/upgrade-guide/) is all you need for future upgrades.

@@ -345,6 +345,8 @@ A Curated List of Kubernetes Labs and Tutorials
 ## Karpenter
 - [What is Karpenter](./Karpenter101/what-is-karpenter.md)
 - [Karpenter Lab](./Karpenter101/karpenter-lab.md)
+- [Fine tuning Karpenter](./Karpenter101/fine-tuning.md)
+- [Upgrading Karpenter](./Karpenter101/karpenter-upgrade.md)
 
 ## Observability & Operations
 - [Observability tools](./Observability101/observability.md)
