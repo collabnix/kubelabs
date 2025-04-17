@@ -243,6 +243,12 @@ A Curated List of Kubernetes Labs and Tutorials
  - [Fluent Bit](./Logging101/fluentdbit.md)
  - [ELK on Kubernetes](./Logging101/elk-on-kubernetes.md)
 
+## Autoscalers101
+
+ - [What are autoscalers](./Autoscaler101/what-are-autoscalers.md)
+ - [Autoscaler lab](./Autoscaler101/autoscaler-lab.md)
+ - [Autoscaler helpers](./Autoscaler101/helpers.md)
+
 ## Helm101
 
 - [What is Helm?](./Helm101/what-is-helm.md)
@@ -263,6 +269,7 @@ A Curated List of Kubernetes Labs and Tutorials
 ## Security101
 - [What is DevSecOps?](./Security101/devsecops.md)
 - [Securing your cluster](./Security101/kubernetes-security.md)
+- [OIDC auth with Keycloak](./Security101/auth-intro.md)
 
 ## GitOps101
 - [What is GitOps](./GitOps101/what-is-gitops.md)
@@ -318,6 +325,10 @@ A Curated List of Kubernetes Labs and Tutorials
 ## KEDA
 - [What is KEDA](./Keda101/what-is-keda.md)
 - [KEDA lab](./Keda101/keda-lab.md)
+- [Scaling with KEDA and Prometheus](./Keda101/keda-prometheus.md)
+- [Scaling profiles](./Keda101/scaling-profiles.md)
+- [Scaling modifiers](./Keda101/scaling-modifiers.md)
+- [Scaling options](./Keda101/scaling-options.md)
 
 ## Terraform EKS
 - [What is Terraform](./Terraform101/what-is-terraform.md)
@@ -326,6 +337,32 @@ A Curated List of Kubernetes Labs and Tutorials
 ## Disaster Recover
 - [What is Disaster Recovery](./DisasterRecovery101/what-is-dr.md)
 - [DR Lab](./DisasterRecovery101/dr-lab.md)
+
+## Kubezoo
+- [What is Kubezoo](./Kubezoo/what-is-kubezoo.md)
+- [Kubezoo lab](./Kubezoo/kubezoo-lab.md)
+
+## Karpenter
+- [What is Karpenter](./Karpenter101/what-is-karpenter.md)
+- [Karpenter Lab](./Karpenter101/karpenter-lab.md)
+- [Fine tuning Karpenter](./Karpenter101/fine-tuning.md)
+- [Upgrading Karpenter](./Karpenter101/karpenter-upgrade.md)
+
+## Observability & Operations
+- [Observability tools](./Observability101/observability.md)
+
+## Chaos testing
+- [What is Chaos testing](./Chaos101/what-is-chaos-testing.md)
+- [Chaos lab with Chaos Mesh](./Chaos101/chaos-lab.md)
+
+## Rollouts
+- [What are rollouts](./Rollouts101/what-are-rollouts.md)
+- [Rollouts lab](./Rollouts101/rollouts-lab.md)
+
+# Kyverno
+- [What is Kyverno](./Kyverno101/what-is-kyverno.md)
+- [Kyverno policy types](./Kyverno101/policy-types.md)
+- [Kyverno samples](./Kyverno101/kyverno-sample.md)
 
 ## For Node Developers
 - [Kubernetes for Node Developers](./nodejs.md)

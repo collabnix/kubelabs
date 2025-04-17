@@ -95,6 +95,80 @@ spec:
 
 Once again, the source and the destination sections are the most important, and you will notice that a single source repo is now pointing to multiple clusters (which can be set by changing the ```{{url}}``` part of the yaml).
 
+## PreSync/PostSync hooks
+
+When you deploy a production cluster, you normally want a few additional things happening alongside it. For example, you might want to keep other team members aware that a new version of the application has gone out, meaning that an automated message every time a new deployment happens would be required. It is also common for any health checks and alarms to go off falsely when a new deployment is done and since its best practice to only send an alert when an actual issue happens, you might want to mute the alert for the duration of the deployment. Additionally, if you use tools like New Relic, you might want to take advantage of their deployment markers which require calling their API after each deployment. For all these, you want scripts to run either before or after your deployment happens, which is where PreSync and PostSync hooks come in. Let's start by looking at a PreSync hook:
+
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: turn-off-alerts
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+spec:
+  template:
+    spec:
+      containers:
+      - name: turn-off-alerts
+        image: alpine
+        command: ["/bin/sh"]
+        args: ["-c", "apk --update add curl && curl -s <ALERT_URL>"]
+      restartPolicy: Never
+  backoffLimit: 4
+```
+
+Let's break down the above sample pre-sync hook. As you can see, it is an ordinary Kubernetes job, not a custom CRD. Since it is an ordinary job, we can run commands and containers as always here which allows for added flexibility. The main part which makes this an argocd presync hook is the annotation `argocd.argoproj.io/hook: PreSync`. When ArgoCD is about to perform the deployment, it goes through the files set for deployment and checks for the `PreSync` annotation in any of them. If this annotation is found, it runs the job as a normal Kubernetes job. In this case, it will add `curl` to the container, then use an HTTP request to shut down the alert which would otherwise go off once the deployment started. Once the job has been run, the rest of the files get deployed and synced with the new commit. 
+
+Next, let's take a look at a PostSync hook:
+
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: send-notification
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+spec:
+  template:
+    spec:
+      containers:
+      - name: send-notification
+        image: alpine
+        command: ["/bin/sh"]
+        args: ["-c", "apk --update add curl && sleep 120 && curl -s <SLACK_WEBHOOK_URL> && curl -s <ALERT_URL>"]
+      restartPolicy: Never
+  backoffLimit: 4
+```
+
+This is similar to the pre-sync hook, with the difference being that the annotation value is `PostSync`, so ArgoCD runs the job after the deployment. In this case, we send a message to a Slack channel notifying its members that a new deployment was performed. We can also send a call the re-enables the alerts.s
+
+Finally, let's take a look at a failure hook:
+
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: fail-hook
+  annotations:
+    argocd.argoproj.io/hook: SyncFail
+spec:
+  template:
+    spec:
+      containers:
+      - name: fail-hook
+        image: alpine
+        env:
+        command: ["/bin/sh"]
+        args: ["-c", "apk --update add curl && sleep 120 && curl -s <SLACK_WEBHOOK_URL> && curl -s <ALERT_URL>"]
+      restartPolicy: Never
+  backoffLimit: 4
+```
+
+This is a case where the deployment has failed due to some reason. Ideally if your application uses liveness/readiness probes correctly, this shouldn't cause an application outage, but it needs to be addressed immediately. If there are no probes present then a failed deployment can result in a full application outage. So whatever the case, it is ncessary to notify the relevant people that a deployment has failed. This can be done using a failure hook such as the one used above. Once again, this is similar to the hooks shown before, except this one has an annotation value of `SyncFail`.
+
+With this, we cover the main 3 hooks of ArgoCD along with a practical demonstration of what you can accomplish with them.
+
 ## ArgoCD with multiple clusters
 
 If you were to have the same cluster hosted multiple times (for instance, across multiple regions), then you probably want to update all those clusters at once. ArgoCD allows you to configure multiple destination clusters so that with a single push of your Git repository, the configuration changes get applied to all the clusters at once.
@@ -102,3 +176,9 @@ If you were to have the same cluster hosted multiple times (for instance, across
 Another place where this might be useful is when you have multiple clusters in your release process which you use for testing before your release. For example, you might have a dev environment where you first apply the cluster, after which testing is performed. If the testing passes, then the cluster should be applied to a prod env, and so on. You are applying the same configuration to different clusters, but not all at once, and this is also something that ArgoCD supports without you having to use separate branches for each cluster. For this, you should use Kustomize overlays.
 
 Kustomize is a CLI tool that is integrated with kubectl which helps you create overlays from source control for different situations. As you can imagine, this is great for handling different clusters that are similar in nature but serve different purposes. You could have on Kustomization for dev, another for prod, and have them applied so that the configuration changes are applied only when you need them to be.
+
+## Conclusion
+
+So far, we have discussed what GitOps is and what ArgoCD is, as well as a general introduction to ArgoCD. Now, let's dive deeper and set up ArgoCD on an EKS cluster in the next section.
+
+[Next: ArgoCD on EKS](./argocd-eks.md)
