@@ -1,11 +1,14 @@
 # Running Portainer on 5-Node Kubernetes Cluster
 
+## What is Portainer?
 
-## Pre-requisite:
+![logo](https://www.portainer.io/hubfs/portainer-logo-black.svg)
+Portainer is a one-stop shop for managing your containerized environments, providing a massive amount of functionality in both our Community and Business Editions. We often hear from our users, “Wow, I didn’t know Portainer could do that!” So here’s a list of what you can do with Portainer.
+
+## Pre-requisites:
 
 - Play with Kubernetes Platform
 - Set up 5 Node Kubernetes Cluster
-
 
 ## Run the below command:
 
