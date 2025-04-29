@@ -325,6 +325,9 @@ A Curated List of Kubernetes Labs and Tutorials
 - [What is KEDA](./Keda101/what-is-keda.md)
 - [KEDA lab](./Keda101/keda-lab.md)
 - [Scaling with KEDA and Prometheus](./Keda101/keda-prometheus.md)
+- [Scaling profiles](./Keda101/scaling-profiles.md)
+- [Scaling modifiers](./Keda101/scaling-modifiers.md)
+- [Scaling options](./Keda101/scaling-options.md)
 
 ## Terraform EKS
 - [What is Terraform](./Terraform101/what-is-terraform.md)
@@ -341,9 +344,24 @@ A Curated List of Kubernetes Labs and Tutorials
 ## Karpenter
 - [What is Karpenter](./Karpenter101/what-is-karpenter.md)
 - [Karpenter Lab](./Karpenter101/karpenter-lab.md)
+- [Fine tuning Karpenter](./Karpenter101/fine-tuning.md)
+- [Upgrading Karpenter](./Karpenter101/karpenter-upgrade.md)
 
 ## Observability & Operations
 - [Observability tools](./Observability101/observability.md)
+
+## Chaos testing
+- [What is Chaos testing](./Chaos101/what-is-chaos-testing.md)
+- [Chaos lab with Chaos Mesh](./Chaos101/chaos-lab.md)
+
+## Rollouts
+- [What are rollouts](./Rollouts101/what-are-rollouts.md)
+- [Rollouts lab](./Rollouts101/rollouts-lab.md)
+
+# Kyverno
+- [What is Kyverno](./Kyverno101/what-is-kyverno.md)
+- [Kyverno policy types](./Kyverno101/policy-types.md)
+- [Kyverno samples](./Kyverno101/kyverno-sample.md)
 
 ## For Node Developers
 - [Kubernetes for Node Developers](./nodejs.md)

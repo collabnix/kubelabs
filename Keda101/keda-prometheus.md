@@ -103,4 +103,6 @@ Now that you have seen how KEDA and Prometheus work together with linkerd to sca
 
 ## Conclusion
 
-This brings us to the end of this section on using Keda with Prometheus to scale your pods based on the number of replicas. If you want to try out other scalers, make sure you check out the [official samples page](https://github.com/kedacore/samples).
+This brings us to the end of this section on using Keda with Prometheus to scale your pods based on the number of replicas. If you want to try out other scalers, make sure you check out the [official samples page](https://github.com/kedacore/samples). Now that we have a good idea of how Prometheus can be used to do request based scaling, let's take a look at how we can leverage this scaling effectively with proper scaling profiles.
+
+[Next: Scaling profiles](./scaling-profiles.md)
