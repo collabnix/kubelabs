@@ -1,6 +1,63 @@
+title: Kubelabs - Ultimate Kubernetes Learning Platform
+description: Master Kubernetes with 500+ hands-on labs and tutorials. Join 9,000+ DevOps Engineers learning through interactive scenarios.
+url: https://collabnix.github.io/kubelabs
 show_downloads: true
 google_analytics:
+
 theme: jekyll-theme-cayman
+
+# Enhanced configuration for modern design
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# SEO and social media
+twitter:
+  username: collabnix
+  card: summary_large_image
+
+social:
+  name: Collabnix Kubelabs
+  links:
+    - https://twitter.com/collabnix
+    - https://github.com/collabnix/kubelabs
+    - https://launchpass.com/collabnix
+
+# Site metadata
+author:
+  name: Ajeet Singh Raina
+  twitter: ajeetsraina
+
+# Collections for better organization
+collections:
+  tutorials:
+    output: true
+    permalink: /:collection/:name/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: default
+  - scope:
+      path: ""
+      type: tutorials
+    values:
+      layout: tutorial
+
+# Exclude files from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - .bundles_cache/
+
 jekyll_admin:
   hidden_links:
     - posts
@@ -8,3 +65,10 @@ jekyll_admin:
     - staticfiles
     - datafiles
     - configuration
+
+# Modern features
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
