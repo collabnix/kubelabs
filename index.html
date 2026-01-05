@@ -1,0 +1,570 @@
+---
+layout: default
+title: Kubelabs - Ultimate Kubernetes Learning Platform
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kubelabs - Ultimate Kubernetes Learning Platform</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 1rem 2rem;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .logo i {
+            margin-right: 0.5rem;
+            color: #f39c12;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #f39c12;
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 1px solid white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 320px;
+            background: #f8f9fa;
+            border-right: 1px solid #e9ecef;
+            height: 100vh;
+            overflow-y: auto;
+            position: fixed;
+            top: 80px;
+            left: 0;
+            padding: 1rem;
+            z-index: 999;
+        }
+
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-section h3 {
+            color: #2c3e50;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem 0;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .nav-item {
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: #555;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .nav-item a:hover {
+            background: #e3f2fd;
+            color: #1976d2;
+            transform: translateX(5px);
+        }
+
+        .nav-item a.active {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            box-shadow: 0 2px 10px rgba(52, 152, 219, 0.3);
+        }
+
+        .nav-item i {
+            margin-right: 0.75rem;
+            width: 16px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 320px;
+            margin-top: 80px;
+            padding: 2rem;
+            background: white;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #f39c12;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .content-section {
+            margin-bottom: 2rem;
+        }
+
+        .content-section h2 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #3498db;
+            display: flex;
+            align-items: center;
+        }
+
+        .content-section h2 i {
+            margin-right: 0.5rem;
+            color: #3498db;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .topic-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .topic-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .topic-card h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .topic-card h3 i {
+            margin-right: 0.5rem;
+            color: #3498db;
+        }
+
+        .topic-card p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .topic-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .topic-link {
+            display: flex;
+            align-items: center;
+            color: #3498db;
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 0.25rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .topic-link:hover {
+            color: #2980b9;
+            transform: translateX(5px);
+        }
+
+        .topic-link i {
+            margin-right: 0.5rem;
+            width: 12px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 280px;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-dharmachakra"></i>
+                Kubelabs
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="header-actions">
+                <a href="https://launchpass.com/collabnix" class="btn btn-outline">
+                    <i class="fab fa-slack"></i>
+                    Join Slack
+                </a>
+                <a href="https://github.com/collabnix/kubelabs" class="btn btn-primary">
+                    <i class="fab fa-github"></i>
+                    GitHub
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div class="nav-section">
+                <h3><i class="fas fa-play"></i> Getting Started</h3>
+                <div class="nav-item">
+                    <a href="./kubectl-for-docker.html" class="nav-link">
+                        <i class="fas fa-terminal"></i>
+                        Kubectl for Docker Users
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="./api.html" class="nav-link">
+                        <i class="fas fa-plug"></i>
+                        Accessing Kubernetes API
+                    </a>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <h3><i class="fas fa-cube"></i> Core Concepts</h3>
+                <div class="nav-item">
+                    <a href="./pods101/" class="nav-link active">
+                        <i class="fas fa-box"></i>
+                        Pods101
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="./replicaset101/" class="nav-link">
+                        <i class="fas fa-clone"></i>
+                        ReplicaSet101
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="./Deployment101/" class="nav-link">
+                        <i class="fas fa-rocket"></i>
+                        Deployment101
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="./Services101/" class="nav-link">
+                        <i class="fas fa-network-wired"></i>
+                        Services101
+                    </a>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <h3><i class="fas fa-shield-alt"></i> Security & Operations</h3>
+                <div class="nav-item">
+                    <a href="./RBAC101/" class="nav-link">
+                        <i class="fas fa-user-shield"></i>
+                        RBAC101
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="./Monitoring101/" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        Monitoring101
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="./Helm101/" class="nav-link">
+                        <i class="fas fa-chart-pie"></i>
+                        Helm101
+                    </a>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <h3><i class="fas fa-cloud"></i> Cloud Platforms</h3>
+                <div class="nav-item">
+                    <a href="./EKS101/" class="nav-link">
+                        <i class="fab fa-aws"></i>
+                        EKS101
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="./GKE101/" class="nav-link">
+                        <i class="fab fa-google"></i>
+                        GKE101
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="./AKS101/" class="nav-link">
+                        <i class="fab fa-microsoft"></i>
+                        AKS101
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-content">
+                    <h1>? Master Kubernetes with Hands-on Labs</h1>
+                    <p>Join 9,000+ DevOps Engineers learning Kubernetes through interactive tutorials and real-world scenarios</p>
+                    <div class="stats-row">
+                        <div class="stat-card">
+                            <div class="stat-number">500+</div>
+                            <div class="stat-label">Interactive Labs</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">9K+</div>
+                            <div class="stat-label">Community Members</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">Free</div>
+                            <div class="stat-label">Always Free</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">Browser</div>
+                            <div class="stat-label">No Setup Required</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Core Concepts Section -->
+            <section class="content-section">
+                <h2><i class="fas fa-box"></i> Core Kubernetes Concepts</h2>
+                <div class="card-grid">
+                    <div class="topic-card">
+                        <h3><i class="fas fa-play-circle"></i> Pods101</h3>
+                        <p>Learn the fundamental building blocks of Kubernetes applications. Master pods, containers, and basic operations.</p>
+                        <div class="topic-links">
+                            <a href="./pods101/deploy-your-first-nginx-pod.html" class="topic-link">
+                                <i class="fas fa-rocket"></i>
+                                Deploy Your First Pod
+                            </a>
+                            <a href="./pods101/labels-and-selectors/" class="topic-link">
+                                <i class="fas fa-tag"></i>
+                                Labels and Selectors
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="topic-card">
+                        <h3><i class="fas fa-rocket"></i> Deployments</h3>
+                        <p>Master application deployments, scaling, rolling updates, and managing application lifecycle.</p>
+                        <div class="topic-links">
+                            <a href="./Deployment101/" class="topic-link">
+                                <i class="fas fa-plus"></i>
+                                Create Deployments
+                            </a>
+                            <a href="./replicaset101/" class="topic-link">
+                                <i class="fas fa-clone"></i>
+                                ReplicaSets
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="topic-card">
+                        <h3><i class="fas fa-network-wired"></i> Services & Networking</h3>
+                        <p>Understand service discovery, load balancing, and networking in Kubernetes clusters.</p>
+                        <div class="topic-links">
+                            <a href="./Services101/" class="topic-link">
+                                <i class="fas fa-server"></i>
+                                Services101
+                            </a>
+                            <a href="./Ingress101/" class="topic-link">
+                                <i class="fas fa-door-open"></i>
+                                Ingress Controllers
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        // Auto-hide sidebar on mobile when clicking main content
+        document.querySelector('.main-content').addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html>
