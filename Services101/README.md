@@ -222,22 +222,29 @@ The common thing here is that the service will not be pointing to pods. It’ll 
 apiVersion: v1
 kind: Service
 metadata:
-  name: webserver
+  name: external-backend
 spec:
- selector:
-   app: web
   ports:
-  - name: http
-    port: 80
-    targetPort: 80
-  - name: https
-    port: 443
-    targetPort: 443
-   ```
+  - protocol: TCP
+    port: 3000
+    targetPort: 3000
+```
 
 Here, we have a service that connects to an external NodeJS backend on port 3000. But, this definition does not have pod selectors. It doesn’t even have the external IP address of the backend! So, how will the service route traffic then?
 
-Normally, a service uses an Endpoint object behind the scenes to map to the IP addresses of the pods that match its selector.
+Normally, a service uses an Endpoint object behind the scenes to map to the IP addresses of the pods that match its selector. When there is no selector, we must create the Endpoints object manually to tell the service where to route traffic:
+
+```
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: external-backend
+subsets:
+  - addresses:
+      - ip: EXTERNAL_BACKEND_IP
+    ports:
+      - port: 3000
+```
 
 ## Service Discovery
 
