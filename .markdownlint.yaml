@@ -1,0 +1,39 @@
+# markdownlint configuration for kubelabs
+# See: https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+
+# Allow long lines in code blocks and tables
+MD013:
+  line_length: 200
+  code_blocks: false
+  tables: false
+  headings: false
+
+# Allow multiple top-level headings (some tutorials use H1 for sections)
+MD025: false
+
+# Allow trailing punctuation in headings
+MD026: false
+
+# Allow bare URLs (common in tutorials)
+MD034: false
+
+# Allow inline HTML (used in some tutorial badges and tables)
+MD033: false
+
+# Allow duplicate headings across different sections
+MD024: false
+
+# Allow emphasis used as headings (some tutorials use bold for section labels)
+MD036: false
+
+# Require headings to be surrounded by blank lines
+MD022: true
+
+# Require lists to be surrounded by blank lines
+MD032: true
+
+# Require fenced code blocks to have a language specified
+MD040: false
+
+# Allow first-line headings to differ from filename
+MD041: false

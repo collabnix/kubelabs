@@ -178,8 +178,18 @@ A Curated List of Kubernetes Labs and Tutorials
   
 
 
+## Gateway API 101
+
+- [What is the Kubernetes Gateway API?](./Gateway101/README.md)
+- [GatewayClass, Gateway, and HTTPRoute](./Gateway101/README.md#core-resources)
+- [Lab: Installing Gateway API CRDs](./Gateway101/README.md#lab-1-installing-the-gateway-api-crds)
+- [Lab: Installing NGINX Gateway Fabric](./Gateway101/README.md#lab-2-installing-nginx-gateway-fabric-controller)
+- [Lab: Path-Based Routing](./Gateway101/README.md#lab-6-advanced-routing--path-based-routing)
+- [Lab: Traffic Splitting (Canary)](./Gateway101/README.md#lab-7-traffic-splitting-canary--blue-green)
+- [Lab: Header-Based Routing](./Gateway101/README.md#lab-8-header-based-routing)
+
 ## RBAC101
-  
+
   - [Role-Based Access Control (RBAC) Overview](./RBAC101/#role-based-access-control-rbac)
   - [Creating a Kubernetes User Account Using X509 Client Certificate](./RBAC101/#creating-a-kubernetes-user-account-using-x509-client-certificate)
   
@@ -389,6 +399,10 @@ A Curated List of Kubernetes Labs and Tutorials
 [Click Here](https://www.youtube.com/embed/i0d5ta83c-k) if the link is not working for you.
 
 ## Contribution Guidelines
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for full contribution guidelines, tutorial structure requirements, and how to use the automated validator.
+
+### Quick start (local preview)
 
 ## Step 1. Clone the repository
 

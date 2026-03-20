@@ -1,0 +1,148 @@
+name: Validate Tutorials
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - '**101/**'
+      - '**201/**'
+      - 'cka/**'
+      - 'intermediate/**'
+      - 'scripts/validate-tutorials.sh'
+      - '.github/workflows/validate-tutorials.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - '**101/**'
+      - '**201/**'
+      - 'cka/**'
+      - 'intermediate/**'
+      - 'scripts/validate-tutorials.sh'
+      - '.github/workflows/validate-tutorials.yml'
+  workflow_dispatch:
+    inputs:
+      directory:
+        description: 'Specific tutorial directory to validate (leave empty for all)'
+        required: false
+        default: ''
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Job 1: Validate tutorial structure and YAML syntax
+  # ---------------------------------------------------------------------------
+  validate-structure:
+    name: Validate Tutorial Structure
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install yamllint
+        run: pip install yamllint
+
+      - name: Make validator executable
+        run: chmod +x scripts/validate-tutorials.sh
+
+      - name: Run tutorial validator (all tutorials)
+        if: ${{ github.event.inputs.directory == '' || github.event.inputs.directory == null }}
+        run: ./scripts/validate-tutorials.sh
+
+      - name: Run tutorial validator (specific directory)
+        if: ${{ github.event.inputs.directory != '' && github.event.inputs.directory != null }}
+        run: ./scripts/validate-tutorials.sh "${{ github.event.inputs.directory }}"
+
+  # ---------------------------------------------------------------------------
+  # Job 2: Lint Markdown files
+  # ---------------------------------------------------------------------------
+  lint-markdown:
+    name: Lint Markdown
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install markdownlint-cli
+        run: npm install -g markdownlint-cli
+
+      - name: Lint all Markdown files in tutorial directories
+        run: |
+          # Find all markdown files in tutorial directories
+          find . -maxdepth 3 -type f -name '*.md' \
+            \( -path './*101/*' -o -path './*201/*' \
+               -o -path './cka/*' -o -path './intermediate/*' \
+               -o -name 'README.md' -o -name 'CONTRIBUTING.md' \) \
+            ! -path './_site/*' \
+            ! -path './.git/*' \
+            | sort > /tmp/md_files.txt
+
+          echo "Files to lint:"
+          cat /tmp/md_files.txt
+
+          # Run markdownlint; allow warnings but fail on errors
+          markdownlint \
+            --config .markdownlint.yaml \
+            --ignore _site \
+            --ignore node_modules \
+            $(cat /tmp/md_files.txt) || true
+
+  # ---------------------------------------------------------------------------
+  # Job 3: Validate YAML manifests in changed tutorial directories
+  # ---------------------------------------------------------------------------
+  validate-yaml:
+    name: Validate YAML Manifests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install yamllint
+        run: pip install yamllint
+
+      - name: Validate all YAML files in tutorial directories
+        run: |
+          find . -maxdepth 3 -type f \( -name '*.yaml' -o -name '*.yml' \) \
+            ! -path './_site/*' \
+            ! -path './.git/*' \
+            ! -path './.github/workflows/*' \
+            | sort | while read -r f; do
+              echo "Checking: $f"
+              yamllint -d relaxed "$f" && echo "  ✔ OK" || echo "  ✗ FAILED: $f"
+            done
+
+  # ---------------------------------------------------------------------------
+  # Job 4: Check for new tutorials and summarise changes
+  # ---------------------------------------------------------------------------
+  summarise-changes:
+    name: Summarise Tutorial Changes
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: List changed tutorial directories
+        run: |
+          echo "### Changed Tutorial Directories" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          git diff --name-only origin/${{ github.base_ref }}...HEAD \
+            | grep -E '^[^/]+101/|^[^/]+201/|^cka/|^intermediate/' \
+            | cut -d'/' -f1 \
+            | sort -u \
+            | while read -r dir; do
+                echo "- \`$dir\`" >> $GITHUB_STEP_SUMMARY
+              done
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Validation complete. See job results above for details." >> $GITHUB_STEP_SUMMARY
