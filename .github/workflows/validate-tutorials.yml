@@ -33,6 +33,8 @@ jobs:
   validate-structure:
     name: Validate Tutorial Structure
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repository
@@ -58,6 +60,8 @@ jobs:
   lint-markdown:
     name: Lint Markdown
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repository
@@ -98,6 +102,8 @@ jobs:
   validate-yaml:
     name: Validate YAML Manifests
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repository
@@ -124,6 +130,8 @@ jobs:
     name: Summarise Tutorial Changes
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repository
