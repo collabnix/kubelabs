@@ -8,7 +8,7 @@ A Helm release refers to a single instance of a chart that is applied on a clust
 
 ### What kind of things?
 
-A 'hook' would have a resource delcared in it. For instance, if the resource is a pod, then this pod will spin up at the specified time. If it is a job, then the job will run.
+A 'hook' would have a resource declared in it. For instance, if the resource is a pod, then this pod will spin up at the specified time. If it is a job, then the job will run.
 
 ### What are hook weights?
 
